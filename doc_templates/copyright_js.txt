@@ -1,4 +1,5 @@
 /* @preserve
- * OpenStudio(R), Copyright (c) 2008-2018, Alliance for Sustainable Energy, LLC. All rights reserved.
- * Use of this source code is governed by a BSD-style license that can be found at openstudio.net/license.
+ * Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable Energy, LLC, Ladybug Tools LLC
+and other contributors. All rights reserved.
+ * Use of this source code is governed by the BSD license.
 */
