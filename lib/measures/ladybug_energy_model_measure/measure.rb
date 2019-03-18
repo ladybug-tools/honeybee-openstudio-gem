@@ -71,7 +71,8 @@ class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
   # define what happens when the measure is run
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
-
+puts "hello!"
+STDOUT.flush
     if !runner.validateUserArguments(arguments(model), user_arguments)
       return false
     end
@@ -89,7 +90,11 @@ class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
       #runner.registerError("File '#{ladybug_json}' is not valid")
       #return false
     end
-    
+    puts "lets go!"
+STDOUT.flush
+    ladybug_model.create_openstudio_objects(model)
+    puts "done!"
+STDOUT.flush
     return true
   end
 end 

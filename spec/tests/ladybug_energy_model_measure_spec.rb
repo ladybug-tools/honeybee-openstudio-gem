@@ -58,13 +58,15 @@ RSpec.describe Ladybug::EnergyModel do
     model = Ladybug::EnergyModel::Model.new(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
+    model.to_openstudio
   end
  
   it 'can load and validate example face by face model' do
     file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
     model = Ladybug::EnergyModel::Model.new(file)
     expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true    
+    expect(model.validation_errors.empty?).to be true 
+    model.to_openstudio
   end
 
 end

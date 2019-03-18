@@ -33,10 +33,12 @@ require 'ladybug/energy_model/extension'
 
 require 'json-schema'
 require 'json'
+require 'openstudio'
 
 module Ladybug
   module EnergyModel
     class Model
+      attr_reader :errors, :warnings
     
       # Read Ladybug Energy Model JSON from disk
       def initialize(file)
@@ -52,6 +54,15 @@ module Ladybug
         
         @model_type = @model[:type]
         raise 'Unknown model type' if @model_type.nil?
+        
+        @face_by_face = false
+        if @model[:type] == 'FaceByFaceModel'
+          @face_by_face = true
+        elsif @model[:type] == 'Model'
+          # no-op
+        else
+          raise "Unknown model type '#{@model[:type]}'"
+        end
       end
       
       # check if the model is valid
@@ -64,7 +75,80 @@ module Ladybug
         return JSON::Validator.fully_validate(@model, @@schema, {:fragment => "#/components/schemas/#{@model_type}"})
       end
       
+      # convert to a new openstudio model
+      def to_openstudio
+        osm = OpenStudio::Model::Model.new
+        create_openstudio_objects(osm)
+        return osm
+      end
       
-    end
-  end
-end
+      # create openstudio objects in the given osm, clears errors and warnings
+      def create_openstudio_objects(osm)
+        @errors = []
+        @warnings = []
+        
+        create_faces(osm)
+      end
+      
+      def create_faces(osm)
+        @model[:faces].each do |face|
+          name = face[:name]
+          face_type = face[:face_type]
+          parent = face[:parent]
+          
+          # for now make parent a space, check if should be a zone?
+          space = osm.getSpaceByName(parent)
+          if space.empty?
+            space = OpenStudio::Model::Space.new(osm)
+            space.setName(parent)
+          else
+            space = space.get
+          end
+          
+          surface_type = nil
+          air_wall = false
+          case face_type  # 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
+          when 0
+            surface_type = 'Wall' 
+          when 1
+            surface_type = 'RoofCeiling' 
+          when 2
+            surface_type = 'Floor' 
+          when 3
+            air_wall = true          
+          else
+            @errors << "Unknown face_type '#{face_type}' for face '#{name}', surface not created"
+            next
+          end
+          
+          vertices = OpenStudio::Point3dVector.new
+          if @face_by_face
+            # vertices in face
+            face[:vertices].each do |v|
+              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
+            end 
+          else
+            # vertices in separate list
+            face[:vertices].each do |vi|
+              v = @model[:vertices][vi]
+              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
+            end 
+          end
+               
+          surface = OpenStudio::Model::Surface.new(vertices, osm)
+          surface.setName(name)
+          surface.setSpace(space)
+          surface.setSurfaceType(surface_type) if surface_type
+          if air_wall
+            # DLM: todo
+          end
+        end
+      end
+      
+      def create_apertures(osm)
+      end
+      
+      
+    end # Model
+  end # EnergyModel
+end # Ladybug
