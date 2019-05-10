@@ -67,12 +67,12 @@ module Ladybug
       
       # check if the model is valid
       def valid?
-        return JSON::Validator.validate(@model, @@schema, {:fragment => "#/components/schemas/#{@model_type}"})
+        return JSON::Validator.validate(@model, @@schema)
       end
       
       # return detailed model validation errors
       def validation_errors
-        return JSON::Validator.fully_validate(@model, @@schema, {:fragment => "#/components/schemas/#{@model_type}"})
+        return JSON::Validator.fully_validate(@model, @@schema)
       end
       
       # convert to a new openstudio model
@@ -95,12 +95,13 @@ module Ladybug
           name = face[:name]
           face_type = face[:face_type]
           parent = face[:parent]
-          
+          parent_name = parent[:name]
+          puts "face = #{face}"
           # for now make parent a space, check if should be a zone?
-          space = osm.getSpaceByName(parent)
+          space = osm.getSpaceByName(parent_name)
           if space.empty?
             space = OpenStudio::Model::Space.new(osm)
-            space.setName(parent)
+            space.setName(parent_name)
           else
             space = space.get
           end

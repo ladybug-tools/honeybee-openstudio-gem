@@ -1,0 +1,1 @@
+{"type": "EnergyConstruction", "name": "Window with Blinds", "materials": [{"type": "EnergyWindowMaterialBlind", "name": "Window Material Blind 1", "slat_orientation": "Horizontal"}, {"type": "EnergyWindowMaterialSimpleGlazSys", "name": "Fixed Window 2.00 0.40 0.31", "u_factor": 1.98, "SHGC": 0.4}]}

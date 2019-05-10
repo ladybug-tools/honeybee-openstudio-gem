@@ -29,52 +29,68 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+require 'ladybug/construction/extension'
 
-RSpec.describe Ladybug::EnergyModel do
-  it 'has a version number' do
-    expect(Ladybug::EnergyModel::VERSION).not_to be nil
-  end
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-  
-  it 'has a files directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
-  
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
- 
-  it 'can load and validate example face by face model' do
-    file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
-    model = Ladybug::EnergyModel::Model.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true 
-    model.to_openstudio
-  end
+module Ladybug
+  module EnergyModel      
+    class Construction
+      attr_reader :errors, :warnings
 
-  it 'can load and validate opaque construction' do
-    file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
-    model = Ladybug::EnergyModel::Model.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    model.to_openstudio
-  end
-  
-  it 'can load and validate transparent construction' do
-    file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
-    model = Ladybug::EnergyModel::Model.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    model.to_openstudio
-  end
+      def initialize(hash)
+        @@extension ||=Extension.new
+        @@schema ||=@@extension.schema
 
+        @file = file 
+        @construction = hash
+    
+        @construction_type = @construction[:type]
+        raise 'Unknown construction type' if @construction_type.nil?
+
+        @opaque = false
+        if @model[:type] == 'EnergyConstructionOpaque'
+          @opaque = true
+        elsif @model[:type] == 'EnergyConstructionTransparent'
+          @transparent = true
+        else 
+          raise "Unknown construction type #{@model[:type]}"
+        end  
+      end
+
+      def valid?
+        return JSON::Validator.validate(@construction, @@schema)
+
+
+      def validation_errors
+        return JSON::Validator.fully_validate(@construction, @@schema)
+      end 
+    
+      def to_openstudio
+        osm = OpenStudio::model::Construction.new
+        create_openstudio_objects(osm)
+        return osm
+      end
+
+      def create_openstudio_objects(osm)
+        @errors = []
+        @warnings = []
+        create_construction(osm)
+      end
+
+      def create_construction(osm)
+        @construction[:materials].each do |materials|
+          name = materials[:name]
+          material_type = materials[:material_type]
+      end
+
+      opaque_material = OpenStudio::OpaqueMaterial.new
+
+
+      fenestration_material = OpenStudio::FenestrationMaterial.new 
+
+    end
+  end
 end
