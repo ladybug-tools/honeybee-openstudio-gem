@@ -63,7 +63,7 @@ RSpec.describe Ladybug::EnergyModel do
 
   it 'can load and validate opaque construction' do
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
-    model = Ladybug::EnergyModel::Model.new(file)
+    model = Ladybug::EnergyModel::Construction.new(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
     model.to_openstudio
@@ -71,7 +71,7 @@ RSpec.describe Ladybug::EnergyModel do
   
   it 'can load and validate transparent construction' do
     file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
-    model = Ladybug::EnergyModel::Model.new(file)
+    model = Ladybug::EnergyModel::Construction.new(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
     model.to_openstudio
