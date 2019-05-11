@@ -793,9 +793,9 @@
           "title": "Visible_Transmittance",
           "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
           "default": 0.4,
+          "type": "number",
           "exclusiveMaximum": 1,
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "visible_reflectance": {
           "title": "Visible_Reflectance",

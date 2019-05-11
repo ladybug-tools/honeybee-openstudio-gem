@@ -36,7 +36,8 @@ require 'json'
 module Ladybug
   module EnergyModel
     class Extension < OpenStudio::Extension::Extension
-    
+      @@schema = nil
+      
       # Override parent class
       def initialize
         super
@@ -44,7 +45,7 @@ module Ladybug
         @root_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', '..'))
         
         @instance_lock = Mutex.new
-        @schema
+        @@schema ||= schema
       end
       
       # Return the absolute path of the measures or nil if there is none, can be used when configuring OSWs
@@ -73,26 +74,26 @@ module Ladybug
       # return schema
       def schema
         @instance_lock.synchronize do
-          if @schema.nil?
-            File.open(schema_file, 'r') do |file|
-              @schema = JSON::parse(file.read, {symbolize_names: true})
+          if @@schema.nil?
+            File.open(schema_file, 'r') do |f|
+              @@schema = JSON::parse(f.read, {symbolize_names: true})
             end
           end
         end
         
-        return @schema
+        return @@schema
       end
       
       # check if the schema is valid
       def schema_valid?
-        metaschema = JSON::Validator.validator_for_name("draft4").metaschema
-        return JSON::Validator.validate(metaschema, @schema)
+        metaschema = JSON::Validator.validator_for_name("draft6").metaschema
+        return JSON::Validator.validate(metaschema, @@schema)
       end
       
       # return detailed schema validation errors
       def schema_validation_errors
-        metaschema = JSON::Validator.validator_for_name("draft4").metaschema
-        return JSON::Validator.fully_validate(metaschema, @schema)
+        metaschema = JSON::Validator.validator_for_name("draft6").metaschema
+        return JSON::Validator.fully_validate(metaschema, @@schema)
       end
       
     end

@@ -84,7 +84,7 @@ STDOUT.flush
       return false
     end
     
-    ladybug_model = Ladybug::EnergyModel::Model.new(ladybug_json)
+    ladybug_model = Ladybug::EnergyModel::Model.read_from_disk(ladybug_json)
     
     if !ladybug_model.valid?
       #runner.registerError("File '#{ladybug_json}' is not valid")
@@ -92,7 +92,7 @@ STDOUT.flush
     end
     puts "lets go!"
 STDOUT.flush
-    ladybug_model.create_openstudio_objects(model)
+    ladybug_model.to_openstudio_model(model)
     puts "done!"
 STDOUT.flush
     return true

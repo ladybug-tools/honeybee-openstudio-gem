@@ -55,26 +55,37 @@ RSpec.describe Ladybug::EnergyModel do
  
   it 'can load and validate example face by face model' do
     file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
-    model = Ladybug::EnergyModel::Model.new(file)
+    model = Ladybug::EnergyModel::Model.read_from_disk(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true 
-    model.to_openstudio
+    model.to_openstudio_model
   end
 
   it 'can load and validate opaque construction' do
+    openstudio_model = OpenStudio::Model::Model.new
+    
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
-    model = Ladybug::EnergyModel::Construction.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    model.to_openstudio
+    construction1 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
+    expect(construction1.valid?).to be true
+    expect(construction1.validation_errors.empty?).to be true
+    object1 = construction1.to_openstudio(openstudio_model)
+    expect(object1).not_to be nil
+    
+    # load the same construction again in the same model, should find existing construction
+    construction2 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
+    expect(construction2.valid?).to be true
+    expect(construction2.validation_errors.empty?).to be true
+    object2 = construction2.to_openstudio(openstudio_model)    
+    expect(object2).not_to be nil
+    expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
   
-  it 'can load and validate transparent construction' do
-    file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
-    model = Ladybug::EnergyModel::Construction.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    model.to_openstudio
-  end
+  #it 'can load and validate transparent construction' do
+  #  file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
+  #  model = Ladybug::EnergyModel::Construction.new(file)
+  #  expect(model.valid?).to be true
+  #  expect(model.validation_errors.empty?).to be true
+  #  model.to_openstudio
+  #end
 
 end

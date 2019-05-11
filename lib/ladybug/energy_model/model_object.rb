@@ -29,42 +29,39 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_construction_opaque'
-
 require 'json-schema'
 require 'json'
 require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Model
+    class ModelObject
       attr_reader :errors, :warnings
       
-      # Read Ladybug Energy Model JSON from disk
+      # Read ModelObject JSON from disk
       def self.read_from_disk(file)
         hash = nil
         File.open(File.join(file), 'r') do |f|
           hash = JSON::parse(f.read, {symbolize_names: true})
         end
-        
-        return Model.new(hash)
+        return self.new(hash)
       end
-    
+      
       # Load ModelObject from symbolized hash
       def initialize(hash)
         # initialize class variable @@extension only once
         @@extension ||= Extension.new
         @@schema ||= @@extension.schema
-        
+
         @hash = hash
+        
         @type = @hash[:type]
-        raise 'Unknown model type' if @type.nil?
-        raise "Incorrect model type '#{@type}'" unless @type == 'Model'
+        raise 'Unknown type' if @type.nil?
+        
+        @openstudio_object = nil
       end
       
-      # check if the model is valid
+      # check if the ModelObject is valid
       def valid?
         return JSON::Validator.validate(@hash, @@schema)
       end
@@ -74,90 +71,44 @@ module Ladybug
         return JSON::Validator.fully_validate(@hash, @@schema)
       end
       
-      # convert to openstudio model, clears errors and warnings
-      def to_openstudio_model(openstudio_model = nil)
-        @errors = []
-        @warnings = []
+      # convert ModelObject to an openstudio object
+      def to_openstudio(openstudio_model)
         
-        if openstudio_model
-          @openstudio_model = openstudio_model
-        else
-          @openstudio_model = OpenStudio::Model::Model.new
+        # return the object if we already have it
+        if @openstudio_object
+          if @openstudio_object.model == openstudio_model
+            return @openstudio_object
+          end
         end
         
-        create_openstudio_objects
+        @errors = []
+        @warnings = []
+        @openstudio_object = nil
         
-        return @openstudio_model
+        # see if an equivalent object is already in the openstudio model
+        @openstudio_object = find_existing_openstudio_object(openstudio_model)
+        if @openstudio_object
+          return @openstudio_object
+        end
+        
+        # create and return the object
+        @openstudio_object = create_openstudio_object(openstudio_model)
+        
+        return @openstudio_object
       end
       
       private
       
-      # create openstudio objects in the openstudio model
-      def create_openstudio_objects
-        create_faces
-        create_apertures
+      # find an equivalent existing object in the openstudio model, return nil if not found
+      def find_existing_openstudio_object(openstudio_model)
+        raise "find_existing_openstudio_object not implemented for ModelObject, override in your class"
       end
       
-      def create_faces
-        # TODO: create a Face class which derives from ModelObject and move all this code there
-        @hash[:faces].each do |face|
-          name = face[:name]
-          face_type = face[:face_type]
-          parent = face[:parent]
-          parent_name = parent[:name]
-          # for now make parent a space, check if should be a zone?
-          space = @openstudio_model.getSpaceByName(parent_name)
-          if space.empty?
-            space = OpenStudio::Model::Space.new(@openstudio_model)
-            space.setName(parent_name)
-          else
-            space = space.get
-          end
-          
-          surface_type = nil
-          air_wall = false
-          case face_type  # 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
-          when 0
-            surface_type = 'Wall' 
-          when 1
-            surface_type = 'RoofCeiling' 
-          when 2
-            surface_type = 'Floor' 
-          when 3
-            air_wall = true          
-          else
-            @errors << "Unknown face_type '#{face_type}' for face '#{name}', surface not created"
-            next
-          end
-          
-          vertices = OpenStudio::Point3dVector.new
-          if @face_by_face
-            # vertices in face
-            face[:vertices].each do |v|
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          else
-            # vertices in separate list
-            face[:vertices].each do |vi|
-              v = @model[:vertices][vi]
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          end
-               
-          surface = OpenStudio::Model::Surface.new(vertices, @openstudio_model)
-          surface.setName(name)
-          surface.setSpace(space)
-          surface.setSurfaceType(surface_type) if surface_type
-          if air_wall
-            # DLM: todo
-          end
-        end
+      # create a new object in the openstudio model, return new object
+      def create_openstudio_object(openstudio_model)
+        raise "create_openstudio_object not implemented for ModelObject, override in your class"
       end
       
-      def create_apertures
-      end
-      
-      
-    end # Model
+    end # ModelObject
   end # EnergyModel
 end # Ladybug

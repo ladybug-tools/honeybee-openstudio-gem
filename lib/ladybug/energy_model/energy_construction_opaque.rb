@@ -29,6 +29,48 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/construction/version'
-require 'ladybug/construction/extension'
-require 'ladybug/construction/model'
+require 'ladybug/energy_model/model_object'
+
+require 'json-schema'
+require 'json'
+require 'openstudio'
+
+module Ladybug
+  module EnergyModel      
+    class EnergyConstructionOpaque < ModelObject
+      attr_reader :errors, :warnings
+
+      def initialize(hash)
+        super(hash)
+
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+      end
+      
+      private
+      
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getConstructionByName(@hash[:name])
+        if object.is_initialized
+          return object.get
+        end
+        return nil
+      end
+      
+      def create_openstudio_object(openstudio_model)
+        object = OpenStudio::Model::Construction.new(openstudio_model)
+        object.setName(@hash[:name])
+        
+        @hash[:materials].each do |materials|
+          name = materials[:name]
+          material_type = materials[:material_type]
+          
+          # TODO: create new material objects and call to_openstudio on each of them
+          # TODO: add the resulting openstudio material objects to this openstudio constructions
+        end
+        
+        return object
+      end
+
+    end # EnergyConstructionOpaque
+  end # EnergyModel
+end # Ladybug
