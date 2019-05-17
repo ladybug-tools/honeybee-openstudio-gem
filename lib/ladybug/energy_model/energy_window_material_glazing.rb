@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class EnergyWindowMaterialGlazing < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGlazing'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
+        object = openstudio_model.getStandardGlazingByName(@hash[:name])  
         if object.is_initialized
           return object.get
         end
@@ -59,33 +57,33 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
-
-          case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
-          else 
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
+        openstudio_standard_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
+        openstudio_standard_glazing.setName(@hash[:name])      
+        openstudio_standard_glazing.setOpticalDataType(@hash[:optical_datatype])
+        openstudio_standard_glazing.setWindowGlassSpectralDataSetName(@hash[:spectral_dataset_name])
+        openstudio_standard_glazing.setThickness(@hash[:thickness_glass])
+        openstudio_standard_glazing.setSolarTransmittanceatNormalIncidence(@hash[:solar_transmittance])
+        openstudio_standard_glazing.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
+        openstudio_standard_glazing.setBackSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance_back])
+        openstudio_standard_glazing.setVisibleTransmittanceatNormalIncidence(@hash[:visible_transmittance])
+        openstudio_standard_glazing.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
+        openstudio_standard_glazing.setBackSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance_back])
+        openstudio_standard_glazing.setInfraredTransmittanceatNormalIncidence(@hash[:infrared_transmittance])
+        openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:front_emissivity])
+        openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:back_emissivity])
+        openstudio_standard_glazing.setThermalConductivity(@hash[:conductivity_glass])
+        openstudio_standard_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@hash[:dirt_correction].to_f)
+        if @hash[:solar_diffusing] == "No"
+          openstudio_standard_glazing.setSolarDiffusing(false)
+        elsif @hash[:solar_diffusing] == "Yes"
+          openstudio_standard_glazing.setSolarDiffusing(true)
+        else
+          raise "Unknown value for Solar Diffusing '#{@hash[:solar_diffusing]}'"
         end
-        openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+
+        return openstudio_standard_glazing
       end
 
-    end # EnergyConstructionOpaque
+    end # EnergyWindowMaterialGlazing
   end # EnergyModel
 end # Ladybug

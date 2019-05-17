@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class Face < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'Face'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
+        object = openstudio_model.getSurfaceByName(@hash[:name]) #check
         if object.is_initialized
           return object.get
         end
@@ -59,33 +57,39 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_model)
+        openstudio_surface.setName(@hash[:name])
+        @hash[:face].each do |face| #check
+          name = face[:name]
+          face_type = face[:face_type]
+          rad_modifier = face[:rad_modifier]
+          rad_modifier_dir = face[:rad_modifier_dir]
+          energy_construction_opaque = face[:energy_construction_opaque]
+          energy_construction_transparent = face[:energy_construction_transparent]
+          face_object = nil
 
-          case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
-          else 
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
+          case face_type
+          when "Wall"
+            face_object = "Wall"
+          when "RoofCeiling"
+            face_object = "RoofCeiling"
+          when "Floor"
+            face_object = "Floor"
+          when "AirWall"
+            face_object = "AirWall"
+          when "Shading"
+            face_object = "Shading"
+          else
+            raise "Unknown face_type #{face_type} for face #{name}."
         end
-        openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+        
+        openstudio_surfaces = face_object.to_openstudio(openstudio_model)
+        openstudio_surface << openstudio_surfaces
       end
 
-    end # EnergyConstructionOpaque
+        return openstudio_surface
+      end
+
+    end # Face
   end # EnergyModel
 end # Ladybug

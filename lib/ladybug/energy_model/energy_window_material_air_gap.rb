@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class EnergyWindowMaterialAirGap < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialAirGap'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
+        object = openstudio_model.getGasByName(@hash[:name]) 
         if object.is_initialized
           return object.get
         end
@@ -59,33 +57,25 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
+        openstudio_window_airgap = OpenStudio::Model::Gas.new(openstudio_model)
+         openstudio_window_airgap.setName(@hash[:name]) 
+        openstudio_window_airgap.setGasType(@hash[:gastype])
+        openstudio_window_airgap.setThickness(@hash[:thickness])
+        openstudio_window_airgap.setConductivityCoefficientA(@hash[:conductivity_coeff_A].to_f)
+        openstudio_window_airgap.setConductivityCoefficientB(@hash[:conductivity_coeff_B].to_f)
+        openstudio_window_airgap.setConductivityCoefficientC(@hash[:conductivity_coeff_C].to_f)
+        openstudio_window_airgap.setViscosityCoefficientA(@hash[:viscosity_coeff_A].to_f)
+        openstudio_window_airgap.setViscosityCoefficientB(@hash[:viscosity_coeff_B].to_f)
+        openstudio_window_airgap.setViscosityCoefficientC(@hash[:viscosity_coeff_C].to_f)
+        openstudio_window_airgap.setSpecificHeatCoefficientA(@hash[:specific_heat_coeff_A].to_f)
+        openstudio_window_airgap.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_B].to_f)
+        openstudio_window_airgap.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_C].to_f)
+        openstudio_window_airgap.setSpecificHeatRatio(@hash[:specific_heat_ratio].to_f)
+        openstudio_window_airgap.setMolecularWeight(@hash[:molecular_weight].to_f)
 
-          case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
-          else 
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
-        end
-        openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+        return openstudio_window_airgap
       end
 
-    end # EnergyConstructionOpaque
+    end # EnergyWindowMaterialAirGap
   end # EnergyModel
 end # Ladybug

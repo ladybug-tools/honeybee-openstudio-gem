@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class EnergyWindowMaterialShade < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialShade'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
+        object = openstudio_model.getShadeByName(@hash[:name]) 
         if object.is_initialized
           return object.get
         end
@@ -59,33 +57,26 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
-
-          case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
-          else 
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
-        end
-        openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+        openstudio_material_shade = OpenStudio::Model::Shade.new(openstudio_model)
+        openstudio_material_shade.setName(@hash[:name])
+        openstudio_material_shade.setSolarTransmittance(@hash[:solar_transmittance])
+        openstudio_material_shade.setSolarReflectance(@hash[:solar_reflectance])
+        openstudio_material_shade.setVisibleTransmittance(@hash[:visible_transmittance])
+        openstudio_material_shade.setVisibleReflectance(@hash[:visible_reflectance])
+        openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:infrared_hemispherical_emissivity])
+        openstudio_material_shade.setThermalTransmittance(@hash[:infrared_transmittance])
+        openstudio_material_shade.setThickness(@hash[:thickness])
+        openstudio_material_shade.setConductivity(@hash[:conductivity])
+        openstudio_material_shade.setShadetoGlassDistance(@hash[:shade_toglass_distance])
+        openstudio_material_shade.setTopOpeningMultiplier(@hash[:top_opening_multiplier])
+        openstudio_material_shade.setBottomOpeningMultiplier(@hash[:bottom_openng_multiplier].to_f)
+        openstudio_material_shade.setLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
+        openstudio_material_shade.setRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
+        openstudio_material_shade.setAirflowPermeability(@hash[:airflow_permeability])
+        
+        return openstudio_material_shade
       end
 
-    end # EnergyConstructionOpaque
+    end # EnergyWindowMaterialShade
   end # EnergyModel
 end # Ladybug

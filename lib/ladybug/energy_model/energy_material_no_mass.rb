@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class EnergyMaterialNoMass < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyMaterialNoMass'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
+        object = openstudio_model.getMasslessOpaqueMaterialByName(@hash[:name]) 
         if object.is_initialized
           return object.get
         end
@@ -59,33 +57,17 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
-
-          case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
-          else 
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
-        end
-        openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+        openstudio_nomass_material = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
+        openstudio_nomass_material.setName(@hash[:name])
+        openstudio_nomass_material.setThermalResistance(@hash[:r_value])
+        openstudio_nomass_material.setRoughness(@hash[:roughness])
+        openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance])
+        openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
+        openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance])
+        
+        return openstudio_nomass_material
       end
 
-    end # EnergyConstructionOpaque
+    end # EnergyMaterialNoMass
   end # EnergyModel
 end # Ladybug

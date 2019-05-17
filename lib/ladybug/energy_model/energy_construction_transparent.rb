@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,13 +37,13 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyConstructionOpaque < ModelObject
+    class EnergyConstructionTransparent < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionTransparent'
       end
       
       private
@@ -64,28 +62,33 @@ module Ladybug
         openstudio_materials = OpenStudio::Model::MaterialVector.new
         @hash[:materials].each do |material|
           name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
+          material_type = material[:type]
+          material_object = nil
 
           case material_type
-          when "EnergyMaterial"
-            material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
+          when "EnergyWindowMaterialAirGap"
+            material_object = EnergyWindowMaterialAirGap.new(material)
+          when "EnergyWindowMaterialSimpleGlazSys"
+            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
+          when "EnergyWindowMaterialBlind"
+            material_object = EnergyWindowMaterialBlind.new(material)
+          when "EnergyWindowMaterialGlazing"
+            material_object = EnergyWindowMaterialGlazing.new(material)
+          when "EnergyWindowMaterialShade"
+            material_object = EnergyWindowMaterialShade.new(material)
           else 
-            raise "Unknown material type #{material_type}."
+            raise "Unknown material type #{material_type}"
           end
 
           openstudio_material = material_object.to_openstudio(openstudio_model)
           openstudio_materials << openstudio_material
 
-         # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
         end
+        
         openstudio_construction.setLayers(openstudio_materials)
         return openstudio_construction
       end
 
-    end # EnergyConstructionOpaque
+    end # EnergyConstructionTransparent
   end # EnergyModel
 end # Ladybug
