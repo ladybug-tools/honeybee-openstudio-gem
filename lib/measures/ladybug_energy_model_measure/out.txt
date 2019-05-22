@@ -1,8 +1,0 @@
-......[openstudio.model.StandardGlazing] <0> StandardGlazing::setWindowGlassSpectralDataSetName is deprecated, use StandardGlazing::setWindowGlassSpectralDataSet
-......[openstudio.model.StandardGlazing] <0> StandardGlazing::setWindowGlassSpectralDataSetName is deprecated, use StandardGlazing::setWindowGlassSpectralDataSet
-..
-
-Finished in 0.37184 seconds (files took 2.1 seconds to load)
-14 examples, 0 failures
-
-C:/Ruby22-x64/bin/ruby.exe -I'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/lib';'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-support-3.7.1/lib' 'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/exe/rspec' --pattern 'spec/**{,/*/**}/*_spec.rb'
