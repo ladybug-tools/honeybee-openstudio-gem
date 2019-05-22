@@ -1,0 +1,50 @@
+.....FFF....[openstudio.model.StandardGlazing] <0> StandardGlazing::setWindowGlassSpectralDataSetName is deprecated, use StandardGlazing::setWindowGlassSpectralDataSet
+..F
+
+Failures:
+
+  1) Ladybug::EnergyModel can load and validate opaque construction
+     Failure/Error: expect(construction1.validation_errors.empty?).to be true
+
+     NoMethodError:
+       private method `validation_errors' called for #<Ladybug::EnergyModel::EnergyConstructionOpaque:0x00000007dc8820>
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:69:in `block (2 levels) in <top (required)>'
+
+  2) Ladybug::EnergyModel can load and validate transparent construction
+     Failure/Error: expect(construction1.validation_errors.empty?).to be true
+
+     NoMethodError:
+       private method `validation_errors' called for #<Ladybug::EnergyModel::EnergyConstructionTransparent:0x00000007fd04b0>
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:87:in `block (2 levels) in <top (required)>'
+
+  3) Ladybug::EnergyModel can load and validate energy material
+     Failure/Error: if (@schema[:EnergyMaterial][:roughness][:default]).empty? True
+
+     NoMethodError:
+       undefined method `[]' for nil:NilClass
+     # ./lib/ladybug/energy_model/energy_material.rb:62:in `create_openstudio_object'
+     # ./lib/ladybug/energy_model/model_object.rb:95:in `to_openstudio'
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:105:in `block (2 levels) in <top (required)>'
+
+  4) Ladybug::EnergyModel can load and validate face
+     Failure/Error: openstudio_vertices << OpenStudio::Point3d.new(vertex[:x],vertex[:y],vertex[:z])
+
+     NoMethodError:
+       undefined method `<<' for #<OpenStudio::Point3d:0x00000006c83498>
+     # ./lib/ladybug/energy_model/face.rb:62:in `block in create_openstudio_object'
+     # ./lib/ladybug/energy_model/face.rb:61:in `each'
+     # ./lib/ladybug/energy_model/face.rb:61:in `create_openstudio_object'
+     # ./lib/ladybug/energy_model/model_object.rb:95:in `to_openstudio'
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:225:in `block (2 levels) in <top (required)>'
+
+Finished in 0.36402 seconds (files took 1.95 seconds to load)
+15 examples, 4 failures
+
+Failed examples:
+
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:64 # Ladybug::EnergyModel can load and validate opaque construction
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:82 # Ladybug::EnergyModel can load and validate transparent construction
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:99 # Ladybug::EnergyModel can load and validate energy material
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:219 # Ladybug::EnergyModel can load and validate face
+
+C:/Ruby22-x64/bin/ruby.exe -I'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/lib';'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-support-3.7.1/lib' 'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/exe/rspec' --pattern 'spec/**{,/*/**}/*_spec.rb'

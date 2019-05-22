@@ -60,11 +60,26 @@ module Ladybug
         openstudio_nomass_material = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
         openstudio_nomass_material.setName(@hash[:name])
         openstudio_nomass_material.setThermalResistance(@hash[:r_value])
-        openstudio_nomass_material.setRoughness(@hash[:roughness])
-        openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance])
-        openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
-        openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance])
-        
+        if @hash[:roughness]
+          openstudio_nomass_material.setRoughness(@hash[:roughness])
+        else 
+          openstudio_nomass_material.setRoughness(@schema[:EnergyMaterialNoMass][:roughness][:default])
+        end
+        if @hash[:thermal_absorptance]
+          openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
+        else 
+          openstudio_nomass_material.setThermalAbsorptance(@schema[:EnergyMaterialNoMass][:thermal_absorptance][:default].to_f)
+        end
+        if @hash[:solar_absorptance]
+          openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
+        else 
+          openstudio_nomass_material.setSolarAbsorptance(@schema[:EnergyMaterialNoMass][:solar_absorptance][:default].to_f)
+        end
+        if @hash[:visible_absorptance]
+          openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
+        else 
+          openstudio_nomass_material.setVisibleAbsorptance(@schema[:EnergyMaterialNoMass][:visible_absorptance][:default].to_f)
+        end
         return openstudio_nomass_material
       end
 

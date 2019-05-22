@@ -32,6 +32,8 @@
 require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
 require 'ladybug/energy_model/energy_construction_opaque'
+require 'ladybug/energy_model/face'
+require 'ladybug/energy_model/shade_face'
 
 require 'json-schema'
 require 'json'
@@ -101,57 +103,22 @@ module Ladybug
       def create_faces
         # TODO: create a Face class which derives from ModelObject and move all this code there
         @hash[:faces].each do |face|
-          name = face[:name]
-          face_type = face[:face_type]
-          parent = face[:parent]
-          parent_name = parent[:name]
+          face_type = face[:face_type] 
+          face_object = nil
+          if face_type == "Face"
+            face_object = Face.new(face)
+          elsif face_type == "ShadeFace"
+            face_object = ShadeFace.new(face)
+          end
+          face_object.to_openstudio(@openstudio_model)
+          return face_object
+        end
           # for now make parent a space, check if should be a zone?
-          space = @openstudio_model.getSpaceByName(parent_name)
-          if space.empty?
-            space = OpenStudio::Model::Space.new(@openstudio_model)
-            space.setName(parent_name)
-          else
-            space = space.get
-          end
-          
-          surface_type = nil
-          air_wall = false
-          case face_type  # 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
-          when 0
-            surface_type = 'Wall' 
-          when 1
-            surface_type = 'RoofCeiling' 
-          when 2
-            surface_type = 'Floor' 
-          when 3
-            air_wall = true          
-          else
-            @errors << "Unknown face_type '#{face_type}' for face '#{name}', surface not created"
-            next
-          end
-          
-          vertices = OpenStudio::Point3dVector.new
-          if @face_by_face
-            # vertices in face
-            face[:vertices].each do |v|
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          else
-            # vertices in separate list
-            face[:vertices].each do |vi|
-              v = @model[:vertices][vi]
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          end
-               
-          surface = OpenStudio::Model::Surface.new(vertices, @openstudio_model)
-          surface.setName(name)
-          surface.setSpace(space)
-          surface.setSurfaceType(surface_type) if surface_type
+
+          #add if statement and to_openstudio object
           if air_wall
             # DLM: todo
           end
-        end
       end
       
       def create_apertures

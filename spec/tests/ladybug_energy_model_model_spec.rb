@@ -53,12 +53,14 @@ RSpec.describe Ladybug::EnergyModel do
     expect(extension.schema_validation_errors.empty?).to be true
   end
  
+  #add assertions
   it 'can load and validate example face by face model' do
     file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file) 
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true 
-    model.to_openstudio_model
+    face_model = model.to_openstudio_model
+    expect(face_model.getFaceByName).not_to be nil
   end
 
   it 'can load and validate opaque construction' do
@@ -69,7 +71,7 @@ RSpec.describe Ladybug::EnergyModel do
     expect(construction1.validation_errors.empty?).to be true
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    
+
     # load the same construction again in the same model, should find existing construction
     construction2 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
     expect(construction2.valid?).to be true
@@ -164,6 +166,7 @@ RSpec.describe Ladybug::EnergyModel do
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
 
+  #Can create openstudio model with only required inputs
   it 'can load and validate energy window material blind' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_blind.json')
@@ -173,6 +176,10 @@ RSpec.describe Ladybug::EnergyModel do
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
+    #To check if the default value of optional properties is assigned
+    expect(object1.getBlindtoGlassDistance).not_to be nil
+    expect(object1.getBlindtoGlassDistance).to eq(0.05) 
+  
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialBlind.read_from_disk(file)
     expect(material2.valid?).to be true
     expect(material2.validation_errors.empty?).to be true
@@ -215,46 +222,40 @@ RSpec.describe Ladybug::EnergyModel do
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
 
-  #it 'can create an opaque material' do
-    
-  #  material1 = Ladybug::EnergyModel::EnergyMaterial.new
-  #  material1.roughness = 'MediumRough'
-  #  material1.thickness = 0.01
-  #  material1.conductivity = 0.6
-  #  material1.specific.heat = 4185
-  #  material1.thermal_absorptance = 0.95
-  #  material1.solar_absorptance = 0.7
-  #  material1.visible_abosrptance = 0.7
+  it 'can load and validate face' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/example_face.json')
+    face1 = Ladybug::EnergyModel::Face.read_from_disk(file)
+    expect(face1.valid?).to be true
+    expect(face1.validation_errors.empty?).to be true
+    object1 = face1.to_openstudio(openstudio_model)
+    expect(object1).not_to be nil
 
-  #  openstudio_material = material1.to_openstudio
+    face2 = Ladybug::EnergyModel::Face.read_from_disk(file)
+    expect(face2.valid?).to be true
+    expect(face2.validation_errors.empty?).to be true
+    object2 = face2.to_openstudio(openstudio_model)    
+    expect(object2).not_to be nil
+    expect(object2.handle.to_s).to eq(object1.handle.to_s)
+  end
 
-  #  expect(openstudio_material.roughness).to be eq('MediumRough')
-  #  expect(openstudio_material.thickness).to be eq(0.01)
-  #  expect(openstudio_material.conductivity).to be eq(0.6)
-  #  expect(openstudio_material.specific_heat).to be eq(4185)
-  #  expect(openstudio_material.thermal_absorptance).to be eq(0.95)
-  #  expect(openstudio_material.solar_absorptance).to be eq(0.7)
-  #  expect(openstudio_material.visible_abosrptance).to be eq(0.7)
+  it 'can create an opaque material' do
+    openstudio_model = OpenStudio::Model::Model.new
+    material1 = Ladybug::EnergyModel::EnergyMaterial.new
+    material1.type = 'EnergyMaterial'
+    material1.name = 'Opaque Material'
+    material1.conductivity = 0.6
+    material1.specific.heat = 4185
+    material1.thermal_absorptance = 0.95
+    material1.solar_absorptance = 0.7
+    material1.visible_absorptance = 0.7
 
-  #end
+    openstudio_material = material1.to_openstudio(openstudio_model)
+    expect(openstudio_material).not_to be nil
 
-  #it 'can raise error if outermost layer in window construction is airgap' do 
-  #  openstudio_model = OpenStudio::Model::Model.new
-  #  file = File.join(File.dirname(__FILE__), '../files/construction_window_wrong.json')
-  #  construction1 = Ladybug::EnergyModel::EnergyConstructionTransparent.read_from_disk(file)
-  #  construction1 = Ladybug::EnergyModel::EnergyConstructionTransparent.read_from_disk(file)
-  #  expect(construction1.valid?).to be true
-  #  expect(construction1.validation_errors.empty?).to be false
-  #  expect(construction1.validation_errors.include? "Air Gap")
-  #  object1 = construction1.to_openstudio(openstudio_model)
-  #  expect(object1).to be nil #to not be true in case of transparent material
-
-  #  construction2 = Ladybug::EnergyModel::EnergyConstructionTransparent.read_from_disk(file)
-  #  expect(construction2.valid?).to be true
-  #  expect(construction2.validation_errors.empty?).to be true #it raises error in which the string contains "transparent layer"
-  #  object2 = construction2.to_openstudio(openstudio_model)    
-  #  expect(object2).not_to be nil
-  #  expect(object2.handle.to_s).to eq(object1.handle.to_s)
-  #end
-
+    expect(openstudio_material.getRoughness).to eq('MediumRough')
+    expect(openstudio_material.getThickness).to eq(0.01)
+    expect(openstudio_material.getConductivity).to eq(0.6)
+    expect(openstudio_material.getSpecificHeat).to eq(4185)
+  end
 end

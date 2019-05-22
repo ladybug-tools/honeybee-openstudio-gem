@@ -81,7 +81,7 @@ module Ladybug
           end
         end
         
-        @errors = []
+        @errors = validation_errors
         @warnings = []
         @openstudio_object = nil
         
@@ -97,7 +97,6 @@ module Ladybug
         return @openstudio_object
       end
       
-      private
       
       # find an equivalent existing object in the openstudio model, return nil if not found
       def find_existing_openstudio_object(openstudio_model)

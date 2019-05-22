@@ -30,6 +30,11 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/energy_window_material_air_gap'
+require 'ladybug/energy_model/energy_window_material_simpleglazsys'
+require 'ladybug/energy_model/energy_window_material_blind'
+require 'ladybug/energy_model/energy_window_material_glazing'
+require 'ladybug/energy_model/energy_window_material_shade'
 
 require 'json-schema'
 require 'json'
@@ -46,7 +51,6 @@ module Ladybug
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionTransparent'
       end
       
-      private
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getConstructionByName(@hash[:name]) 
@@ -56,6 +60,17 @@ module Ladybug
         return nil
       end
       
+      def validation_errors
+        result = super 
+
+        if (@hash[:materials]).length == 0
+          result << JSON::Validator.raise( "'Transparent construction should at least have one material.'")
+        elsif (@hash[:materials]).length > 8
+          result << JSON::Validator.raise("Transparent construction cannot have more than 8 materials.")
+        end 
+        return result
+      end
+
       def create_openstudio_object(openstudio_model)
         openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
         openstudio_construction.setName(@hash[:name])

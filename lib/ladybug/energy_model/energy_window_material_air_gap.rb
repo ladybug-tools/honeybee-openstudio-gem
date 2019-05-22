@@ -58,22 +58,75 @@ module Ladybug
       
       def create_openstudio_object(openstudio_model)
         openstudio_window_airgap = OpenStudio::Model::Gas.new(openstudio_model)
-         openstudio_window_airgap.setName(@hash[:name]) 
+        openstudio_window_airgap.setName(@hash[:name])
+        if @hash[:thickness]
+          openstudio_window_airgap.setThickness(@hash[:thickness])
+        else
+          openstudio_window_airgap.setThickness(@schema[:EnergyWindowMaterialAirGap][:thickness][:default])
+        end
         openstudio_window_airgap.setGasType(@hash[:gastype])
-        openstudio_window_airgap.setThickness(@hash[:thickness])
-        openstudio_window_airgap.setConductivityCoefficientA(@hash[:conductivity_coeff_A].to_f)
-        openstudio_window_airgap.setConductivityCoefficientB(@hash[:conductivity_coeff_B].to_f)
-        openstudio_window_airgap.setConductivityCoefficientC(@hash[:conductivity_coeff_C].to_f)
-        openstudio_window_airgap.setViscosityCoefficientA(@hash[:viscosity_coeff_A].to_f)
-        openstudio_window_airgap.setViscosityCoefficientB(@hash[:viscosity_coeff_B].to_f)
-        openstudio_window_airgap.setViscosityCoefficientC(@hash[:viscosity_coeff_C].to_f)
-        openstudio_window_airgap.setSpecificHeatCoefficientA(@hash[:specific_heat_coeff_A].to_f)
-        openstudio_window_airgap.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_B].to_f)
-        openstudio_window_airgap.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_C].to_f)
-        openstudio_window_airgap.setSpecificHeatRatio(@hash[:specific_heat_ratio].to_f)
-        openstudio_window_airgap.setMolecularWeight(@hash[:molecular_weight].to_f)
 
-        return openstudio_window_airgap
+        case (@hash[:gastype])
+        when "Custom"
+          if @hash[:conductivity_coeff_A]
+            openstudio_window_airgap.setConductivityCoefficientA(@hash[:conductivity_coeff_A].to_f)
+          else 
+            openstudio_window_airgap.setConductivityCoefficientA(@schema[EnergyWindowMaterialAirGap][:conductivity_coeff_A][default].to_f)
+          end
+          if @hash[:conductivity_coeff_B]
+            openstudio_window_airgap.setConductivityCoefficientB(@hash[:conductivity_coeff_B].to_f)
+          else 
+            openstudio_window_airgap.setConductivityCoefficientB(@schema[EnergyWindowMaterialAirGap][:conductivity_coeff_B][default].to_f)
+          end
+          if @hash[:conductivity_coeff_C]
+            openstudio_window_airgap.setConductivityCoefficientC(@hash[:conductivity_coeff_C].to_f)
+          else 
+            openstudio_window_airgap.setConductivityCoefficientC(@schema[EnergyWindowMaterialAirGap][:conductivity_coeff_C][default].to_f)
+          end
+          if @hash[:viscosity_coeff_A]
+            openstudio_window_airgap.setViscosityCoefficientA(@hash[:viscosity_coeff_A].to_f)
+          else 
+            openstudio_window_airgap.setViscosityCoefficientA(@schema[EnergyWindowMaterialAirGap][:viscosity_coeff_A][default].to_f)
+          end
+          if @hash[:viscosity_coeff_B]
+            openstudio_window_airgap.setViscosityCoefficientB(@hash[:viscosity_coeff_B].to_f)
+          else 
+            openstudio_window_airgap.setViscosityCoefficientB(@schema[EnergyWindowMaterialAirGap][:viscosity_coeff_B][default].to_f)
+          end
+          if @hash[:viscosity_coeff_C]
+            openstudio_window_airgap.setViscosityCoefficientC(@hash[:viscosity_coeff_C].to_f)
+          else 
+            openstudio_window_airgap.setViscosityCoefficientC(@schema[EnergyWindowMaterialAirGap][:viscosity_coeff_C][default].to_f)
+          end
+          if @hash[:specific_heat_coeff_A]
+            openstudio_window_airgap.setSpecificHeatCoefficientA(@hash[:specific_heat_coeff_A].to_f)
+          else 
+            openstudio_window_airgap.setSpecificHeatCoefficientA(@schema[EnergyWindowMaterialAirGap][:specific_heat_coeff_A][default].to_f)
+          end
+          if @hash[:specific_heat_coeff_B]
+            openstudio_window_airgap.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_B].to_f)
+          else 
+            openstudio_window_airgap.setSpecificHeatCoefficientB(@schema[EnergyWindowMaterialAirGap][:specific_heat_coeff_B][default].to_f)
+          end
+          if @hash[:specific_heat_coeff_C]
+            openstudio_window_airgap.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_C].to_f)
+          else 
+            openstudio_window_airgap.setConductivityCoefficientC(@schema[EnergyWindowMaterialAirGap][:specific_heat_coeff_C][default].to_f)
+          end
+          if @hash[:specific_heat_ratio]
+            openstudio_window_airgap.setSpecificHeatRatio(@hash[:specific_heat_ratio].to_f)
+          else 
+            openstudio_window_airgap.setSpecificHeatRatio(@schema[EnergyWindowMaterialAirGap][:specific_heat_ratio][default].to_f)
+          end
+          if @hash[:molecular_weight]
+            openstudio_window_airgap.setMolecularWeight(@hash[:molecular_weight].to_f)
+          else 
+            openstudio_window_airgap.setMolecularWeight(@schema[EnergyWindowMaterialAirGap][:molecular_weight][default].to_f)
+          end
+          return openstudio_window_airgap
+        else
+          return openstudio_window_airgap
+        end
       end
 
     end # EnergyWindowMaterialAirGap

@@ -37,19 +37,19 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel      
-    class EnergyMaterial < ModelObject
+    class ShadeFace < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash)
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyMaterial'
+        raise "Incorrect model type '#{@type}'" unless @type == 'ShadeFace'
       end
       
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getStandardOpaqueMaterialByName(@hash[:name]) 
+        object = openstudio_model.getSurfaceByName(@hash[:name])
         if object.is_initialized
           return object.get
         end
@@ -57,35 +57,17 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_opaque_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model) 
-        openstudio_opaque_material.setName(@hash[:name]) 
-        if @hash[:roughness]  
-          openstudio_opaque_material.setRoughness(@hash[:roughness])
-        else 
-          openstudio_opaque_material.setRoughness(@schema[:EnergyMaterial][:roughness][:default])
-        end      
-        openstudio_opaque_material.setThickness(@hash[:thickness])
-        openstudio_opaque_material.setConductivity(@hash[:conductivity])
-        openstudio_opaque_material.setDensity(@hash[:density])
-        openstudio_opaque_material.setSpecificHeat(@hash[:specific_heat])
-        if @hash[:thermal_absorptance]
-          openstudio_opaque_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
-        else 
-          openstudio_opaque_material.setThermalAbsorptance(@schema[:EnergyMaterial][:thermal_absorptance][:default].to_f)
+        openstudio_vertices = OpenStudio::Point3dVector.new
+        @hash[:vertices].each do |vertex|
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x],vertex[:y],vertex[:z])
         end
-        if @hash[:solar_absorptance]
-          openstudio_opaque_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
-        else 
-          openstudio_opaque_material.setSolarAbsorptance(@schema[:EnergyMaterial][:solar_absorptance][:default].to_f)
-        end
-        if @hash[:visible_absorptance]
-          openstudio_opaque_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
-        else 
-          openstudio_opaque_material.setVisibleAbsorptance(@schema[:EnergyMaterial][:visible_absorptance][:default].to_f)
-        end
-        return openstudio_opaque_material
+
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
+        openstudio_surface.setName(@hash[:name])
+        openstudio_surface.setSurfaceType(@hash[:face_type])
+        return openstudio_surface
       end
 
-    end # EnergyEnergyMaterial
+    end # Face
   end # EnergyModel
 end # Ladybug

@@ -48,7 +48,17 @@ module Ladybug
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
       end
       
-      private
+
+      def validation_errors
+        result = super 
+
+        if (@hash[:materials]).length == 0
+          result << JSON::Validator.raise( "Opaque construction should at least have one material.")
+        elsif (@hash[:materials]).length > 10
+          result << JSON::Validator.raise("Opaque construction cannot have more than 10 materials.")
+        end 
+        return result
+      end
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getConstructionByName(@hash[:name]) 
@@ -71,7 +81,7 @@ module Ladybug
           when "EnergyMaterial"
             material_object = EnergyMaterial.new(material)
           when "EnergyMaterialNoMass"
-            material_object = Ladybug::EnergyModel::EnergyMaterialNoMass.new(material)
+            material_object = EnergyMaterialNoMass.new(material)
           else 
             raise "Unknown material type #{material_type}."
           end
@@ -82,6 +92,7 @@ module Ladybug
          # TODO: create new material objects and call to_openstudio on each of them
           # TODO: add the resulting openstudio material objects to this openstudio constructions
         end
+
         openstudio_construction.setLayers(openstudio_materials)
         return openstudio_construction
       end

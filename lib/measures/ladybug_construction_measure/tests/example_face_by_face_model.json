@@ -80,7 +80,7 @@
                         "conductivity": 1.72,
                         "density": 2242,
                         "specific_heat": 836,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.65,
                         "visible_absorptance": 0.65                    
                     }
@@ -145,7 +145,7 @@
                         "conductivity": 0.16,
                         "density": 1121.29,
                         "specific_heat": 1460,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.7,
                         "visible_absorptance": 0.7
                     },
@@ -157,7 +157,7 @@
                         "conductivity": 0.049,
                         "density": 265,
                         "specific_heat": 836.8,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.7,
                         "visible_absorptance": 0.7
                     },
@@ -169,7 +169,7 @@
                         "conductivity": 45,
                         "density": 7680,
                         "specific_heat": 418.4,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.6,
                         "visible_absorptance": 0.6
                     }
@@ -253,7 +253,7 @@
                         "conductivity": 1.72,
                         "density": 2242,
                         "specific_heat": 836,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.65,
                         "visible_absorptance": 0.65                    
                     }
@@ -417,7 +417,7 @@
                         "conductivity": 1.72,
                         "density": 2242,
                         "specific_heat": 836,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.65,
                         "visible_absorptance": 0.65
                     },
@@ -514,7 +514,7 @@
                         "conductivity": 1.72,
                         "density": 2242,
                         "specific_heat": 836,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.65,
                         "visible_absorptance": 0.65
                     },
@@ -611,7 +611,7 @@
                         "conductivity": 1.72,
                         "density": 2242,
                         "specific_heat": 836,
-                        "thermal_abosrptance": 0.9,
+                        "thermal_absorptance": 0.9,
                         "solar_absorptance": 0.65,
                         "visible_absorptance": 0.65
                     },

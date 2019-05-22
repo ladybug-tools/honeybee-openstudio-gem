@@ -49,7 +49,7 @@ module Ladybug
       private
       
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name]) #check
+        object = openstudio_model.getSurfaceByName(@hash[:name])
         if object.is_initialized
           return object.get
         end
@@ -57,36 +57,23 @@ module Ladybug
       end
       
       def create_openstudio_object(openstudio_model)
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_model)
-        openstudio_surface.setName(@hash[:name])
-        @hash[:face].each do |face| #check
-          name = face[:name]
-          face_type = face[:face_type]
-          rad_modifier = face[:rad_modifier]
-          rad_modifier_dir = face[:rad_modifier_dir]
-          energy_construction_opaque = face[:energy_construction_opaque]
-          energy_construction_transparent = face[:energy_construction_transparent]
-          face_object = nil
-
-          case face_type
-          when "Wall"
-            face_object = "Wall"
-          when "RoofCeiling"
-            face_object = "RoofCeiling"
-          when "Floor"
-            face_object = "Floor"
-          when "AirWall"
-            face_object = "AirWall"
-          when "Shading"
-            face_object = "Shading"
-          else
-            raise "Unknown face_type #{face_type} for face #{name}."
+        openstudio_vertices = OpenStudio::Point3dVector.new
+        @hash[:vertices].each do |vertex|
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x],vertex[:y],vertex[:z])
         end
-        
-        openstudio_surfaces = face_object.to_openstudio(openstudio_model)
-        openstudio_surface << openstudio_surfaces
-      end
 
+        parent_name = @hash[:parent][:name]
+        space = openstudio_model.getSpaceByName(parent_name)
+        if space.empty?
+          space = OpenStudio::Model::Space.new(openstudio_model)
+          space.setName(parent_name)
+        else
+          space = space.get
+        end
+
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
+        openstudio_surface.setName(@hash[:name])
+        openstudio_surface.setSurfaceType(@hash[:face_type])
         return openstudio_surface
       end
 

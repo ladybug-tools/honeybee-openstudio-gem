@@ -1,0 +1,51 @@
+....F.[openstudio.model.StandardGlazing] <0> StandardGlazing::setWindowGlassSpectralDataSetName is deprecated, use StandardGlazing::setWindowGlassSpectralDataSet
+.....F[openstudio.model.StandardGlazing] <0> StandardGlazing::setWindowGlassSpectralDataSetName is deprecated, use StandardGlazing::setWindowGlassSpectralDataSet
+...F
+
+Failures:
+
+  1) Ladybug::EnergyModel can load and validate example face by face model
+     Failure/Error: face_object.to_openstudio(@openstudio_model)
+
+     NoMethodError:
+       undefined method `to_openstudio' for nil:NilClass
+     # ./lib/ladybug/energy_model/model.rb:113:in `block in create_faces'
+     # ./lib/ladybug/energy_model/model.rb:105:in `each'
+     # ./lib/ladybug/energy_model/model.rb:105:in `create_faces'
+     # ./lib/ladybug/energy_model/model.rb:99:in `create_openstudio_objects'
+     # ./lib/ladybug/energy_model/model.rb:90:in `to_openstudio_model'
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:62:in `block (2 levels) in <top (required)>'
+
+  2) Ladybug::EnergyModel can load and validate energy window material blind
+     Failure/Error: expect(object1.getBlindtoGlassDistance).to eq(0.05)
+
+       expected: 0.05
+            got: #<OpenStudio::Quantity:0x00000008a252f8 @__swigtype__="_p_openstudio__Quantity">
+
+       (compared using ==)
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:181:in `block (2 levels) in <top (required)>'
+
+  3) Ladybug::EnergyModel can create an opaque material
+     Failure/Error:
+             def initialize(hash)
+               super(hash)
+       
+               raise "Incorrect model type '#{@type}'" unless @type == 'EnergyMaterial'
+             end
+
+     ArgumentError:
+       wrong number of arguments (0 for 1)
+     # ./lib/ladybug/energy_model/energy_material.rb:43:in `initialize'
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:244:in `new'
+     # ./spec/tests/ladybug_energy_model_model_spec.rb:244:in `block (2 levels) in <top (required)>'
+
+Finished in 0.52157 seconds (files took 2.09 seconds to load)
+16 examples, 3 failures
+
+Failed examples:
+
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:57 # Ladybug::EnergyModel can load and validate example face by face model
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:170 # Ladybug::EnergyModel can load and validate energy window material blind
+rspec ./spec/tests/ladybug_energy_model_model_spec.rb:242 # Ladybug::EnergyModel can create an opaque material
+
+C:/Ruby22-x64/bin/ruby.exe -I'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/lib';'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-support-3.7.1/lib' 'C:/IN2_gitrepose/energy-model-measure/.bundle/install/ruby/2.2.0/gems/rspec-core-3.7.1/exe/rspec' --pattern 'spec/**{,/*/**}/*_spec.rb'

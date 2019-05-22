@@ -59,21 +59,76 @@ module Ladybug
       def create_openstudio_object(openstudio_model)
         openstudio_material_shade = OpenStudio::Model::Shade.new(openstudio_model)
         openstudio_material_shade.setName(@hash[:name])
-        openstudio_material_shade.setSolarTransmittance(@hash[:solar_transmittance])
-        openstudio_material_shade.setSolarReflectance(@hash[:solar_reflectance])
-        openstudio_material_shade.setVisibleTransmittance(@hash[:visible_transmittance])
-        openstudio_material_shade.setVisibleReflectance(@hash[:visible_reflectance])
-        openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:infrared_hemispherical_emissivity])
-        openstudio_material_shade.setThermalTransmittance(@hash[:infrared_transmittance])
-        openstudio_material_shade.setThickness(@hash[:thickness])
-        openstudio_material_shade.setConductivity(@hash[:conductivity])
-        openstudio_material_shade.setShadetoGlassDistance(@hash[:shade_toglass_distance])
-        openstudio_material_shade.setTopOpeningMultiplier(@hash[:top_opening_multiplier])
-        openstudio_material_shade.setBottomOpeningMultiplier(@hash[:bottom_openng_multiplier].to_f)
-        openstudio_material_shade.setLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
-        openstudio_material_shade.setRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
-        openstudio_material_shade.setAirflowPermeability(@hash[:airflow_permeability])
-        
+        if @hash[:solar_transmittance]
+          openstudio_material_shade.setSolarTransmittance(@hash[:solar_transmittance])
+        else 
+          openstudio_material_shade.setSolarTransmittance(@schema[EnergyWindowMaterialGlazing][:solar_transmittance][:default])
+        end
+        if @hash[:solar_reflectance]
+          openstudio_material_shade.setSolarReflectance(@hash[:solar_reflectance])
+        else 
+          openstudio_material_shade.setSolarReflectance(@schema[EnergyWindowMaterialGlazing][:solar_reflectance][:default])
+        end
+        if @hash[:visible_transmittance]
+          openstudio_material_shade.setVisibleTransmittance(@hash[:visible_transmittance])
+        else 
+          openstudio_material_shade.setVisibleTransmittance(@schema[EnergyWindowMaterialGlazing][:visible_transmittance][:default])
+        end
+        if @hash[:visible_reflectance]
+          openstudio_material_shade.setVisibleReflectance(@hash[:visible_reflectance])
+        else 
+          openstudio_material_shade.setVisibleReflectance(@schema[EnergyWindowMaterialGlazing][:visible_reflectance][:default])
+        end
+        if @hash[:infrared_hemispherical_emissivity]
+          openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:infrared_hemispherical_emissivity])
+        else 
+          openstudio_material_shade.setThermalHemisphericalEmissivity(@schema[EnergyWindowMaterialGlazing][:infrared_hemispherical_emissivity][:default])
+        end
+        if @hash[:infrared_transmittance]
+          openstudio_material_shade.setThermalTransmittance(@hash[:infrared_transmittance])
+        else 
+          openstudio_material_shade.setThermalTransmittance(@schema[EnergyWindowMaterialGlazing][:infrared_transmittance][:default])
+        end
+        if @hash[:thickness]
+          openstudio_material_shade.setThickness(@hash[:thickness])
+        else 
+          openstudio_material_shade.setThickness(@schema[EnergyWindowMaterialGlazing][:thickness][:default])
+        end
+        if @hash[:conductivity]
+          openstudio_material_shade.setConductivity(@hash[:conductivity])
+        else 
+          openstudio_material_shade.setConductivity(@schema[EnergyWindowMaterialGlazing][:conductivity][:default])
+        end
+        if @hash[:shade_toglass_distance]
+          openstudio_material_shade.setShadetoGlassDistance(@hash[:shade_toglass_distance])
+        else 
+          openstudio_material_shade.setShadetoGlassDistance(@schema[EnergyWindowMaterialGlazing][:shade_toglass_distance][:default])
+        end
+        if @hash[:top_opening_multiplier]
+          openstudio_material_shade.setTopOpeningMultiplier(@hash[:top_opening_multiplier])
+        else 
+          openstudio_material_shade.setTopOpeningMultiplier(@schema[EnergyWindowMaterialGlazing][:top_opening_multiplier][:default])
+        end
+        if @hash[:bottom_opening_multiplier]
+          openstudio_material_shade.setBottomOpeningMultiplier(@hash[:bottom_opening_multiplier].to_f)
+        else 
+          openstudio_material_shade.setSolarReflectance(@schema[EnergyWindowMaterialGlazing][:solar_reflectance][:default].to_f)
+        end
+        if @hash[:left_opening_multiplier]
+          openstudio_material_shade.setLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
+        else 
+          openstudio_material_shade.setLeftSideOpeningMultiplier(@schema[EnergyWindowMaterialGlazing][:left_opening_multiplier][:default])
+        end
+        if @hash[:right_opening_multiplier]
+          openstudio_material_shade.setRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
+        else 
+          openstudio_material_shade.setRightSideOpeningMultiplier(@schema[EnergyWindowMaterialGlazing][:right_opening_multiplier][:default])
+        end
+        if @hash[:airflow_permeability]
+          openstudio_material_shade.setAirflowPermeability(@hash[:airflow_permeability])
+        else 
+          openstudio_material_shade.setAirflowPermeability(@schema[EnergyWindowMaterialGlazing][:airflow_permeability][:default])
+        end
         return openstudio_material_shade
       end
 
