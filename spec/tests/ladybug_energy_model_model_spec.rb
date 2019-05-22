@@ -55,7 +55,7 @@ RSpec.describe Ladybug::EnergyModel do
  
   #add assertions
   it 'can load and validate example face by face model' do
-    file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
+    file = File.join(File.dirname(__FILE__), '../files/example_model.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file) 
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true 

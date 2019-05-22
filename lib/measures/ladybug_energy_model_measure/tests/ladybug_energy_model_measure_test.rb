@@ -99,9 +99,9 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
   end
 
  
-  def test_example_face_by_face_model
+  def test_example_model
     args = {}
-    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_face_by_face_model.json')
+    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_model.json')
     apply_measure_to_model(__method__.to_s.gsub('test_', ''), args, nil)
   end
 end
