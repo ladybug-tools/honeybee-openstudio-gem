@@ -37,7 +37,24 @@ module Ladybug
   module EnergyModel
     class ModelObject
       attr_reader :errors, :warnings
-      
+
+      def method_missing(sym, *args)
+        name = sym.to_s
+        aname = name.sub("=","")
+        asym = aname.to_sym
+        is_getter = (args.size == 0) && @hash.key?(asym)
+        is_setter = (name != aname) && (args.size == 1) && @hash.key?(asym)
+        
+        if is_getter
+          return @hash[asym]
+        elsif is_setter
+          return @hash[asym] = args[0]
+        end
+
+        # do the regular thing
+        super
+      end
+
       # Read ModelObject JSON from disk
       def self.read_from_disk(file)
         hash = nil
