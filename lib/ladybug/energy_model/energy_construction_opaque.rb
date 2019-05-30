@@ -42,12 +42,17 @@ module Ladybug
     class EnergyConstructionOpaque < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
       end
       
+      def defaults
+        result = {}
+        return result
+      end
 
       def validation_errors
         result = super 

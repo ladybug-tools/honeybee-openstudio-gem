@@ -100,17 +100,37 @@ module Ladybug
         create_apertures
       end
       
+      def create_construction_opaque
+        @hash[:energy_construction_opaque].each do |construction|
+          type = construction[:type]
+          construction_object = EnergyConstructionOpaque.new(construction)
+          construction_object.to_openstudio(@openstudio_model)
+          return construction_object
+        end
+      end
+
+      def create_construction_transparent
+        @hash[:energy_construction_transparent].each do |construction|
+          type = construction[:type]
+          construction_object = EnergyConstructionTransparent.new(construction)
+          construction_object.to_openstudio(@openstudio_model)
+          return construction_object
+        end
+      end
+
       def create_faces
         # TODO: create a Face class which derives from ModelObject and move all this code there
         @hash[:faces].each do |face|
-          face_type = face[:face_type] 
+          type = face[:type] 
           face_object = nil
-          if face_type == "Face"
+          if type == "Face"
             face_object = Face.new(face)
-          elsif face_type == "ShadeFace"
+          elsif type == "ShadeFace"
             face_object = ShadeFace.new(face)
+          else 
+            raise "Unknown face type #{type}."
           end
-          face_object.to_openstudio(@openstudio_model)
+            face_object.to_openstudio(@openstudio_model)
           return face_object
         end
           # for now make parent a space, check if should be a zone?
@@ -122,6 +142,12 @@ module Ladybug
       end
       
       def create_apertures
+        @hash[:aperture].each do |aperture|
+          type = aperture[:type]
+          aperture_object = Aperture.new(aperture)
+          aperture_object.to_openstudio(@openstudio_model)
+          return aperture_object
+        end
       end
       
       

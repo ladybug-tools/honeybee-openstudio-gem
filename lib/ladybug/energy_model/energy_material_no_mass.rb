@@ -40,14 +40,39 @@ module Ladybug
     class EnergyMaterialNoMass < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyMaterialNoMass'
       end
-      
-      private
-      
+
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:type][:enum]
+        result[:roughness] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:roughness][:default]
+        result[:thermal_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default]
+        result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
+        result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
+        return result
+      end
+
+      def name 
+        return @hash[:name]
+      end
+
+      def name=(new_name)
+        @hash[:name] = new_name
+      end
+
+      def r_value
+        return @hash[:r_value]
+      end
+
+      def r_value=(new_r_value)
+        @hash[:r_value] = new_r_value
+      end
+            
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getMasslessOpaqueMaterialByName(@hash[:name]) 
         if object.is_initialized
@@ -56,6 +81,7 @@ module Ladybug
         return nil
       end
       
+
       def create_openstudio_object(openstudio_model)
         openstudio_nomass_material = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
         openstudio_nomass_material.setName(@hash[:name])
@@ -63,22 +89,22 @@ module Ladybug
         if @hash[:roughness]
           openstudio_nomass_material.setRoughness(@hash[:roughness])
         else 
-          openstudio_nomass_material.setRoughness(@schema[:EnergyMaterialNoMass][:roughness][:default])
+          openstudio_nomass_material.setRoughness(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:roughness][:default])
         end
         if @hash[:thermal_absorptance]
           openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
         else 
-          openstudio_nomass_material.setThermalAbsorptance(@schema[:EnergyMaterialNoMass][:thermal_absorptance][:default].to_f)
+          openstudio_nomass_material.setThermalAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default].to_f)
         end
         if @hash[:solar_absorptance]
           openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
         else 
-          openstudio_nomass_material.setSolarAbsorptance(@schema[:EnergyMaterialNoMass][:solar_absorptance][:default].to_f)
+          openstudio_nomass_material.setSolarAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default].to_f)
         end
         if @hash[:visible_absorptance]
           openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
         else 
-          openstudio_nomass_material.setVisibleAbsorptance(@schema[:EnergyMaterialNoMass][:visible_absorptance][:default].to_f)
+          openstudio_nomass_material.setVisibleAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default].to_f)
         end
         return openstudio_nomass_material
       end

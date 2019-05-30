@@ -40,13 +40,45 @@ module Ladybug
     class EnergyWindowMaterialBlind < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialBlind'
       end
       
-      private
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:type][:enum]
+        result[:slat_width] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_width][:default].to_f
+        result[:slat_separation] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_separation][:default].to_f
+        result[:slat_thickness] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_thickness][:default].to_f
+        result[:slat_angle] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_angle][:default].to_f
+        result[:slat_conductivity] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_conductivity][:default].to_f
+        result[:beam_solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_transmittance][:default].to_f
+        result[:front_beam_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_beam_solar_reflectance][:default].to_f
+        result[:back_beam_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_beam_solar_reflectance][:default].to_f
+        result[:diffuse_solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_transmittance][:default].to_f
+        result[:front_diffuse_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_diffuse_solar_reflectance][:default].to_f
+        result[:back_diffuse_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_visible_reflectance][:default].to_f
+        result[:infrared_hemispherical_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_infrared_hemispherical_emissivity][:default].to_f
+        result[:back_infrared_hemispherical_emissivity] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_solar_reflectance][:default].to_f
+        result[:blind_toglass_distance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:blind_toglass_distance][:default].to_f
+        result[:top_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:top_opening_multiplier][:default].to_f
+        result[:bottom_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:bottom_opening_multiplier][:default].to_f
+        result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:left_opening_multiplier][:default].to_f
+        result[:right_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:right_opening_multiplier][:default].to_f
+        result[:minimum_slat_angle] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:maximum_slat_angle][:default]
+        return result
+      end
+
+      def name 
+        return @hash[:name]
+      end
+
+      def name=(new_name)
+        @hash[:name] = new_name
+      end
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getBlindByName(@hash[:name]) 
@@ -181,7 +213,6 @@ module Ladybug
           openstudio_window_blind.setMaximumSlatAngle(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:maximum_slat_angle][:default])
         end
         return openstudio_window_blind
-        puts openstudio_window_blind
       end
 
     end # EnergyWindowMaterialBlind

@@ -45,12 +45,17 @@ module Ladybug
     class EnergyConstructionTransparent < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionTransparent'
       end
       
+      def defaults
+        result = {}
+        return result
+      end
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getConstructionByName(@hash[:name]) 

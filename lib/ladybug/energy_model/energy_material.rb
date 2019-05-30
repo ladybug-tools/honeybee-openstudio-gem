@@ -40,13 +40,62 @@ module Ladybug
     class EnergyMaterial < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyMaterial'
       end
       
-      private
+      def defaults
+        result = {}
+        result[:type] = 'EnergyMaterial'
+        result[:roughness] = @@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default]
+        result[:thermal_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:thermal_absorptance][:default]
+        result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:solar_absorptance][:default]
+        result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:visible_absorptance][:default]
+        return result
+      end
+
+      def name
+        return @hash[:name]
+      end
+
+      def name=(new_name)
+        @hash[:name] = new_name
+      end
+      
+      def thickness
+        return @hash[:thickness]
+      end
+
+      def thickness=(new_thickness)
+        @hash[:thickness] = new_thickness
+      end
+
+      def conductivity
+        return @hash[:conductivity]
+      end
+
+      def conductivity=(new_conductivity)
+        @hash[:conductivity] = new_conductivity
+      end
+
+      def density 
+        return @hash[:density]
+      end
+
+      def density=(new_density)
+        @hash[:density] = new_density
+      end
+
+      def specific_heat
+        return @hash[:specific_heat]
+      end
+
+      def specific_heat=(new_specific_heat)
+        return @hash[:specific_heat] = new_specific_heat
+      end 
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getStandardOpaqueMaterialByName(@hash[:name]) 
@@ -62,7 +111,7 @@ module Ladybug
         if @hash[:roughness]  
           openstudio_opaque_material.setRoughness(@hash[:roughness])
         else 
-          openstudio_opaque_material.setRoughness(@schema[:EnergyMaterial][:roughness][:default])
+          openstudio_opaque_material.setRoughness(@@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default])
         end      
         openstudio_opaque_material.setThickness(@hash[:thickness])
         openstudio_opaque_material.setConductivity(@hash[:conductivity])
@@ -71,17 +120,17 @@ module Ladybug
         if @hash[:thermal_absorptance]
           openstudio_opaque_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
         else 
-          openstudio_opaque_material.setThermalAbsorptance(@schema[:EnergyMaterial][:thermal_absorptance][:default].to_f)
+          openstudio_opaque_material.setThermalAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:thermal_absorptance][:default].to_f)
         end
         if @hash[:solar_absorptance]
           openstudio_opaque_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
         else 
-          openstudio_opaque_material.setSolarAbsorptance(@schema[:EnergyMaterial][:solar_absorptance][:default].to_f)
+          openstudio_opaque_material.setSolarAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:solar_absorptance][:default].to_f)
         end
         if @hash[:visible_absorptance]
           openstudio_opaque_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
         else 
-          openstudio_opaque_material.setVisibleAbsorptance(@schema[:EnergyMaterial][:visible_absorptance][:default].to_f)
+          openstudio_opaque_material.setVisibleAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:visible_absorptance][:default].to_f)
         end
         return openstudio_opaque_material
       end

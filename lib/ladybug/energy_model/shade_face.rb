@@ -45,9 +45,7 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'ShadeFace'
       end
-      
-      private
-      
+            
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getSurfaceByName(@hash[:name])
         if object.is_initialized
@@ -62,9 +60,25 @@ module Ladybug
           openstudio_vertices << OpenStudio::Point3d.new(vertex[:x],vertex[:y],vertex[:z])
         end
 
+        construction_opaque_name = @hash[:energy_construction_opaque][:name]
+        construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
+        unless construction_opaque.empty?
+          construction_opaque = construction_opaque.get
+          #construction_opaque = EnergyConstructionOpaque.new
+        end
+
+
+        construction_transparent_name = @hash[:energy_construction_transparent][:name]
+        construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
+        unless construction_transparent.empty?
+          construction_transparent = construction_transparent.get
+        end
+
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
+        openstudio_surface.setConstruction(construction_opaque) 
+        openstudio_surface.setConstruction(construction_transparent)
         return openstudio_surface
       end
 

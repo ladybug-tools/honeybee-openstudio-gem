@@ -30,6 +30,8 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/energy_construction_opaque'
+require 'ladybug/energy_model/energy_construction_transparent'
 
 require 'json-schema'
 require 'json'
@@ -40,13 +42,19 @@ module Ladybug
     class Face < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'Face'
       end
-      
-      private
+
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:Face][:properties][:type][:enum]
+        return result      
+      end
+           
       
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getSurfaceByName(@hash[:name])
@@ -71,9 +79,27 @@ module Ladybug
           space = space.get
         end
 
+        construction_opaque_name = @hash[:energy_construction_opaque][:name]
+        construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
+        if construction_opaque.empty?
+          raise "No Opaque Construction assigned."
+        else 
+          construction_opaque = construction_opaque.get
+        end
+
+
+        #construction_transparent_name = @hash[:energy_construction_transparent][:name]
+        #construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
+        #unless !construction_transparent.empty?
+        #  raise "Transparent construction #{construction_transparent_name} can not be assigned to face."
+        #end
+
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
         openstudio_surface.setName(@hash[:name])
-        openstudio_surface.setSurfaceType(@hash[:face_type])
+        openstudio_surface.setSurfaceType(@hash[:face_type])        
+        openstudio_surface.setSpace(space)
+        openstudio_surface.setConstruction(construction_opaque) 
+        #openstudio_surface.setConstruction(construction_transparent)
         return openstudio_surface
       end
 
