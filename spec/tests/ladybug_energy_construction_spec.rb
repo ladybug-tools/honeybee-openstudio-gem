@@ -55,37 +55,27 @@ RSpec.describe Ladybug::EnergyModel do
   end
  
   #add assertions
-<<<<<<< HEAD:spec/tests/ladybug_energy_construction_spec.rb
-=======
-
->>>>>>> 30d1e55a65fd544a3c045411d01ca343a12a92db:spec/tests/ladybug_energy_model_model_spec.rb
   it 'create accessors for hash keys' do
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
     construction1 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
     expect(construction1.valid?).to be true
     expect(construction1.validation_errors.empty?).to be true
-<<<<<<< HEAD:spec/tests/ladybug_energy_construction_spec.rb
 
     # get and set existing hash key
     expect(construction1.respond_to?(:name)).to be false
     expect(construction1.respond_to?(:name=)).to be false
-=======
-    
-    # get and set existing hash key
-    expect(construction1.respond_to?(:name)).to be false
-    expect(construction1.respond_to?(:name=)).to be false
-    
+
     expect(construction1.name).to eq('Internal Floor')
     construction1.name = 'Other Floor'
     expect(construction1.name).to eq('Other Floor')
-    
+
     # raise errors for non-existant hash key
     expect(construction1.respond_to?(:not_a_key)).to be false
     expect(construction1.respond_to?(:not_a_key=)).to be false
-    
+
     # DLM: should we make it return nil for the non-existant getter instead?
     #expect( construction1.not_a_key ).to be nil
-    
+
     expect { construction1.not_a_key }.to raise_error(NoMethodError)
     expect { construction1.not_a_key  = 'Other Floor' }.to raise_error(NoMethodError)
 
@@ -99,24 +89,7 @@ RSpec.describe Ladybug::EnergyModel do
     face_model = model.to_openstudio_model
     expect(face_model.getFaceByName).not_to be nil
   end
->>>>>>> 30d1e55a65fd544a3c045411d01ca343a12a92db:spec/tests/ladybug_energy_model_model_spec.rb
 
-    expect(construction1.name).to eq('Internal Floor')
-    construction1.name = 'Other Floor'
-    expect(construction1.name).to eq('Other Floor')
-
-    # raise errors for non-existant hash key
-    expect(construction1.respond_to?(:not_a_key)).to be false
-    expect(construction1.respond_to?(:not_a_key=)).to be false
-
-    # DLM: should we make it return nil for the non-existant getter instead?
-    #expect( construction1.not_a_key ).to be nil
-
-    expect { construction1.not_a_key }.to raise_error(NoMethodError)
-    expect { construction1.not_a_key  = 'Other Floor' }.to raise_error(NoMethodError)
-
-  end
-  
   it 'can load and validate opaque construction' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')

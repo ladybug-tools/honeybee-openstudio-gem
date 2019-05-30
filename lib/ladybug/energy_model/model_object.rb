@@ -37,6 +37,7 @@ module Ladybug
   module EnergyModel
     class ModelObject
       attr_reader :errors, :warnings
+
       def method_missing(sym, *args)
         name = sym.to_s
         aname = name.sub("=","")
@@ -53,6 +54,7 @@ module Ladybug
         # do the regular thing
         super
       end
+      
       # Read ModelObject JSON from disk
       def self.read_from_disk(file)
         hash = nil
