@@ -99,7 +99,7 @@ module Ladybug
         openstudio_surface.setSurfaceType(@hash[:face_type])        
         openstudio_surface.setSpace(space)
         openstudio_surface.setConstruction(construction_opaque) 
-        #openstudio_surface.setConstruction(construction_transparent)
+        openstudio_surface.setConstruction(construction_transparent)
         return openstudio_surface
       end
 
