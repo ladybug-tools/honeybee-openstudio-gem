@@ -86,8 +86,8 @@ RSpec.describe Ladybug::EnergyModel do
     model = Ladybug::EnergyModel::Model.read_from_disk(file) 
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true 
-    face_model = model.to_openstudio_model
-    expect(face_model.getFaceByName).not_to be nil
+    openstudio_model = model.to_openstudio_model
+    expect(openstudio_model.getSurfaceByName('floor').empty?).not_to be true
   end
 
   it 'can load and validate opaque construction' do

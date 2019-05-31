@@ -97,25 +97,6 @@ module Ladybug
       # create openstudio objects in the openstudio model
       def create_openstudio_objects
         create_faces
-        create_apertures
-      end
-      
-      def create_construction_opaque
-        @hash[:energy_construction_opaque].each do |construction|
-          type = construction[:type]
-          construction_object = EnergyConstructionOpaque.new(construction)
-          construction_object.to_openstudio(@openstudio_model)
-          return construction_object
-        end
-      end
-
-      def create_construction_transparent
-        @hash[:energy_construction_transparent].each do |construction|
-          type = construction[:type]
-          construction_object = EnergyConstructionTransparent.new(construction)
-          construction_object.to_openstudio(@openstudio_model)
-          return construction_object
-        end
       end
 
       def create_faces
@@ -140,16 +121,6 @@ module Ladybug
             # DLM: todo
           end
       end
-      
-      def create_apertures
-        @hash[:aperture].each do |aperture|
-          type = aperture[:type]
-          aperture_object = Aperture.new(aperture)
-          aperture_object.to_openstudio(@openstudio_model)
-          return aperture_object
-        end
-      end
-      
       
     end # Model
   end # EnergyModel

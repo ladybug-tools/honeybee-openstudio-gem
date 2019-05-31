@@ -52,6 +52,7 @@ module Ladybug
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:Face][:properties][:type][:enum]
+        result[:apertures] = []
         return result      
       end
            
@@ -79,27 +80,25 @@ module Ladybug
           space = space.get
         end
 
-        construction_opaque_name = @hash[:energy_construction_opaque][:name]
-        construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
-        if construction_opaque.empty?
-          raise "No Opaque Construction assigned."
-        else 
-          construction_opaque = construction_opaque.get
-        end
-
-
-        #construction_transparent_name = @hash[:energy_construction_transparent][:name]
-        #construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
-        #unless !construction_transparent.empty?
-        #  raise "Transparent construction #{construction_transparent_name} can not be assigned to face."
-        #end
-
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])        
         openstudio_surface.setSpace(space)
-        openstudio_surface.setConstruction(construction_opaque) 
-        openstudio_surface.setConstruction(construction_transparent)
+        
+        construction_opaque = @hash[:energy_construction_opaque]
+        openstudio_construction = nil
+        if construction_opaque
+          construction_object = EnergyConstructionOpaque.new(construction_opaque)
+          openstudio_construction = construction_object.to_openstudio(openstudio_model)
+          openstudio_surface.setConstruction(openstudio_construction) 
+        end
+        
+        @hash[:apertures].each do |aperture|
+          aperture = Aperture.new(aperture)
+          openstudio_subsurface = aperture.to_openstudio(openstudio_model)
+          openstudio_subsurface.setSurface(openstudio_surface)
+        end
+        
         return openstudio_surface
       end
 

@@ -102,8 +102,12 @@ RSpec.describe Ladybug::EnergyModel do
     expect(openstudio_vertices.size).to be >= 3
     openstudio_construction = openstudio_surface.construction
     expect(openstudio_construction.empty?).to be false
-    expect(openstudio_construction.numLayers).to be > 0
-    expect(openstudio_construction.numLayers).to be <= 8
+    openstudio_construction = openstudio_construction.get
+    openstudio_layered_construction = openstudio_construction.to_LayeredConstruction
+    expect(openstudio_layered_construction.empty?).to be false
+    openstudio_layered_construction = openstudio_layered_construction.get    
+    expect(openstudio_layered_construction.numLayers).to be > 0
+    expect(openstudio_layered_construction.numLayers).to be <= 8
   end
 
  
