@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -38,7 +38,7 @@ require 'json'
 require 'openstudio'
 
 module Ladybug
-  module EnergyModel      
+  module EnergyModel
     class EnergyConstructionOpaque < ModelObject
       attr_reader :errors, :warnings
 
@@ -48,60 +48,57 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionOpaque'
       end
-      
+
       def defaults
         result = {}
-        return result
+        result
       end
 
       def validation_errors
-        result = super 
+        result = super
 
-        if (@hash[:materials]).length == 0
-          result << JSON::Validator.raise( "Opaque construction should at least have one material.")
+        if (@hash[:materials]).empty?
+          result << JSON::Validator.raise('Opaque construction should at least have one material.')
         elsif (@hash[:materials]).length > 10
-          result << JSON::Validator.raise("Opaque construction cannot have more than 10 materials.")
-        end 
-        return result
-      end
-      
-      def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name]) 
-        if object.is_initialized
-          return object.get
+          result << JSON::Validator.raise('Opaque construction cannot have more than 10 materials.')
         end
-        return nil
+        result
       end
-      
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getConstructionByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
       def create_openstudio_object(openstudio_model)
         openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
         openstudio_construction.setName(@hash[:name])
         openstudio_materials = OpenStudio::Model::MaterialVector.new
         @hash[:materials].each do |material|
           name = material[:name]
-          material_type = material[:type] 
-          material_object = nil 
+          material_type = material[:type]
+          material_object = nil
 
           case material_type
-          when "EnergyMaterial"
+          when 'EnergyMaterial'
             material_object = EnergyMaterial.new(material)
-          when "EnergyMaterialNoMass"
+          when 'EnergyMaterialNoMass'
             material_object = EnergyMaterialNoMass.new(material)
-          else 
+          else
             raise "Unknown material type #{material_type}."
           end
 
           openstudio_material = material_object.to_openstudio(openstudio_model)
           openstudio_materials << openstudio_material
 
-         # TODO: create new material objects and call to_openstudio on each of them
+          # TODO: create new material objects and call to_openstudio on each of them
           # TODO: add the resulting openstudio material objects to this openstudio constructions
         end
 
         openstudio_construction.setLayers(openstudio_materials)
-        return openstudio_construction
+        openstudio_construction
       end
-
     end # EnergyConstructionOpaque
   end # EnergyModel
 end # Ladybug

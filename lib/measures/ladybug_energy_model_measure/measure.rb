@@ -40,7 +40,6 @@ require 'ladybug/energy_model/model'
 
 # start the measure
 class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return 'Ladybug Energy Model Measure'
@@ -71,33 +70,33 @@ class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
   # define what happens when the measure is run
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
-puts "hello!"
-STDOUT.flush
+    puts 'hello!'
+    STDOUT.flush
     if !runner.validateUserArguments(arguments(model), user_arguments)
       return false
     end
 
     ladybug_json = runner.getStringArgumentValue('ladybug_json', user_arguments)
 
-    if !File.exists?(ladybug_json)
+    if !File.exist?(ladybug_json)
       runner.registerError("Cannot find file '#{ladybug_json}'")
       return false
     end
-    
+
     ladybug_model = Ladybug::EnergyModel::Model.read_from_disk(ladybug_json)
-    
+
     if !ladybug_model.valid?
-      #runner.registerError("File '#{ladybug_json}' is not valid")
-      #return false
+      # runner.registerError("File '#{ladybug_json}' is not valid")
+      # return false
     end
-    puts "lets go!"
-STDOUT.flush
+    puts 'lets go!'
+    STDOUT.flush
     ladybug_model.to_openstudio_model(model)
-    puts "done!"
-STDOUT.flush
+    puts 'done!'
+    STDOUT.flush
     return true
   end
-end 
+end
 
 # register the measure to be used by the application
 LadybugEnergyModelMeasure.new.registerWithApplication

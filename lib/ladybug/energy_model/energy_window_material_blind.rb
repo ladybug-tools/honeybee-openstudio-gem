@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -36,7 +36,7 @@ require 'json'
 require 'openstudio'
 
 module Ladybug
-  module EnergyModel      
+  module EnergyModel
     class EnergyWindowMaterialBlind < ModelObject
       attr_reader :errors, :warnings
 
@@ -46,7 +46,7 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialBlind'
       end
-      
+
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:type][:enum]
@@ -69,25 +69,23 @@ module Ladybug
         result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:left_opening_multiplier][:default].to_f
         result[:right_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:right_opening_multiplier][:default].to_f
         result[:minimum_slat_angle] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:maximum_slat_angle][:default]
-        return result
+        result
       end
 
-      def name 
-        return @hash[:name]
+      def name
+        @hash[:name]
       end
 
       def name=(new_name)
         @hash[:name] = new_name
       end
-      
+
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getBlindByName(@hash[:name]) 
-        if object.is_initialized
-          return object.get
-        end
-        return nil
+        object = openstudio_model.getBlindByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
       end
-      
+
       def create_openstudio_object(openstudio_model)
         openstudio_window_blind = OpenStudio::Model::Blind.new(openstudio_model)
         openstudio_window_blind.setName(@hash[:name])
@@ -212,9 +210,8 @@ module Ladybug
         else
           openstudio_window_blind.setMaximumSlatAngle(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:maximum_slat_angle][:default])
         end
-        return openstudio_window_blind
+        openstudio_window_blind
       end
-
     end # EnergyWindowMaterialBlind
   end # EnergyModel
 end # Ladybug

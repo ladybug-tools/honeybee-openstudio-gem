@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -40,11 +40,11 @@ module Ladybug
 
       def method_missing(sym, *args)
         name = sym.to_s
-        aname = name.sub("=","")
+        aname = name.sub('=', '')
         asym = aname.to_sym
-        is_getter = (args.size == 0) && @hash.key?(asym)
+        is_getter = args.empty? && @hash.key?(asym)
         is_setter = (name != aname) && (args.size == 1) && @hash.key?(asym)
-        
+
         if is_getter
           return @hash[asym]
         elsif is_setter
@@ -54,16 +54,16 @@ module Ladybug
         # do the regular thing
         super
       end
-      
+
       # Read ModelObject JSON from disk
       def self.read_from_disk(file)
         hash = nil
         File.open(File.join(file), 'r') do |f|
-          hash = JSON::parse(f.read, {symbolize_names: true})
+          hash = JSON.parse(f.read, symbolize_names: true)
         end
-        return self.new(hash)
+        new(hash)
       end
-      
+
       # Load ModelObject from symbolized hash
       def initialize(hash)
         # initialize class variable @@extension only once
@@ -72,64 +72,59 @@ module Ladybug
 
         hash = defaults.merge(hash)
         @hash = hash
-        
+
         @type = @hash[:type]
         raise 'Unknown type' if @type.nil?
-        
+
         @openstudio_object = nil
       end
-      
+
       def defaults
-        raise "defaults not implemented for ModelObject, override in your class"
+        raise 'defaults not implemented for ModelObject, override in your class'
       end
 
       # check if the ModelObject is valid
       def valid?
-        return JSON::Validator.validate(@hash, @@schema)
+        JSON::Validator.validate(@hash, @@schema)
       end
-      
+
       # return detailed model validation errors
       def validation_errors
-        return JSON::Validator.fully_validate(@hash, @@schema)
+        JSON::Validator.fully_validate(@hash, @@schema)
       end
-      
+
       # convert ModelObject to an openstudio object
       def to_openstudio(openstudio_model)
-        
         # return the object if we already have it
         if @openstudio_object
           if @openstudio_object.model == openstudio_model
             return @openstudio_object
           end
         end
-        
+
         @errors = validation_errors
         @warnings = []
         @openstudio_object = nil
-        
+
         # see if an equivalent object is already in the openstudio model
         @openstudio_object = find_existing_openstudio_object(openstudio_model)
-        if @openstudio_object
-          return @openstudio_object
-        end
-        
+        return @openstudio_object if @openstudio_object
+
         # create and return the object
         @openstudio_object = create_openstudio_object(openstudio_model)
-        
-        return @openstudio_object
+
+        @openstudio_object
       end
-      
-      
+
       # find an equivalent existing object in the openstudio model, return nil if not found
-      def find_existing_openstudio_object(openstudio_model)
-        raise "find_existing_openstudio_object not implemented for ModelObject, override in your class"
+      def find_existing_openstudio_object(_openstudio_model)
+        raise 'find_existing_openstudio_object not implemented for ModelObject, override in your class'
       end
-      
+
       # create a new object in the openstudio model, return new object
-      def create_openstudio_object(openstudio_model)
-        raise "create_openstudio_object not implemented for ModelObject, override in your class"
+      def create_openstudio_object(_openstudio_model)
+        raise 'create_openstudio_object not implemented for ModelObject, override in your class'
       end
-      
     end # ModelObject
   end # EnergyModel
 end # Ladybug

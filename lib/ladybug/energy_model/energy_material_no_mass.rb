@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -36,7 +36,7 @@ require 'json'
 require 'openstudio'
 
 module Ladybug
-  module EnergyModel      
+  module EnergyModel
     class EnergyMaterialNoMass < ModelObject
       attr_reader :errors, :warnings
 
@@ -54,11 +54,11 @@ module Ladybug
         result[:thermal_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default]
         result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
         result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
-        return result
+        result
       end
 
-      def name 
-        return @hash[:name]
+      def name
+        @hash[:name]
       end
 
       def name=(new_name)
@@ -66,21 +66,18 @@ module Ladybug
       end
 
       def r_value
-        return @hash[:r_value]
+        @hash[:r_value]
       end
 
       def r_value=(new_r_value)
         @hash[:r_value] = new_r_value
       end
-            
+
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getMasslessOpaqueMaterialByName(@hash[:name]) 
-        if object.is_initialized
-          return object.get
-        end
-        return nil
+        object = openstudio_model.getMasslessOpaqueMaterialByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
       end
-      
 
       def create_openstudio_object(openstudio_model)
         openstudio_nomass_material = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
@@ -88,27 +85,26 @@ module Ladybug
         openstudio_nomass_material.setThermalResistance(@hash[:r_value])
         if @hash[:roughness]
           openstudio_nomass_material.setRoughness(@hash[:roughness])
-        else 
+        else
           openstudio_nomass_material.setRoughness(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:roughness][:default])
         end
         if @hash[:thermal_absorptance]
           openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
-        else 
+        else
           openstudio_nomass_material.setThermalAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default].to_f)
         end
         if @hash[:solar_absorptance]
           openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
-        else 
+        else
           openstudio_nomass_material.setSolarAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default].to_f)
         end
         if @hash[:visible_absorptance]
           openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
-        else 
+        else
           openstudio_nomass_material.setVisibleAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default].to_f)
         end
-        return openstudio_nomass_material
+        openstudio_nomass_material
       end
-
     end # EnergyMaterialNoMass
   end # EnergyModel
 end # Ladybug

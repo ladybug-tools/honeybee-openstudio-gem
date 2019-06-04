@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -32,7 +32,6 @@
 require_relative '../spec_helper'
 
 RSpec.describe Ladybug::EnergyModel do
-  
   it 'has a version number' do
     expect(Ladybug::EnergyModel::VERSION).not_to be nil
   end
@@ -41,20 +40,20 @@ RSpec.describe Ladybug::EnergyModel do
     extension = Ladybug::EnergyModel::Extension.new
     expect(File.exist?(extension.measures_dir)).to be true
   end
-  
+
   it 'has a files directory' do
     extension = Ladybug::EnergyModel::Extension.new
     expect(File.exist?(extension.files_dir)).to be true
   end
-  
+
   it 'has a valid schema' do
     extension = Ladybug::EnergyModel::Extension.new
     expect(extension.schema.nil?).to be false
     expect(extension.schema_valid?).to be true
     expect(extension.schema_validation_errors.empty?).to be true
   end
- 
-  #add assertions
+
+  # add assertions
   it 'create accessors for hash keys' do
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
     construction1 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
@@ -74,29 +73,27 @@ RSpec.describe Ladybug::EnergyModel do
     expect(construction1.respond_to?(:not_a_key=)).to be false
 
     # DLM: should we make it return nil for the non-existant getter instead?
-    #expect( construction1.not_a_key ).to be nil
+    # expect( construction1.not_a_key ).to be nil
 
     expect { construction1.not_a_key }.to raise_error(NoMethodError)
-    expect { construction1.not_a_key  = 'Other Floor' }.to raise_error(NoMethodError)
-
+    expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
   end
 
-
   it 'can load and validate example face by face model' do
-    openstudio_model = OpenStudio::Model::Model.new 
+    openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/example_model.json')
-    model = Ladybug::EnergyModel::Model.read_from_disk(file) 
+    model = Ladybug::EnergyModel::Model.read_from_disk(file)
     expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true 
+    expect(model.validation_errors.empty?).to be true
     openstudio_model = model.to_openstudio_model(openstudio_model)
     openstudio_surface = openstudio_model.getSurfaceByName('floor')
     expect(openstudio_surface.empty?).to be false
     openstudio_surface = openstudio_surface.get
-    expect(openstudio_surface.nameString()).to eq "floor" 
-    openstudio_space = openstudio_surface.space 
+    expect(openstudio_surface.nameString).to eq 'floor'
+    openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString()).to eq "south_room"
+    expect(openstudio_space.nameString).to eq 'south_room'
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
     expect(openstudio_vertices.size).to be >= 3
@@ -105,12 +102,11 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_construction = openstudio_construction.get
     openstudio_layered_construction = openstudio_construction.to_LayeredConstruction
     expect(openstudio_layered_construction.empty?).to be false
-    openstudio_layered_construction = openstudio_layered_construction.get    
+    openstudio_layered_construction = openstudio_layered_construction.get
     expect(openstudio_layered_construction.numLayers).to be > 0
     expect(openstudio_layered_construction.numLayers).to be <= 8
   end
 
- 
   it 'can load and validate face' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/example_face.json')
@@ -123,9 +119,8 @@ RSpec.describe Ladybug::EnergyModel do
     face2 = Ladybug::EnergyModel::Face.read_from_disk(file)
     expect(face2.valid?).to be true
     expect(face2.validation_errors.empty?).to be true
-    object2 = face2.to_openstudio(openstudio_model)    
+    object2 = face2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
-
 end

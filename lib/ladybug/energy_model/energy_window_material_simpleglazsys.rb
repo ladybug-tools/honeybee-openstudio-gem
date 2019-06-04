@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -36,12 +36,12 @@ require 'json'
 require 'openstudio'
 
 module Ladybug
-  module EnergyModel      
+  module EnergyModel
     class EnergyWindowMaterialSimpleGlazSys < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
-      hash = defaults.merge(hash)
+        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialSimpleGlazSys'
@@ -50,27 +50,23 @@ module Ladybug
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
-        return result
+        result
       end
-         
-      
+
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSimpleGlazingByName(@hash[:name]) 
-        if object.is_initialized
-          return object.get
-        end
-        return nil
+        object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
       end
-      
+
       def create_openstudio_object(openstudio_model)
         openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
         openstudio_simple_glazing.setName(@hash[:name])
         openstudio_simple_glazing.setUFactor(@hash[:u_factor])
         openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:SHGC])
-        
-        return openstudio_simple_glazing
-      end
 
+        openstudio_simple_glazing
+      end
     end # EnergyWindowMaterialSimpleGlazSys
   end # EnergyModel
 end # Ladybug

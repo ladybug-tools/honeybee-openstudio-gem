@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -43,57 +43,57 @@ module Ladybug
   module EnergyModel
     class Model
       attr_reader :errors, :warnings
-      
+
       # Read Ladybug Energy Model JSON from disk
       def self.read_from_disk(file)
         hash = nil
         File.open(File.join(file), 'r') do |f|
-          hash = JSON::parse(f.read, {symbolize_names: true})
+          hash = JSON.parse(f.read, symbolize_names: true)
         end
-        
-        return Model.new(hash)
+
+        Model.new(hash)
       end
-    
+
       # Load ModelObject from symbolized hash
       def initialize(hash)
         # initialize class variable @@extension only once
         @@extension ||= Extension.new
         @@schema ||= @@extension.schema
-        
+
         @hash = hash
         @type = @hash[:type]
         raise 'Unknown model type' if @type.nil?
         raise "Incorrect model type '#{@type}'" unless @type == 'Model'
       end
-      
+
       # check if the model is valid
       def valid?
-        return JSON::Validator.validate(@hash, @@schema)
+        JSON::Validator.validate(@hash, @@schema)
       end
-      
+
       # return detailed model validation errors
       def validation_errors
-        return JSON::Validator.fully_validate(@hash, @@schema)
+        JSON::Validator.fully_validate(@hash, @@schema)
       end
-      
+
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)
         @errors = []
         @warnings = []
-        
-        if openstudio_model
-          @openstudio_model = openstudio_model
-        else
-          @openstudio_model = OpenStudio::Model::Model.new
-        end
-        
+
+        @openstudio_model = if openstudio_model
+                              openstudio_model
+                            else
+                              OpenStudio::Model::Model.new
+                            end
+
         create_openstudio_objects
-        
-        return @openstudio_model
+
+        @openstudio_model
       end
-      
+
       private
-      
+
       # create openstudio objects in the openstudio model
       def create_openstudio_objects
         create_faces
@@ -102,26 +102,25 @@ module Ladybug
       def create_faces
         # TODO: create a Face class which derives from ModelObject and move all this code there
         @hash[:faces].each do |face|
-          type = face[:type] 
+          type = face[:type]
           face_object = nil
-          if type == "Face"
+          if type == 'Face'
             face_object = Face.new(face)
-          elsif type == "ShadeFace"
+          elsif type == 'ShadeFace'
             face_object = ShadeFace.new(face)
-          else 
+          else
             raise "Unknown face type #{type}."
           end
-            face_object.to_openstudio(@openstudio_model)
+          face_object.to_openstudio(@openstudio_model)
           return face_object
         end
-          # for now make parent a space, check if should be a zone?
+        # for now make parent a space, check if should be a zone?
 
-          #add if statement and to_openstudio object
-          if air_wall
-            # DLM: todo
-          end
+        # add if statement and to_openstudio object
+        if air_wall
+          # DLM: todo
+        end
       end
-      
     end # Model
   end # EnergyModel
 end # Ladybug

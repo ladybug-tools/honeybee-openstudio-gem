@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -36,7 +36,7 @@ require 'json'
 require 'openstudio'
 
 module Ladybug
-  module EnergyModel      
+  module EnergyModel
     class ShadeFace < ModelObject
       attr_reader :errors, :warnings
 
@@ -45,28 +45,25 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'ShadeFace'
       end
-            
+
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getSurfaceByName(@hash[:name])
-        if object.is_initialized
-          return object.get
-        end
-        return nil
+        return object.get if object.is_initialized
+        nil
       end
-      
+
       def create_openstudio_object(openstudio_model)
         openstudio_vertices = OpenStudio::Point3dVector.new
         @hash[:vertices].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x],vertex[:y],vertex[:z])
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x], vertex[:y], vertex[:z])
         end
 
         construction_opaque_name = @hash[:energy_construction_opaque][:name]
         construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
         unless construction_opaque.empty?
           construction_opaque = construction_opaque.get
-          #construction_opaque = EnergyConstructionOpaque.new
+          # construction_opaque = EnergyConstructionOpaque.new
         end
-
 
         construction_transparent_name = @hash[:energy_construction_transparent][:name]
         construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
@@ -74,14 +71,13 @@ module Ladybug
           construction_transparent = construction_transparent.get
         end
 
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices,openstudio_model)
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setConstruction(construction_opaque) 
+        openstudio_surface.setConstruction(construction_opaque)
         openstudio_surface.setConstruction(construction_transparent)
-        return openstudio_surface
+        openstudio_surface
       end
-
     end # Face
   end # EnergyModel
 end # Ladybug

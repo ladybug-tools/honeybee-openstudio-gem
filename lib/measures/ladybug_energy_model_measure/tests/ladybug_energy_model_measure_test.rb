@@ -40,7 +40,6 @@ require_relative '../measure.rb'
 require 'fileutils'
 
 class LadybugEnergyModelMeasure_Test < Minitest::Test
-
   # method to apply arguments, run measure, and assert results (only populate args hash with non-default argument values)
   def apply_measure_to_model(test_name, args, model_name = nil, result_value = 'Success', warnings_count = 0, info_count = nil)
     # create an instance of the measure
@@ -98,7 +97,6 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
     model.save(output_file_path, true)
   end
 
- 
   def test_example_model
     args = {}
     args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_model.json')
@@ -110,5 +108,4 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
     args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_model_primary.json')
     apply_measure_to_model(__method__.to_s.gsub('test_', ''), args, nil)
   end
-
 end
