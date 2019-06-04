@@ -70,6 +70,7 @@ module Ladybug
         @@extension ||= Extension.new
         @@schema ||= @@extension.schema
 
+        hash = defaults.merge(hash)
         @hash = hash
         
         @type = @hash[:type]
@@ -78,6 +79,10 @@ module Ladybug
         @openstudio_object = nil
       end
       
+      def defaults
+        raise "defaults not implemented for ModelObject, override in your class"
+      end
+
       # check if the ModelObject is valid
       def valid?
         return JSON::Validator.validate(@hash, @@schema)
