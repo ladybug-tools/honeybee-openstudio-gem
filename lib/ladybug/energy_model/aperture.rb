@@ -45,6 +45,12 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'Aperture'
       end
+      
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:Aperture][:properties][:type][:enum]
+        result
+      end
 
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getSubSurfaceByName(@hash[:name])
@@ -58,38 +64,25 @@ module Ladybug
           openstudio_vertices << OpenStudio::Point3d.new(vertex[:x], vertex[:y], vertex[:z])
         end
 
-        parent_name = @hash[:parent][:name]
-        space = openstudio_model.getSpaceByName(parent_name)
-        if space.empty?
-          space = OpenStudio::Model::SubSpace.new(openstudio_model)
-          space.setName(parent_name)
+        construction = nil
+        if @hash[:energy_construction_opaque]
+          construction_opaque_name = @hash[:energy_construction_opaque][:name]
+          construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
+          unless construction_opaque.empty?
+            construction = construction_opaque.get
+          end
         else
-          space = space.get
+          construction_transparent_name = @hash[:energy_construction_transparent][:name]
+          construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
+          unless construction_transparent.empty?
+            construction = construction_transparent.get
+          end
         end
-
-        surface_name = @hash[:name]
-        surface = openstudio_model.getSurfaceByName(surface_name)
-        surface = surface.get
-
-        construction_opaque_name = @hash[:energy_construction_opaque][:name]
-        construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
-        unless construction_opaque.empty?
-          construction_opaque = construction_opaque.get
-          # construction_opaque = EnergyConstructionOpaque.new
-        end
-
-        construction_transparent_name = @hash[:energy_construction_transparent][:name]
-        construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
-        unless construction_transparent.empty?
-          construction_transparent = construction_transparent.get
-        end
-
+        
         openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
         openstudio_subsurface.setName(@hash[:name])
         openstudio_subsurface.setSubSurfaceType(@hash[:face_type])
-        openstudio_subsurface.setSurface(surface)
-        openstudio_subsurface.setConstruction(construction_opaque)
-        openstudio_subsurface.setConstruction(construction_transparent) # planar surface
+        openstudio_subsurface.setConstruction(construction) if construction
         openstudio_subsurface
       end
     end # Face

@@ -31,6 +31,7 @@
 
 require 'ladybug/energy_model/version'
 require 'ladybug/energy_model/extension'
+require 'ladybug/energy_model/aperture'
 require 'ladybug/energy_model/energy_construction_opaque'
 require 'ladybug/energy_model/energy_construction_transparent'
 require 'ladybug/energy_model/energy_material'

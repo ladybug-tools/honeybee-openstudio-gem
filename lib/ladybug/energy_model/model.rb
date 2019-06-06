@@ -112,14 +112,14 @@ module Ladybug
             raise "Unknown face type #{type}."
           end
           face_object.to_openstudio(@openstudio_model)
-          return face_object
         end
         # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
-        if air_wall
+        #if air_wall
           # DLM: todo
-        end
+        #end
+        
       end
     end # Model
   end # EnergyModel

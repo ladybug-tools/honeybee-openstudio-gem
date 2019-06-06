@@ -30,6 +30,7 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/aperture'
 require 'ladybug/energy_model/energy_construction_opaque'
 require 'ladybug/energy_model/energy_construction_transparent'
 
@@ -56,10 +57,8 @@ module Ladybug
       end
 
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaces.each do |model_surf|
         model_surf = openstudio_model.getSurfaceByName(@hash[:name])
-        return model_surf.get
-        end
+        return model_surf.get if !model_surf.empty?
         nil
       end
 
