@@ -86,10 +86,10 @@ RSpec.describe Ladybug::EnergyModel do
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
     openstudio_model = model.to_openstudio_model(openstudio_model)
-    openstudio_surface = openstudio_model.getSurfaceByName('floor')
+    openstudio_surface = openstudio_model.getSurfacesByName('ceiling', true)
     expect(openstudio_surface.empty?).to be false
     openstudio_surface = openstudio_surface.get
-    expect(openstudio_surface.nameString).to eq 'floor'
+    expect(openstudio_surface.nameString).to eq 'ceiling'
     openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get

@@ -46,7 +46,6 @@ module Ladybug
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
-        hash = defaults.merge(hash)
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionTransparent'

@@ -49,20 +49,20 @@ module Ladybug
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:type][:enum]
-        result[:solar_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default]
-        result[:solar_reflectance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default]
-        result[:visible_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default]
-        result[:visible_reflectance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default]
-        result[:infrared_hemispherical_emissivity] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_hemispherical_emissivity][:default]
-        result[:infrared_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default]
-        result[:thickness] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:thickness][:default]
-        result[:conductivity] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:conductivity][:default]
-        result[:shade_toglass_distance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:shade_toglass_distance][:default]
-        result[:top_opening_multiplier] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:top_opening_multiplier][:default]
-        result[:bottom_opening_multiplier] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:bottom_opening_multiplier][:default].to_f
-        result[:left_opening_multiplier] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:left_opening_multiplier][:default]
-        result[:right_opening_multiplier] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:right_opening_multiplier][:default]
-        result[:airflow_permeability] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:airflow_permeability][:default]
+        result[:solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:solar_transmittance][:default]
+        result[:solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:solar_reflectance][:default]
+        result[:visible_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_transmittance][:default]
+        result[:visible_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_reflectance][:default]
+        result[:infrared_hemispherical_emissivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:infrared_hemispherical_emissivity][:default]
+        result[:infrared_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:infrared_transmittance][:default]
+        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:thickness][:default]
+        result[:conductivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:conductivity][:default]
+        result[:shade_toglass_distance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:shade_toglass_distance][:default]
+        result[:top_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:top_opening_multiplier][:default]
+        result[:bottom_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:bottom_opening_multiplier][:default].to_f
+        result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:left_opening_multiplier][:default]
+        result[:right_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:right_opening_multiplier][:default]
+        result[:airflow_permeability] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:airflow_permeability][:default]
         result
       end
 

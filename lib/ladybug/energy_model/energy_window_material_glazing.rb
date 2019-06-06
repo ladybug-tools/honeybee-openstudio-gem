@@ -40,7 +40,7 @@ module Ladybug
     class EnergyWindowMaterialGlazing < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
         super(hash)
 
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGlazing'
@@ -49,19 +49,19 @@ module Ladybug
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:type][:enum]
-        result[:spectral_dataset_name] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:optical_datatype][:default]
-        result[:thickness_glass] = @@schema[:definitions][EnergyWindowMaterialGlazing][:thickness_glass][:default]
-        result[:solar_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default]
-        result[:solar_reflectance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default]
-        result[:solar_reflectance_back] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_reflectance_back][:default]
-        result[:visible_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default]
-        result[:visible_reflectance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default]
-        result[:visible_reflectance_back] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_reflectance_back][:default]
-        result[:infrared_transmittance] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default]
-        result[:front_emissivity] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:front_emissivity][:default]
-        result[:back_emissivity] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:back_emissivity][:default]
-        result[:conductivity_glass] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:conductivity_glass][:default]
-        result[:dirt_correction] = @@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default]
+        result[:spectral_dataset_name] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:optical_datatype][:default]
+        result[:thickness_glass] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:thickness_glass][:default]
+        result[:solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default]
+        result[:solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default]
+        result[:solar_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance_back][:default]
+        result[:visible_transmittance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default]
+        result[:visible_reflectance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default]
+        result[:visible_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance_back][:default]
+        result[:infrared_transmittance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default]
+        result[:front_emissivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:front_emissivity][:default]
+        result[:back_emissivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:back_emissivity][:default]
+        result[:conductivity_glass] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:conductivity_glass][:default]
+        result[:dirt_correction] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default]
         result
       end
 
