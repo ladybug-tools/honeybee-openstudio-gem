@@ -302,9 +302,7 @@
                             {
                                 "type": "EnergyWindowMaterialGlazing",
                                 "name": "Theoretical Glass 167",
-                                "optical_datatype": "SpectralAverage",
-                                "spectral_dataset_name": "",
-                                "thickness_glass": 0.029,
+                                "thickness": 0.029,
                                 "solar_transmittance": 0.2374,
                                 "solar_reflectance": 0.7126,
                                 "solar_reflectance_back": 0,
@@ -312,24 +310,22 @@
                                 "visible_reflectance": 0.6988,
                                 "visible_reflectance_back": 0,
                                 "infrared_transmittance": 0,
-                                "front_emissivity": 0.985,
-                                "back_emissivity": 0.985,
-                                "conductivity_glass": 2.1073,
+                                "emissivity": 0.985,
+                                "emissivity_back": 0.985,
+                                "conductivity": 2.1073,
                                 "dirt_correlation": 1,
                                 "solar_diffusing": "No"
                             },
                             {
-                                "type": "EnergyWindowMaterialAirGap",
+                                "type": "EnergyWindowMaterialGas",
                                 "name": "Air 13mm",
-                                "gastype": "Air",
+                                "gas_type": "Air",
                                 "thickness": 0.0127
                             },
                             {
                                 "type": "EnergyWindowMaterialGlazing",
                                 "name": "Theoretical Glass 167",
-                                "optical_datatype": "SpectralAverage",
-                                "spectral_dataset_name": "",
-                                "thickness_glass": 0.029,
+                                "thickness": 0.029,
                                 "solar_transmittance": 0.2374,
                                 "solar_reflectance": 0.7126,
                                 "solar_reflectance_back": 0,
@@ -337,9 +333,9 @@
                                 "visible_reflectance": 0.6988,
                                 "visible_reflectance_back": 0,
                                 "infrared_transmittance": 0,
-                                "front_emissivity": 0.985,
-                                "back_emissivity": 0.985,
-                                "conductivity_glass": 2.1073,
+                                "emissivity": 0.985,
+                                "emissivity_back": 0.985,
+                                "conductivity": 2.1073,
                                 "dirt_correlation": 1,
                                 "solar_diffusing": "No"
                             }
@@ -636,7 +632,7 @@
                         "density": 784.9,
                         "specific_heat": 830,
                         "thermal_absorptance": 0.9,
-                        "solar_absroptance": 0.4,
+                        "solar_absorptance": 0.4,
                         "visible_absorptance": 0.4
                     }
                 ]

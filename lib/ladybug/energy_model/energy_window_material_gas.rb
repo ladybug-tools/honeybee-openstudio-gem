@@ -37,34 +37,48 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class EnergyWindowMaterialSimpleGlazSys < ModelObject
+    class EnergyWindowMaterialGas < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialSimpleGlazSys'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGas'
       end
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
+        result[:type] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:type][:enum]
+        result[:gastype] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:gas_type][:default]
+        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:thickness][:default]
         result
       end
 
+      def name
+        @hash[:name]
+      end
+
+      def name=(new_name)
+        @hash[:name] = new_name
+      end
+
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+        object = openstudio_model.getGasByName(@hash[:name])
         return object.get if object.is_initialized
         nil
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-        openstudio_simple_glazing.setName(@hash[:name])
-        openstudio_simple_glazing.setUFactor(@hash[:u_factor])
-        openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
-        openstudio_simple_glazing
+        openstudio_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
+        openstudio_window_gas.setName(@hash[:name])
+        if @hash[:thickness]
+          openstudio_window_gas.setThickness(@hash[:thickness])
+        else
+          openstudio_window_gas.setThickness(@schema[:EnergyWindowMaterialGas][:thickness][:default])
+        end
+        openstudio_window_gas.setGasType(@hash[:gas_type])
+        openstudio_window_gas
       end
-    end # EnergyWindowMaterialSimpleGlazSys
+    end # EnergyWindowMaterialGas
   end # EnergyModel
 end # Ladybug

@@ -37,34 +37,55 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class EnergyWindowMaterialSimpleGlazSys < ModelObject
-      attr_reader :errors, :warnings
+    class EnergyWindowMaterialGasMixture < ModelObject
+      attr_reader :erros, :warnings
 
       def initialize(hash = {})
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialSimpleGlazSys'
+        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGasMixture'
       end
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
+        result[:type] = @@schema[:definitions][:EnergyWindowMaterialGasMixture][:properties][:type][:enum]
         result
       end
 
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+        object = openstudio_model.getGasMixtureByName(@hash[:name])
         return object.get if object.is_initialized
-        nil
+        nil 
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-        openstudio_simple_glazing.setName(@hash[:name])
-        openstudio_simple_glazing.setUFactor(@hash[:u_factor])
-        openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
-        openstudio_simple_glazing
+        openstudio_window_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
+        openstudio_window_gas_mixture.setName(@hash[:name])
+        #puts @hash
+        openstudio_window_gas_mixture.setThickness(@hash[:thickness])
+        openstudio_window_gas_mixture.setGas1Type(@hash[:gas_type_fraction][0][:gas_type])
+        openstudio_window_gas_mixture.setGas1Fraction(@hash[:gas_type_fraction][0][:gas_fraction])
+        if @hash[:gas_type_fraction][1]
+          openstudio_window_gas_mixture.setGas2Type(@hash[:gas_type_fraction][1][:gas_type])
+          openstudio_window_gas_mixture.setGas2Fraction(@hash[:gas_type_fraction][1][:gas_fraction])
+        else 
+          return openstudio_window_gas_mixture
+        end
+        if @hash[:gas_type_fraction][2]
+          openstudio_window_gas_mixture.setGas3Type(@hash[:gas_type_fraction][2][:gas_type])
+          openstudio_window_gas_mixture.setGas3Fraction(@hash[:gas_type_fraction][2][:gas_fraction])
+        else
+          return openstudio_window_gas_mixture
+        end
+        if @hash[:gas_type_fraction][3]
+          openstudio_window_gas_mixture.setGas4Type(@hash[:gas_type_fraction][3][:gas_type])
+          openstudio_window_gas_mixture.setGas4Fraction(@hash[:gas_type_fraction][3][:gas_fraction])
+        else
+          return openstudio_window_gas_mixture
+        end
+        openstudio_window_gas_mixture
       end
-    end # EnergyWindowMaterialSimpleGlazSys
-  end # EnergyModel
-end # Ladybug
+
+    end #EnergyWindowMaterialGasMixture
+  end #EnergyModel
+end #Ladybug

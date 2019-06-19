@@ -55,14 +55,14 @@ module Ladybug
         result[:slat_angle] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_angle][:default].to_f
         result[:slat_conductivity] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:slat_conductivity][:default].to_f
         result[:beam_solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_transmittance][:default].to_f
-        result[:front_beam_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_beam_solar_reflectance][:default].to_f
-        result[:back_beam_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_beam_solar_reflectance][:default].to_f
+        result[:beam_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance][:default].to_f
+        result[:beam_solar_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance_back][:default].to_f
         result[:diffuse_solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_transmittance][:default].to_f
-        result[:front_diffuse_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_diffuse_solar_reflectance][:default].to_f
-        result[:back_diffuse_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_visible_reflectance][:default].to_f
-        result[:infrared_hemispherical_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_infrared_hemispherical_emissivity][:default].to_f
-        result[:back_infrared_hemispherical_emissivity] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_solar_reflectance][:default].to_f
-        result[:blind_toglass_distance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:blind_toglass_distance][:default].to_f
+        result[:diffuse_solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_reflectance][:default].to_f
+        result[:diffuse_solar_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_reflectance_back][:default].to_f
+        result[:infrared_hemispherical_transmittance] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:emissivity][:default].to_f
+        result[:emissivity_back] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:emissivity_back][:default].to_f
+        result[:distance_to_glass] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:distance_to_glass][:default].to_f
         result[:top_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:top_opening_multiplier][:default].to_f
         result[:bottom_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:bottom_opening_multiplier][:default].to_f
         result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:left_opening_multiplier][:default].to_f
@@ -119,65 +119,65 @@ module Ladybug
         else
           openstudio_window_blind.setSlatBeamSolarTransmittance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_transmittance][:default].to_f)
         end
-        if @hash[:front_beam_solar_reflectance]
-          openstudio_window_blind.setFrontSideSlatBeamSolarReflectance(@hash[:front_beam_solar_reflectance].to_f)
+        if @hash[:beam_solar_reflectance]
+          openstudio_window_blind.setFrontSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance].to_f)
         else
-          openstudio_window_blind.setFrontSideSlatBeamSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_beam_solar_reflectance][:default].to_f)
+          openstudio_window_blind.setFrontSideSlatBeamSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance][:default].to_f)
         end
-        if @hash[:back_beam_solar_reflectance]
-          openstudio_window_blind.setBackSideSlatBeamSolarReflectance(@hash[:back_beam_solar_reflectance].to_f)
+        if @hash[:beam_solar_reflectance_back]
+          openstudio_window_blind.setBackSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance_back].to_f)
         else
-          openstudio_window_blind.setBackSideSlatBeamSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_beam_solar_reflectance][:default].to_f)
+          openstudio_window_blind.setBackSideSlatBeamSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance_back][:default].to_f)
         end
         if @hash[:diffuse_solar_transmittance]
           openstudio_window_blind.setSlatDiffuseSolarTransmittance(@hash[:diffuse_solar_transmittance].to_f)
         else
           openstudio_window_blind.setSlatDiffuseSolarTransmittance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_transmittance][:default].to_f)
         end
-        if @hash[:front_diffuse_solar_reflectance]
-          openstudio_window_blind.setFrontSideSlatDiffuseSolarReflectance(@hash[:front_diffuse_solar_reflectance].to_f)
+        if @hash[:diffuse_solar_reflectance]
+          openstudio_window_blind.setFrontSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance].to_f)
         else
-          openstudio_window_blind.setFrontSideSlatDiffuseSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_diffuse_solar_reflectance][:default].to_f)
+          openstudio_window_blind.setFrontSideSlatDiffuseSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_reflectance][:default].to_f)
         end
-        if @hash[:back_diffuse_solar_reflectance]
-          openstudio_window_blind.setBackSideSlatDiffuseSolarReflectance(@hash[:back_diffuse_solar_reflectance].to_f)
+        if @hash[:diffuse_solar_reflectance_back]
+          openstudio_window_blind.setBackSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance_back].to_f)
         else
-          openstudio_window_blind.setBackSideSlatDiffuseSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_solar_reflectance][:default].to_f)
+          openstudio_window_blind.setBackSideSlatDiffuseSolarReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_reflectance_back][:default].to_f)
         end
         if @hash[:diffuse_visible_transmittance]
           openstudio_window_blind.setSlatDiffuseVisibleTransmittance(@hash[:diffuse_visible_transmittance].to_f)
         else
           openstudio_window_blind.setSlatDiffuseVisibleTransmittance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_transmittance][:default].to_f)
         end
-        if @hash[:front_diffuse_visible_reflectance]
-          openstudio_window_blind.setFrontSideSlatDiffuseVisibleReflectance(@hash[:front_diffuse_visible_reflectance].to_f)
+        if @hash[:diffuse_visible_reflectance]
+          openstudio_window_blind.setFrontSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance].to_f)
         else
-          openstudio_window_blind.setFrontSideSlatDiffuseVisibleReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_diffuse_visible_reflectance][:default].to_f)
+          openstudio_window_blind.setFrontSideSlatDiffuseVisibleReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_reflectance][:default].to_f)
         end
-        if @hash[:back_diffuse_visible_reflectance]
-          openstudio_window_blind.setBackSideSlatDiffuseVisibleReflectance(@hash[:back_diffuse_visible_reflectance].to_f)
+        if @hash[:diffuse_visible_reflectance_back]
+          openstudio_window_blind.setBackSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance_back].to_f)
         else
-          openstudio_window_blind.setBackSideSlatDiffuseVisibleReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_diffuse_visible_reflectance][:default].to_f)
+          openstudio_window_blind.setBackSideSlatDiffuseVisibleReflectance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_reflectance_back][:default].to_f)
         end
-        if @hash[:infrared_hemispherical_transmittance]
-          openstudio_window_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_hemispherical_transmittance].to_f)
+        if @hash[:infrared_transmittance]
+          openstudio_window_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_transmittance].to_f)
         else
-          openstudio_window_blind.setSlatInfraredHemisphericalTransmittance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:infrared_hemispherical_transmittance][:default].to_f)
+          openstudio_window_blind.setSlatInfraredHemisphericalTransmittance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:infrared_transmittance][:default].to_f)
         end
-        if @hash[:front_infrared_hemispherical_emissivity]
-          openstudio_window_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@hash[:front_infrared_hemispherical_emissivity].to_f)
+        if @hash[:emissivity]
+          openstudio_window_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity].to_f)
         else
-          openstudio_window_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:front_infrared_hemispherical_emissivity][:default].to_f)
+          openstudio_window_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:emissivity][:default].to_f)
         end
-        if @hash[:back_infrared_hemispherical_emissivity]
-          openstudio_window_blind.setBackSideSlatInfraredHemisphericalEmissivity(@hash[:back_infrared_hemispherical_emissivity].to_f)
+        if @hash[:emissivity_back]
+          openstudio_window_blind.setBackSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity_back].to_f)
         else
-          openstudio_window_blind.setBackSideSlatInfraredHemisphericalEmissivity(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_infrared_hemispherical_emissivity][:default].to_f)
+          openstudio_window_blind.setBackSideSlatInfraredHemisphericalEmissivity(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:back_emissivity][:default].to_f)
         end
-        if @hash[:blind_toglass_distance]
-          openstudio_window_blind.setBlindtoGlassDistance(@hash[:blind_toglass_distance].to_f)
+        if @hash[:distance_to_glass]
+          openstudio_window_blind.setBlindtoGlassDistance(@hash[:distance_to_glass].to_f)
         else
-          openstudio_window_blind.setBlindtoGlassDistance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:blind_toglass_distance][:default].to_f)
+          openstudio_window_blind.setBlindtoGlassDistance(@@schema[:definitions][:EnergyWindowMaterialBlind][:properties][:distance_to_glass][:default].to_f)
         end
         if @hash[:top_opening_multiplier]
           openstudio_window_blind.setBlindTopOpeningMultiplier(@hash[:top_opening_multiplier].to_f)

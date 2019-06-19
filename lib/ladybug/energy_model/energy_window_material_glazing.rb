@@ -46,11 +46,11 @@ module Ladybug
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGlazing'
       end
 
+      
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:type][:enum]
-        result[:spectral_dataset_name] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:optical_datatype][:default]
-        result[:thickness_glass] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:thickness_glass][:default]
+        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:thickness][:default]
         result[:solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default]
         result[:solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default]
         result[:solar_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance_back][:default]
@@ -58,9 +58,9 @@ module Ladybug
         result[:visible_reflectance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default]
         result[:visible_reflectance_back] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance_back][:default]
         result[:infrared_transmittance] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default]
-        result[:front_emissivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:front_emissivity][:default]
-        result[:back_emissivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:back_emissivity][:default]
-        result[:conductivity_glass] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:conductivity_glass][:default]
+        result[:emissivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:emissivity][:default]
+        result[:emissivity_back] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:emissivity_back][:default]
+        result[:conductivity] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:conductivity][:default]
         result[:dirt_correction] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default]
         result
       end
@@ -74,20 +74,10 @@ module Ladybug
       def create_openstudio_object(openstudio_model)
         openstudio_standard_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
         openstudio_standard_glazing.setName(@hash[:name])
-        if @hash[:optical_datatype]
-          openstudio_standard_glazing.setOpticalDataType(@hash[:optical_datatype])
+        if @hash[:thickness]
+          openstudio_standard_glazing.setThickness(@hash[:thickness])
         else
-          openstudio_standard_glazing.setOpticalDataType(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:optical_datatype][:default])
-        end
-        if @hash[:spectral_dataset_name]
-          openstudio_standard_glazing.setWindowGlassSpectralDataSetName(@hash[:spectral_dataset_name])
-        else
-          openstudio_standard_glazing.setWindowGlassSpectralDataSetName(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:spectral_dataset_name][:default])
-        end
-        if @hash[:thickness_glass]
-          openstudio_standard_glazing.setThickness(@hash[:thickness_glass])
-        else
-          openstudio_standard_glazing.setThickness(@@schema[:definitions][EnergyWindowMaterialGlazing][:thickness_glass][:default])
+          openstudio_standard_glazing.setThickness(@@schema[:definitions][EnergyWindowMaterialGlazing][:thickness][:default])
         end
         if @hash[:solar_transmittance]
           openstudio_standard_glazing.setSolarTransmittanceatNormalIncidence(@hash[:solar_transmittance])
@@ -124,18 +114,18 @@ module Ladybug
         else
           openstudio_standard_glazing.setInfraredTransmittanceatNormalIncidence(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default])
         end
-        if @hash[:front_emissivity]
-          openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:front_emissivity])
+        if @hash[:emissivity]
+          openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:emissivity])
         else
-          openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:front_emissivity][:default])
+          openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:emissivity][:default])
         end
-        if @hash[:back_emissivity]
-          openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:back_emissivity])
+        if @hash[:emissivity_back]
+          openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:emissivity_back])
         else
-          openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:back_emissivity][:default])
+          openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:emissivity_back][:default])
         end
-        if @hash[:conductivity_glass]
-          openstudio_standard_glazing.setThermalConductivity(@hash[:conductivity_glass])
+        if @hash[:conductivity]
+          openstudio_standard_glazing.setThermalConductivity(@hash[:conductivity])
         else
           openstudio_standard_glazing.setThermalConductivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:conductivity_glass][:default])
         end
@@ -144,9 +134,9 @@ module Ladybug
         else
           openstudio_standard_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default])
         end
-        if @hash[:solar_diffusing] == 'No'
+        if @hash[:solar_diffusing] == false
           openstudio_standard_glazing.setSolarDiffusing(false)
-        elsif @hash[:solar_diffusing] == 'Yes'
+        elsif @hash[:solar_diffusing] == true
           openstudio_standard_glazing.setSolarDiffusing(true)
         else
           raise "Unknown value for Solar Diffusing '#{@hash[:solar_diffusing]}'"

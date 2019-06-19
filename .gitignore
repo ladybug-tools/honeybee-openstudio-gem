@@ -25,3 +25,5 @@
 lib/measures/.rubocop.yml
 lib/measures/test_results/*
 lib/measures/*/tests/output
+
+out.txt

@@ -53,11 +53,11 @@ module Ladybug
         result[:solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:solar_reflectance][:default]
         result[:visible_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_transmittance][:default]
         result[:visible_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_reflectance][:default]
-        result[:infrared_hemispherical_emissivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:infrared_hemispherical_emissivity][:default]
+        result[:emissivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:emissivity][:default]
         result[:infrared_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:infrared_transmittance][:default]
         result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:thickness][:default]
         result[:conductivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:conductivity][:default]
-        result[:shade_toglass_distance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:shade_toglass_distance][:default]
+        result[:distance_to_glass] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:distance_to_glass][:default]
         result[:top_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:top_opening_multiplier][:default]
         result[:bottom_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:bottom_opening_multiplier][:default].to_f
         result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:left_opening_multiplier][:default]
@@ -95,10 +95,10 @@ module Ladybug
         else
           openstudio_material_shade.setVisibleReflectance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default])
         end
-        if @hash[:infrared_hemispherical_emissivity]
-          openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:infrared_hemispherical_emissivity])
+        if @hash[:emissivity]
+          openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:emissivity])
         else
-          openstudio_material_shade.setThermalHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_hemispherical_emissivity][:default])
+          openstudio_material_shade.setThermalHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:emissivity][:default])
         end
         if @hash[:infrared_transmittance]
           openstudio_material_shade.setThermalTransmittance(@hash[:infrared_transmittance])
@@ -115,8 +115,8 @@ module Ladybug
         else
           openstudio_material_shade.setConductivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:conductivity][:default])
         end
-        if @hash[:shade_toglass_distance]
-          openstudio_material_shade.setShadetoGlassDistance(@hash[:shade_toglass_distance])
+        if @hash[:distance_to_glass]
+          openstudio_material_shade.setShadetoGlassDistance(@hash[:distance_to_glass])
         else
           openstudio_material_shade.setShadetoGlassDistance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:shade_toglass_distance][:default])
         end

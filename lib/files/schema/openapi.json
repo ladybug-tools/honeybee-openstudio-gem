@@ -83,6 +83,8 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
@@ -160,7 +162,7 @@
     },
     "EnergyMaterialNoMass": {
       "title": "EnergyMaterialNoMass",
-      "description": "Used when only the thermal resistance (R value) of the material is known. Used for \nopaque construction elements.",
+      "description": "Used when only the thermal resistance (R value) of the material is known. Used for\nopaque construction elements.",
       "type": "object",
       "properties": {
         "type": {
@@ -171,6 +173,8 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
@@ -224,118 +228,213 @@
         "r_value"
       ]
     },
-    "EnergyWindowMaterialAirGap": {
-      "title": "EnergyWindowMaterialAirGap",
-      "description": "Create single layer of air gap.\n\n    Air gap can be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
+    "EnergyWindowMaterialGas": {
+      "title": "EnergyWindowMaterialGas",
+      "description": "Create single layer of gas.\n\n    Can be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
       "type": "object",
       "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "EnergyWindowMaterialAirGap"
+            "EnergyWindowMaterialGas"
           ]
         },
         "name": {
           "title": "Name",
           "default": "AIRGAP",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
-        "gastype": {
-          "title": "Gastype",
+        "gas_type": {
+          "title": "Gas_Type",
           "default": "Air",
           "enum": [
             "Air",
             "Argon",
             "Krypton",
-            "Xenon",
-            "Custom"
+            "Xenon"
           ],
           "type": "string"
         },
         "thickness": {
           "title": "Thickness",
-          "description": "Thickness of the air gap in meters. Default value is 0.0125.",
+          "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+          "default": 0.0125,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "EnergyWindowMaterialGasCustom": {
+      "title": "EnergyWindowMaterialGasCustom",
+      "description": "Create single layer of custom gas.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGasCustom"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
           "default": 0.0125,
           "exclusiveMinimum": 0,
           "type": "number"
         },
-        "conductivity_coeff_A": {
+        "conductivity_coeff_a": {
           "title": "Conductivity_Coeff_A",
-          "description": "The A coefficient for gas conductivity in W/(m-K). Used only if Gas Type is Custom.",
-          "default": 0,
+          "description": "The A coefficient for gas conductivity in W/(m-K).",
           "type": "number"
         },
-        "conductivity_coeff_B": {
+        "conductivity_coeff_b": {
           "title": "Conductivity_Coeff_B",
-          "description": "The A coefficient for gas conductivity in W/(m-K2). Used only if Gas Type is Custom.",
+          "description": "The B coefficient for gas conductivity in W/(m-K2).",
           "default": 0,
           "type": "number"
         },
-        "conductivity_coeff_C": {
+        "conductivity_coeff_c": {
           "title": "Conductivity_Coeff_C",
-          "description": "The A coefficient for gas conductivity in W/(m-K3). Used only if Gas Type is Custom.",
+          "description": "The C coefficient for gas conductivity in W/(m-K3).",
           "default": 0,
           "type": "number"
         },
-        "viscosity_coeff_A": {
+        "viscosity_coeff_a": {
           "title": "Viscosity_Coeff_A",
-          "description": "The A coefficient for gas viscosity in kg/(m-s). Used only if Gas Type is Custom.",
-          "default": 0,
+          "description": "The A coefficient for gas viscosity in kg/(m-s).",
           "exclusiveMinimum": 0,
           "type": "number"
         },
-        "viscosity_coeff_B": {
+        "viscosity_coeff_b": {
           "title": "Viscosity_Coeff_B",
-          "description": "The B coefficient for gas viscosity in kg/(m-s-K). Used only if Gas Type is Custom.",
+          "description": "The B coefficient for gas viscosity in kg/(m-s-K).",
           "default": 0,
           "type": "number"
         },
-        "viscosity_coeff_C": {
+        "viscosity_coeff_c": {
           "title": "Viscosity_Coeff_C",
-          "description": "The C coefficient for gas viscosity in kg/(m-s-K2). Used only if Gas Type is Custom.",
+          "description": "The C coefficient for gas viscosity in kg/(m-s-K2).",
           "default": 0,
           "type": "number"
         },
-        "specific_heat_coeff_A": {
+        "specific_heat_coeff_a": {
           "title": "Specific_Heat_Coeff_A",
-          "description": "The A coefficient for gas specific heat in J/(kg-K). Used only if Gas Type is Custom.",
-          "default": 0,
+          "description": "The A coefficient for gas specific heat in J/(kg-K).",
           "exclusiveMinimum": 0,
           "type": "number"
         },
-        "specific_heat_coeff_B": {
+        "specific_heat_coeff_b": {
           "title": "Specific_Heat_Coeff_B",
-          "description": "The B coefficient for gas specific heat in J/(kg-K2). Used only if Gas Type is Custom.",
+          "description": "The B coefficient for gas specific heat in J/(kg-K2).",
           "default": 0,
-          "exclusiveMinimum": 0,
           "type": "number"
         },
-        "specific_heat_coeff_C": {
+        "specific_heat_coeff_c": {
           "title": "Specific_Heat_Coeff_C",
-          "description": "The C coefficient for gas specific heat in J/(kg-K3). Used only if Gas Type is Custom.",
+          "description": "The C coefficient for gas specific heat in J/(kg-K3).",
           "default": 0,
-          "exclusiveMinimum": 0,
           "type": "number"
         },
         "specific_heat_ratio": {
           "title": "Specific_Heat_Ratio",
-          "description": "The specific heat ratio for gas. Used only if Gas Type is Custom.",
-          "default": 1,
+          "description": "The specific heat ratio for gas.",
           "exclusiveMinimum": 1,
           "type": "number"
         },
         "molecular_weight": {
           "title": "Molecular_Weight",
-          "description": "The molecular weight for gas in g/mol. Used only if Gas Type is Custom.",
-          "default": 20,
+          "description": "The molecular weight for gas in g/mol.",
           "minimum": 20,
           "maximum": 200,
           "type": "number"
         }
       },
       "required": [
-        "type"
+        "type",
+        "name",
+        "conductivity_coeff_a",
+        "viscosity_coeff_a",
+        "specific_heat_coeff_a",
+        "specific_heat_ratio",
+        "molecular_weight"
+      ]
+    },
+    "GasTypeAndFraction": {
+      "title": "GasTypeAndFraction",
+      "type": "object",
+      "properties": {
+        "gas_type": {
+          "title": "Gas_Type",
+          "enum": [
+            "Air",
+            "Argon",
+            "Krypton",
+            "Xenon"
+          ],
+          "type": "string"
+        },
+        "gas_fraction": {
+          "title": "Gas_Fraction",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "gas_type",
+        "gas_fraction"
+      ]
+    },
+    "EnergyWindowMaterialGasMixture": {
+      "title": "EnergyWindowMaterialGasMixture",
+      "description": "Create a mixture of two to four different gases to fill the panes of multiple\n    pane windows.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGasMixture"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "The thickness of the gas mixture layer in meters.",
+          "type": "number"
+        },
+        "gas_type_fraction": {
+          "title": "Gas_Type_Fraction",
+          "description": "Used to describe the type of gas and its fraction in a mixture ofgases.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GasTypeAndFraction"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "thickness",
+        "gas_type_fraction"
       ]
     },
     "EnergyWindowMaterialSimpleGlazSys": {
@@ -351,6 +450,8 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
@@ -361,11 +462,19 @@
           "maximum": 5.8,
           "type": "number"
         },
-        "SHGC": {
+        "shgc": {
           "title": "Shgc",
           "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
           "exclusiveMinimum": 0,
           "exclusiveMaximum": 1,
+          "type": "number"
+        },
+        "vt": {
+          "title": "Vt",
+          "description": "The fraction of visible light falling on the window that makes it through the glass at normal incidence.",
+          "default": 0.54,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
           "type": "number"
         }
       },
@@ -373,7 +482,7 @@
         "type",
         "name",
         "u_factor",
-        "SHGC"
+        "shgc"
       ]
     },
     "EnergyWindowMaterialBlind": {
@@ -392,12 +501,14 @@
           "enum": [
             "Horizontal",
             "Vertical",
-            "Choices including Horizontal and Vertical. Horizontal means the slats"
+            "Choices include Horizontal and Vertical. Horizontal means the slats"
           ],
           "type": "string"
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
@@ -448,16 +559,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "front_beam_solar_reflectance": {
-          "title": "Front_Beam_Solar_Reflectance",
+        "beam_solar_reflectance": {
+          "title": "Beam_Solar_Reflectance",
           "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "back_beam_solar_reflectance": {
-          "title": "Back_Beam_Solar_Reflectance",
+        "beam_solar_reflectance_back": {
+          "title": "Beam_Solar_Reflectance_Back",
           "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
@@ -472,16 +583,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "front_diffuse_solar_reflectance": {
-          "title": "Front_Diffuse_Solar_Reflectance",
+        "diffuse_solar_reflectance": {
+          "title": "Diffuse_Solar_Reflectance",
           "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "back_diffuse_solar_reflectance": {
-          "title": "Back_Diffuse_Solar_Reflectance",
+        "diffuse_solar_reflectance_back": {
+          "title": "Diffuse_Solar_Reflectance_Back",
           "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
@@ -490,22 +601,22 @@
         },
         "beam_visible_transmittance": {
           "title": "Beam_Visible_Transmittance",
-          "description": "The beam visible tranmsittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
+          "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
           "default": 0,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "front_beam_visible_reflectance": {
-          "title": "Front_Beam_Visible_Reflectance",
+        "beam_visible_reflectance": {
+          "title": "Beam_Visible_Reflectance",
           "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "back_beam_visible_reflectance": {
-          "title": "Back_Beam_Visible_Reflectance",
+        "beam_visible_reflectance_back": {
+          "title": "Beam_Visible_Reflectance_Back",
           "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
@@ -516,52 +627,52 @@
           "title": "Diffuse_Visible_Transmittance",
           "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
           "default": 0,
+          "exclusiveMaximum": 1,
           "minimum": 0,
-          "maximum": 1,
           "type": "number"
         },
-        "front_diffuse_visible_reflectance": {
-          "title": "Front_Diffuse_Visible_Reflectance",
+        "diffuse_visible_reflectance": {
+          "title": "Diffuse_Visible_Reflectance",
           "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
           "default": 0.5,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "back_diffuse_visible_reflectance": {
-          "title": "Back_Diffuse_Visible_Reflectance",
+        "diffuse_visible_reflectance_back": {
+          "title": "Diffuse_Visible_Reflectance_Back",
           "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
           "default": 0.5,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "infrared_hemispherical_transmittance": {
-          "title": "Infrared_Hemispherical_Transmittance",
-          "description": "The slat infrared transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
+        "infrared_transmittance": {
+          "title": "Infrared_Transmittance",
+          "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
           "default": 0,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "front_infrared_hemispherical_emissivity": {
-          "title": "Front_Infrared_Hemispherical_Emissivity",
+        "emissivity": {
+          "title": "Emissivity",
           "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
           "default": 0.9,
           "exclusiveMaximum": 1,
           "minimum": 0,
           "type": "number"
         },
-        "back_infrared_hemispherical_emissivity": {
-          "title": "Back_Infrared_Hemispherical_Emissivity",
+        "emissivity_back": {
+          "title": "Emissivity_Back",
           "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
           "default": 0.9,
+          "exclusiveMaximum": 1,
           "minimum": 9,
-          "maximum": 1,
           "type": "number"
         },
-        "blind_toglass_distance": {
-          "title": "Blind_Toglass_Distance",
+        "distance_to_glass": {
+          "title": "Distance_To_Glass",
           "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
           "default": 0.05,
           "minimum": 0.01,
@@ -578,8 +689,8 @@
         },
         "bottom_opening_multiplier": {
           "title": "Bottom_Opening_Multiplier",
-          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.5.",
-          "default": 0.5,
+          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
+          "default": 0,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
@@ -636,28 +747,13 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
-        "optical_datatype": {
-          "title": "Optical_Datatype",
-          "default": "SpectralAverage",
-          "enum": [
-            "Spectral",
-            "SpectralAverage",
-            "BSDF",
-            "SpectralAngle"
-          ],
-          "type": "string"
-        },
-        "spectral_dataset_name": {
-          "title": "Spectral_Dataset_Name",
-          "description": "Used to specify name of the spectral data set if optical data type = Spectral.",
-          "default": "",
-          "type": "string"
-        },
-        "thickness_glass": {
-          "title": "Thickness_Glass",
+        "thickness": {
+          "title": "Thickness",
           "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
           "default": 0.003,
           "exclusiveMinimum": 0,
@@ -665,16 +761,16 @@
         },
         "solar_transmittance": {
           "title": "Solar_Transmittance",
-          "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.",
-          "default": 0,
+          "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
+          "default": 0.85,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
         "solar_reflectance": {
           "title": "Solar_Reflectance",
-          "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.",
-          "default": 0,
+          "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
+          "default": 0.075,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
@@ -682,21 +778,20 @@
         "solar_reflectance_back": {
           "title": "Solar_Reflectance_Back",
           "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
-          "default": 0,
           "type": "number"
         },
         "visible_transmittance": {
           "title": "Visible_Transmittance",
-          "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.",
-          "default": 0,
+          "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
+          "default": 0.9,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
         "visible_reflectance": {
           "title": "Visible_Reflectance",
-          "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.",
-          "default": 0,
+          "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
+          "default": 0.075,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
@@ -704,33 +799,36 @@
         "visible_reflectance_back": {
           "title": "Visible_Reflectance_Back",
           "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
-          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
           "type": "number"
         },
         "infrared_transmittance": {
           "title": "Infrared_Transmittance",
           "description": "Long-wave transmittance at normal incidence.",
           "default": 0,
+          "minimum": 0,
+          "maximum": 1,
           "type": "number"
         },
-        "front_emissivity": {
-          "title": "Front_Emissivity",
+        "emissivity": {
+          "title": "Emissivity",
           "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
           "default": 0.84,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
-        "back_emissivity": {
-          "title": "Back_Emissivity",
+        "emissivity_back": {
+          "title": "Emissivity_Back",
           "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
           "default": 0.84,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
-        "conductivity_glass": {
-          "title": "Conductivity_Glass",
+        "conductivity": {
+          "title": "Conductivity",
           "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
           "default": 0.9,
           "exclusiveMinimum": 0,
@@ -744,12 +842,9 @@
         },
         "solar_diffusing": {
           "title": "Solar_Diffusing",
-          "default": "No",
-          "enum": [
-            "No",
-            "Yes"
-          ],
-          "type": "string"
+          "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
+          "default": false,
+          "type": "boolean"
         }
       },
       "required": [
@@ -770,6 +865,8 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
@@ -793,9 +890,9 @@
           "title": "Visible_Transmittance",
           "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
           "default": 0.4,
-          "type": "number",
           "exclusiveMaximum": 1,
-          "minimum": 0
+          "minimum": 0,
+          "type": "number"
         },
         "visible_reflectance": {
           "title": "Visible_Reflectance",
@@ -805,9 +902,9 @@
           "minimum": 0,
           "type": "number"
         },
-        "infrared_hemispherical_emissivity": {
-          "title": "Infrared_Hemispherical_Emissivity",
-          "description": "The effective long-wave emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
+        "emissivity": {
+          "title": "Emissivity",
+          "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
           "default": 0.9,
           "exclusiveMinimum": 0,
           "exclusiveMaximum": 1,
@@ -835,8 +932,8 @@
           "exclusiveMinimum": 0,
           "type": "number"
         },
-        "shade_toglass_distance": {
-          "title": "Shade_Toglass_Distance",
+        "distance_to_glass": {
+          "title": "Distance_To_Glass",
           "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
           "default": 0.05,
           "minimum": 0.001,
@@ -845,32 +942,32 @@
         },
         "top_opening_multiplier": {
           "title": "Top_Opening_Multiplier",
-          "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.",
-          "default": 0,
+          "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
         "bottom_opening_multiplier": {
           "title": "Bottom_Opening_Multiplier",
-          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.",
-          "default": 0,
+          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
         "left_opening_multiplier": {
           "title": "Left_Opening_Multiplier",
-          "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.",
-          "default": 0,
+          "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
         },
         "right_opening_multiplier": {
           "title": "Right_Opening_Multiplier",
-          "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.",
-          "default": 0,
+          "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
           "minimum": 0,
           "maximum": 1,
           "type": "number"
@@ -1367,7 +1464,7 @@
         },
         "energy_construction_opaque": {
           "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the walls, roofs, floors, \nand doors of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -1378,6 +1475,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -1385,6 +1484,7 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 10,
               "type": "array",
               "items": {
                 "anyOf": [
@@ -1406,7 +1506,7 @@
         },
         "energy_construction_transparent": {
           "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the windows of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -1417,6 +1517,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -1424,11 +1526,18 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 8,
               "type": "array",
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/EnergyWindowMaterialAirGap"
+                    "$ref": "#/definitions/EnergyWindowMaterialGas"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
                   },
                   {
                     "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
@@ -1690,7 +1799,7 @@
         },
         "energy_construction_opaque": {
           "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the walls, roofs, floors, \nand doors of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -1701,6 +1810,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -1708,6 +1819,7 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 10,
               "type": "array",
               "items": {
                 "anyOf": [
@@ -1729,7 +1841,7 @@
         },
         "energy_construction_transparent": {
           "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the windows of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -1740,6 +1852,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -1747,11 +1861,18 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 8,
               "type": "array",
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/EnergyWindowMaterialAirGap"
+                    "$ref": "#/definitions/EnergyWindowMaterialGas"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
                   },
                   {
                     "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
@@ -2218,7 +2339,7 @@
         },
         "energy_construction_opaque": {
           "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the walls, roofs, floors, \nand doors of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -2229,6 +2350,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -2236,6 +2359,7 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 10,
               "type": "array",
               "items": {
                 "anyOf": [
@@ -2257,7 +2381,7 @@
         },
         "energy_construction_transparent": {
           "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for \nthe building envelope and interior elements that is the windows of the building.",
+          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
           "type": "object",
           "properties": {
             "type": {
@@ -2268,6 +2392,8 @@
             },
             "name": {
               "title": "Name",
+              "maxLength": 100,
+              "minLength": 1,
               "pattern": "^[\\s.A-Za-z0-9_-]*$",
               "type": "string"
             },
@@ -2275,11 +2401,18 @@
               "title": "Materials",
               "description": "List of materials. The order of the materials is from outside to inside.",
               "minItems": 1,
+              "maxItems": 8,
               "type": "array",
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/EnergyWindowMaterialAirGap"
+                    "$ref": "#/definitions/EnergyWindowMaterialGas"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
+                  },
+                  {
+                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
                   },
                   {
                     "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"

@@ -30,7 +30,9 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_window_material_air_gap'
+require 'ladybug/energy_model/energy_window_material_gas'
+require 'ladybug/energy_model/energy_window_material_gas_custom'
+require 'ladybug/energy_model/energy_window_material_gas_mixture'
 require 'ladybug/energy_model/energy_window_material_simpleglazsys'
 require 'ladybug/energy_model/energy_window_material_blind'
 require 'ladybug/energy_model/energy_window_material_glazing'
@@ -83,8 +85,12 @@ module Ladybug
           material_object = nil
 
           case material_type
-          when 'EnergyWindowMaterialAirGap'
-            material_object = EnergyWindowMaterialAirGap.new(material)
+          when 'EnergyWindowMaterialGas'
+            material_object = EnergyWindowMaterialGas.new(material)
+          when 'EnergyWindowMaterialGasCustom'
+            material_object = EnergyWindowMaterialGasCustom.new(material)
+          when 'EnergyWindowMaterialGasMixture'
+            material_object = EnergyWindowMaterialGasMixture.new(material)
           when 'EnergyWindowMaterialSimpleGlazSys'
             material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
           when 'EnergyWindowMaterialBlind'
