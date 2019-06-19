@@ -80,39 +80,38 @@ RSpec.describe Ladybug::EnergyModel do
   end
 
   it 'can load and validate example face by face model' do
-    
     file = File.join(File.dirname(__FILE__), '../files/example_model.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
-    
+
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
-    
+
     openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 6
-    
+
     openstudio_sub_surfaces = openstudio_model.getSubSurfaces
     expect(openstudio_sub_surfaces.size).to eq 1
-    
+
     openstudio_surface = openstudio_model.getSurfaceByName('ceiling')
     expect(openstudio_surface.empty?).to be false
-    
+
     openstudio_surface = openstudio_surface.get
     expect(openstudio_surface.nameString).to eq 'ceiling'
-    
+
     openstudio_sub_surfaces = openstudio_surface.subSurfaces
     expect(openstudio_sub_surfaces.size).to eq 0
-    
+
     openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'south_room'
-    
+
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
     expect(openstudio_vertices.size).to be >= 3
-    
+
     openstudio_construction = openstudio_surface.construction
     expect(openstudio_construction.empty?).to be false
     openstudio_construction = openstudio_construction.get

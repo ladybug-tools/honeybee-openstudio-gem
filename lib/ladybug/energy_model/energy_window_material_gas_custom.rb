@@ -70,7 +70,6 @@ module Ladybug
         if @hash[:conductivity_coeff_b]
           openstudio_window_gas_custom.setConductivityCoefficientB(@hash[:conductivity_coeff_b].to_f)
         else
-          #puts "1 = #{@@schema[:definitions][:EnergyWindowMaterialGasCustom]}"
           openstudio_window_gas_custom.setConductivityCoefficientB(@@schema[:definitions][:EnergyWindowMaterialGasCustom][:properties][:conductivity_coeff_b][:default].to_f)
         end
         if @hash[:conductivity_coeff_c]
@@ -104,9 +103,6 @@ module Ladybug
         openstudio_window_gas_custom.setMolecularWeight(@hash[:molecular_weight].to_f)
         openstudio_window_gas_custom
       end
-    end #EnergyWindowMaterialGasCustom
-  end #EnergyModel
-end #Ladybug
-
-
-
+    end # EnergyWindowMaterialGasCustom
+  end # EnergyModel
+end # Ladybug

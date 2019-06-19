@@ -46,7 +46,6 @@ module Ladybug
         raise "Incorrect model type '#{@type}'" unless @type == 'EnergyWindowMaterialGlazing'
       end
 
-      
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:EnergyWindowMaterialGlazing][:properties][:type][:enum]

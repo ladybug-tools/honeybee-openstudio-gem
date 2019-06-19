@@ -45,7 +45,7 @@ module Ladybug
 
         raise "Incorrect model type '#{@type}'" unless @type == 'Aperture'
       end
-      
+
       def defaults
         result = {}
         result[:type] = @@schema[:definitions][:Aperture][:properties][:type][:enum]
@@ -78,7 +78,7 @@ module Ladybug
             construction = construction_transparent.get
           end
         end
-        
+
         openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
         openstudio_subsurface.setName(@hash[:name])
         openstudio_subsurface.setSubSurfaceType(@hash[:face_type])

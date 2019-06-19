@@ -116,10 +116,9 @@ module Ladybug
         # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
-        #if air_wall
-          # DLM: todo
-        #end
-        
+        # if air_wall
+        # DLM: todo
+        # end
       end
     end # Model
   end # EnergyModel

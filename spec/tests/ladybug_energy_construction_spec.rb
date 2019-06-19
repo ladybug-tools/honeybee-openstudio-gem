@@ -79,14 +79,14 @@ RSpec.describe Ladybug::EnergyModel do
     expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
   end
 
-  #it 'can load and validate example face by face model' do
+  # it 'can load and validate example face by face model' do
   #  file = File.join(File.dirname(__FILE__), '../files/example_model.json')
   #  model = Ladybug::EnergyModel::Model.read_from_disk(file)
   #  expect(model.valid?).to be true
   #  expect(model.validation_errors.empty?).to be true
   #  openstudio_model = model.to_openstudio_model
   #  expect(openstudio_model.getSurfaceByName('floor').empty?).not_to be true
-  #end
+  # end
 
   it 'can load and validate opaque construction' do
     openstudio_model = OpenStudio::Model::Model.new
@@ -206,7 +206,6 @@ RSpec.describe Ladybug::EnergyModel do
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
-
 
   it 'can load and validate energy window material simple glazing system' do
     openstudio_model = OpenStudio::Model::Model.new

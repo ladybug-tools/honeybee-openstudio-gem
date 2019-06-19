@@ -58,7 +58,7 @@ module Ladybug
 
       def find_existing_openstudio_object(openstudio_model)
         model_surf = openstudio_model.getSurfaceByName(@hash[:name])
-        return model_surf.get if !model_surf.empty?
+        return model_surf.get unless model_surf.empty?
         nil
       end
 
@@ -81,7 +81,6 @@ module Ladybug
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
         openstudio_surface.setSpace(space)
-
 
         construction_opaque = @hash[:energy_construction_opaque]
         openstudio_construction = nil

@@ -55,20 +55,19 @@ module Ladybug
       def find_existing_openstudio_object(openstudio_model)
         object = openstudio_model.getGasMixtureByName(@hash[:name])
         return object.get if object.is_initialized
-        nil 
+        nil
       end
 
       def create_openstudio_object(openstudio_model)
         openstudio_window_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
         openstudio_window_gas_mixture.setName(@hash[:name])
-        #puts @hash
         openstudio_window_gas_mixture.setThickness(@hash[:thickness])
         openstudio_window_gas_mixture.setGas1Type(@hash[:gas_type_fraction][0][:gas_type])
         openstudio_window_gas_mixture.setGas1Fraction(@hash[:gas_type_fraction][0][:gas_fraction])
         if @hash[:gas_type_fraction][1]
           openstudio_window_gas_mixture.setGas2Type(@hash[:gas_type_fraction][1][:gas_type])
           openstudio_window_gas_mixture.setGas2Fraction(@hash[:gas_type_fraction][1][:gas_fraction])
-        else 
+        else
           return openstudio_window_gas_mixture
         end
         if @hash[:gas_type_fraction][2]
@@ -85,7 +84,6 @@ module Ladybug
         end
         openstudio_window_gas_mixture
       end
-
-    end #EnergyWindowMaterialGasMixture
-  end #EnergyModel
-end #Ladybug
+    end # EnergyWindowMaterialGasMixture
+  end # EnergyModel
+end # Ladybug
