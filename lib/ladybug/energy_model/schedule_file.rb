@@ -29,21 +29,33 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/version'
-require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/energy_construction_opaque'
-require 'ladybug/energy_model/energy_construction_transparent'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/model'
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/schedule_ruleset'
+
+require 'json-schema'
+require 'json'
+require 'openstudio'
+
+module Ladybug
+  module EnergyModel
+    class ScheduleFile < ModelObject
+      attr_reader :errors, :warnings
+
+      def initialize(hash = {})
+        super(hash)
+
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+      
+      def find_existing_openstudio_object(openstudio_model)
+      end
+
+      def create_openstudio_object(openstudio_model)
+      end
+      
+    end # Schedule File 
+  end # EnergyModel
+end # Ladybug

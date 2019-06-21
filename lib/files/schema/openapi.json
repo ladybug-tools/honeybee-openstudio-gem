@@ -1918,6 +1918,322 @@
         "type"
       ]
     },
+    "ScheduleContinuous": {
+      "title": "ScheduleContinuous",
+      "description": "This Numeric Type allows all numbers, including fractional amounts, within the range to\n  be valid.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleContinuous"
+          ]
+        },
+        "schedule_continuous": {
+          "title": "Schedule_Continuous",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ScheduleDiscrete": {
+      "title": "ScheduleDiscrete",
+      "description": "This Numeric Type allows  only integers within the range to be valid.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleDiscrete"
+          ]
+        },
+        "schedule_discrete": {
+          "title": "Schedule_Discrete",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ScheduleNumericType": {
+      "title": "ScheduleNumericType",
+      "description": "Designates how the range values are validated.",
+      "type": "object",
+      "properties": {
+        "numeric_type": {
+          "title": "Numeric_Type",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ScheduleContinuous"
+            },
+            {
+              "$ref": "#/definitions/ScheduleDiscrete"
+            }
+          ]
+        }
+      },
+      "required": [
+        "numeric_type"
+      ]
+    },
+    "ScheduleTypeLimits": {
+      "title": "ScheduleTypeLimits",
+      "description": "Specifies the data types and limits for values contained in schedules.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleTypeLimits"
+          ]
+        },
+        "numeric_type": {
+          "$ref": "#/definitions/ScheduleNumericType"
+        },
+        "unit_type": {
+          "title": "Unit_Type",
+          "enum": [
+            "Dimensionless",
+            "Temperature",
+            "DeltaTemperature",
+            "PrecipitationRate",
+            "Angle",
+            "ConvectionCoefficient",
+            "ActivityLevel",
+            "Velocity",
+            "Capacity",
+            "Power",
+            "Availability",
+            "Percent",
+            "Control",
+            "Mode"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "lower_limit_value": {
+          "title": "Lower_Limit_Value",
+          "description": "Lower limit for the schedule type is entered.",
+          "default": 0,
+          "type": "number"
+        },
+        "upper_limit_value": {
+          "title": "Upper_Limit_Value",
+          "description": "Upper limit for the schedule type is entered.",
+          "default": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "numeric_type",
+        "unit_type",
+        "name"
+      ]
+    },
+    "Time": {
+      "title": "Time",
+      "description": "Time.",
+      "type": "object",
+      "properties": {
+        "hour": {
+          "title": "Hour",
+          "description": "A value for hour between `0`-`24`. Default is `0`.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 24,
+          "type": "integer"
+        },
+        "minute": {
+          "title": "Minute",
+          "description": "A value for month between `0`-`60`. Default is `0`.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 60,
+          "type": "integer"
+        }
+      }
+    },
+    "DayValue": {
+      "title": "DayValue",
+      "description": "Values for daily schedule",
+      "type": "object",
+      "properties": {
+        "time": {
+          "$ref": "#/definitions/Time"
+        },
+        "value_until_time": {
+          "title": "Value_Until_Time",
+          "type": "number"
+        }
+      },
+      "required": [
+        "time",
+        "value_until_time"
+      ]
+    },
+    "ScheduleDay": {
+      "title": "ScheduleDay",
+      "description": "Used to describe the daily schedule for a single simulation day.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleDay"
+          ]
+        },
+        "day_values": {
+          "title": "Day_Values",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DayValue"
+          }
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "interpolate_to_timestep": {
+          "title": "Interpolate_To_Timestep",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "day_values",
+        "name"
+      ]
+    },
+    "Date": {
+      "title": "Date",
+      "description": "Date.",
+      "type": "object",
+      "properties": {
+        "month": {
+          "title": "Month",
+          "description": "A value for month between `1`-`12`. Default is `1`.",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 12,
+          "type": "integer"
+        },
+        "day": {
+          "title": "Day",
+          "description": "A value for day between `1`-`31`. Default is `1`.",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 31,
+          "type": "integer"
+        }
+      }
+    },
+    "DateTime": {
+      "title": "DateTime",
+      "description": "DateTime.",
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/definitions/Date"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        },
+        "is_leap_year": {
+          "title": "Is_Leap_Year",
+          "description": "A boolean to indicate if datetime is for a leap year. Default is `false`.",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "date",
+        "time"
+      ]
+    },
+    "ScheduleRule": {
+      "title": "ScheduleRule",
+      "description": "A set of rules assigned to schedule ruleset for specific periods of time and for\n  particular days of the week according to a priority sequence.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleRule"
+          ]
+        },
+        "schedule_day": {
+          "$ref": "#/definitions/ScheduleDay"
+        },
+        "apply_sunday": {
+          "title": "Apply_Sunday",
+          "type": "boolean"
+        },
+        "apply_monday": {
+          "title": "Apply_Monday",
+          "type": "boolean"
+        },
+        "apply_tuesday": {
+          "title": "Apply_Tuesday",
+          "type": "boolean"
+        },
+        "apply_wednesday": {
+          "title": "Apply_Wednesday",
+          "type": "boolean"
+        },
+        "apply_thursday": {
+          "title": "Apply_Thursday",
+          "type": "boolean"
+        },
+        "apply_friday": {
+          "title": "Apply_Friday",
+          "type": "boolean"
+        },
+        "apply_saturday": {
+          "title": "Apply_Saturday",
+          "type": "boolean"
+        },
+        "apply_holiday": {
+          "title": "Apply_Holiday",
+          "type": "boolean"
+        },
+        "start_period": {
+          "$ref": "#/definitions/DateTime"
+        },
+        "end_period": {
+          "$ref": "#/definitions/DateTime"
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "schedule_day",
+        "apply_sunday",
+        "apply_monday",
+        "apply_tuesday",
+        "apply_wednesday",
+        "apply_thursday",
+        "apply_friday",
+        "apply_saturday",
+        "apply_holiday",
+        "start_period",
+        "end_period",
+        "name"
+      ]
+    },
     "Parent": {
       "title": "Parent",
       "description": "Parent zone information",
@@ -1933,6 +2249,119 @@
           "title": "Name",
           "pattern": "^[.A-Za-z0-9_-]*$",
           "type": "string"
+        },
+        "schedule_ruleset": {
+          "title": "ScheduleRuleset",
+          "description": "Used to define a schedule for a default day, further described by ScheduleRule.",
+          "type": "object",
+          "properties": {
+            "type": {
+              "title": "Type",
+              "enum": [
+                "ScheduleRuleset"
+              ]
+            },
+            "schedule_type_limits": {
+              "$ref": "#/definitions/ScheduleTypeLimits"
+            },
+            "default_day_schedule": {
+              "$ref": "#/definitions/ScheduleDay"
+            },
+            "summer_designday_schedule": {
+              "$ref": "#/definitions/ScheduleDay"
+            },
+            "winter_designday_schedule": {
+              "$ref": "#/definitions/ScheduleDay"
+            },
+            "schedule_rules": {
+              "title": "Schedule_Rules",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ScheduleRule"
+              }
+            },
+            "name": {
+              "title": "Name",
+              "pattern": "^[\\s.A-Za-z0-9_-]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "schedule_type_limits",
+            "default_day_schedule",
+            "summer_designday_schedule",
+            "winter_designday_schedule",
+            "schedule_rules",
+            "name"
+          ]
+        },
+        "schedule_file": {
+          "title": "ScheduleFile",
+          "description": "A list of values used to create a .csv file for the entire year or a period of\n  analysis within the year.",
+          "type": "object",
+          "properties": {
+            "type": {
+              "title": "Type",
+              "enum": [
+                "ScheduleFile"
+              ]
+            },
+            "numeric_type": {
+              "$ref": "#/definitions/ScheduleNumericType"
+            },
+            "name": {
+              "title": "Name",
+              "pattern": "^[\\s.A-Za-z0-9_-]*$",
+              "type": "string"
+            },
+            "start_day_of_year": {
+              "title": "Start_Day_Of_Year",
+              "description": "Used to define the start day for the analysis period.",
+              "minimum": 1,
+              "maximum": 366,
+              "type": "integer"
+            },
+            "values": {
+              "title": "Values",
+              "description": "A list of hourly values for the simulation.",
+              "minItems": 24,
+              "maxItems": 8784,
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "unit_type": {
+              "title": "Unit_Type",
+              "description": "Units for the hourly values for simulation. The default value isDimensionless for a fractional schedule.",
+              "default": "Dimensionless",
+              "enum": [
+                "Dimensionless",
+                "Temperature",
+                "DeltaTemperature",
+                "PrecipitationRate",
+                "Angle",
+                "ConvectionCoefficient",
+                "ActivityLevel",
+                "Velocity",
+                "Capacity",
+                "Power",
+                "Availability",
+                "Percent",
+                "Control",
+                "Mode"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "numeric_type",
+            "name",
+            "start_day_of_year",
+            "values"
+          ]
         }
       },
       "required": [

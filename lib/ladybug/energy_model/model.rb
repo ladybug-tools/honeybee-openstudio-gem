@@ -68,7 +68,7 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        JSON::Validator.validate(@hash, @@schema)
+        return validation_errors.empty?
       end
 
       # return detailed model validation errors

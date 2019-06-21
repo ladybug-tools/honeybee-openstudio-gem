@@ -29,21 +29,49 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/version'
-require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/energy_construction_opaque'
-require 'ladybug/energy_model/energy_construction_transparent'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/model'
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/schedule_ruleset'
+require_relative '../spec_helper'
+
+RSpec.describe Ladybug::EnergyModel do
+  it 'has a version number' do
+    expect(Ladybug::EnergyModel::VERSION).not_to be nil
+  end
+
+  it 'has a measures directory' do
+    extension = Ladybug::EnergyModel::Extension.new
+    expect(File.exist?(extension.measures_dir)).to be true
+  end
+
+  it 'has a files directory' do
+    extension = Ladybug::EnergyModel::Extension.new
+    expect(File.exist?(extension.files_dir)).to be true
+  end
+
+  it 'has a valid schema' do
+    extension = Ladybug::EnergyModel::Extension.new
+    expect(extension.schema.nil?).to be false
+    expect(extension.schema_valid?).to be true
+    expect(extension.schema_validation_errors.empty?).to be true
+  end
+
+  it 'can load and validate example schedule ruleset' do 
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/schedule_ruleset.json')
+    model = Ladybug::EnergyModel::ScheduleRuleset.read_from_disk(file)
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
+    openstudio_model = model.to_openstudio(openstudio_model)
+    expect(openstudio_model).not_to be nil
+  end
+
+  it 'can load and validate example schedule ruleset 1' do 
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/schedule_ruleset_1.json')
+    model = Ladybug::EnergyModel::ScheduleRuleset.read_from_disk(file)
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
+    openstudio_model = model.to_openstudio(openstudio_model)
+    expect(openstudio_model).not_to be nil
+  end
+
+
+end

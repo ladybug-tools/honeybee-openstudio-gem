@@ -49,8 +49,6 @@ module Ladybug
 
       def initialize(hash = {})
         super(hash)
-
-        raise "Incorrect model type '#{@type}'" unless @type == 'EnergyConstructionTransparent'
       end
 
       def defaults

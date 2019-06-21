@@ -42,8 +42,6 @@ module Ladybug
 
       def initialize(hash)
         super(hash)
-
-        raise "Incorrect model type '#{@type}'" unless @type == 'ShadeFace'
       end
 
       def find_existing_openstudio_object(openstudio_model)

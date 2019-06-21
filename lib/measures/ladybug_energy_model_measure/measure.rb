@@ -89,10 +89,8 @@ class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
       # runner.registerError("File '#{ladybug_json}' is not valid")
       # return false
     end
-    puts 'lets go!'
     STDOUT.flush
     ladybug_model.to_openstudio_model(model)
-    puts 'done!'
     STDOUT.flush
     return true
   end
