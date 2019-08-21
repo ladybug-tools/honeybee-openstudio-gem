@@ -63,7 +63,6 @@ module Ladybug
       def create_openstudio_object(openstudio_model)       
         openstudio_vertices = OpenStudio::Point3dVector.new
         vertices_set = @hash[:properties][:geometry][:boundary][0]
-        puts vertices_set
         #openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         
 
