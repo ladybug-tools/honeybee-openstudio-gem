@@ -51,8 +51,6 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:Face][:properties][:type][:enum]
-        result[:apertures] = []
         result
       end
 
@@ -62,42 +60,62 @@ module Ladybug
         nil
       end
 
-      def create_openstudio_object(openstudio_model)
+      def create_openstudio_object(openstudio_model)       
         openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:vertices].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x], vertex[:y], vertex[:z])
+        vertices_set = @hash[:properties][:geometry][:boundary][0]
+        puts vertices_set
+        #openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        
+
+        if @hash[:properties][:energy][:construction]
+          construction_name = @hash[:properties][:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_name).get
         end
 
-        parent_name = @hash[:parent][:name]
-        space = openstudio_model.getSpaceByName(parent_name)
-        if space.empty?
-          space = OpenStudio::Model::Space.new(openstudio_model)
-          space.setName(parent_name)
-        else
-          space = space.get
-        end
+        #parent_name = @hash[:parent][:name]
+        #space = openstudio_model.getSpaceByName(parent_name)
+        #if space.empty?
+        #  space = OpenStudio::Model::Space.new(openstudio_model)
+        #  space.setName(parent_name)
+        #else
+        #  space = space.get
+        #end
 
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setSpace(space)
+        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition])
+        openstudio_surface.setConstruction(construction)
+        #openstudio_surface.setSpace(space)
 
-        construction_opaque = @hash[:energy_construction_opaque]
-        openstudio_construction = nil
-        if construction_opaque
-          construction_object = EnergyConstructionOpaque.new(construction_opaque)
-          openstudio_construction = construction_object.to_openstudio(openstudio_model)
-          openstudio_surface.setConstruction(openstudio_construction)
+       
+        #openstudio_construction = nil
+        #if construction
+        #  construction_object = EnergyConstructionOpaque.new(construction_opaque)
+        #  openstudio_construction = construction_object.to_openstudio(openstudio_model)
+        #  openstudio_surface.setConstruction(openstudio_construction)
+        #end
+
+
+        if @hash[:apertures]
+          @hash[:apertures].each do |aperture|
+            aperture = Aperture.new(aperture)
+            openstudio_subsurface_aperture = aperture.to_openstudio(openstudio_model)
+            openstudio_subsurface_aperture.setSurface(openstudio_surface)
+          end
         end
 
-        @hash[:apertures].each do |aperture|
-          aperture = Aperture.new(aperture)
-          openstudio_subsurface = aperture.to_openstudio(openstudio_model)
-          openstudio_subsurface.setSurface(openstudio_surface)
+        if @hash[:doors]
+          @hash[:doors].each do |door|
+            door = Door.new(door)
+            openstudio_subsurface_door = door.to_openstudio(openstudio_model)
+            openstudio_subsurface_door.setSurface(openstudio_surface)
+          end
         end
 
         openstudio_surface
       end
+
     end # Face
   end # EnergyModel
 end # Ladybug

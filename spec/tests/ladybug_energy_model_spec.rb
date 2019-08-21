@@ -79,8 +79,8 @@ RSpec.describe Ladybug::EnergyModel do
     expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
   end
 
-  it 'can load and validate example face by face model' do
-    file = File.join(File.dirname(__FILE__), '../files/example_model.json')
+  it 'can load and validate example model' do
+    file = File.join(File.dirname(__FILE__), '../files/model_single_zone_tiny_house.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true

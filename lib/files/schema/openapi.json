@@ -1,6 +1,5 @@
 {
   "title": "Model",
-  "description": "Face by Face Model Schema",
   "type": "object",
   "properties": {
     "type": {
@@ -9,65 +8,187 @@
         "Model"
       ]
     },
+    "properties": {
+      "$ref": "#/definitions/ModelProperties"
+    },
     "name": {
       "title": "Name",
-      "description": "Model name",
-      "pattern": "^[.A-Za-z0-9_-]*$",
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "[A-Za-z0-9_-]",
       "type": "string"
     },
-    "convert_to_meters": {
-      "title": "Convert_To_Meters",
-      "description": "Value to use to convert the current model into meters",
-      "default": 1,
-      "type": "number"
+    "display_name": {
+      "title": "Display_Name",
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[\\s.A-Za-z0-9_-]*$",
+      "type": "string"
     },
-    "faces": {
-      "title": "Faces",
-      "description": "List of model faces, can be of type Face or ShadeFace",
-      "default": [],
+    "rooms": {
+      "title": "Rooms",
       "type": "array",
       "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/Face"
-          },
-          {
-            "$ref": "#/definitions/ShadeFace"
-          }
-        ]
+        "$ref": "#/definitions/Room"
       }
+    },
+    "orphaned_faces": {
+      "title": "Orphaned_Faces",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Face"
+      }
+    },
+    "orphaned_shades": {
+      "title": "Orphaned_Shades",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Shade"
+      }
+    },
+    "orphaned_apertures": {
+      "title": "Orphaned_Apertures",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Aperture"
+      }
+    },
+    "orphaned_doors": {
+      "title": "Orphaned_Doors",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Door"
+      }
+    },
+    "north_angle": {
+      "title": "North_Angle",
+      "exclusiveMaximum": 360,
+      "minimum": 0,
+      "type": "number"
     }
   },
   "required": [
     "type",
+    "properties",
     "name"
   ],
   "definitions": {
-    "Vertex": {
-      "title": "Vertex",
-      "description": "Individual Vertex Schema",
+    "OpaqueConstructionAbridged": {
+      "title": "OpaqueConstructionAbridged",
+      "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
       "type": "object",
       "properties": {
-        "x": {
-          "title": "X",
-          "description": "X coordinate of the vertex",
+        "type": {
+          "title": "Type",
+          "enum": [
+            "OpaqueConstructionAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "layers": {
+          "title": "Layers",
+          "description": "List of materials. The order of the materials is from outside to inside.",
+          "minItems": 1,
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[\\s.A-Za-z0-9_-]*$",
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "layers"
+      ]
+    },
+    "WindowConstructionAbridged": {
+      "title": "WindowConstructionAbridged",
+      "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "WindowConstructionAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "layers": {
+          "title": "Layers",
+          "description": "List of materials. The order of the materials is from outside to inside.",
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[\\s.A-Za-z0-9_-]*$",
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "layers"
+      ]
+    },
+    "ShadeConstruction": {
+      "title": "ShadeConstruction",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadeConstruction"
+          ]
+        },
+        "is_specular": {
+          "title": "Is_Specular",
+          "type": "boolean"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "solar_reflectance": {
+          "title": "Solar_Reflectance",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
           "type": "number"
         },
-        "y": {
-          "title": "Y",
-          "description": "y coordinate of the vertex",
-          "type": "number"
-        },
-        "z": {
-          "title": "Z",
-          "description": "z coordinate of the vertex",
+        "visible_reflectance": {
+          "title": "Visible_Reflectance",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
           "type": "number"
         }
       },
       "required": [
-        "x",
-        "y",
-        "z"
+        "type",
+        "is_specular",
+        "name"
       ]
     },
     "EnergyMaterial": {
@@ -986,1908 +1107,1092 @@
         "name"
       ]
     },
-    "Transparent": {
-      "title": "Transparent",
-      "description": "Transparent Material Schema",
+    "WallSetAbridged": {
+      "title": "WallSetAbridged",
+      "description": "A set of constructions for wall assemblies.",
       "type": "object",
       "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "Transparent"
+            "WallSetAbridged"
           ]
         },
-        "name": {
-          "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
-        "transmittance": {
-          "title": "Transmittance",
-          "minimum": 0,
-          "maximum": 1,
-          "type": "number"
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
         }
       },
       "required": [
-        "type",
-        "name",
-        "transmittance"
+        "type"
       ]
     },
-    "Glass": {
-      "title": "Glass",
-      "description": "Glass Material Schema",
+    "FloorSetAbridged": {
+      "title": "FloorSetAbridged",
+      "description": "A set of constructions for floor assemblies.",
       "type": "object",
       "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "Glass"
+            "FloorSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "RoofCeilingSetAbridged": {
+      "title": "RoofCeilingSetAbridged",
+      "description": "A set of constructions for roof and ceiling assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoofCeilingSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ApertureSetAbridged": {
+      "title": "ApertureSetAbridged",
+      "description": "A set of constructions for aperture assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ApertureSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "window_construction": {
+          "title": "Window_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "skylight_construction": {
+          "title": "Skylight_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "operable_construction": {
+          "title": "Operable_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "DoorSetAbridged": {
+      "title": "DoorSetAbridged",
+      "description": "A set of constructions for door assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "DoorSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "overhead_construction": {
+          "title": "Overhead_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "exterior_glass_construction": {
+          "title": "Exterior_Glass_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "interior_glass_construction": {
+          "title": "Interior_Glass_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ConstructionSetAbridged": {
+      "title": "ConstructionSetAbridged",
+      "description": "A set of constructions for different surface types and boundary conditions.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ConstructionSetAbridged"
           ]
         },
         "name": {
           "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
-        "r_transmittance": {
-          "title": "R_Transmittance",
-          "minimum": 0,
-          "maximum": 1,
-          "type": "number"
+        "wall_set": {
+          "$ref": "#/definitions/WallSetAbridged"
         },
-        "g_transmittance": {
-          "title": "G_Transmittance",
-          "minimum": 0,
-          "maximum": 1,
-          "type": "number"
+        "floor_set": {
+          "$ref": "#/definitions/FloorSetAbridged"
         },
-        "b_transmittance": {
-          "title": "B_Transmittance",
-          "minimum": 0,
-          "maximum": 1,
-          "type": "number"
+        "roof_ceiling_set": {
+          "$ref": "#/definitions/RoofCeilingSetAbridged"
         },
-        "refraction_index": {
-          "title": "Refraction_Index",
-          "minimum": 0,
-          "maximum": 5,
-          "type": "number"
+        "aperture_set": {
+          "$ref": "#/definitions/ApertureSetAbridged"
         },
-        "modifier": {
-          "title": "Modifier",
-          "default": "void",
+        "door_set": {
+          "$ref": "#/definitions/DoorSetAbridged"
+        },
+        "shade_construction": {
+          "title": "Shade_Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
       "required": [
         "type",
-        "name",
-        "r_transmittance",
-        "g_transmittance",
-        "b_transmittance",
-        "refraction_index"
+        "name"
       ]
     },
-    "ShadeFace": {
-      "title": "ShadeFace",
-      "description": "ShadeFace Schema",
+    "ModelEnergyProperties": {
+      "title": "ModelEnergyProperties",
       "type": "object",
       "properties": {
-        "id": {
-          "title": "Id",
-          "description": "Unique UUID value.",
-          "type": "string",
-          "format": "uuid"
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ModelEnergyProperties"
+          ]
         },
-        "name": {
-          "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
-          "type": "string"
-        },
-        "vertices": {
-          "title": "Vertices",
-          "minItems": 3,
+        "constructions": {
+          "title": "Constructions",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Vertex"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/OpaqueConstructionAbridged"
+              },
+              {
+                "$ref": "#/definitions/WindowConstructionAbridged"
+              },
+              {
+                "$ref": "#/definitions/ShadeConstruction"
+              }
+            ]
           }
         },
-        "face_type": {
-          "title": "Face_Type",
-          "enum": [
-            "Shading"
-          ]
-        },
-        "rad_modifier": {
-          "title": "Rad_Modifier",
-          "description": "Radiance material.",
-          "anyOf": [
-            {
-              "title": "Opaque",
-              "description": "Opaque Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Opaque"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "reflectance": {
-                  "title": "Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
+        "materials": {
+          "title": "Materials",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/EnergyMaterial"
               },
-              "required": [
-                "type",
-                "name",
-                "reflectance"
-              ]
-            },
-            {
-              "title": "Transparent",
-              "description": "Transparent Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Transparent"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "transmittance": {
-                  "title": "Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
+              {
+                "$ref": "#/definitions/EnergyMaterialNoMass"
               },
-              "required": [
-                "type",
-                "name",
-                "transmittance"
-              ]
-            },
-            {
-              "title": "Plastic",
-              "description": "Plastic Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Plastic"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_reflectance": {
-                  "title": "R_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_reflectance": {
-                  "title": "G_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_reflectance": {
-                  "title": "B_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "specularity": {
-                  "title": "Specularity",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "roughness": {
-                  "title": "Roughness",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGas"
               },
-              "required": [
-                "type",
-                "name",
-                "r_reflectance",
-                "g_reflectance",
-                "b_reflectance",
-                "specularity",
-                "roughness"
-              ]
-            },
-            {
-              "title": "Glass",
-              "description": "Glass Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Glass"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_transmittance": {
-                  "title": "R_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_transmittance": {
-                  "title": "G_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_transmittance": {
-                  "title": "B_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "refraction_index": {
-                  "title": "Refraction_Index",
-                  "minimum": 0,
-                  "maximum": 5,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
               },
-              "required": [
-                "type",
-                "name",
-                "r_transmittance",
-                "g_transmittance",
-                "b_transmittance",
-                "refraction_index"
-              ]
-            }
-          ]
-        },
-        "rad_modifier_dir": {
-          "title": "Rad_Modifier_Dir",
-          "description": "Radiance material for direct sunlight simulation.",
-          "anyOf": [
-            {
-              "title": "Opaque",
-              "description": "Opaque Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Opaque"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "reflectance": {
-                  "title": "Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
               },
-              "required": [
-                "type",
-                "name",
-                "reflectance"
-              ]
-            },
-            {
-              "title": "Transparent",
-              "description": "Transparent Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Transparent"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "transmittance": {
-                  "title": "Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
               },
-              "required": [
-                "type",
-                "name",
-                "transmittance"
-              ]
-            },
-            {
-              "title": "Plastic",
-              "description": "Plastic Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Plastic"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_reflectance": {
-                  "title": "R_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_reflectance": {
-                  "title": "G_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_reflectance": {
-                  "title": "B_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "specularity": {
-                  "title": "Specularity",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "roughness": {
-                  "title": "Roughness",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialBlind"
               },
-              "required": [
-                "type",
-                "name",
-                "r_reflectance",
-                "g_reflectance",
-                "b_reflectance",
-                "specularity",
-                "roughness"
-              ]
-            },
-            {
-              "title": "Glass",
-              "description": "Glass Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Glass"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_transmittance": {
-                  "title": "R_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_transmittance": {
-                  "title": "G_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_transmittance": {
-                  "title": "B_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "refraction_index": {
-                  "title": "Refraction_Index",
-                  "minimum": 0,
-                  "maximum": 5,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGlazing"
               },
-              "required": [
-                "type",
-                "name",
-                "r_transmittance",
-                "g_transmittance",
-                "b_transmittance",
-                "refraction_index"
-              ]
-            }
-          ]
-        },
-        "energy_construction_opaque": {
-          "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionOpaque"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 10,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyMaterial"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyMaterialNoMass"
-                  }
-                ]
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialShade"
               }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
+            ]
+          }
         },
-        "energy_construction_transparent": {
-          "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionTransparent"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 8,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGas"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialBlind"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGlazing"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialShade"
-                  }
-                ]
-              }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
+        "construction_sets": {
+          "title": "Construction_Sets",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConstructionSetAbridged"
+          }
         },
+        "global_construction_set": {
+          "title": "Global_Construction_Set",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "constructions",
+        "materials"
+      ]
+    },
+    "ModelProperties": {
+      "title": "ModelProperties",
+      "type": "object",
+      "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "ShadeFace"
+            "ModelProperties"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ModelEnergyProperties"
+        }
+      },
+      "required": [
+        "type",
+        "energy"
+      ]
+    },
+    "RoomEnergyPropertiesAbridged": {
+      "title": "RoomEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoomEnergyPropertiesAbridged"
+          ]
+        },
+        "construction_set": {
+          "title": "Construction_Set",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "program_type": {
+          "title": "Program_Type",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "people": {
+          "title": "People",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "lighting": {
+          "title": "Lighting",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "electric_equipment": {
+          "title": "Electric_Equipment",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "gas_equipment": {
+          "title": "Gas_Equipment",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "infiltration": {
+          "title": "Infiltration",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "ventilation": {
+          "title": "Ventilation",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "RoomPropertiesAbridged": {
+      "title": "RoomPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoomPropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/RoomEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type",
+        "energy"
+      ]
+    },
+    "Plane": {
+      "title": "Plane",
+      "type": "object",
+      "properties": {
+        "n": {
+          "title": "N",
+          "description": "Normal",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "o": {
+          "title": "O",
+          "description": "Origin",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "x": {
+          "title": "X",
+          "description": "x-axis",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "n",
+        "o"
+      ]
+    },
+    "Face3D": {
+      "title": "Face3D",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Face3D"
+          ]
+        },
+        "boundary": {
+          "title": "Boundary",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "holes": {
+          "title": "Holes",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "plane": {
+          "$ref": "#/definitions/Plane"
+        }
+      },
+      "required": [
+        "type",
+        "boundary"
+      ]
+    },
+    "FaceEnergyPropertiesAbridged": {
+      "title": "FaceEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "FaceEnergyPropertiesAbridged"
+          ]
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "FacePropertiesAbridged": {
+      "title": "FacePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "FacePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/FaceEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Ground": {
+      "title": "Ground",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Ground"
           ]
         }
       },
       "required": [
-        "name",
-        "vertices",
-        "face_type",
         "type"
+      ]
+    },
+    "Outdoors": {
+      "title": "Outdoors",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Outdoors"
+          ]
+        },
+        "sun_exposure": {
+          "title": "Sun_Exposure",
+          "type": "boolean"
+        },
+        "wind_exposure": {
+          "title": "Wind_Exposure",
+          "type": "boolean"
+        },
+        "view_factor": {
+          "title": "View_Factor",
+          "default": "autocalculate",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Adiabatic": {
+      "title": "Adiabatic",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Adiabatic"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Surface": {
+      "title": "Surface",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Surface"
+          ]
+        },
+        "boundary_condition_objects": {
+          "title": "Boundary_Condition_Objects",
+          "minItems": 2,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "boundary_condition_objects"
+      ]
+    },
+    "ApertureEnergyPropertiesAbridged": {
+      "title": "ApertureEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ApertureEnergyPropertiesAbridged"
+          ]
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "AperturePropertiesAbridged": {
+      "title": "AperturePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "AperturePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ApertureEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ShadeEnergyPropertiesAbridged": {
+      "title": "ShadeEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadeEnergyPropertiesAbridged"
+          ]
+        },
+        "transmittance_schedule": {
+          "title": "Transmittance_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ShadePropertiesAbridged": {
+      "title": "ShadePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ShadeEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Shade": {
+      "title": "Shade",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Shade"
+          ]
+        },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "properties": {
+          "$ref": "#/definitions/ShadePropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "geometry",
+        "properties",
+        "name"
       ]
     },
     "Aperture": {
       "title": "Aperture",
-      "description": "Aperture Schema",
       "type": "object",
       "properties": {
-        "id": {
-          "title": "Id",
-          "description": "Unique UUID value.",
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
-          "type": "string"
-        },
-        "vertices": {
-          "title": "Vertices",
-          "minItems": 3,
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Vertex"
-          }
-        },
-        "face_type": {
-          "title": "Face_Type",
-          "enum": [
-            "Window"
-          ]
-        },
-        "rad_modifier": {
-          "title": "Rad_Modifier",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Transparent"
-            },
-            {
-              "$ref": "#/definitions/Glass"
-            }
-          ]
-        },
-        "rad_modifier_dir": {
-          "title": "Rad_Modifier_Dir",
-          "description": "Radiance material for direct sunlight simulation.",
-          "anyOf": [
-            {
-              "title": "Opaque",
-              "description": "Opaque Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Opaque"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "reflectance": {
-                  "title": "Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "reflectance"
-              ]
-            },
-            {
-              "title": "Transparent",
-              "description": "Transparent Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Transparent"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "transmittance": {
-                  "title": "Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "transmittance"
-              ]
-            },
-            {
-              "title": "Plastic",
-              "description": "Plastic Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Plastic"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_reflectance": {
-                  "title": "R_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_reflectance": {
-                  "title": "G_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_reflectance": {
-                  "title": "B_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "specularity": {
-                  "title": "Specularity",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "roughness": {
-                  "title": "Roughness",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_reflectance",
-                "g_reflectance",
-                "b_reflectance",
-                "specularity",
-                "roughness"
-              ]
-            },
-            {
-              "title": "Glass",
-              "description": "Glass Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Glass"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_transmittance": {
-                  "title": "R_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_transmittance": {
-                  "title": "G_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_transmittance": {
-                  "title": "B_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "refraction_index": {
-                  "title": "Refraction_Index",
-                  "minimum": 0,
-                  "maximum": 5,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_transmittance",
-                "g_transmittance",
-                "b_transmittance",
-                "refraction_index"
-              ]
-            }
-          ]
-        },
-        "energy_construction_opaque": {
-          "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionOpaque"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 10,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyMaterial"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyMaterialNoMass"
-                  }
-                ]
-              }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
-        },
-        "energy_construction_transparent": {
-          "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionTransparent"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 8,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGas"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialBlind"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGlazing"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialShade"
-                  }
-                ]
-              }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
-        },
         "type": {
           "title": "Type",
           "enum": [
             "Aperture"
           ]
         },
-        "blinds": {
-          "title": "Blinds",
-          "default": [],
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ShadeFace"
-          }
-        }
-      },
-      "required": [
-        "name",
-        "vertices",
-        "face_type",
-        "type"
-      ]
-    },
-    "ScheduleContinuous": {
-      "title": "ScheduleContinuous",
-      "description": "This Numeric Type allows all numbers, including fractional amounts, within the range to\n  be valid.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "title": "Type",
-          "enum": [
-            "ScheduleContinuous"
-          ]
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
         },
-        "schedule_continuous": {
-          "title": "Schedule_Continuous",
-          "type": "number"
-        }
-      },
-      "required": [
-        "type"
-      ]
-    },
-    "ScheduleDiscrete": {
-      "title": "ScheduleDiscrete",
-      "description": "This Numeric Type allows  only integers within the range to be valid.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "title": "Type",
-          "enum": [
-            "ScheduleDiscrete"
-          ]
-        },
-        "schedule_discrete": {
-          "title": "Schedule_Discrete",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "type"
-      ]
-    },
-    "ScheduleNumericType": {
-      "title": "ScheduleNumericType",
-      "description": "Designates how the range values are validated.",
-      "type": "object",
-      "properties": {
-        "numeric_type": {
-          "title": "Numeric_Type",
+        "boundary_condition": {
+          "title": "Boundary_Condition",
           "anyOf": [
             {
-              "$ref": "#/definitions/ScheduleContinuous"
+              "$ref": "#/definitions/Outdoors"
             },
             {
-              "$ref": "#/definitions/ScheduleDiscrete"
+              "$ref": "#/definitions/Surface"
             }
           ]
-        }
-      },
-      "required": [
-        "numeric_type"
-      ]
-    },
-    "ScheduleTypeLimits": {
-      "title": "ScheduleTypeLimits",
-      "description": "Specifies the data types and limits for values contained in schedules.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "title": "Type",
-          "enum": [
-            "ScheduleTypeLimits"
-          ]
         },
-        "numeric_type": {
-          "$ref": "#/definitions/ScheduleNumericType"
-        },
-        "unit_type": {
-          "title": "Unit_Type",
-          "enum": [
-            "Dimensionless",
-            "Temperature",
-            "DeltaTemperature",
-            "PrecipitationRate",
-            "Angle",
-            "ConvectionCoefficient",
-            "ActivityLevel",
-            "Velocity",
-            "Capacity",
-            "Power",
-            "Availability",
-            "Percent",
-            "Control",
-            "Mode"
-          ],
-          "type": "string"
+        "properties": {
+          "$ref": "#/definitions/AperturePropertiesAbridged"
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
-        "lower_limit_value": {
-          "title": "Lower_Limit_Value",
-          "description": "Lower limit for the schedule type is entered.",
-          "default": 0,
-          "type": "number"
+        "is_operable": {
+          "title": "Is_Operable",
+          "default": false,
+          "type": "boolean"
         },
-        "upper_limit_value": {
-          "title": "Upper_Limit_Value",
-          "description": "Upper limit for the schedule type is entered.",
-          "default": 1,
-          "type": "number"
-        }
-      },
-      "required": [
-        "type",
-        "numeric_type",
-        "unit_type",
-        "name"
-      ]
-    },
-    "Time": {
-      "title": "Time",
-      "description": "Time.",
-      "type": "object",
-      "properties": {
-        "hour": {
-          "title": "Hour",
-          "description": "A value for hour between `0`-`24`. Default is `0`.",
-          "default": 0,
-          "minimum": 0,
-          "maximum": 24,
-          "type": "integer"
-        },
-        "minute": {
-          "title": "Minute",
-          "description": "A value for month between `0`-`60`. Default is `0`.",
-          "default": 0,
-          "minimum": 0,
-          "maximum": 60,
-          "type": "integer"
-        }
-      }
-    },
-    "DayValue": {
-      "title": "DayValue",
-      "description": "Values for daily schedule",
-      "type": "object",
-      "properties": {
-        "time": {
-          "$ref": "#/definitions/Time"
-        },
-        "value_until_time": {
-          "title": "Value_Until_Time",
-          "type": "number"
-        }
-      },
-      "required": [
-        "time",
-        "value_until_time"
-      ]
-    },
-    "ScheduleDay": {
-      "title": "ScheduleDay",
-      "description": "Used to describe the daily schedule for a single simulation day.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "title": "Type",
-          "enum": [
-            "ScheduleDay"
-          ]
-        },
-        "day_values": {
-          "title": "Day_Values",
+        "indoor_shades": {
+          "title": "Indoor_Shades",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/DayValue"
+            "$ref": "#/definitions/Shade"
           }
         },
-        "name": {
-          "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
-        },
-        "interpolate_to_timestep": {
-          "title": "Interpolate_To_Timestep",
-          "default": false,
-          "type": "boolean"
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
         }
       },
       "required": [
         "type",
-        "day_values",
+        "geometry",
+        "boundary_condition",
+        "properties",
         "name"
       ]
     },
-    "Date": {
-      "title": "Date",
-      "description": "Date.",
-      "type": "object",
-      "properties": {
-        "month": {
-          "title": "Month",
-          "description": "A value for month between `1`-`12`. Default is `1`.",
-          "default": 1,
-          "minimum": 1,
-          "maximum": 12,
-          "type": "integer"
-        },
-        "day": {
-          "title": "Day",
-          "description": "A value for day between `1`-`31`. Default is `1`.",
-          "default": 1,
-          "minimum": 1,
-          "maximum": 31,
-          "type": "integer"
-        }
-      }
-    },
-    "DateTime": {
-      "title": "DateTime",
-      "description": "DateTime.",
-      "type": "object",
-      "properties": {
-        "date": {
-          "$ref": "#/definitions/Date"
-        },
-        "time": {
-          "$ref": "#/definitions/Time"
-        },
-        "is_leap_year": {
-          "title": "Is_Leap_Year",
-          "description": "A boolean to indicate if datetime is for a leap year. Default is `false`.",
-          "default": false,
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "date",
-        "time"
-      ]
-    },
-    "ScheduleRule": {
-      "title": "ScheduleRule",
-      "description": "A set of rules assigned to schedule ruleset for specific periods of time and for\n  particular days of the week according to a priority sequence.",
+    "DoorEnergyPropertiesAbridged": {
+      "title": "DoorEnergyPropertiesAbridged",
       "type": "object",
       "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "ScheduleRule"
+            "DoorEnergyPropertiesAbridged"
           ]
         },
-        "schedule_day": {
-          "$ref": "#/definitions/ScheduleDay"
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "DoorPropertiesAbridged": {
+      "title": "DoorPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "DoorPropertiesAbridged"
+          ]
         },
-        "apply_sunday": {
-          "title": "Apply_Sunday",
-          "type": "boolean"
+        "energy": {
+          "$ref": "#/definitions/DoorEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Door": {
+      "title": "Door",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Door"
+          ]
         },
-        "apply_monday": {
-          "title": "Apply_Monday",
-          "type": "boolean"
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
         },
-        "apply_tuesday": {
-          "title": "Apply_Tuesday",
-          "type": "boolean"
+        "boundary_condition": {
+          "title": "Boundary_Condition",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Outdoors"
+            },
+            {
+              "$ref": "#/definitions/Surface"
+            }
+          ]
         },
-        "apply_wednesday": {
-          "title": "Apply_Wednesday",
-          "type": "boolean"
-        },
-        "apply_thursday": {
-          "title": "Apply_Thursday",
-          "type": "boolean"
-        },
-        "apply_friday": {
-          "title": "Apply_Friday",
-          "type": "boolean"
-        },
-        "apply_saturday": {
-          "title": "Apply_Saturday",
-          "type": "boolean"
-        },
-        "apply_holiday": {
-          "title": "Apply_Holiday",
-          "type": "boolean"
-        },
-        "start_period": {
-          "$ref": "#/definitions/DateTime"
-        },
-        "end_period": {
-          "$ref": "#/definitions/DateTime"
+        "properties": {
+          "$ref": "#/definitions/DoorPropertiesAbridged"
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
           "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
+        },
+        "is_glass": {
+          "title": "Is_Glass",
+          "default": false,
+          "type": "boolean"
         }
       },
       "required": [
         "type",
-        "schedule_day",
-        "apply_sunday",
-        "apply_monday",
-        "apply_tuesday",
-        "apply_wednesday",
-        "apply_thursday",
-        "apply_friday",
-        "apply_saturday",
-        "apply_holiday",
-        "start_period",
-        "end_period",
-        "name"
-      ]
-    },
-    "Parent": {
-      "title": "Parent",
-      "description": "Parent zone information",
-      "type": "object",
-      "properties": {
-        "id": {
-          "title": "Id",
-          "description": "Unique UUID value.",
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
-          "type": "string"
-        },
-        "schedule_ruleset": {
-          "title": "ScheduleRuleset",
-          "description": "Used to define a schedule for a default day, further described by ScheduleRule.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "ScheduleRuleset"
-              ]
-            },
-            "schedule_type_limits": {
-              "$ref": "#/definitions/ScheduleTypeLimits"
-            },
-            "default_day_schedule": {
-              "$ref": "#/definitions/ScheduleDay"
-            },
-            "summer_designday_schedule": {
-              "$ref": "#/definitions/ScheduleDay"
-            },
-            "winter_designday_schedule": {
-              "$ref": "#/definitions/ScheduleDay"
-            },
-            "schedule_rules": {
-              "title": "Schedule_Rules",
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ScheduleRule"
-              }
-            },
-            "name": {
-              "title": "Name",
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            }
-          },
-          "required": [
-            "type",
-            "schedule_type_limits",
-            "default_day_schedule",
-            "summer_designday_schedule",
-            "winter_designday_schedule",
-            "schedule_rules",
-            "name"
-          ]
-        },
-        "schedule_file": {
-          "title": "ScheduleFile",
-          "description": "A list of values used to create a .csv file for the entire year or a period of\n  analysis within the year.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "ScheduleFile"
-              ]
-            },
-            "numeric_type": {
-              "$ref": "#/definitions/ScheduleNumericType"
-            },
-            "name": {
-              "title": "Name",
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "start_day_of_year": {
-              "title": "Start_Day_Of_Year",
-              "description": "Used to define the start day for the analysis period.",
-              "minimum": 1,
-              "maximum": 366,
-              "type": "integer"
-            },
-            "values": {
-              "title": "Values",
-              "description": "A list of hourly values for the simulation.",
-              "minItems": 24,
-              "maxItems": 8784,
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            },
-            "unit_type": {
-              "title": "Unit_Type",
-              "description": "Units for the hourly values for simulation. The default value isDimensionless for a fractional schedule.",
-              "default": "Dimensionless",
-              "enum": [
-                "Dimensionless",
-                "Temperature",
-                "DeltaTemperature",
-                "PrecipitationRate",
-                "Angle",
-                "ConvectionCoefficient",
-                "ActivityLevel",
-                "Velocity",
-                "Capacity",
-                "Power",
-                "Availability",
-                "Percent",
-                "Control",
-                "Mode"
-              ],
-              "type": "string"
-            }
-          },
-          "required": [
-            "type",
-            "numeric_type",
-            "name",
-            "start_day_of_year",
-            "values"
-          ]
-        }
-      },
-      "required": [
+        "geometry",
+        "boundary_condition",
+        "properties",
         "name"
       ]
     },
     "Face": {
       "title": "Face",
-      "description": "A single model face.\n\n    Some clever description",
       "type": "object",
       "properties": {
-        "id": {
-          "title": "Id",
-          "description": "Unique UUID value.",
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "title": "Name",
-          "pattern": "^[.A-Za-z0-9_-]*$",
-          "type": "string"
-        },
-        "vertices": {
-          "title": "Vertices",
-          "minItems": 3,
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Vertex"
-          }
-        },
-        "face_type": {
-          "title": "Face_Type",
-          "default": "Wall",
-          "enum": [
-            "Wall",
-            "RoofCeiling",
-            "Floor",
-            "AirWall",
-            "Shading"
-          ],
-          "type": "string"
-        },
-        "rad_modifier": {
-          "title": "Rad_Modifier",
-          "description": "Radiance material.",
-          "anyOf": [
-            {
-              "title": "Opaque",
-              "description": "Opaque Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Opaque"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "reflectance": {
-                  "title": "Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "reflectance"
-              ]
-            },
-            {
-              "title": "Transparent",
-              "description": "Transparent Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Transparent"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "transmittance": {
-                  "title": "Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "transmittance"
-              ]
-            },
-            {
-              "title": "Plastic",
-              "description": "Plastic Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Plastic"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_reflectance": {
-                  "title": "R_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_reflectance": {
-                  "title": "G_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_reflectance": {
-                  "title": "B_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "specularity": {
-                  "title": "Specularity",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "roughness": {
-                  "title": "Roughness",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_reflectance",
-                "g_reflectance",
-                "b_reflectance",
-                "specularity",
-                "roughness"
-              ]
-            },
-            {
-              "title": "Glass",
-              "description": "Glass Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Glass"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_transmittance": {
-                  "title": "R_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_transmittance": {
-                  "title": "G_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_transmittance": {
-                  "title": "B_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "refraction_index": {
-                  "title": "Refraction_Index",
-                  "minimum": 0,
-                  "maximum": 5,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_transmittance",
-                "g_transmittance",
-                "b_transmittance",
-                "refraction_index"
-              ]
-            }
-          ]
-        },
-        "rad_modifier_dir": {
-          "title": "Rad_Modifier_Dir",
-          "description": "Radiance material for direct sunlight simulation.",
-          "anyOf": [
-            {
-              "title": "Opaque",
-              "description": "Opaque Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Opaque"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "reflectance": {
-                  "title": "Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "reflectance"
-              ]
-            },
-            {
-              "title": "Transparent",
-              "description": "Transparent Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Transparent"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "transmittance": {
-                  "title": "Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "transmittance"
-              ]
-            },
-            {
-              "title": "Plastic",
-              "description": "Plastic Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Plastic"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_reflectance": {
-                  "title": "R_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_reflectance": {
-                  "title": "G_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_reflectance": {
-                  "title": "B_Reflectance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "specularity": {
-                  "title": "Specularity",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "roughness": {
-                  "title": "Roughness",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_reflectance",
-                "g_reflectance",
-                "b_reflectance",
-                "specularity",
-                "roughness"
-              ]
-            },
-            {
-              "title": "Glass",
-              "description": "Glass Material Schema",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "title": "Type",
-                  "enum": [
-                    "Glass"
-                  ]
-                },
-                "name": {
-                  "title": "Name",
-                  "pattern": "^[.A-Za-z0-9_-]*$",
-                  "type": "string"
-                },
-                "r_transmittance": {
-                  "title": "R_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "g_transmittance": {
-                  "title": "G_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "b_transmittance": {
-                  "title": "B_Transmittance",
-                  "minimum": 0,
-                  "maximum": 1,
-                  "type": "number"
-                },
-                "refraction_index": {
-                  "title": "Refraction_Index",
-                  "minimum": 0,
-                  "maximum": 5,
-                  "type": "number"
-                },
-                "modifier": {
-                  "title": "Modifier",
-                  "default": "void",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "type",
-                "name",
-                "r_transmittance",
-                "g_transmittance",
-                "b_transmittance",
-                "refraction_index"
-              ]
-            }
-          ]
-        },
-        "energy_construction_opaque": {
-          "title": "EnergyConstructionOpaque",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionOpaque"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 10,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyMaterial"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyMaterialNoMass"
-                  }
-                ]
-              }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
-        },
-        "energy_construction_transparent": {
-          "title": "EnergyConstructionTransparent",
-          "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
-          "type": "object",
-          "properties": {
-            "type": {
-              "title": "Type",
-              "enum": [
-                "EnergyConstructionTransparent"
-              ]
-            },
-            "name": {
-              "title": "Name",
-              "maxLength": 100,
-              "minLength": 1,
-              "pattern": "^[\\s.A-Za-z0-9_-]*$",
-              "type": "string"
-            },
-            "materials": {
-              "title": "Materials",
-              "description": "List of materials. The order of the materials is from outside to inside.",
-              "minItems": 1,
-              "maxItems": 8,
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGas"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialBlind"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialGlazing"
-                  },
-                  {
-                    "$ref": "#/definitions/EnergyWindowMaterialShade"
-                  }
-                ]
-              }
-            }
-          },
-          "required": [
-            "type",
-            "name",
-            "materials"
-          ]
-        },
         "type": {
           "title": "Type",
           "enum": [
             "Face"
           ]
         },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "properties": {
+          "$ref": "#/definitions/FacePropertiesAbridged"
+        },
+        "face_type": {
+          "title": "Face_Type",
+          "enum": [
+            "Wall",
+            "Floor",
+            "RoofCeiling",
+            "AirWall"
+          ],
+          "type": "string"
+        },
+        "boundary_condition": {
+          "title": "Boundary_Condition",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Ground"
+            },
+            {
+              "$ref": "#/definitions/Outdoors"
+            },
+            {
+              "$ref": "#/definitions/Adiabatic"
+            },
+            {
+              "$ref": "#/definitions/Surface"
+            }
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
         "apertures": {
           "title": "Apertures",
-          "description": "List of Apertures bound to the Face",
-          "default": [],
           "type": "array",
           "items": {
             "$ref": "#/definitions/Aperture"
           }
         },
-        "parent": {
-          "$ref": "#/definitions/Parent"
+        "doors": {
+          "title": "Doors",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Door"
+          }
+        },
+        "indoor_shades": {
+          "title": "Indoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        },
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
         }
       },
       "required": [
+        "type",
+        "geometry",
+        "properties",
+        "face_type",
+        "boundary_condition",
+        "name"
+      ]
+    },
+    "Room": {
+      "title": "Room",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Room"
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/RoomPropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "faces": {
+          "title": "Faces",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Face"
+          }
+        },
+        "indoor_shades": {
+          "title": "Indoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        },
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "properties",
         "name",
-        "vertices",
-        "type"
+        "faces"
       ]
     }
   }

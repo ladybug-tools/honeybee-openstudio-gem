@@ -52,6 +52,7 @@ module Ladybug
         result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
         result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
         result
+
       end
 
       def name

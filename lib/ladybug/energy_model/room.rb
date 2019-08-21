@@ -29,49 +29,54 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-
-RSpec.describe Ladybug::EnergyModel do
-  it 'has a version number' do
-    expect(Ladybug::EnergyModel::VERSION).not_to be nil
-  end
-
-  it 'has a measures directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-
-  it 'has a files directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
-
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
-
-  it 'can load and validate example schedule ruleset' do 
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule_ruleset.json')
-    model = Ladybug::EnergyModel::ScheduleRuleset.read_from_disk(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    openstudio_model = model.to_openstudio(openstudio_model)
-    expect(openstudio_model).not_to be nil
-  end
-
-  it 'can load and validate example schedule ruleset 1' do 
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule_ruleset_1.json')
-    model = Ladybug::EnergyModel::ScheduleRuleset.read_from_disk(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    openstudio_model = model.to_openstudio(openstudio_model)
-    expect(openstudio_model).not_to be nil
-  end
+require 'ladybug/energy_model/model_object'
 
 
-end
+require 'json-schema'
+require 'json'
+require 'openstudio'
+
+module Ladybug
+  module EnergyModel
+    class Room < model_object
+      attr_reader :errors, :warnings
+
+      def initialize(hash = {})
+        super(hash)
+        
+        raise "Incorrect model type '#{@type}'" unless @type == 'Room'
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        model_space = openstudio_model.getSpaceByName(@hash[:name])
+        return model_space.get unless model_space.empty?
+        nil 
+      end
+
+      def create_openstudio_object(openstudio_model)
+        
+        if @hash[:properties][:energy][:construction_set]
+          construction_set_name = @hash[:properties][:energy][:construction_set]
+          construction_set = openstudio
+
+        openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
+        openstudio_space.setName(@hash[:name])
+
+        #openstudio_construction_set= @hash[:properties][:RoomPropertiesAbridged]#[:RoomEnergyPropertiesAbridged]
+        #if openstudio_construction_set
+        #  construction_set_object = ConstructionSet.new(openstudio_construction_set)
+        #end
+
+
+      end
+
+    end # Room
+  end # EnergyModel
+end # Ladybug
+
+

@@ -96,30 +96,43 @@ module Ladybug
 
       # create openstudio objects in the openstudio model
       def create_openstudio_objects
-        create_faces
+        create_rooms
       end
 
-      def create_faces
-        # TODO: create a Face class which derives from ModelObject and move all this code there
-        @hash[:faces].each do |face|
-          type = face[:type]
-          face_object = nil
-          if type == 'Face'
+      def create_rooms
+        @hash[:rooms].each do |room|
+          room_object = Room.new(room)
+          room[:faces].each do |face|
             face_object = Face.new(face)
-          elsif type == 'ShadeFace'
-            face_object = ShadeFace.new(face)
-          else
-            raise "Unknown face type #{type}."
           end
-          face_object.to_openstudio(@openstudio_model)
         end
+      end
+
+      def create_constructions
+        @hash[:properties][:energy][:constructions].each do |construction|
+          name = construction[:name]
+          construction_type = construction[:type]
+          construction_object = nil
+          
+          case construction_type
+          when 'OpaqueConstructionAbridged'
+            construction_object = OpaqueConstructionAbridged.new(construction)
+          when 'WindowConstructionAbridged'
+            construction_object = WindowConstructionAbridged.new(construction)
+          when 'ShadeConstruction'
+            construction_object = ShadeConstruction.new(construction)
+          else
+            raise "Unknown construction type #{construction_type}."
+          end
+        end
+      end
         # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
         # if air_wall
         # DLM: todo
         # end
-      end
+      
     end # Model
   end # EnergyModel
 end # Ladybug
