@@ -89,6 +89,8 @@ module Ladybug
 
       # return detailed model validation errors
       def validation_errors
+        # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
+        # does not correspond to a definition in the schema
         JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
       end
 
