@@ -46,7 +46,6 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:Aperture][:properties][:type][:enum]
         result
       end
 
@@ -58,31 +57,45 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
         openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:vertices].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x], vertex[:y], vertex[:z])
+        @hash[:properties][:geometry][:boundary].each do |vertex|
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
-        construction = nil
-        if @hash[:energy_construction_opaque]
-          construction_opaque_name = @hash[:energy_construction_opaque][:name]
-          construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
-          unless construction_opaque.empty?
-            construction = construction_opaque.get
-          end
-        else
-          construction_transparent_name = @hash[:energy_construction_transparent][:name]
-          construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
-          unless construction_transparent.empty?
-            construction = construction_transparent.get
+        openstudio_construction = nil
+        if @hash[:properties][:energy][:construction]
+          construction_name = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_name)
+          unless construction.empty?
+            openstudio_construction = construction.get
           end
         end
 
         openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
         openstudio_subsurface.setName(@hash[:name])
         openstudio_subsurface.setSubSurfaceType(@hash[:face_type])
-        openstudio_subsurface.setConstruction(construction) if construction
+        openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
+
+        if @hash[:indoor_shades]
+          @hash[:indoor_shades].each do |indoor_shade|
+            indoor_shade = Shade.new(indoor_shade)
+            openstudio_indoor_shade = indoor_shade.to_openstudio(openstudio_model)
+            openstudio_indoor_shade.setShadedSubSurface(openstudio_subsurface)
+          end
+        end
+
+        if @hash[:outdoor_shades]
+          @hash[:outdoor_shades].each do |outdoor_shade|
+            outdoor_shade = Shade.new(outdoor_shade)
+            opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+            openstudio_outdoor_shade.setShadedSubSurface(openstudio_subsurface)
+          end
+        end
+
+        #if @hash[:is_operable] == false
+        #  openstudio_subsurface.set
+
         openstudio_subsurface
       end
-    end # Face
+    end # Aperture
   end # EnergyModel
 end # Ladybug

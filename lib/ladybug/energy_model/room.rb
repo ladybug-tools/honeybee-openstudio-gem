@@ -30,7 +30,7 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-
+require 'ladybug/energy_model/face'
 
 require 'json-schema'
 require 'json'
@@ -38,7 +38,7 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Room < model_object
+    class Room < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
@@ -59,24 +59,45 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
-        
+
+        @hash[faces].each do |face|
+          face = Face.new(face)
+          openstudio_face = face.to_openstudio(openstudio_model)
+          nil
+        end
+
+        default_construction_set = nil
         if @hash[:properties][:energy][:construction_set]
           construction_set_name = @hash[:properties][:energy][:construction_set]
-          construction_set = openstudio
-
+          construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
+          unless construction_set.empty?
+            default_construction_set = construction_set.get
+          end
+        end
+        
         openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
-        openstudio_space.setName(@hash[:name])
+        openstudio_space.setName(@hash[:name])   
+        openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
+        
+        
+        if @hash[:indoor_shades]
+          @hash[:indoor_shades].each do |indoor_shade|
+            indoor_shade = Shade.new(indoor_shade)
+            openstudio_indoor_shade = indoor_shade.to_openstudio(openstudio_model)
+            openstudio_indoor_shade.setSpace(openstudio_space)
+          end
+        end
 
-        #openstudio_construction_set= @hash[:properties][:RoomPropertiesAbridged]#[:RoomEnergyPropertiesAbridged]
-        #if openstudio_construction_set
-        #  construction_set_object = ConstructionSet.new(openstudio_construction_set)
-        #end
-
+        if @hash[:outdoor_shades]
+          @hash[:outdoor_shades].each do |outdoor_shade|
+            outdoor_shade = Shade.new(outdoor_shade)
+            opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+            openstudio_outdoor_shade.setSpace(openstudio_space)
+          end
+        end
 
       end
 
     end # Room
   end # EnergyModel
 end # Ladybug
-
-

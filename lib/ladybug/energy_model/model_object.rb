@@ -72,7 +72,6 @@ module Ladybug
 
         hash = defaults.merge(hash)
         @hash = hash
-
         @type = @hash[:type]
         raise 'Unknown type' if @type.nil?
         raise "Incorrect model type '#{@type}'" unless @type == @hash[:type]

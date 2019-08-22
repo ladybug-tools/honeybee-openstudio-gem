@@ -415,15 +415,7 @@
             "properties": {
                 "type": "RoomPropertiesAbridged",
                 "energy": {
-                    "type": "RoomEnergyPropertiesAbridged",
-                    "program_type": null,
-                    "construction_set": null,
-                    "people": null,
-                    "lighting": null,
-                    "electric_equipment": null,
-                    "gas_equipment": null,
-                    "infiltration": null,
-                    "ventilation": null
+                    "type": "RoomEnergyPropertiesAbridged"
                 }
             },
             "faces": [

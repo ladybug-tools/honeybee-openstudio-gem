@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/aperture'
 
 require 'json-schema'
 require 'json'
@@ -38,13 +37,11 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Face < ModelObject
+    class Door < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash = {})
+      def initialize(hash)
         super(hash)
-
-        raise "Incorrect model type '#{@type}'" unless @type == 'Face'
       end
 
       def defaults
@@ -53,12 +50,12 @@ module Ladybug
       end
 
       def find_existing_openstudio_object(openstudio_model)
-        model_surf = openstudio_model.getSurfaceByName(@hash[:name])
-        return model_surf.get unless model_surf.empty?
+        object = openstudio_model.getSubSurfaceByName(@hash[:name])
+        return object.get if object.is_initialized
         nil
       end
 
-      def create_openstudio_object(openstudio_model)       
+      def create_openstudio_object(openstudio_model)
         openstudio_vertices = OpenStudio::Point3dVector.new
         @hash[:properties][:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
@@ -72,35 +69,17 @@ module Ladybug
             openstudio_construction = construction.get
           end
         end
-        
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
-        openstudio_surface.setName(@hash[:name])
-        openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition])
-        openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
-        
 
-        if @hash[:apertures]
-          @hash[:apertures].each do |aperture|
-            aperture = Aperture.new(aperture)
-            openstudio_subsurface_aperture = aperture.to_openstudio(openstudio_model)
-            openstudio_subsurface_aperture.setSurface(openstudio_surface)
-          end
-        end
-
-        if @hash[:doors]
-          @hash[:doors].each do |door|
-            door = Door.new(door)
-            openstudio_subsurface_door = door.to_openstudio(openstudio_model)
-            openstudio_subsurface_door.setSurface(openstudio_surface)
-          end
-        end
+        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+        openstudio_subsurface.setName(@hash[:name])
+        openstudio_subsurface.setSubSurfaceType(@hash[:face_type])
+        openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
 
         if @hash[:indoor_shades]
           @hash[:indoor_shades].each do |indoor_shade|
             indoor_shade = Shade.new(indoor_shade)
             openstudio_indoor_shade = indoor_shade.to_openstudio(openstudio_model)
-            openstudio_indoor_shade.setShadedSurface(openstudio_surface)
+            openstudio_indoor_shade.setShadedSubSurface(openstudio_subsurface)
           end
         end
 
@@ -108,12 +87,12 @@ module Ladybug
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
             opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_outdoor_shade.setShadedSurface(openstudio_surface)
+            openstudio_outdoor_shade.setShadedSubSurface(openstudio_subsurface)
           end
         end
 
-        openstudio_surface
+        openstudio_subsurface
       end
-    end # Face
+    end # Door
   end # EnergyModel
 end # Ladybug

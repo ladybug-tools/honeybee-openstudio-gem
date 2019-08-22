@@ -64,17 +64,19 @@ module Ladybug
         @type = @hash[:type]
         raise 'Unknown model type' if @type.nil?
         raise "Incorrect model type '#{@type}'" unless @type == 'Model'
+        #puts "3HELLO = #{@hash}"
+
       end
 
       # check if the model is valid
-      def valid?
-        return validation_errors.empty?
-      end
+      #def valid?
+      #  return validation_errors.empty?
+      #end
 
       # return detailed model validation errors
-      def validation_errors
-        JSON::Validator.fully_validate(@hash, @@schema)
-      end
+      #def validation_errors
+      #  JSON::Validator.fully_validate(@hash, @@schema)
+      #end
 
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)
@@ -99,12 +101,11 @@ module Ladybug
         create_rooms
       end
 
+      #add if statement in case rooms are empty 
       def create_rooms
         @hash[:rooms].each do |room|
           room_object = Room.new(room)
-          room[:faces].each do |face|
-            face_object = Face.new(face)
-          end
+          room_object.to_openstudio(@openstudio_model)
         end
       end
 
@@ -126,6 +127,37 @@ module Ladybug
           end
         end
       end
+
+      def create_construction_set
+        @hash[:properties][:energy][:construction_sets].each do |construction_set|
+          construction_set = ConstructionSet.new(construction_set)
+        end
+      end
+
+      def create_orphaned_shades
+        @hash[:properties][:orphaned_shades].each do |shade|
+          shade = Shade.new(shade)
+        end
+      end
+
+      def create_orphaned_faces
+        if @hash[:properties][:orphaned_faces]
+          raise "Face is not translatable to OpenStudio object."
+        end
+      end
+
+      def create_orphaned_apertures
+        if @hash[:properties][:orphaned_apertures]
+          raise "Aperture is not translatable to OpenStudio object."
+        end
+      end
+      
+      def create_orphaned_doors
+        if @hash[:properties][:orphaned_doors]
+          raise "Door is not translatable to OpenStudio object."
+        end
+      end
+
         # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
