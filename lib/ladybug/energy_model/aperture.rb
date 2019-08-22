@@ -91,9 +91,10 @@ module Ladybug
           end
         end
 
-        #if @hash[:is_operable] == false
-        #  openstudio_subsurface.set
-
+        if @hash[:is_operable] == false
+          openstudio_subsurface.set
+        end
+        
         openstudio_subsurface
       end
     end # Aperture

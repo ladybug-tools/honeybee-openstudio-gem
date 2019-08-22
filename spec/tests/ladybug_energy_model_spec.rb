@@ -54,36 +54,36 @@ RSpec.describe Ladybug::EnergyModel do
   end
 
   # add assertions
-  it 'create accessors for hash keys' do
-    file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
-    construction1 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
-    expect(construction1.valid?).to be true
-    expect(construction1.validation_errors.empty?).to be true
+  #it 'create accessors for hash keys' do
+  #  file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
+  #  construction1 = Ladybug::EnergyModel::EnergyConstructionOpaque.read_from_disk(file)
+  #  expect(construction1.valid?).to be true
+  #  expect(construction1.validation_errors.empty?).to be true
 
     # get and set existing hash key
-    expect(construction1.respond_to?(:name)).to be false
-    expect(construction1.respond_to?(:name=)).to be false
+  #  expect(construction1.respond_to?(:name)).to be false
+  #  expect(construction1.respond_to?(:name=)).to be false
 
-    expect(construction1.name).to eq('Internal Floor')
-    construction1.name = 'Other Floor'
-    expect(construction1.name).to eq('Other Floor')
+  #  expect(construction1.name).to eq('Internal Floor')
+  #  construction1.name = 'Other Floor'
+  #  expect(construction1.name).to eq('Other Floor')
 
     # raise errors for non-existant hash key
-    expect(construction1.respond_to?(:not_a_key)).to be false
-    expect(construction1.respond_to?(:not_a_key=)).to be false
+  #  expect(construction1.respond_to?(:not_a_key)).to be false
+  #  expect(construction1.respond_to?(:not_a_key=)).to be false
 
     # DLM: should we make it return nil for the non-existant getter instead?
     # expect( construction1.not_a_key ).to be nil
 
-    expect { construction1.not_a_key }.to raise_error(NoMethodError)
-    expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
-  end
+  #  expect { construction1.not_a_key }.to raise_error(NoMethodError)
+  #  expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
+  #end
 
   it 'can load and validate example model' do
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_tiny_house.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-    #expect(model.valid?).to be true
-    #expect(model.validation_errors.empty?).to be true
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -125,8 +125,8 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate example model' do
     file = File.join(File.dirname(__FILE__), '../files/model_shoe_box.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-    #expect(model.valid?).to be true
-    #expect(model.validation_errors.empty?).to be true
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)

@@ -64,19 +64,18 @@ module Ladybug
         @type = @hash[:type]
         raise 'Unknown model type' if @type.nil?
         raise "Incorrect model type '#{@type}'" unless @type == 'Model'
-        #puts "3HELLO = #{@hash}"
 
       end
 
       # check if the model is valid
-      #def valid?
-      #  return validation_errors.empty?
-      #end
+      def valid?
+        return validation_errors.empty?
+      end
 
       # return detailed model validation errors
-      #def validation_errors
-      #  JSON::Validator.fully_validate(@@schema, @hash)
-      #end
+      def validation_errors
+        JSON::Validator.fully_validate(@@schema, @hash)
+      end
 
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)
