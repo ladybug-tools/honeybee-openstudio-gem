@@ -60,7 +60,7 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)       
         openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:properties][:geometry][:boundary].each do |vertex|
+        @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
@@ -76,7 +76,7 @@ module Ladybug
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition])
+        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
         openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
         
 

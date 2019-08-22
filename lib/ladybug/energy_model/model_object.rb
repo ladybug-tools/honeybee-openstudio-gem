@@ -89,7 +89,7 @@ module Ladybug
 
       # return detailed model validation errors
       def validation_errors
-        JSON::Validator.fully_validate(@hash, @@schema)
+        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
       end
 
       # convert ModelObject to an openstudio object

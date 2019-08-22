@@ -60,7 +60,7 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
 
-        @hash[faces].each do |face|
+        @hash[:faces].each do |face|
           face = Face.new(face)
           openstudio_face = face.to_openstudio(openstudio_model)
           nil

@@ -57,7 +57,7 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
         openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:properties][:geometry][:boundary].each do |vertex|
+        @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
@@ -72,7 +72,7 @@ module Ladybug
 
         openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
         openstudio_subsurface.setName(@hash[:name])
-        openstudio_subsurface.setSubSurfaceType(@hash[:face_type])
+        #openstudio_subsurface.setSubSurfaceType(@hash[:face_type]) # I don't think this is right
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
 
         if @hash[:indoor_shades]

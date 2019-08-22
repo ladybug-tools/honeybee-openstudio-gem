@@ -75,7 +75,7 @@ module Ladybug
 
       # return detailed model validation errors
       #def validation_errors
-      #  JSON::Validator.fully_validate(@hash, @@schema)
+      #  JSON::Validator.fully_validate(@@schema, @hash)
       #end
 
       # convert to openstudio model, clears errors and warnings
