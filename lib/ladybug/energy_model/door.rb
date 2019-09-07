@@ -42,6 +42,7 @@ module Ladybug
 
       def initialize(hash)
         super(hash)
+        raise "Incorrect model type '#{@type}'" unless @type == 'Door'
       end
 
       def defaults
@@ -57,7 +58,7 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
         openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:properties][:geometry][:boundary].each do |vertex|
+        @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
@@ -72,8 +73,11 @@ module Ladybug
 
         openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
         openstudio_subsurface.setName(@hash[:name])
-        openstudio_subsurface.setSubSurfaceType(@hash[:face_type])
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
+        
+        if @hash[:boundary_condition][:type] == 'Surface'
+          openstudio_subsurface.setAdjacentSurace(@hash[:boundary_condition][:boundary_condition_objects][2])
+        end
 
         if @hash[:indoor_shades]
           @hash[:indoor_shades].each do |indoor_shade|
@@ -89,6 +93,12 @@ module Ladybug
             opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
             openstudio_outdoor_shade.setShadedSubSurface(openstudio_subsurface)
           end
+        end
+
+        if @hash[:is_glass] == false
+          openstudio_subsurface.setSubSurfaceType('Door')
+        else
+          openstudio_subsurface.setSubSurfaceType('GlassDoor')
         end
 
         openstudio_subsurface

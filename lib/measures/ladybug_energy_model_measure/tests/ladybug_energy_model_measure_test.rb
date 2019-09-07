@@ -97,12 +97,6 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
     model.save(output_file_path, true)
   end
 
-  def test_example_model_primary
-    args = {}
-    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_model_primary.json')
-    apply_measure_to_model(__method__.to_s.gsub('test_', ''), args, nil)
-  end
-
   def test_model_single_zone_house
     args = {}
     args['ladybug_json'] = File.join(File.dirname(__FILE__),

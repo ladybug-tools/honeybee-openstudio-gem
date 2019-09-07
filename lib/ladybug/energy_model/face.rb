@@ -72,13 +72,43 @@ module Ladybug
             openstudio_construction = construction.get
           end
         end
-        
+
         openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
         openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
-        
+        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
+        boundary_condition = (@hash[:boundary_condition][:type])
+       
+
+        case boundary_condition
+        when 'Outdoors'
+          if @hash[:boundary_condition][:sun_exposure] == true
+            openstudio_surface.setSunExposure('SunExposed')
+          else 
+            openstudio_surface.setSunExposure('NoSun')
+          end
+          if @hash[:boundary_condition][:wind_exposure] == true
+            openstudio_surface.setWindExposure('WindExposed')
+          else
+            openstudio_surface.setWindExposure('NoWind')
+          end
+          if @hash[:boundary_condition][:view_factor] == 'autocalculate'
+            openstudio_surface.autocalculateViewFactortoGround
+          else
+            openstudio_surface.setViewFactortoGround(@hash[:boundary_condition][:view_factor])
+          end
+        when 'Surface'
+          surface = nil 
+          if @hash[:boundary_condition][:boundary_condition_objects][0]
+            surface_object = openstudio_model.getSurfaceByName(@hash[:boundary_condition][:boundary_condition_objects][0])
+            unless surface_object.empty?
+              surface = surface_object.get
+              openstudio_surface.setAdjacentSurface(surface)
+            end
+          end
+        end
+
 
         if @hash[:apertures]
           @hash[:apertures].each do |aperture|
@@ -107,7 +137,7 @@ module Ladybug
         if @hash[:outdoor_shades]
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
-            opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
             openstudio_outdoor_shade.setShadedSurface(openstudio_surface)
           end
         end

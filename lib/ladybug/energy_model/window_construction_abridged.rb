@@ -30,6 +30,7 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/opaque_construction_abridged'
 
 require 'json-schema'
 require 'json'
@@ -37,7 +38,7 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class EnergyWindowMaterialSimpleGlazSys < ModelObject
+    class WindowConstructionAbridged < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
@@ -46,30 +47,38 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
         result
       end
 
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+        object = openstudio_model.getConstructionByName(@hash[:name])
         return object.get if object.is_initialized
         nil
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-        openstudio_simple_glazing.setName(@hash[:name])
-        openstudio_simple_glazing.setUFactor(@hash[:u_factor])
-        openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
-        if @hash[:vt]
-          openstudio_simple_glazing.setVisibleTransmittance(@hash[:vt])
-        else
-          openstudio_simple_glazing.setVisibleTransmittance(@@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
+        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
+        openstudio_construction.setName(@hash[:name])
+        openstudio_materials = OpenStudio::Model::MaterialVector.new
+       
+        @hash[:layers].each do |layer|
+          openstudio_material = nil
+          material_name = layer
+          material = openstudio_model.getMaterialByName(material_name)
+          unless material.empty?
+            openstudio_material = material.get
+            openstudio_materials << openstudio_material
+          end
         end
-        openstudio_simple_glazing
+
+        openstudio_construction.setLayers(openstudio_materials)
+        openstudio_construction
       end
 
+    end #WindowConstructionAbridged
+  end #EnergyModel
+end #Ladybug
+    
 
-    end # EnergyWindowMaterialSimpleGlazSys
-  end # EnergyModel
-end # Ladybug
+    
+    

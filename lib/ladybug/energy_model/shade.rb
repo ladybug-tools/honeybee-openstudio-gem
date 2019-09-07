@@ -30,8 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
 
 require 'json-schema'
 require 'json'
@@ -39,11 +37,12 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class EnergyConstructionOpaque < ModelObject
+    class Shade < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash = {})
+      def initialize(hash)
         super(hash)
+        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
       end
 
       def defaults
@@ -51,51 +50,39 @@ module Ladybug
         result
       end
 
-      def validation_errors
-        result = super
-
-        if (@hash[:materials]).empty?
-          result << JSON::Validator.raise('Opaque construction should at least have one material.')
-        elsif (@hash[:materials]).length > 10
-          result << JSON::Validator.raise('Opaque construction cannot have more than 10 materials.')
-        end
-        result
-      end
-
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getConstructionByName(@hash[:name])
+        object = openstudio_model.getSurfaceByName(@hash[:name])
         return object.get if object.is_initialized
         nil
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-        openstudio_construction.setName(@hash[:name])
-        openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type]
-          material_object = nil
-
-          case material_type
-          when 'EnergyMaterial'
-            material_object = EnergyMaterial.new(material)
-          when 'EnergyMaterialNoMass'
-            material_object = EnergyMaterialNoMass.new(material)
-          else
-            raise "Unknown material type #{material_type}."
-          end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
-
-          # TODO: create new material objects and call to_openstudio on each of them
-          # TODO: add the resulting openstudio material objects to this openstudio constructions
+        openstudio_vertices = OpenStudio::Point3dVector.new
+        @hash[:geometry][:boundary].each do |vertex|
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
-        openstudio_construction.setLayers(openstudio_materials)
-        openstudio_construction
+        openstudio_construction = nil
+        if @hash[:properties][:energy][:construction]
+          construction_name = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_name)
+          unless construction.empty?
+            openstudio_construction = construction.get
+          end
+        end
+
+        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
+        openstudio_shading_surface.setName(@hash[:name])
+        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
+        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
+        
+        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+        
+        openstudio_shading_surface.setShadingSurfaceGroup(openstudio_shading_surface_group)
+
+        openstudio_shading_surface_group
+
       end
-    end # EnergyConstructionOpaque
+    end # Shade
   end # EnergyModel
 end # Ladybug

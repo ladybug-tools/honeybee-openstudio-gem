@@ -31,9 +31,10 @@
 
 require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_construction_opaque'
+require 'ladybug/energy_model/opaque_construction_abridged'
+require 'ladybug/energy_model/window_construction_abridged'
 require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/shade_face'
+require 'ladybug/energy_model/shade'
 
 require 'json-schema'
 require 'json'
@@ -77,6 +78,7 @@ module Ladybug
         JSON::Validator.fully_validate(@@schema, @hash)
       end
 
+      
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)
         @errors = []
@@ -97,16 +99,46 @@ module Ladybug
 
       # create openstudio objects in the openstudio model
       def create_openstudio_objects
+        create_materials
+        create_constructions
+        create_construction_set
         create_rooms
+        create_orphaned_shades
+        create_orphaned_faces
+        create_orphaned_apertures
+        create_orphaned_doors
       end
 
       #add if statement in case rooms are empty 
-      def create_rooms
-        @hash[:rooms].each do |room|
-          room_object = Room.new(room)
-          room_object.to_openstudio(@openstudio_model)
+      def create_materials
+        @hash[:properties][:energy][:materials].each do |material|
+          material_type = material[:type]
+          material_object = nil
+
+          case material_type
+          when 'EnergyMaterial'
+            material_object = EnergyMaterial.new(material)
+          when 'EnergyMaterialNoMass'
+            material_object = EnergyMaterialNoMass.new(material)
+          when 'EnergyWindowMaterialGas'
+            material_object = EnergyWindowMaterialGas.new(material)
+          when 'EnergyWindowMaterialGasCustom'
+            material_object = EnergyWindowMaterialGasCustom.new(material)
+          when 'EnergyWindowMaterialSimpleGlazSys'
+            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
+          when 'EnergyWindowMaterialBlind'
+            material_object = EnergyWindowMaterialBlind.new(material)
+          when 'EnergyWindowMaterialGlazing'
+            material_object = EnergyWindowMaterialGlazing.new(material)
+          when 'EnergyWindowMaterialShade'
+            material_object = EnergyWindowMaterialShade.new(material)
+          else
+            raise "Unknown material type #{material_type}"
+          end
+          material_object.to_openstudio(@openstudio_model)
         end
       end
+
 
       def create_constructions
         @hash[:properties][:energy][:constructions].each do |construction|
@@ -124,35 +156,49 @@ module Ladybug
           else
             raise "Unknown construction type #{construction_type}."
           end
+          construction_object.to_openstudio(@openstudio_model)
         end
       end
 
       def create_construction_set
         @hash[:properties][:energy][:construction_sets].each do |construction_set|
-          construction_set = ConstructionSet.new(construction_set)
+          construction_set_object = ConstructionSetAbridged.new(construction_set)
+          construction_set_object.to_openstudio(@openstudio_model)
+        end
+      end
+
+      def create_rooms
+        if @hash[:rooms] 
+          @hash[:rooms].each do |room|
+          room_object = Room.new(room)
+          room_object.to_openstudio(@openstudio_model)
+          end
         end
       end
 
       def create_orphaned_shades
-        @hash[:properties][:orphaned_shades].each do |shade|
-          shade = Shade.new(shade)
+        if @hash[:orphaned_shades]
+          @hash[:orphaned_shades].each do |shade|
+          shade_object = Shade.new(shade)
+          shade_object.to_openstudio(@openstudio_model)
+          end
         end
       end
 
       def create_orphaned_faces
-        if @hash[:properties][:orphaned_faces]
+        if @hash[:orphaned_faces]
           raise "Face is not translatable to OpenStudio object."
         end
       end
 
       def create_orphaned_apertures
-        if @hash[:properties][:orphaned_apertures]
+        if @hash[:orphaned_apertures]
           raise "Aperture is not translatable to OpenStudio object."
         end
       end
       
       def create_orphaned_doors
-        if @hash[:properties][:orphaned_doors]
+        if @hash[:orphaned_doors]
           raise "Door is not translatable to OpenStudio object."
         end
       end

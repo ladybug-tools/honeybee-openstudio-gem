@@ -60,26 +60,26 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
 
-        @hash[:faces].each do |face|
-          face = Face.new(face)
-          openstudio_face = face.to_openstudio(openstudio_model)
-          nil
-        end
-
-        default_construction_set = nil
-        if @hash[:properties][:energy][:construction_set]
-          construction_set_name = @hash[:properties][:energy][:construction_set]
-          construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
-          unless construction_set.empty?
-            default_construction_set = construction_set.get
-          end
-        end
+        #default_construction_set = nil
+        #if @hash[:properties][:energy][:construction_set]
+        #  construction_set_name = @hash[:properties][:energy][:construction_set]
+        #  construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
+        #  unless construction_set.empty?
+        #    default_construction_set = construction_set.get
+        #  end
+        #end
         
         openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
         openstudio_space.setName(@hash[:name])   
-        openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
-        
-        
+        #openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
+      
+        @hash[:faces].each do |face|
+          face = Face.new(face)
+          openstudio_face = face.to_openstudio(openstudio_model)
+          openstudio_face.setSpace(openstudio_space)
+          nil
+        end
+
         if @hash[:indoor_shades]
           @hash[:indoor_shades].each do |indoor_shade|
             indoor_shade = Shade.new(indoor_shade)
@@ -95,7 +95,6 @@ module Ladybug
             openstudio_outdoor_shade.setSpace(openstudio_space)
           end
         end
-
       end
 
     end # Room

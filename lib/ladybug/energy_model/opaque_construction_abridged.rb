@@ -37,45 +37,44 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class ShadeFace < ModelObject
+    class OpaqueConstructionAbridged < ModelObject
       attr_reader :errors, :warnings
 
-      def initialize(hash)
+      def initialize(hash = {})
         super(hash)
       end
 
+      def defaults
+        result = {}
+        result
+      end
+
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
+        object = openstudio_model.getConstructionByName(@hash[:name])
         return object.get if object.is_initialized
         nil
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:vertices].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[:x], vertex[:y], vertex[:z])
+        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
+        openstudio_construction.setName(@hash[:name])
+        openstudio_materials = OpenStudio::Model::MaterialVector.new
+       
+        @hash[:layers].each do |layer|
+          openstudio_material = nil
+          material_name = layer
+          material = openstudio_model.getMaterialByName(material_name)
+          unless material.empty?
+            openstudio_material = material.get
+            openstudio_materials << openstudio_material
+          end
         end
 
-        construction_opaque_name = @hash[:energy_construction_opaque][:name]
-        construction_opaque = openstudio_model.getConstructionByName(construction_opaque_name)
-        unless construction_opaque.empty?
-          construction_opaque = construction_opaque.get
-          # construction_opaque = EnergyConstructionOpaque.new
-        end
-
-        construction_transparent_name = @hash[:energy_construction_transparent][:name]
-        construction_transparent = openstudio_model.getConstructionByName(construction_transparent_name)
-        unless construction_transparent.empty?
-          construction_transparent = construction_transparent.get
-        end
-
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
-        openstudio_surface.setName(@hash[:name])
-        openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setConstruction(construction_opaque)
-        openstudio_surface.setConstruction(construction_transparent)
-        openstudio_surface
+        openstudio_construction.setLayers(openstudio_materials)
+        openstudio_construction
       end
-    end # Face
-  end # EnergyModel
-end # Ladybug
+
+    end #OpaqueConstructionAbridged
+  end #EnergyModel
+end #Ladybug
+  

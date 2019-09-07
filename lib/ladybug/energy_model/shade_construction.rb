@@ -30,13 +30,6 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
 
 require 'json-schema'
 require 'json'
@@ -44,7 +37,7 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class EnergyConstructionTransparent < ModelObject
+    class ShadeConstruction < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
@@ -62,52 +55,55 @@ module Ladybug
         nil
       end
 
-      def validation_errors
-        result = super
-
-        if (@hash[:materials]).empty?
-          result << JSON::Validator.raise("'Transparent construction should at least have one material.'")
-        elsif (@hash[:materials]).length > 8
-          result << JSON::Validator.raise('Transparent construction cannot have more than 8 materials.')
-        end
-        result
-      end
-
       def create_openstudio_object(openstudio_model)
+
         openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
         openstudio_construction.setName(@hash[:name])
         openstudio_materials = OpenStudio::Model::MaterialVector.new
-        @hash[:materials].each do |material|
-          name = material[:name]
-          material_type = material[:type]
-          material_object = nil
+        openstudio_material = nil
 
-          case material_type
-          when 'EnergyWindowMaterialGas'
-            material_object = EnergyWindowMaterialGas.new(material)
-          when 'EnergyWindowMaterialGasCustom'
-            material_object = EnergyWindowMaterialGasCustom.new(material)
-          when 'EnergyWindowMaterialGasMixture'
-            material_object = EnergyWindowMaterialGasMixture.new(material)
-          when 'EnergyWindowMaterialSimpleGlazSys'
-            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
-          when 'EnergyWindowMaterialBlind'
-            material_object = EnergyWindowMaterialBlind.new(material)
-          when 'EnergyWindowMaterialGlazing'
-            material_object = EnergyWindowMaterialGlazing.new(material)
-          when 'EnergyWindowMaterialShade'
-            material_object = EnergyWindowMaterialShade.new(material)
+        if @hash[:is_specular] == true
+          openstudio_material = OpenStudio::Model::StandardGlazing.new(openstudio_model)
+          if @hash[:solar_reflectance]
+            openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
           else
-            raise "Unknown material type #{material_type}"
+            openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
           end
-
-          openstudio_material = material_object.to_openstudio(openstudio_model)
-          openstudio_materials << openstudio_material
+          if @hash[:visible_reflectance]
+            openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance].to_f)
+          else
+            openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
+          end
+        else
+          openstudio_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
+          openstudio_material.setThickness(0.012)
+          openstudio_material.setConductivity(0.6)
+          openstudio_material.setDensity(1000)
+          openstudio_material.setSpecificHeat(4185)
+          if @hash[:solar_reflectance]
+            openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
+          else 
+            openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:visible_reflectance][:default]))
+          end
+          if @hash[:visible_reflectance]
+            openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@hash[:visible_reflectance]))
+          else 
+            openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default]))
+          end
+          if @hash[:roughness]
+            openstudio_material.setRoughness(@hash[:roughness])
+          else
+            openstudio_material.setRoughness(@@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default])
+          end
         end
+        
 
+        openstudio_materials << openstudio_material
         openstudio_construction.setLayers(openstudio_materials)
         openstudio_construction
+      
       end
-    end # EnergyConstructionTransparent
-  end # EnergyModel
-end # Ladybug
+
+    end #ShadeConstruction
+  end #EnergyModel
+end #Ladybug

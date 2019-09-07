@@ -789,7 +789,7 @@
           "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
           "default": 0.9,
           "exclusiveMaximum": 1,
-          "minimum": 9,
+          "minimum": 0,
           "type": "number"
         },
         "distance_to_glass": {
@@ -1120,24 +1120,45 @@
         },
         "interior_construction": {
           "title": "Interior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "exterior_construction": {
           "title": "Exterior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ground_construction": {
           "title": "Ground_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1157,24 +1178,45 @@
         },
         "interior_construction": {
           "title": "Interior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "exterior_construction": {
           "title": "Exterior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ground_construction": {
           "title": "Ground_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1194,24 +1236,45 @@
         },
         "interior_construction": {
           "title": "Interior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "exterior_construction": {
           "title": "Exterior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ground_construction": {
           "title": "Ground_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1231,31 +1294,59 @@
         },
         "interior_construction": {
           "title": "Interior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "window_construction": {
           "title": "Window_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "skylight_construction": {
           "title": "Skylight_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "operable_construction": {
           "title": "Operable_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1275,38 +1366,73 @@
         },
         "interior_construction": {
           "title": "Interior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "exterior_construction": {
           "title": "Exterior_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "overhead_construction": {
           "title": "Overhead_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "exterior_glass_construction": {
           "title": "Exterior_Glass_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "interior_glass_construction": {
           "title": "Interior_Glass_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1346,10 +1472,17 @@
         },
         "shade_construction": {
           "title": "Shade_Construction",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1471,59 +1604,115 @@
         },
         "construction_set": {
           "title": "Construction_Set",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "program_type": {
           "title": "Program_Type",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "people": {
           "title": "People",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "lighting": {
-          "title": "Lighting",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "title": "Lighting", 
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "electric_equipment": {
           "title": "Electric_Equipment",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "gas_equipment": {
           "title": "Gas_Equipment",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "infiltration": {
           "title": "Infiltration",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ventilation": {
           "title": "Ventilation",
-          "maxLength": 100,
-          "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [

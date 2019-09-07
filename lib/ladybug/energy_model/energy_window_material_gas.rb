@@ -72,7 +72,7 @@ module Ladybug
         if @hash[:thickness]
           openstudio_window_gas.setThickness(@hash[:thickness])
         else
-          openstudio_window_gas.setThickness(@schema[:EnergyWindowMaterialGas][:thickness][:default])
+          openstudio_window_gas.setThickness(@@schema[:EnergyWindowMaterialGas][:thickness][:default])
         end
         openstudio_window_gas.setGasType(@hash[:gas_type])
         openstudio_window_gas
