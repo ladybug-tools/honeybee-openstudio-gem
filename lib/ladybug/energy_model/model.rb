@@ -35,6 +35,26 @@ require 'ladybug/energy_model/opaque_construction_abridged'
 require 'ladybug/energy_model/window_construction_abridged'
 require 'ladybug/energy_model/face'
 require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/construction_set'
+require 'ladybug/energy_model/door'
+require 'ladybug/energy_model/energy_material_no_mass'
+require 'ladybug/energy_model/energy_material'
+require 'ladybug/energy_model/energy_window_material_blind'
+require 'ladybug/energy_model/energy_window_material_gas_custom'
+require 'ladybug/energy_model/energy_window_material_gas'
+require 'ladybug/energy_model/energy_window_material_gas_mixture'
+require 'ladybug/energy_model/energy_window_material_glazing'
+require 'ladybug/energy_model/energy_window_material_shade'
+require 'ladybug/energy_model/energy_window_material_simpleglazsys'
+require 'ladybug/energy_model/room'
+require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/shade_construction'
+
+
+
+
+
 
 require 'json-schema'
 require 'json'
