@@ -65,8 +65,6 @@ RSpec.describe Ladybug::EnergyModel do
     expect(construction1.respond_to?(:name=)).to be false
 
     expect(construction1.name).to eq('Internal Floor')
-    construction1.name = 'Other Floor'
-    expect(construction1.name).to eq('Other Floor')
 
     # raise errors for non-existant hash key
     expect(construction1.respond_to?(:not_a_key)).to be false
@@ -76,7 +74,7 @@ RSpec.describe Ladybug::EnergyModel do
     # expect( construction1.not_a_key ).to be nil
 
     expect { construction1.not_a_key }.to raise_error(NoMethodError)
-    expect { construction1.not_a_key = 'Other Floor' }.to raise_error(NoMethodError)
+    expect { construction1.not_a_key = 'Internal Floor' }.to raise_error(NoMethodError)
   end
 
   # it 'can load and validate example face by face model' do
@@ -90,7 +88,7 @@ RSpec.describe Ladybug::EnergyModel do
 
   it 'can load and validate opaque construction' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
+    file = File.join(File.dirname(__FILE__), '../files/construction_roof.json')
     construction1 = Ladybug::EnergyModel::OpaqueConstructionAbridged.read_from_disk(file)
     expect(construction1.valid?).to be true
     expect(construction1.validation_errors.empty?).to be true
@@ -106,7 +104,7 @@ RSpec.describe Ladybug::EnergyModel do
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
   end
 
-  it 'can load and validate transparent construction' do
+  it 'can load and validate window construction' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
     construction1 = Ladybug::EnergyModel::WindowConstructionAbridged.read_from_disk(file)

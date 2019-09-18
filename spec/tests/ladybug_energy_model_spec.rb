@@ -167,7 +167,7 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_default_construction = openstudio_default_construction.get
     expect(openstudio_default_construction.nameString).to eq 'Default Generic Construction Set'
     
-    openstudio_surfaces = openstudio_model.getSubSurfaces
+    openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 17
 
     openstudio_spaces = openstudio_model.getSpaces
