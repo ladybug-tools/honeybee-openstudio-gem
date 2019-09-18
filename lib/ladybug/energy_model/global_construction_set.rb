@@ -37,13 +37,13 @@ require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class ConstructionSetAbridged < ModelObject
+    class GlobalConstructionSetAbridged < ModelObject
       attr_reader :errors, :warnings
 
       def initialize(hash = {})
         super(hash)
 
-        raise "Incorrect model type '#{@type}'" unless @type == 'ConstructionSetAbridged'
+        raise "Incorrect model type '#{@type}'" unless @type == 'GlobalConstructionSetAbridged'
       end
 
       def defaults
@@ -59,8 +59,13 @@ module Ladybug
 
 
       def create_openstudio_object(openstudio_model)
+        constr
+        
+        
         openstudio_construction_set = OpenStudio::Model::DefaultConstructionSet.new(openstudio_model)
         openstudio_construction_set.setName(@hash[:name])
+
+        
         interior_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
         exterior_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
         ground_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
@@ -145,6 +150,8 @@ module Ladybug
                     exterior_ceiling = exterior_ceiling_object.get
                     exterior_surface_construction.setRoofCeilingConstruction(exterior_ceiling)
                     openstudio_construction_set.setDefaultExteriorSurfaceConstructions(exterior_surface_construction)
+                    
+                    puts "3HELLO = #{exterior_surface_construction}"
                 end
             end
             ground_ceiling = nil
@@ -258,6 +265,6 @@ module Ladybug
 
         openstudio_construction_set
       end
-    end #ConstructionSetAbridged
+    end #GlobalConstructionSetAbridged
   end #EnergyModel
 end #Ladybug

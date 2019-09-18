@@ -61,9 +61,8 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate single zone model' do
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_tiny_house.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-    
+   
     errors = model.validation_errors
-
     
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
@@ -87,7 +86,6 @@ RSpec.describe Ladybug::EnergyModel do
 
     openstudio_sub_surfaces = openstudio_surface.subSurfaces
     expect(openstudio_sub_surfaces.size).to eq 0
-
     openstudio_space = openstudio_surface.space
 
     expect(openstudio_space.empty?).to be false
@@ -111,25 +109,74 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate shoebox model' do
     file = File.join(File.dirname(__FILE__), '../files/model_shoe_box.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-
         
     errors = model.validation_errors
-
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
 
-    
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
+
+    openstudio_surfaces = openstudio_model.getSurfaces
+    expect(openstudio_surfaces.size).to eq 6
+
+    openstudio_sub_surfaces = openstudio_model.getSubSurfaces
+    expect(openstudio_sub_surfaces.size).to eq 2
+
+    openstudio_surface = openstudio_model.getSurfaceByName('SimpleShoeBoxZone_Front')
+    expect(openstudio_surface.empty?).to be false
+
+    openstudio_surface = openstudio_surface.get
+    expect(openstudio_surface.nameString).to eq 'SimpleShoeBoxZone_Front'
+
+    openstudio_sub_surfaces = openstudio_surface.subSurfaces
+    expect(openstudio_sub_surfaces.size).to eq 2
+    openstudio_space = openstudio_surface.space
+
+    expect(openstudio_space.empty?).to be false
+    openstudio_space = openstudio_space.get
+    expect(openstudio_space.nameString).to eq 'SimpleShoeBoxZone'
+
+    openstudio_vertices = openstudio_surface.vertices
+    expect(openstudio_vertices.empty?).to be false
+    expect(openstudio_vertices.size).to be >= 3
+
+    openstudio_construction = openstudio_surface.construction
+    expect(openstudio_construction.empty?).to be false
+    openstudio_construction = openstudio_construction.get
+    openstudio_layered_construction = openstudio_construction.to_LayeredConstruction
+    expect(openstudio_layered_construction.empty?).to be false
+    openstudio_layered_construction = openstudio_layered_construction.get
+    expect(openstudio_layered_construction.numLayers).to be > 0
+    expect(openstudio_layered_construction.numLayers).to be <= 10
   end
 
   it 'can load and validate mutizone model' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_multi_zone_single_family_house.json')
+    
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
     expect(model.valid?).to be true
     expect(model.validation_errors.empty?).to be true
+    
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
+
+    openstudio_default_construction = openstudio_model.getBuilding.defaultConstructionSet
+    expect(openstudio_default_construction.empty?).to be false
+    openstudio_default_construction = openstudio_default_construction.get
+    expect(openstudio_default_construction.nameString).to eq 'Default Generic Construction Set'
+    
+    openstudio_surfaces = openstudio_model.getSubSurfaces
+    expect(openstudio_surfaces.size).to eq 17
+
+    openstudio_spaces = openstudio_model.getSpaces
+    expect(openstudio_spaces.size).to eq 3
+
+    openstudio_space = openstudio_model.getSpaceByName('Attic')
+    expect(openstudio_space.empty?).to be false
+
+    openstudio_space = openstudio_space.get
+    expect(openstudio_space.nameString).to eq 'Attic'
   end
 end

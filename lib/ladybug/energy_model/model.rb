@@ -50,12 +50,6 @@ require 'ladybug/energy_model/energy_window_material_simpleglazsys'
 require 'ladybug/energy_model/room'
 require 'ladybug/energy_model/shade'
 require 'ladybug/energy_model/shade_construction'
-
-
-
-
-
-
 require 'json-schema'
 require 'json'
 require 'openstudio'
@@ -122,6 +116,7 @@ module Ladybug
         create_materials
         create_constructions
         create_construction_set
+        create_global_construction_set
         create_rooms
         create_orphaned_shades
         create_orphaned_faces
@@ -181,9 +176,23 @@ module Ladybug
       end
 
       def create_construction_set
-        @hash[:properties][:energy][:construction_sets].each do |construction_set|
+        if @hash[:properties][:energy][:construction_sets]
+          @hash[:properties][:energy][:construction_sets].each do |construction_set|
           construction_set_object = ConstructionSetAbridged.new(construction_set)
           construction_set_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end
+
+      def create_global_construction_set
+        openstudio_construction = nil
+        if @hash[:properties][:energy][:global_construction_set]
+          construction_name = @hash[:properties][:energy][:global_construction_set]
+          construction = @openstudio_model.getDefaultConstructionSetByName(construction_name)
+          unless construction.empty?
+            openstudio_construction = construction.get
+          end
+          @openstudio_model.getBuilding.setDefaultConstructionSet(openstudio_construction)
         end
       end
 
@@ -204,7 +213,7 @@ module Ladybug
           end
         end
       end
-
+#runlog
       def create_orphaned_faces
         if @hash[:orphaned_faces]
           raise "Face is not translatable to OpenStudio object."

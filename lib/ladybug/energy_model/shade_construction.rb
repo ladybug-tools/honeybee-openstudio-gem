@@ -76,10 +76,6 @@ module Ladybug
           end
         else
           openstudio_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
-          openstudio_material.setThickness(0.012)
-          openstudio_material.setConductivity(0.6)
-          openstudio_material.setDensity(1000)
-          openstudio_material.setSpecificHeat(4185)
           if @hash[:solar_reflectance]
             openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
           else 
@@ -90,14 +86,8 @@ module Ladybug
           else 
             openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default]))
           end
-          if @hash[:roughness]
-            openstudio_material.setRoughness(@hash[:roughness])
-          else
-            openstudio_material.setRoughness(@@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default])
-          end
         end
         
-
         openstudio_materials << openstudio_material
         openstudio_construction.setLayers(openstudio_materials)
         openstudio_construction

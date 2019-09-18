@@ -60,18 +60,18 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)
 
-        #default_construction_set = nil
-        #if @hash[:properties][:energy][:construction_set]
-        #  construction_set_name = @hash[:properties][:energy][:construction_set]
-        #  construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
-        #  unless construction_set.empty?
-        #    default_construction_set = construction_set.get
-        #  end
-        #end
+        default_construction_set = nil
+        if @hash[:properties][:energy][:construction_set]
+          construction_set_name = @hash[:properties][:energy][:construction_set]
+          construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
+          unless construction_set.empty?
+            default_construction_set = construction_set.get
+          end
+        end
         
         openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
         openstudio_space.setName(@hash[:name])   
-        #openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
+        openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
       
         @hash[:faces].each do |face|
           face = Face.new(face)

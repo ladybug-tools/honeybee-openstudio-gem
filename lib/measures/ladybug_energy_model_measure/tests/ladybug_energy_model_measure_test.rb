@@ -104,4 +104,16 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
+  def test_model_multi_zone_single_family_house
+    args = {}
+    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'model_multi_zone_single_family_house.json')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
+  def test_shoe_box
+    args = {}
+    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'model_shoe_box.json')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
 end
