@@ -1,9 +1,9 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 # Specify your gem's dependencies
 gemspec
 
-if File.exists?('../OpenStudio-extension-gem')
+if File.exist?('../OpenStudio-extension-gem')
   # gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', branch: 'develop'
   gem 'openstudio-extension', path: '../OpenStudio-extension-gem'
 else

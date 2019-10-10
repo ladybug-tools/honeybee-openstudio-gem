@@ -29,72 +29,64 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'openstudio/extension'
+require 'ladybug/energy_model/model_object'
 
+require 'json-schema'
 require 'json'
+require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Extension < OpenStudio::Extension::Extension
-      @@schema = nil
+    class Door < ModelObject
+      attr_reader :errors, :warnings
 
-      # Override parent class
-      def initialize
-        super
-
-        @root_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', '..'))
-
-        @instance_lock = Mutex.new
-        @@schema ||= schema
+      def initialize(hash)
+        super(hash)
+        raise "Incorrect model type '#{@type}'" unless @type == 'Door'
       end
 
-      # Return the absolute path of the measures or nil if there is none, can be used when configuring OSWs
-      def measures_dir
-        File.absolute_path(File.join(@root_dir, 'lib/measures/'))
+      def defaults
+        result = {}
+        result
       end
 
-      # Relevant files such as weather data, design days, etc.
-      # Return the absolute path of the files or nil if there is none, used when configuring OSWs
-      def files_dir
-        File.absolute_path(File.join(@root_dir, 'lib/files/'))
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getSubSurfaceByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
       end
 
-      # Doc templates are common files like copyright files which are used to update measures and other code
-      # Doc templates will only be applied to measures in the current repository
-      # Return the absolute path of the doc templates dir or nil if there is none
-      def doc_templates_dir
-        File.absolute_path(File.join(@root_dir, 'doc_templates'))
-      end
+      def create_openstudio_object(openstudio_model)
+        openstudio_vertices = OpenStudio::Point3dVector.new
+        @hash[:geometry][:boundary].each do |vertex|
+          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        end
 
-      # return path to schema file
-      def schema_file
-        File.join(files_dir, 'schema/openapi.json')
-      end
-
-      # return schema
-      def schema
-        @instance_lock.synchronize do
-          if @@schema.nil?
-            File.open(schema_file, 'r') do |f|
-              @@schema = JSON.parse(f.read, symbolize_names: true)
-            end
+        openstudio_construction = nil
+        if @hash[:properties][:energy][:construction]
+          construction_name = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_name)
+          unless construction.empty?
+            openstudio_construction = construction.get
           end
         end
 
-        @@schema
-      end
+        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+        openstudio_subsurface.setName(@hash[:name])
+        openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
+        
+        if @hash[:boundary_condition][:type] == 'Surface'
+          openstudio_subsurface.setAdjacentSurace(@hash[:boundary_condition][:boundary_condition_objects][0])
+        end
 
-      # check if the schema is valid
-      def schema_valid?
-        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
-        JSON::Validator.validate(metaschema, @@schema)
-      end
+        if @hash[:is_glass] == false
+          openstudio_subsurface.setSubSurfaceType('Door')
+        else
+          openstudio_subsurface.setSubSurfaceType('GlassDoor')
+        end
 
-      # return detailed schema validation errors
-      def schema_validation_errors
-        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
-        JSON::Validator.fully_validate(metaschema, @@schema)
+        openstudio_subsurface
       end
-    end
-  end
-end
+    end # Door
+  end # EnergyModel
+end # Ladybug

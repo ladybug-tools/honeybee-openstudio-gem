@@ -29,17 +29,54 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'bundler/setup'
-require 'ladybug/energy_model'
+require 'ladybug/energy_model/model_object'
 
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
+module Ladybug
+  module EnergyModel
+    class EnergyWindowMaterialGas < ModelObject
+      attr_reader :errors, :warnings
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
+      def initialize(hash = {})
+        super(hash)
+      end
+
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:type][:enum]
+        result[:gastype] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:gas_type][:default]
+        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:thickness][:default]
+        result
+      end
+
+      def name
+        @hash[:name]
+      end
+
+      def name=(new_name)
+        @hash[:name] = new_name
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getGasByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
+      def create_openstudio_object(openstudio_model)
+        openstudio_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
+        openstudio_window_gas.setName(@hash[:name])
+        if @hash[:thickness]
+          openstudio_window_gas.setThickness(@hash[:thickness])
+        else
+          openstudio_window_gas.setThickness(@@schema[:EnergyWindowMaterialGas][:thickness][:default])
+        end
+        openstudio_window_gas.setGasType(@hash[:gas_type])
+        openstudio_window_gas
+      end
+    end # EnergyWindowMaterialGas
+  end # EnergyModel
+end # Ladybug

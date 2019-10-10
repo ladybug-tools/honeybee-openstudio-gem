@@ -1,0 +1,1 @@
+{"type": "ScheduleFile", "name": "Schedule File 2", "start_day_of_year": 365, "values": [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], "numeric_type": {"numeric_type": {"type": "ScheduleContinuous"}}, "unit_type": "Dimensionless"}

@@ -29,17 +29,56 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'bundler/setup'
-require 'ladybug/energy_model'
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/opaque_construction_abridged'
 
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
+module Ladybug
+  module EnergyModel
+    class WindowConstructionAbridged < ModelObject
+      attr_reader :errors, :warnings
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
+      def initialize(hash = {})
+        super(hash)
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getConstructionByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
+      def create_openstudio_object(openstudio_model)
+        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
+        openstudio_construction.setName(@hash[:name])
+        openstudio_materials = OpenStudio::Model::MaterialVector.new
+       
+        @hash[:layers].each do |layer|
+          openstudio_material = nil
+          material_name = layer
+          material = openstudio_model.getMaterialByName(material_name)
+          unless material.empty?
+            openstudio_material = material.get
+            openstudio_materials << openstudio_material
+          end
+        end
+
+        openstudio_construction.setLayers(openstudio_materials)
+        openstudio_construction
+      end
+
+    end #WindowConstructionAbridged
+  end #EnergyModel
+end #Ladybug
+    
+
+    
+    

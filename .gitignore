@@ -24,5 +24,6 @@
 # measures tests
 lib/measures/.rubocop.yml
 lib/measures/test_results/*
-tests
-tests/output
+lib/measures/*/tests/output
+
+out.txt

@@ -29,17 +29,59 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'bundler/setup'
-require 'ladybug/energy_model'
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/face'
 
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
+module Ladybug
+  module EnergyModel
+    class Room < ModelObject
+      attr_reader :errors, :warnings
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
+      def initialize(hash = {})
+        super(hash)
+        
+        raise "Incorrect model type '#{@type}'" unless @type == 'Room'
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        model_space = openstudio_model.getSpaceByName(@hash[:name])
+        return model_space.get unless model_space.empty?
+        nil 
+      end
+
+      def create_openstudio_object(openstudio_model)
+
+        default_construction_set = nil
+        if @hash[:properties][:energy][:construction_set]
+          construction_set_name = @hash[:properties][:energy][:construction_set]
+          construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
+          unless construction_set.empty?
+            default_construction_set = construction_set.get
+          end
+        end
+        
+        openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
+        openstudio_space.setName(@hash[:name])   
+        openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
+      
+        @hash[:faces].each do |face|
+          face = Face.new(face)
+          openstudio_face = face.to_openstudio(openstudio_model)
+          openstudio_face.setSpace(openstudio_space)
+          nil
+        end
+
+      end
+
+    end # Room
+  end # EnergyModel
+end # Ladybug

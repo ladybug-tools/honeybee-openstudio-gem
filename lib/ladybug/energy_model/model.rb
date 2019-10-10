@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -30,7 +30,26 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/extension'
-
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/opaque_construction_abridged'
+require 'ladybug/energy_model/window_construction_abridged'
+require 'ladybug/energy_model/face'
+require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/construction_set'
+require 'ladybug/energy_model/door'
+require 'ladybug/energy_model/energy_material_no_mass'
+require 'ladybug/energy_model/energy_material'
+require 'ladybug/energy_model/energy_window_material_blind'
+require 'ladybug/energy_model/energy_window_material_gas_custom'
+require 'ladybug/energy_model/energy_window_material_gas'
+require 'ladybug/energy_model/energy_window_material_gas_mixture'
+require 'ladybug/energy_model/energy_window_material_glazing'
+require 'ladybug/energy_model/energy_window_material_shade'
+require 'ladybug/energy_model/energy_window_material_simpleglazsys'
+require 'ladybug/energy_model/room'
+require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/shade_construction'
 require 'json-schema'
 require 'json'
 require 'openstudio'
@@ -39,115 +58,186 @@ module Ladybug
   module EnergyModel
     class Model
       attr_reader :errors, :warnings
-    
+
       # Read Ladybug Energy Model JSON from disk
-      def initialize(file)
+      def self.read_from_disk(file)
+        hash = nil
+        File.open(File.join(file), 'r') do |f|
+          hash = JSON.parse(f.read, symbolize_names: true)
+        end
+
+        Model.new(hash)
+      end
+
+      # Load ModelObject from symbolized hash
+      def initialize(hash)
         # initialize class variable @@extension only once
         @@extension ||= Extension.new
         @@schema ||= @@extension.schema
 
-        @file = file
-        @model = nil
-        File.open(File.join(file), 'r') do |f|
-          @model = JSON::parse(f.read, {symbolize_names: true})
-        end
-        
-        @model_type = @model[:type]
-        raise 'Unknown model type' if @model_type.nil?
-        
-        @face_by_face = false
-        if @model[:type] == 'FaceByFaceModel'
-          @face_by_face = true
-        elsif @model[:type] == 'Model'
-          # no-op
-        else
-          raise "Unknown model type '#{@model[:type]}'"
-        end
+        @hash = hash
+        @type = @hash[:type]
+        raise 'Unknown model type' if @type.nil?
+        raise "Incorrect model type '#{@type}'" unless @type == 'Model'
+
       end
-      
+
       # check if the model is valid
       def valid?
-        return JSON::Validator.validate(@model, @@schema, {:fragment => "#/components/schemas/#{@model_type}"})
+        return validation_errors.empty?
       end
-      
+
       # return detailed model validation errors
       def validation_errors
-        return JSON::Validator.fully_validate(@model, @@schema, {:fragment => "#/components/schemas/#{@model_type}"})
+        JSON::Validator.fully_validate(@@schema, @hash)
       end
+
       
-      # convert to a new openstudio model
-      def to_openstudio
-        osm = OpenStudio::Model::Model.new
-        create_openstudio_objects(osm)
-        return osm
-      end
-      
-      # create openstudio objects in the given osm, clears errors and warnings
-      def create_openstudio_objects(osm)
+      # convert to openstudio model, clears errors and warnings
+      def to_openstudio_model(openstudio_model = nil)
         @errors = []
         @warnings = []
-        
-        create_faces(osm)
+
+        @openstudio_model = if openstudio_model
+                              openstudio_model
+                            else
+                              OpenStudio::Model::Model.new
+                            end
+
+        create_openstudio_objects
+
+        @openstudio_model
       end
-      
-      def create_faces(osm)
-        @model[:faces].each do |face|
-          name = face[:name]
-          face_type = face[:face_type]
-          parent = face[:parent]
-          
-          # for now make parent a space, check if should be a zone?
-          space = osm.getSpaceByName(parent)
-          if space.empty?
-            space = OpenStudio::Model::Space.new(osm)
-            space.setName(parent)
+
+      private
+
+      # create openstudio objects in the openstudio model
+      def create_openstudio_objects
+        create_materials
+        create_constructions
+        create_construction_set
+        create_global_construction_set
+        create_rooms
+        create_orphaned_shades
+        create_orphaned_faces
+        create_orphaned_apertures
+        create_orphaned_doors
+      end
+
+      #add if statement in case rooms are empty 
+      def create_materials
+        @hash[:properties][:energy][:materials].each do |material|
+          material_type = material[:type]
+          material_object = nil
+
+          case material_type
+          when 'EnergyMaterial'
+            material_object = EnergyMaterial.new(material)
+          when 'EnergyMaterialNoMass'
+            material_object = EnergyMaterialNoMass.new(material)
+          when 'EnergyWindowMaterialGas'
+            material_object = EnergyWindowMaterialGas.new(material)
+          when 'EnergyWindowMaterialGasCustom'
+            material_object = EnergyWindowMaterialGasCustom.new(material)
+          when 'EnergyWindowMaterialSimpleGlazSys'
+            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
+          when 'EnergyWindowMaterialBlind'
+            material_object = EnergyWindowMaterialBlind.new(material)
+          when 'EnergyWindowMaterialGlazing'
+            material_object = EnergyWindowMaterialGlazing.new(material)
+          when 'EnergyWindowMaterialShade'
+            material_object = EnergyWindowMaterialShade.new(material)
           else
-            space = space.get
+            raise "Unknown material type #{material_type}"
           end
+          material_object.to_openstudio(@openstudio_model)
+        end
+      end
+
+
+      def create_constructions
+        @hash[:properties][:energy][:constructions].each do |construction|
+          name = construction[:name]
+          construction_type = construction[:type]
+          construction_object = nil
           
-          surface_type = nil
-          air_wall = false
-          case face_type  # 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
-          when 0
-            surface_type = 'Wall' 
-          when 1
-            surface_type = 'RoofCeiling' 
-          when 2
-            surface_type = 'Floor' 
-          when 3
-            air_wall = true          
+          case construction_type
+          when 'OpaqueConstructionAbridged'
+            construction_object = OpaqueConstructionAbridged.new(construction)
+          when 'WindowConstructionAbridged'
+            construction_object = WindowConstructionAbridged.new(construction)
+          when 'ShadeConstruction'
+            construction_object = ShadeConstruction.new(construction)
           else
-            @errors << "Unknown face_type '#{face_type}' for face '#{name}', surface not created"
-            next
+            raise "Unknown construction type #{construction_type}."
           end
-          
-          vertices = OpenStudio::Point3dVector.new
-          if @face_by_face
-            # vertices in face
-            face[:vertices].each do |v|
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          else
-            # vertices in separate list
-            face[:vertices].each do |vi|
-              v = @model[:vertices][vi]
-              vertices << OpenStudio::Point3d.new(v[0], v[1], v[2])
-            end 
-          end
-               
-          surface = OpenStudio::Model::Surface.new(vertices, osm)
-          surface.setName(name)
-          surface.setSpace(space)
-          surface.setSurfaceType(surface_type) if surface_type
-          if air_wall
-            # DLM: todo
+          construction_object.to_openstudio(@openstudio_model)
+        end
+      end
+
+      def create_construction_set
+        if @hash[:properties][:energy][:construction_sets]
+          @hash[:properties][:energy][:construction_sets].each do |construction_set|
+          construction_set_object = ConstructionSetAbridged.new(construction_set)
+          construction_set_object.to_openstudio(@openstudio_model)
           end
         end
       end
-      
-      def create_apertures(osm)
+
+      def create_global_construction_set
+        openstudio_construction = nil
+        if @hash[:properties][:energy][:global_construction_set]
+          construction_name = @hash[:properties][:energy][:global_construction_set]
+          construction = @openstudio_model.getDefaultConstructionSetByName(construction_name)
+          unless construction.empty?
+            openstudio_construction = construction.get
+          end
+          @openstudio_model.getBuilding.setDefaultConstructionSet(openstudio_construction)
+        end
+      end
+
+      def create_rooms
+        if @hash[:rooms] 
+          @hash[:rooms].each do |room|
+          room_object = Room.new(room)
+          room_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end
+
+      def create_orphaned_shades
+        if @hash[:orphaned_shades]
+          @hash[:orphaned_shades].each do |shade|
+          shade_object = Shade.new(shade)
+          shade_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end
+#runlog
+      def create_orphaned_faces
+        if @hash[:orphaned_faces]
+          raise "Orphaned Faces are not translatable to OpenStudio."
+        end
+      end
+
+      def create_orphaned_apertures
+        if @hash[:orphaned_apertures]
+          raise "Orphaned Apertures are not translatable to OpenStudio."
+        end
       end
       
+      def create_orphaned_doors
+        if @hash[:orphaned_doors]
+          raise "Orphaned Doors are not translatable to OpenStudio."
+        end
+      end
+
+        # for now make parent a space, check if should be a zone?
+
+        # add if statement and to_openstudio object
+        # if air_wall
+        # DLM: todo
+        # end
       
     end # Model
   end # EnergyModel

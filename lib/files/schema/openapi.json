@@ -1,1419 +1,2388 @@
 {
-	"openapi": "3.0.0",
-	"info": {
-		"version": "0.0.1",
-		"title": "pollination.cloud API",
-		"termsOfService": "https://pollination.cloud/terms",
-		"contact": {
-			"email": "hello@pollination.solutions"
-		},
-		"license": {
-			"name": "AGPL",
-			"url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
-		},
-		"x-logo": {
-			"url": "https://user-images.githubusercontent.com/2915573/53690998-7239bb00-3d43-11e9-85b1-d9ac9d140c0f.png"
-		},
-		"description": ""
-	},
-	"externalDocs": {
-		"description": "Find out more about Pollination Cloud.",
-		"url": "https://www.pollination.cloud"
-	},
-	"servers": [
-		{
-			"url": "http://api.pollination.cloud"
-		}
-	],
-	"tags": [
-		{
-			"name": "Sensor Grid",
-			"description": "Sensor Grid is a collection of sensors for grid-based studies.\n"
-		}, {
-			"name": "Radiance Material",
-			"description": "Radiance material definitions.\n"
-		}, {
-			"name": "Model",
-			"description": "Models includes geometrical information as well as materials, constructions,\nand boundary conditions to describe a simulation model for daylight and energy\nand CFD modeling.\n"
-		}, {
-			"name": "Simulation",
-			"description": "Simulation is a collection of commands to be applied on input models.\n"
-		}, {
-			"name": "Workflow",
-			"description": "A collection of chained simulations.\n"
-		}
-	],
-	"security": [
-		{
-			"JWT": [
-				""
-			]
-		}
-	],
-	"paths": {
-		"/sensor-grids": {
-			"get": {
-				"tags": [
-					"Sensor Grid"
-				],
-				"summary": "Retrieve a list of sensor grids",
-				"description": "Retrieve a list of sensor grids.\n",
-				"operationId": "get_sensor_grids",
-				"responses": {
-					"200": {
-						"$ref": "#/components/responses/Retrived"
-					},
-					"401": {
-						"$ref": "#/components/responses/Unauthorized"
-					},
-					"403": {
-						"$ref": "#/components/responses/Forbidden"
-					}
-				}
-			},
-			"post": {
-				"tags": [
-					"Sensor Grid"
-				],
-				"summary": "Create a new sensor grid",
-				"description": "Create a new grid of sensors.\n",
-				"operationId": "create_sensor_grids",
-				"requestBody": {
-					"$ref": "#/components/requestBodies/SensorGrid"
-				},
-				"responses": {
-					"201": {
-						"$ref": "#/components/responses/Created"
-					},
-					"401": {
-						"$ref": "#/components/responses/Unauthorized"
-					},
-					"403": {
-						"$ref": "#/components/responses/Forbidden"
-					},
-					"406": {
-						"$ref": "#/components/responses/Invalid"
-					},
-					"415": {
-						"$ref": "#/components/responses/Unsupported"
-					}
-				}
-			}
-		},
-		"/sensor-grids/{id}": {
-			"parameters": [
-				{
-					"$ref": "#/components/parameters/resourceId"
-				}
-			],
-			"get": {
-				"tags": [
-					"Sensor Grid"
-				],
-				"summary": "Retrieve a sensor grid.",
-				"description": "Retrieve a sensor grid with specified identifier.  \n",
-				"operationId": "get_sensor_grid",
-				"responses": {
-					"200": {
-						"description": "Sensor Grid was retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SensorGrid"
-								},
-								"example": {
-									"type": "SensorGrid",
-									"length": 2,
-									"id": "123e4567-e89b-12d3-a456-426655441234",
-									"name": "example_grid",
-									"sensors": [
-										[
-											0, 0, 0, 0, 0, 1
-										], [
-											0, 0, 0, 0, 1, 0
-										]
-									]
-								}
-							}
-						}
-					},
-					"401": {
-						"$ref": "#/components/responses/Unauthorized"
-					},
-					"403": {
-						"$ref": "#/components/responses/Forbidden"
-					},
-					"406": {
-						"$ref": "#/components/responses/Invalid"
-					}
-				}
-			},
-			"delete": {
-				"tags": [
-					"Sensor Grid"
-				],
-				"summary": "Delete a sensor grid",
-				"description": "Delete a sensor grid with predefined identifier string\n",
-				"responses": {
-					"204": {
-						"$ref": "#/components/responses/Succeed"
-					},
-					"401": {
-						"$ref": "#/components/responses/Unauthorized"
-					},
-					"403": {
-						"$ref": "#/components/responses/Refused"
-					},
-					"404": {
-						"$ref": "#/components/responses/NotFound"
-					},
-					"406": {
-						"$ref": "#/components/responses/Invalid"
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"EnergyPlusConstruction": {
-				"description": "Place-holder for EnergyPlus constructions.",
-				"type": "string"
-			},
-			"Zone": {
-				"description": "Place-holder for EnergyPlus zone.",
-				"type": "object"
-			},
-			"Error": {
-				"type": "object",
-				"description": "Error response schema.",
-				"required": [
-					"message"
-				],
-				"properties": {
-					"code": {
-						"type": "integer",
-						"description": "Internal code error. See pollination.cloud/api/response-codes for more information.\n"
-					},
-					"doc_url": {
-						"type": "string",
-						"description": "A URL to more information about the error code reported.",
-						"default": "pollination.cloud/api/response-codes"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"Forbidden", "Unauthorized", "InvalidParameter", "MissingParameter", "RuntimeError"
-						]
-					},
-					"param": {
-						"type": "string",
-						"description": "If the error is parameter-specific, the parameter related to the error."
-					},
-					"message": {
-						"type": "string",
-						"description": "A human-readable message providing more details about the error and if you are\nlucky a helpful suggestion to address the error.\n"
-					}
-				},
-				"example": {
-					"code": 0,
-					"doc_url": "pollination.cloud/api/response-codes",
-					"type": "Unauthorized",
-					"message": "A valid token is required. Current token is expired."
-				}
-			},
-			"ErrorResponse": {
-				"type": "object",
-				"description": "Error response schema.",
-				"required": [
-					"errors"
-				],
-				"properties": {
-					"message": {
-						"type": "string",
-						"description": "A human readble error message."
-					},
-					"errors": {
-						"type": "array",
-						"description": "Collection of errors.",
-						"items": {
-							"$ref": "#/components/schemas/Error"
-						}
-					}
-				},
-				"example": {
-					"message": "Invalid token.",
-					"erros": [
-						{
-							"code": 0,
-							"doc_url": "pollination.cloud/api/response-codes",
-							"type": "Unauthorized",
-							"message": "A valid token is required. Current token is expired."
-						}
-					]
-				}
-			},
-			"Sensor": {
-				"description": "A single sensor. The first 3 values indicate the locaion and the second 3 valuse indicate the direction of the sensor.",
-				"type": "array",
-				"items": {
-					"type": "number",
-					"format": "double"
-				},
-				"minItems": 6,
-				"maxItems": 6,
-				"example": [
-					0, 0, 0, 0, 0, 1
-				]
-			},
-			"SensorGrid": {
-				"type": "object",
-				"description": "A flattened collection of sensors for grid-based studies.",
-				"required": [
-					"type", "sensors", "length", "id"
-				],
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"SensorGrid"
-						]
-					},
-					"length": {
-						"description": "Number of total sensors.",
-						"type": "integer"
-					},
-					"id": {
-						"description": "Grid id provided by server.",
-						"type": "string",
-						"format": "uuid",
-						"readOnly": true
-					},
-					"name": {
-						"description": "Optional name for this Grid.",
-						"type": "string",
-						"pattern": "^[.A-Za-z0-9_-]*$"
-					},
-					"sensors": {
-						"description": "A flattened array of sensors.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/Sensor"
-						}
-					}
-				},
-				"example": {
-					"type": "SensorGrid",
-					"length": 2,
-					"name": "example_grid",
-					"sensors": [
-						[
-							0, 0, 0, 0, 0, 1
-						], [
-							0, 0, 0, 0, 1, 0
-						]
-					]
-				}
-			},
-			"Aperture": {
-				"type": "object",
-				"description": "A static Aperture Schema. An aperture is the entry point of skylight or sunlight to\nspace. For dynamic apertures use DynamicAperture Schema.\nNOTE - All EnergyPlus Extrior fenestration objects are apertures.\n",
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/Face"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"Aperture"
-								]
-							},
-							"face_type": {
-								"type": "integer",
-								"enum": [
-									5
-								]
-							},
-							"blinds": {
-								"description": "A collection of blind geometries for this aperture.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/ShadeFace"
-								}
-							}
-						}
-					}
-				]
-			},
-			"Apertures": {
-				"type": "object",
-				"description": "An array of static Apertures. This is useful to add multiple Aperture to a single Face.\n",
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"Apertures"
-						]
-					},
-					"apertures": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/Aperture"
-						}
-					}
-				}
-			},
-			"ApertureWWR": {
-				"description": "An Aperture defined based on window to wall ratio. This aperture will be converted to\nan Aperture schema.\n",
-				"type": "object",
-				"required": [
-					"wwr", "type"
-				],
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"ApertureWWR"
-						]
-					},
-					"wwr": {
-						"type": "number",
-						"minimum": 0,
-						"maximum": 99,
-						"default": 0
-					}
-				}
-			},
-			"Attributes": {
-				"type": "object",
-				"description": "Face attributes.",
-				"properties": {
-					"rad_modifier": {
-						"$ref": "#/components/schemas/RadianceModifier"
-					},
-					"rad_modifier_dir": {
-						"$ref": "#/components/schemas/RadianceModifier"
-					},
-					"ep_construction": {
-						"$ref": "#/components/schemas/EnergyPlusConstruction"
-					}
-				}
-			},
-			"DynamicModel": {
-				"type": "object",
-				"description": "A Dynamic Model with one or more states.",
-				"required": [
-					"states", "name", "type"
-				],
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"DynamicModel"
-						]
-					},
-					"name": {
-						"description": "Name for this face.",
-						"type": "string",
-						"pattern": "^[.A-Za-z0-9_-]*$"
-					},
-					"is_aperture": {
-						"description": "A boolean that indicates if this state represents an aperture in building. An\naperture can see the source of light (sky or sun) directly. For interior windows\nthis value will be False. Non-aperture openings won't be considered as a separate\nsource of light in calculation and will be treated as go-through windows.\n",
-						"type": "boolean",
-						"default": true
-					},
-					"states": {
-						"description": "A collection of States.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ModelState"
-						}
-					},
-					"schedule": {
-						"description": "An optional schedule for states.",
-						"type": "array",
-						"items": {
-							"description": "index for state at that time-step.",
-							"type": "integer"
-						}
-					}
-				}
-			},
-			"Face": {
-				"type": "object",
-				"description": "A single planar face",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/FaceGeometry"
-					}, {
-						"$ref": "#/components/schemas/Attributes"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"Face"
-								]
-							}
-						}
-					}
-				]
-			},
-			"FaceBase": {
-				"type": "object",
-				"description": "Basic schema for all Face schemas.",
-				"required": [
-					"vertices"
-				],
-				"properties": {
-					"name": {
-						"description": "Optional name for face.",
-						"type": "string",
-						"pattern": "^[.A-Za-z0-9_-]*$"
-					},
-					"vertices": {
-						"description": "A collection of vertices.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/Vertices"
-						},
-						"minItems": 3,
-						"example": [
-							[
-								0, 0, 0
-							], [
-								10, 0, 0
-							], [
-								10, 10, 0
-							]
-						]
-					},
-					"face_type": {
-						"description": "Surface type. 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
-						"type": "integer",
-						"minimum": 0,
-						"maximum": 3
-					},
-					"parent": {
-						"description": "id of parent face or parent zone.",
-						"type": "string",
-						"format": "uuid"
-					}
-				}
-			},
-			"FaceByFaceModel": {
-				"type": "object",
-				"description": "A collection of Faces to create a Pollination model.",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/ModelBase"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"description": "Object type.",
-								"enum": [
-									"FaceByFaceModel"
-								]
-							},
-							"faces": {
-								"type": "array",
-								"items": {
-									"type": "object",
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Face"
-										}, {
-											"$ref": "#/components/schemas/PolyFace"
-										}, {
-											"$ref": "#/components/schemas/ShadeFace"
-										}, {
-											"$ref": "#/components/schemas/DynamicModel"
-										}
-									]
-								}
-							}
-						}
-					}
-				]
-			},
-			"FaceGeometry": {
-				"type": "object",
-				"description": "Geometrical representation of a Face with no attributes.",
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/FaceBase"
-					}, {
-						"properties": {
-							"apertures": {
-								"description": "List of apertures.",
-								"type": "array",
-								"items": {
-									"type": "object",
-									"oneOf": [
-										{
-											"$ref": "#/components/schemas/Aperture"
-										}, {
-											"$ref": "#/components/schemas/ApertureWWR"
-										}
-									]
-								}
-							}
-						}
-					}
-				]
-			},
-			"Model": {
-				"type": "object",
-				"description": "A full-fledge Pollination model. Pollination model is translatable to energy, daylight\nand CFD models. The current version only supports daylight simulation.\n",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/ModelBase"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"description": "Object type.",
-								"enum": [
-									"Model"
-								]
-							},
-							"vertices": {
-								"description": "A flattened list of unique vertices.",
-								"type": "array",
-								"uniqueItems": false,
-								"minItems": 3,
-								"items": {
-									"$ref": "#/components/schemas/Vertices"
-								}
-							},
-							"faces": {
-								"description": "A list of ModelFaces.",
-								"type": "array",
-								"items": {
-									"type": "object",
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/ModelFace"
-										}, {
-											"$ref": "#/components/schemas/ShadeFace"
-										}
-									]
-								}
-							},
-							"apertures": {
-								"description": "A list of ModelApertures.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/ModelAperture"
-								}
-							},
-							"dynamic_models": {
-								"description": "A list of DynamicModels.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/DynamicModel"
-								}
-							},
-							"zones": {
-								"description": "A list of Zones in this model.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/Zone"
-								}
-							},
-							"rad_modifiers": {
-								"description": "A list of unique radiance modifiers. In most cases modifiers are radiance\nmaterials but pollination supports other modifiers as well.\nSee http://radsite.lbl.gov/radiance/refer/ray.html#Surfaces\n",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/RadianceModifier"
-								}
-							},
-							"ep_constructions": {
-								"description": "A list of unique ep_constructions for energy simulation",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/EnergyPlusConstruction"
-								}
-							}
-						}
-					}
-				]
-			},
-			"ModelAperture": {
-				"type": "object",
-				"description": "A single planar Static Aperture Face in Model",
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/ModelFaceBase"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"ModelAperture"
-								]
-							},
-							"face_type": {
-								"type": "integer",
-								"enum": [
-									5
-								]
-							},
-							"is_aperture": {
-								"type": "boolean",
-								"enum": [
-									true
-								]
-							}
-						}
-					}
-				]
-			},
-			"ModelBase": {
-				"type": "object",
-				"description": "Shared properties for Pollination models.",
-				"required": [
-					"convert_to_meters", "id"
-				],
-				"properties": {
-					"convert_to_meters": {
-						"description": "Scaling factor for the vertex coordinates to be in metrics. e.g. for a model in mm\nthe value must be 0.001. \n",
-						"type": "number",
-						"default": 1
-					},
-					"id": {
-						"description": "Model id to be provided by server.",
-						"type": "string",
-						"format": "uuid",
-						"readOnly": true
-					},
-					"name": {
-						"description": "Optional name.",
-						"type": "string",
-						"pattern": "^[.A-Za-z0-9_-]*$"
-					}
-				}
-			},
-			"ModelFace": {
-				"type": "object",
-				"description": "A single planar Static Face in Model",
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/ModelFaceBase"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"ModelFace"
-								]
-							},
-							"vertices_ext": {
-								"description": "Extended list of indexes for vertices which includes child faces like windows. This list should be flattened and include the corner vertices. This is also known as face profile. For radiance model vertices_ext will be checked first and vertices will be used only if vertices_ext is not provided.",
-								"type": "array",
-								"items": {
-									"type": "integer",
-									"minItems": 8
-								}
-							},
-							"is_aperture": {
-								"type": "boolean",
-								"enum": [
-									false
-								]
-							}
-						}
-					}
-				]
-			},
-			"ModelFaceBase": {
-				"type": "object",
-				"description": "A single planar Static Face in Model",
-				"required": [
-					"vertices", "is_aperture"
-				],
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"ModelFaceBase"
-						]
-					},
-					"name": {
-						"description": "Optional name for face.",
-						"type": "string",
-						"pattern": "^[.A-Za-z0-9_-]*$"
-					},
-					"vertices": {
-						"description": "A collection of integers to reference the index of vertices in\nvertices.\n",
-						"type": "array",
-						"items": {
-							"type": "integer"
-						},
-						"minItems": 3,
-						"example": [
-							0, 10, 5, 3
-						]
-					},
-					"face_type": {
-						"description": "Surface type. 0 = Wall, 1 = RoofCeiling, 2 = Floor, 3 = AirWall\n",
-						"type": "integer",
-						"minimum": 0,
-						"maximum": 3
-					},
-					"parent": {
-						"description": "id of parent face or parent zone.",
-						"type": "string",
-						"format": "uuid"
-					},
-					"rad_modifier": {
-						"description": "Index of radiance modifier in radiance_modifiers. This modifier will be used as\ndefault material for this face. See rad_modifier_direct for optional modifier for\ndirect studies. If empty the modifier will be assigned based on face type.\n",
-						"type": "integer"
-					},
-					"rad_modifier_dir": {
-						"description": "Index of radiance modifier for direct sunlight calculation in model.rad_modifiers. Default is blacked rad_modifier.",
-						"type": "integer"
-					},
-					"ep_construction": {
-						"description": "Index of energy construction in model.ep_constructions.",
-						"type": "integer"
-					},
-					"is_aperture": {
-						"description": "A boolean that indicates if this Face is an aperture. An\naperture can see the source of light (sky or sun) directly.\nFor interior windows this value will be False. Non-aperture openings won't be\nconsidered as a separate source of light in calculation and will be treated\nas go-through windows.\n",
-						"type": "boolean"
-					}
-				}
-			},
-			"ModelState": {
-				"description": "State for a dynamic model. Most of the time a dynamic model is an apertures (window\ngroup).\n",
-				"type": "object",
-				"required": [
-					"count", "models"
-				],
-				"properties": {
-					"name": {
-						"description": "A unique name for this state.",
-						"type": "string"
-					},
-					"count": {
-						"description": "The count for this state.",
-						"type": "integer",
-						"minimum": 0
-					},
-					"models": {
-						"type": "object",
-						"required": [
-							"default"
-						],
-						"properties": {
-							"default": {
-								"description": "Default model to be used for normal raytracing recipes.\n",
-								"type": "object",
-								"oneOf": [
-									{
-										"$ref": "#/components/schemas/Model"
-									}, {
-										"$ref": "#/components/schemas/FaceByFaceModel"
-									}
-								]
-							},
-							"direct": {
-								"description": "A model that will be used for direct studies. This model will be used in\nsolar-access studies. Direct sunlight calculation in 2-Phase (2nd phase) and\n5-phase (5th phase). If you are using a BSDF material for direct studies it\nshould be a high-resolution (e.g. tensortree) BSDF.\n",
-								"type": "object",
-								"oneOf": [
-									{
-										"$ref": "#/components/schemas/Model"
-									}, {
-										"$ref": "#/components/schemas/FaceByFaceModel"
-									}
-								]
-							},
-							"black": {
-								"description": "Blacked out representation of this model. Blacked model will be used in studies\nwith multiple dynamic apertures to remove the contribution of light from this\naperture when the contribution from another aperture is being calculated.\n",
-								"type": "object",
-								"oneOf": [
-									{
-										"$ref": "#/components/schemas/Model"
-									}, {
-										"$ref": "#/components/schemas/FaceByFaceModel"
-									}
-								]
-							},
-							"tmtx": {
-								"description": "Transmission matrix. A BSDF representation of the model for matrix-based\ncalculations. This model will be used in matrix multiplication.\n",
-								"type": "string"
-							},
-							"inmtx": {
-								"description": "A glowed representation of the model for inward matrix calculations.\nIn most cases inward matrix calculation is referred to as view matrix.\n",
-								"type": "object",
-								"oneOf": [
-									{
-										"$ref": "#/components/schemas/Model"
-									}, {
-										"$ref": "#/components/schemas/FaceByFaceModel"
-									}
-								]
-							},
-							"outmtx": {
-								"description": "The representation of the model for outwards matrix\ncalculations. outwards matrix calculation in most cases are referred to as\ndaylight matrix.\n",
-								"type": "object",
-								"oneOf": [
-									{
-										"$ref": "#/components/schemas/Model"
-									}, {
-										"$ref": "#/components/schemas/FaceByFaceModel"
-									}
-								]
-							}
-						}
-					}
-				}
-			},
-			"PolyFace": {
-				"type": "object",
-				"description": "A collection of Faces with shared vertices and same material.\n",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/Attributes"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"PolyFace"
-								]
-							},
-							"faces": {
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/FaceGeometry"
-								}
-							}
-						}
-					}
-				]
-			},
-			"ShadeFace": {
-				"type": "object",
-				"description": "A static shading geometry Schema.",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/Face"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"enum": [
-									"ShadeFace"
-								]
-							}
-						}
-					}
-				]
-			},
-			"Space": {
-				"type": "object",
-				"description": "An extruded closed Space. Use Room to create \"SpaceBySpaceModel\"s.\nThis is enough for now but in the future we need to have FaceByFaceSpaces which is\neasier to use for energy models. \n",
-				"required": [
-					"type", "profile", "extrusion"
-				],
-				"properties": {
-					"type": {
-						"type": "string",
-						"enum": [
-							"Space"
-						]
-					},
-					"profile": {
-						"description": "List of vertices to define space's plan.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/Vertices"
-						},
-						"minItems": 3
-					},
-					"apertures": {
-						"description": "List of apertures based on WWR for each wall.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ApertureWWR"
-						}
-					},
-					"extrusion": {
-						"type": "number",
-						"minimum": 0,
-						"exclusiveMinimum": false
-					}
-				}
-			},
-			"SpaceBySpaceModel": {
-				"type": "object",
-				"description": "A collection of Extruded Rooms to create a Pollination model.",
-				"required": [
-					"type"
-				],
-				"allOf": [
-					{
-						"$ref": "#/components/schemas/ModelBase"
-					}, {
-						"properties": {
-							"type": {
-								"type": "string",
-								"description": "Object type.",
-								"enum": [
-									"SpaceBySpaceModel"
-								]
-							},
-							"spaces": {
-								"description": "A collection of spaces.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/Space"
-								}
-							},
-							"shades": {
-								"description": "A collection of shading geometries.",
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/ShadeFace"
-								}
-							}
-						}
-					}
-				]
-			},
-			"Vertices": {
-				"description": "A single vertice as x, y, z.",
-				"type": "array",
-				"items": {
-					"type": "number",
-					"format": "double"
-				},
-				"minItems": 3,
-				"maxItems": 3,
-				"example": [
-					0, 0, 0
-				]
-			},
-			"RadianceModifier": {
-				"description": "A radiance modifier. In most cases modifiers are radiance materials\nbut pollination supports other modifiers as well.\nSee http://radsite.lbl.gov/radiance/refer/ray.html#Surfaces\n",
-				"type": "string"
-			},
-			"Simulation": {
-				"description": "A pollination simulation job",
-				"type": "object",
-				"required": [
-					"type", "id"
-				],
-				"properties": {
-					"type": {
-						"description": "Simulation type.",
-						"type": "string",
-						"enum": [
-							"daylight-factor", "solar-access"
-						]
-					},
-					"id": {
-						"description": "Simulation id assigned by server.",
-						"type": "string",
-						"format": "uuid",
-						"readOnly": true
-					},
-					"models": {
-						"description": "A collection of model ids.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/UUID"
-						}
-					},
-					"grids": {
-						"description": "A collection of sensor-grid ids.",
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/UUID"
-						}
-					}
-				}
-			},
-			"UUID": {
-				"description": "A resource identifier string",
-				"type": "string",
-				"format": "uuid",
-				"example": "123e4567-e89b-12d3-a456-426655440000"
-			}
-		},
-		"responses": {
-			"Created": {
-				"description": "Created successfuly",
-				"headers": {
-					"Location": {
-						"schema": {
-							"type": "string"
-						}
-					}
-				},
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "object",
-							"properties": {
-								"id": {
-									"type": "string",
-									"description": "Id of the newly created resource.",
-									"format": "uuid"
-								},
-								"message": {
-									"type": "string",
-									"description": "A human readble message."
-								}
-							},
-							"example": {
-								"id": "123e4567-e89b-12d3-a456-426655440000",
-								"message": "The resource is created successfuly. Use header Location to access the resource."
-							}
-						}
-					}
-				}
-			},
-			"Finished": {
-				"description": "A long task has finished successfully.",
-				"headers": {
-					"Location": {
-						"schema": {
-							"type": "string"
-						}
-					}
-				},
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "object",
-							"properties": {
-								"id": {
-									"type": "string",
-									"description": "Id of the newly created resource.",
-									"format": "uuid"
-								},
-								"message": {
-									"type": "string",
-									"description": "A human readble message."
-								},
-								"finished_at": {
-									"type": "string",
-									"format": "datetime",
-									"description": "Finished time."
-								}
-							},
-							"example": {
-								"id": "123e4567-e89b-12d3-a456-426655440000",
-								"finished_at": "Feb 19, 2019 8:35 am",
-								"message": "The sesstion is finished. Use header Location link to access the resource."
-							}
-						}
-					}
-				}
-			},
-			"Forbidden": {
-				"description": "Access forbidden.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						},
-						"example": {
-							"message": "Permission denied.",
-							"erros": [
-								{
-									"code": 6,
-									"doc_url": "pollination.cloud/api/response-codes",
-									"type": "Forbidden",
-									"message": "Permission denied."
-								}
-							]
-						}
-					}
-				}
-			},
-			"InProgress": {
-				"description": "Still in progress",
-				"headers": {
-					"Retry-After": {
-						"schema": {
-							"type": "integer"
-						}
-					}
-				},
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "object",
-							"required": [
-								"retry_after", "status_url"
-							],
-							"properties": {
-								"completion": {
-									"type": "number",
-									"description": "Percentage of completion",
-									"minimum": 0,
-									"maximum": 100
-								},
-								"retry_after": {
-									"type": "integer",
-									"description": "Suggested time to retry back in seconds."
-								},
-								"message": {
-									"type": "string",
-									"description": "A human readble message.",
-									"default": "In progress..."
-								},
-								"status_url": {
-									"type": "string",
-									"description": "The URL the to check the status of the running task."
-								}
-							}
-						},
-						"example": {
-							"id": "123e4567-e89b-12d3-a456-426655440000",
-							"message": "The sesstion is started. Use status_url to monitor the progress of the run.",
-							"status_url": "api.pollination.cloud/123e4567-e89b-12d3-a456-426655440000/status"
-						}
-					}
-				}
-			},
-			"Invalid": {
-				"description": "Invalid data was sent.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						},
-						"example": {
-							"message": "Missing required paramter.",
-							"erros": [
-								{
-									"code": 2,
-									"doc_url": "pollination.cloud/api/response-codes",
-									"type": "MissingParameter",
-									"message": "Missing required paramter.",
-									"param": "id"
-								}
-							]
-						}
-					}
-				}
-			},
-			"NotFound": {
-				"description": "Resource was not found.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						},
-						"example": {
-							"message": "Resource was not found.",
-							"erros": [
-								{
-									"code": 6,
-									"doc_url": "pollination.cloud/api/response-codes",
-									"type": "InvalidParameter",
-									"message": "The resource was not found."
-								}
-							]
-						}
-					}
-				}
-			},
-			"Refused": {
-				"description": "The request is refused.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						},
-						"example": {
-							"message": "The request is refused.",
-							"erros": [
-								{
-									"code": 2,
-									"doc_url": "pollination.cloud/api/response-codes",
-									"type": "Forbidden",
-									"message": "The resource is currently in-use and cannot be deleted."
-								}
-							]
-						}
-					}
-				}
-			},
-			"Retrived": {
-				"description": "Retrive a list of resource ids",
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "object",
-							"properties": {
-								"ids": {
-									"type": "array",
-									"items": {
-										"type": "string",
-										"format": "uuid"
-									}
-								},
-								"message": {
-									"type": "string",
-									"description": "A human readble message."
-								}
-							},
-							"example": {
-								"ids": [
-									"123e4567-e89b-12d3-a456-426655440000", "987e4567-e89b-15t3-a456-426655440200"
-								],
-								"message": "The resources are retrived successfuly."
-							}
-						}
-					}
-				}
-			},
-			"Started": {
-				"description": "A task is started",
-				"headers": {
-					"Retry-After": {
-						"schema": {
-							"type": "integer"
-						}
-					}
-				},
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "object",
-							"required": [
-								"id", "status_url"
-							],
-							"properties": {
-								"id": {
-									"type": "string",
-									"description": "Id of the newly created resource.",
-									"format": "uuid"
-								},
-								"message": {
-									"type": "string",
-									"description": "A human readble message."
-								},
-								"status_url": {
-									"type": "string",
-									"description": "The URL the to check the status of the running task."
-								}
-							}
-						},
-						"example": {
-							"id": "123e4567-e89b-12d3-a456-426655440000",
-							"message": "The task is started. Use status_url to monitor the progress of the run.",
-							"status_url": "api.pollination.cloud/123e4567-e89b-12d3-a456-426655440000/status"
-						}
-					}
-				}
-			},
-			"Succeed": {
-				"description": "Success"
-			},
-			"Unauthorized": {
-				"description": "Unauthorized.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						}
-					}
-				}
-			},
-			"Unsupported": {
-				"description": "Unsupported media type content.",
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"parameters": {
-			"resourceId": {
-				"name": "id",
-				"in": "path",
-				"description": "The resource identifier string",
-				"required": true,
-				"schema": {
-					"type": "string",
-					"format": "uuid"
-				}
-			}
-		},
-		"headers": {
-			"ExpiresAfter": {
-				"description": "date in UTC when token expires",
-				"schema": {
-					"type": "string",
-					"format": "date-time"
-				}
-			}
-		},
-		"requestBodies": {
-			"Model": {
-				"content": {
-					"application/json": {
-						"schema": {
-							"oneOf": [
-								{
-									"$ref": "#/components/schemas/Model"
-								}, {
-									"$ref": "#/components/schemas/SpaceBySpaceModel"
-								}, {
-									"$ref": "#/components/schemas/FaceByFaceModel"
-								}
-							]
-						}
-					}
-				},
-				"description": "Pollination Model",
-				"required": true
-			},
-			"SensorGrid": {
-				"content": {
-					"application/json": {
-						"schema": {
-							"$ref": "#/components/schemas/SensorGrid"
-						}
-					}
-				},
-				"description": "SensorGrid",
-				"required": true
-			}
-		},
-		"securitySchemes": {
-			"JWT": {
-				"description": "JSON Web Token (JWT).\nUsage format: `Bearer <JWT>`\n",
-				"type": "http",
-				"scheme": "bearer",
-				"bearerFormat": "JWT"
-			}
-		}
-	}
+  "title": "Model",
+  "type": "object",
+  "properties": {
+    "type": {
+      "title": "Type",
+      "enum": [
+        "Model"
+      ]
+    },
+    "properties": {
+      "$ref": "#/definitions/ModelProperties"
+    },
+    "name": {
+      "title": "Name",
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "[A-Za-z0-9_-]",
+      "type": "string"
+    },
+    "display_name": {
+      "title": "Display_Name",
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[\\s.A-Za-z0-9_-]*$",
+      "type": "string"
+    },
+    "rooms": {
+      "title": "Rooms",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Room"
+      }
+    },
+    "orphaned_faces": {
+      "title": "Orphaned_Faces",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Face"
+      }
+    },
+    "orphaned_shades": {
+      "title": "Orphaned_Shades",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Shade"
+      }
+    },
+    "orphaned_apertures": {
+      "title": "Orphaned_Apertures",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Aperture"
+      }
+    },
+    "orphaned_doors": {
+      "title": "Orphaned_Doors",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Door"
+      }
+    },
+    "north_angle": {
+      "title": "North_Angle",
+      "exclusiveMaximum": 360,
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "type",
+    "properties",
+    "name"
+  ],
+  "definitions": {
+    "OpaqueConstructionAbridged": {
+      "title": "OpaqueConstructionAbridged",
+      "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the walls, roofs, floors,\nand doors of the building.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "OpaqueConstructionAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "layers": {
+          "title": "Layers",
+          "description": "List of materials. The order of the materials is from outside to inside.",
+          "minItems": 1,
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[\\s.A-Za-z0-9_-]*$",
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "layers"
+      ]
+    },
+    "WindowConstructionAbridged": {
+      "title": "WindowConstructionAbridged",
+      "description": "Group of objects to describe the physical properties and configuration for\nthe building envelope and interior elements that is the windows of the building.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "WindowConstructionAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "layers": {
+          "title": "Layers",
+          "description": "List of materials. The order of the materials is from outside to inside.",
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[\\s.A-Za-z0-9_-]*$",
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "layers"
+      ]
+    },
+    "ShadeConstruction": {
+      "title": "ShadeConstruction",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadeConstruction"
+          ]
+        },
+        "is_specular": {
+          "title": "Is_Specular",
+          "type": "boolean"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "solar_reflectance": {
+          "title": "Solar_Reflectance",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "visible_reflectance": {
+          "title": "Visible_Reflectance",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "is_specular",
+        "name"
+      ]
+    },
+    "EnergyMaterial": {
+      "title": "EnergyMaterial",
+      "description": "Material 'types' used to describe layers within opaque construction elements.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyMaterial"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "roughness": {
+          "title": "Roughness",
+          "default": "MediumRough",
+          "enum": [
+            "VeryRough",
+            "Rough",
+            "MediumRough",
+            "MediumSmooth",
+            "Smooth",
+            "VerySmooth"
+          ],
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "Thickness of the material layer in meters.",
+          "exclusiveMinimum": 0,
+          "maximum": 3,
+          "type": "number"
+        },
+        "conductivity": {
+          "title": "Conductivity",
+          "description": "Thermal conductivity of the material layer in W/(m-K).",
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "density": {
+          "title": "Density",
+          "description": "Density of the material layer in kg/m3.",
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "specific_heat": {
+          "title": "Specific_Heat",
+          "description": "Specific heat of the material layer in J/(kg-K).",
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "thermal_absorptance": {
+          "title": "Thermal_Absorptance",
+          "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
+          "default": 0.9,
+          "exclusiveMinimum": 0,
+          "maximum": 0.99999,
+          "type": "number"
+        },
+        "solar_absorptance": {
+          "title": "Solar_Absorptance",
+          "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "visible_absorptance": {
+          "title": "Visible_Absorptance",
+          "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "thickness",
+        "conductivity",
+        "density",
+        "specific_heat"
+      ]
+    },
+    "EnergyMaterialNoMass": {
+      "title": "EnergyMaterialNoMass",
+      "description": "Used when only the thermal resistance (R value) of the material is known. Used for\nopaque construction elements.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyMaterialNoMass"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "r_value": {
+          "title": "R_Value",
+          "description": "Used to enter the thermal resistance (R-value) of the material layer in (m2-K)/W.",
+          "minimum": 0.001,
+          "type": "number"
+        },
+        "roughness": {
+          "title": "Roughness",
+          "default": "MediumRough",
+          "enum": [
+            "VeryRough",
+            "Rough",
+            "MediumRough",
+            "MediumSmooth",
+            "Smooth",
+            "VerySmooth"
+          ],
+          "type": "string"
+        },
+        "thermal_absorptance": {
+          "title": "Thermal_Absorptance",
+          "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
+          "default": 0.9,
+          "exclusiveMinimum": 0,
+          "maximum": 0.99999,
+          "type": "number"
+        },
+        "solar_absorptance": {
+          "title": "Solar_Absorptance",
+          "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "visible_absorptance": {
+          "title": "Visible_Absorptance",
+          "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "r_value"
+      ]
+    },
+    "EnergyWindowMaterialGas": {
+      "title": "EnergyWindowMaterialGas",
+      "description": "Create single layer of gas.\n\n    Can be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGas"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "default": "AIRGAP",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "gas_type": {
+          "title": "Gas_Type",
+          "default": "Air",
+          "enum": [
+            "Air",
+            "Argon",
+            "Krypton",
+            "Xenon"
+          ],
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+          "default": 0.0125,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "EnergyWindowMaterialGasCustom": {
+      "title": "EnergyWindowMaterialGasCustom",
+      "description": "Create single layer of custom gas.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGasCustom"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+          "default": 0.0125,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "conductivity_coeff_a": {
+          "title": "Conductivity_Coeff_A",
+          "description": "The A coefficient for gas conductivity in W/(m-K).",
+          "type": "number"
+        },
+        "conductivity_coeff_b": {
+          "title": "Conductivity_Coeff_B",
+          "description": "The B coefficient for gas conductivity in W/(m-K2).",
+          "default": 0,
+          "type": "number"
+        },
+        "conductivity_coeff_c": {
+          "title": "Conductivity_Coeff_C",
+          "description": "The C coefficient for gas conductivity in W/(m-K3).",
+          "default": 0,
+          "type": "number"
+        },
+        "viscosity_coeff_a": {
+          "title": "Viscosity_Coeff_A",
+          "description": "The A coefficient for gas viscosity in kg/(m-s).",
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "viscosity_coeff_b": {
+          "title": "Viscosity_Coeff_B",
+          "description": "The B coefficient for gas viscosity in kg/(m-s-K).",
+          "default": 0,
+          "type": "number"
+        },
+        "viscosity_coeff_c": {
+          "title": "Viscosity_Coeff_C",
+          "description": "The C coefficient for gas viscosity in kg/(m-s-K2).",
+          "default": 0,
+          "type": "number"
+        },
+        "specific_heat_coeff_a": {
+          "title": "Specific_Heat_Coeff_A",
+          "description": "The A coefficient for gas specific heat in J/(kg-K).",
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "specific_heat_coeff_b": {
+          "title": "Specific_Heat_Coeff_B",
+          "description": "The B coefficient for gas specific heat in J/(kg-K2).",
+          "default": 0,
+          "type": "number"
+        },
+        "specific_heat_coeff_c": {
+          "title": "Specific_Heat_Coeff_C",
+          "description": "The C coefficient for gas specific heat in J/(kg-K3).",
+          "default": 0,
+          "type": "number"
+        },
+        "specific_heat_ratio": {
+          "title": "Specific_Heat_Ratio",
+          "description": "The specific heat ratio for gas.",
+          "exclusiveMinimum": 1,
+          "type": "number"
+        },
+        "molecular_weight": {
+          "title": "Molecular_Weight",
+          "description": "The molecular weight for gas in g/mol.",
+          "minimum": 20,
+          "maximum": 200,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "conductivity_coeff_a",
+        "viscosity_coeff_a",
+        "specific_heat_coeff_a",
+        "specific_heat_ratio",
+        "molecular_weight"
+      ]
+    },
+    "GasTypeAndFraction": {
+      "title": "GasTypeAndFraction",
+      "type": "object",
+      "properties": {
+        "gas_type": {
+          "title": "Gas_Type",
+          "enum": [
+            "Air",
+            "Argon",
+            "Krypton",
+            "Xenon"
+          ],
+          "type": "string"
+        },
+        "gas_fraction": {
+          "title": "Gas_Fraction",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "gas_type",
+        "gas_fraction"
+      ]
+    },
+    "EnergyWindowMaterialGasMixture": {
+      "title": "EnergyWindowMaterialGasMixture",
+      "description": "Create a mixture of two to four different gases to fill the panes of multiple\n    pane windows.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGasMixture"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "The thickness of the gas mixture layer in meters.",
+          "type": "number"
+        },
+        "gas_type_fraction": {
+          "title": "Gas_Type_Fraction",
+          "description": "Used to describe the type of gas and its fraction in a mixture ofgases.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GasTypeAndFraction"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "thickness",
+        "gas_type_fraction"
+      ]
+    },
+    "EnergyWindowMaterialSimpleGlazSys": {
+      "title": "EnergyWindowMaterialSimpleGlazSys",
+      "description": "Describe an entire glazing system rather than individual layers.\n\n    Used when only very limited information is available on the glazing layers or when\n    specific performance levels are being targeted.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialSimpleGlazSys"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "u_factor": {
+          "title": "U_Factor",
+          "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
+          "exclusiveMinimum": 0,
+          "maximum": 5.8,
+          "type": "number"
+        },
+        "shgc": {
+          "title": "Shgc",
+          "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1,
+          "type": "number"
+        },
+        "vt": {
+          "title": "Vt",
+          "description": "The fraction of visible light falling on the window that makes it through the glass at normal incidence.",
+          "default": 0.54,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "u_factor",
+        "shgc"
+      ]
+    },
+    "EnergyWindowMaterialBlind": {
+      "title": "EnergyWindowMaterialBlind",
+      "description": "Window blind properties.\n\n    Window blind properties consist of flat, equally-spaced slats.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialBlind"
+          ]
+        },
+        "slat_orientation": {
+          "title": "Slat_Orientation",
+          "enum": [
+            "Horizontal",
+            "Vertical",
+            "Choices include Horizontal and Vertical. Horizontal means the slats"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "slat_width": {
+          "title": "Slat_Width",
+          "description": "The width of slat measured from edge to edge in meters.",
+          "default": 0.025,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "slat_separation": {
+          "title": "Slat_Separation",
+          "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
+          "default": 0.01875,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "slat_thickness": {
+          "title": "Slat_Thickness",
+          "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
+          "default": 0.001,
+          "exclusiveMinimum": 0,
+          "maximum": 0.1,
+          "type": "number"
+        },
+        "slat_angle": {
+          "title": "Slat_Angle",
+          "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
+          "default": 45,
+          "minimum": 0,
+          "maximum": 180,
+          "type": "number"
+        },
+        "slat_conductivity": {
+          "title": "Slat_Conductivity",
+          "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
+          "default": 221,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "beam_solar_transmittance": {
+          "title": "Beam_Solar_Transmittance",
+          "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "beam_solar_reflectance": {
+          "title": "Beam_Solar_Reflectance",
+          "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "beam_solar_reflectance_back": {
+          "title": "Beam_Solar_Reflectance_Back",
+          "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_solar_transmittance": {
+          "title": "Diffuse_Solar_Transmittance",
+          "description": "The slat transmittance for hemisperically diffuse solar radiation. Default value is 0.",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_solar_reflectance": {
+          "title": "Diffuse_Solar_Reflectance",
+          "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_solar_reflectance_back": {
+          "title": "Diffuse_Solar_Reflectance_Back",
+          "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "beam_visible_transmittance": {
+          "title": "Beam_Visible_Transmittance",
+          "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "beam_visible_reflectance": {
+          "title": "Beam_Visible_Reflectance",
+          "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "beam_visible_reflectance_back": {
+          "title": "Beam_Visible_Reflectance_Back",
+          "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_visible_transmittance": {
+          "title": "Diffuse_Visible_Transmittance",
+          "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_visible_reflectance": {
+          "title": "Diffuse_Visible_Reflectance",
+          "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "diffuse_visible_reflectance_back": {
+          "title": "Diffuse_Visible_Reflectance_Back",
+          "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "infrared_transmittance": {
+          "title": "Infrared_Transmittance",
+          "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "emissivity": {
+          "title": "Emissivity",
+          "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+          "default": 0.9,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "emissivity_back": {
+          "title": "Emissivity_Back",
+          "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+          "default": 0.9,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "distance_to_glass": {
+          "title": "Distance_To_Glass",
+          "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
+          "default": 0.05,
+          "minimum": 0.01,
+          "maximum": 1,
+          "type": "number"
+        },
+        "top_opening_multiplier": {
+          "title": "Top_Opening_Multiplier",
+          "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "bottom_opening_multiplier": {
+          "title": "Bottom_Opening_Multiplier",
+          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "left_opening_multiplier": {
+          "title": "Left_Opening_Multiplier",
+          "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "right_opening_multiplier": {
+          "title": "Right_Opening_Multiplier",
+          "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "minimum_slat_angle": {
+          "title": "Minimum_Slat_Angle",
+          "description": "The minimum allowed slat angle in degrees. The default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 180,
+          "type": "number"
+        },
+        "maximum_slat_angle": {
+          "title": "Maximum_Slat_Angle",
+          "description": "The maximum allowed slat angle in degrees. The default value is 180.",
+          "default": 180,
+          "minimum": 0,
+          "maximum": 180,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "slat_orientation",
+        "name"
+      ]
+    },
+    "EnergyWindowMaterialGlazing": {
+      "title": "EnergyWindowMaterialGlazing",
+      "description": "Describe a single glass pane corresponding to a layer in a window construction.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialGlazing"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
+          "default": 0.003,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "solar_transmittance": {
+          "title": "Solar_Transmittance",
+          "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
+          "default": 0.85,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "solar_reflectance": {
+          "title": "Solar_Reflectance",
+          "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
+          "default": 0.075,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "solar_reflectance_back": {
+          "title": "Solar_Reflectance_Back",
+          "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
+          "type": "number"
+        },
+        "visible_transmittance": {
+          "title": "Visible_Transmittance",
+          "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
+          "default": 0.9,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "visible_reflectance": {
+          "title": "Visible_Reflectance",
+          "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
+          "default": 0.075,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "visible_reflectance_back": {
+          "title": "Visible_Reflectance_Back",
+          "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "infrared_transmittance": {
+          "title": "Infrared_Transmittance",
+          "description": "Long-wave transmittance at normal incidence.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "emissivity": {
+          "title": "Emissivity",
+          "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+          "default": 0.84,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "emissivity_back": {
+          "title": "Emissivity_Back",
+          "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+          "default": 0.84,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "conductivity": {
+          "title": "Conductivity",
+          "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
+          "default": 0.9,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "dirt_correction": {
+          "title": "Dirt_Correction",
+          "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
+          "default": 1,
+          "type": "number"
+        },
+        "solar_diffusing": {
+          "title": "Solar_Diffusing",
+          "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "EnergyWindowMaterialShade": {
+      "title": "EnergyWindowMaterialShade",
+      "description": "This object specifies the properties of window shade materials.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "EnergyWindowMaterialShade"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "solar_transmittance": {
+          "title": "Solar_Transmittance",
+          "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default value is 0.4.",
+          "default": 0.4,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "solar_reflectance": {
+          "title": "Solar_Reflectance",
+          "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
+          "default": 0.5,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "visible_transmittance": {
+          "title": "Visible_Transmittance",
+          "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
+          "default": 0.4,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "visible_reflectance": {
+          "title": "Visible_Reflectance",
+          "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4",
+          "default": 0.4,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "emissivity": {
+          "title": "Emissivity",
+          "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
+          "default": 0.9,
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1,
+          "type": "number"
+        },
+        "infrared_transmittance": {
+          "title": "Infrared_Transmittance",
+          "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default value is 0.",
+          "default": 0,
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "thickness": {
+          "title": "Thickness",
+          "description": "The thickness of the shade material in meters. Default value is 0.005.",
+          "default": 0.005,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "conductivity": {
+          "title": "Conductivity",
+          "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
+          "default": 0.1,
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "distance_to_glass": {
+          "title": "Distance_To_Glass",
+          "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
+          "default": 0.05,
+          "minimum": 0.001,
+          "maximum": 1,
+          "type": "number"
+        },
+        "top_opening_multiplier": {
+          "title": "Top_Opening_Multiplier",
+          "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "bottom_opening_multiplier": {
+          "title": "Bottom_Opening_Multiplier",
+          "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "left_opening_multiplier": {
+          "title": "Left_Opening_Multiplier",
+          "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "right_opening_multiplier": {
+          "title": "Right_Opening_Multiplier",
+          "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "airflow_permeability": {
+          "title": "Airflow_Permeability",
+          "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 0.8,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "WallSetAbridged": {
+      "title": "WallSetAbridged",
+      "description": "A set of constructions for wall assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "WallSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "FloorSetAbridged": {
+      "title": "FloorSetAbridged",
+      "description": "A set of constructions for floor assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "FloorSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "RoofCeilingSetAbridged": {
+      "title": "RoofCeilingSetAbridged",
+      "description": "A set of constructions for roof and ceiling assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoofCeilingSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ground_construction": {
+          "title": "Ground_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ApertureSetAbridged": {
+      "title": "ApertureSetAbridged",
+      "description": "A set of constructions for aperture assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ApertureSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "window_construction": {
+          "title": "Window_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skylight_construction": {
+          "title": "Skylight_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "operable_construction": {
+          "title": "Operable_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "DoorSetAbridged": {
+      "title": "DoorSetAbridged",
+      "description": "A set of constructions for door assemblies.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "DoorSetAbridged"
+          ]
+        },
+        "interior_construction": {
+          "title": "Interior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exterior_construction": {
+          "title": "Exterior_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "overhead_construction": {
+          "title": "Overhead_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exterior_glass_construction": {
+          "title": "Exterior_Glass_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interior_glass_construction": {
+          "title": "Interior_Glass_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ConstructionSetAbridged": {
+      "title": "ConstructionSetAbridged",
+      "description": "A set of constructions for different surface types and boundary conditions.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ConstructionSetAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "wall_set": {
+          "$ref": "#/definitions/WallSetAbridged"
+        },
+        "floor_set": {
+          "$ref": "#/definitions/FloorSetAbridged"
+        },
+        "roof_ceiling_set": {
+          "$ref": "#/definitions/RoofCeilingSetAbridged"
+        },
+        "aperture_set": {
+          "$ref": "#/definitions/ApertureSetAbridged"
+        },
+        "door_set": {
+          "$ref": "#/definitions/DoorSetAbridged"
+        },
+        "shade_construction": {
+          "title": "Shade_Construction",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "ModelEnergyProperties": {
+      "title": "ModelEnergyProperties",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ModelEnergyProperties"
+          ]
+        },
+        "constructions": {
+          "title": "Constructions",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/OpaqueConstructionAbridged"
+              },
+              {
+                "$ref": "#/definitions/WindowConstructionAbridged"
+              },
+              {
+                "$ref": "#/definitions/ShadeConstruction"
+              }
+            ]
+          }
+        },
+        "materials": {
+          "title": "Materials",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/EnergyMaterial"
+              },
+              {
+                "$ref": "#/definitions/EnergyMaterialNoMass"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGas"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGasCustom"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGasMixture"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialSimpleGlazSys"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialBlind"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialGlazing"
+              },
+              {
+                "$ref": "#/definitions/EnergyWindowMaterialShade"
+              }
+            ]
+          }
+        },
+        "construction_sets": {
+          "title": "Construction_Sets",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConstructionSetAbridged"
+          }
+        },
+        "global_construction_set": {
+          "title": "Global_Construction_Set",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "constructions",
+        "materials"
+      ]
+    },
+    "ModelProperties": {
+      "title": "ModelProperties",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ModelProperties"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ModelEnergyProperties"
+        }
+      },
+      "required": [
+        "type",
+        "energy"
+      ]
+    },
+    "RoomEnergyPropertiesAbridged": {
+      "title": "RoomEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoomEnergyPropertiesAbridged"
+          ]
+        },
+        "construction_set": {
+          "title": "Construction_Set",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[\\s.A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "program_type": {
+          "title": "Program_Type",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "people": {
+          "title": "People",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lighting": {
+          "title": "Lighting", 
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "electric_equipment": {
+          "title": "Electric_Equipment",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gas_equipment": {
+          "title": "Gas_Equipment",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "infiltration": {
+          "title": "Infiltration",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ventilation": {
+          "title": "Ventilation",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "[A-Za-z0-9_-]",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "RoomPropertiesAbridged": {
+      "title": "RoomPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "RoomPropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/RoomEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type",
+        "energy"
+      ]
+    },
+    "Plane": {
+      "title": "Plane",
+      "type": "object",
+      "properties": {
+        "n": {
+          "title": "N",
+          "description": "Normal",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "o": {
+          "title": "O",
+          "description": "Origin",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "x": {
+          "title": "X",
+          "description": "x-axis",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "n",
+        "o"
+      ]
+    },
+    "Face3D": {
+      "title": "Face3D",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Face3D"
+          ]
+        },
+        "boundary": {
+          "title": "Boundary",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "holes": {
+          "title": "Holes",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "plane": {
+          "$ref": "#/definitions/Plane"
+        }
+      },
+      "required": [
+        "type",
+        "boundary"
+      ]
+    },
+    "FaceEnergyPropertiesAbridged": {
+      "title": "FaceEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "FaceEnergyPropertiesAbridged"
+          ]
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "FacePropertiesAbridged": {
+      "title": "FacePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "FacePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/FaceEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Ground": {
+      "title": "Ground",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Ground"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Outdoors": {
+      "title": "Outdoors",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Outdoors"
+          ]
+        },
+        "sun_exposure": {
+          "title": "Sun_Exposure",
+          "type": "boolean"
+        },
+        "wind_exposure": {
+          "title": "Wind_Exposure",
+          "type": "boolean"
+        },
+        "view_factor": {
+          "title": "View_Factor",
+          "default": "autocalculate",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Adiabatic": {
+      "title": "Adiabatic",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Adiabatic"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Surface": {
+      "title": "Surface",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Surface"
+          ]
+        },
+        "boundary_condition_objects": {
+          "title": "Boundary_Condition_Objects",
+          "minItems": 2,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "boundary_condition_objects"
+      ]
+    },
+    "ApertureEnergyPropertiesAbridged": {
+      "title": "ApertureEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ApertureEnergyPropertiesAbridged"
+          ]
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "AperturePropertiesAbridged": {
+      "title": "AperturePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "AperturePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ApertureEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ShadeEnergyPropertiesAbridged": {
+      "title": "ShadeEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadeEnergyPropertiesAbridged"
+          ]
+        },
+        "transmittance_schedule": {
+          "title": "Transmittance_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ShadePropertiesAbridged": {
+      "title": "ShadePropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ShadePropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/ShadeEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Shade": {
+      "title": "Shade",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Shade"
+          ]
+        },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "properties": {
+          "$ref": "#/definitions/ShadePropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "geometry",
+        "properties",
+        "name"
+      ]
+    },
+    "Aperture": {
+      "title": "Aperture",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Aperture"
+          ]
+        },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "boundary_condition": {
+          "title": "Boundary_Condition",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Outdoors"
+            },
+            {
+              "$ref": "#/definitions/Surface"
+            }
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/AperturePropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "is_operable": {
+          "title": "Is_Operable",
+          "default": false,
+          "type": "boolean"
+        },
+        "indoor_shades": {
+          "title": "Indoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        },
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "geometry",
+        "boundary_condition",
+        "properties",
+        "name"
+      ]
+    },
+    "DoorEnergyPropertiesAbridged": {
+      "title": "DoorEnergyPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "DoorEnergyPropertiesAbridged"
+          ]
+        },
+        "construction": {
+          "title": "Construction",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "DoorPropertiesAbridged": {
+      "title": "DoorPropertiesAbridged",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "DoorPropertiesAbridged"
+          ]
+        },
+        "energy": {
+          "$ref": "#/definitions/DoorEnergyPropertiesAbridged"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Door": {
+      "title": "Door",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Door"
+          ]
+        },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "boundary_condition": {
+          "title": "Boundary_Condition",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Outdoors"
+            },
+            {
+              "$ref": "#/definitions/Surface"
+            }
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/DoorPropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "is_glass": {
+          "title": "Is_Glass",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "geometry",
+        "boundary_condition",
+        "properties",
+        "name"
+      ]
+    },
+    "Face": {
+      "title": "Face",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Face"
+          ]
+        },
+        "geometry": {
+          "$ref": "#/definitions/Face3D"
+        },
+        "properties": {
+          "$ref": "#/definitions/FacePropertiesAbridged"
+        },
+        "face_type": {
+          "title": "Face_Type",
+          "enum": [
+            "Wall",
+            "Floor",
+            "RoofCeiling",
+            "AirWall"
+          ],
+          "type": "string"
+        },
+        "boundary_condition": {
+          "title": "Boundary_Condition",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Ground"
+            },
+            {
+              "$ref": "#/definitions/Outdoors"
+            },
+            {
+              "$ref": "#/definitions/Adiabatic"
+            },
+            {
+              "$ref": "#/definitions/Surface"
+            }
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "apertures": {
+          "title": "Apertures",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Aperture"
+          }
+        },
+        "doors": {
+          "title": "Doors",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Door"
+          }
+        },
+        "indoor_shades": {
+          "title": "Indoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        },
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "geometry",
+        "properties",
+        "face_type",
+        "boundary_condition",
+        "name"
+      ]
+    },
+    "Room": {
+      "title": "Room",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "Room"
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/RoomPropertiesAbridged"
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[A-Za-z0-9_-]",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display_Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "faces": {
+          "title": "Faces",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Face"
+          }
+        },
+        "indoor_shades": {
+          "title": "Indoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        },
+        "outdoor_shades": {
+          "title": "Outdoor_Shades",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shade"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "properties",
+        "name",
+        "faces"
+      ]
+    }
+  }
 }

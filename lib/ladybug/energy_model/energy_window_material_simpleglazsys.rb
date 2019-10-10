@@ -29,17 +29,47 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'bundler/setup'
-require 'ladybug/energy_model'
+require 'ladybug/energy_model/model_object'
 
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
+module Ladybug
+  module EnergyModel
+    class EnergyWindowMaterialSimpleGlazSys < ModelObject
+      attr_reader :errors, :warnings
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
+      def initialize(hash = {})
+        super(hash)
+      end
+
+      def defaults
+        result = {}
+        result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
+      def create_openstudio_object(openstudio_model)
+        openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
+        openstudio_simple_glazing.setName(@hash[:name])
+        openstudio_simple_glazing.setUFactor(@hash[:u_factor])
+        openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
+        if @hash[:vt]
+          openstudio_simple_glazing.setVisibleTransmittance(@hash[:vt])
+        else
+          openstudio_simple_glazing.setVisibleTransmittance(@@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
+        end
+        openstudio_simple_glazing
+      end
+
+
+    end # EnergyWindowMaterialSimpleGlazSys
+  end # EnergyModel
+end # Ladybug

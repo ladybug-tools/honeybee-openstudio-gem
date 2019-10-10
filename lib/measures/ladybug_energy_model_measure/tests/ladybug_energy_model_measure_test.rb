@@ -40,7 +40,6 @@ require_relative '../measure.rb'
 require 'fileutils'
 
 class LadybugEnergyModelMeasure_Test < Minitest::Test
-
   # method to apply arguments, run measure, and assert results (only populate args hash with non-default argument values)
   def apply_measure_to_model(test_name, args, model_name = nil, result_value = 'Success', warnings_count = 0, info_count = nil)
     # create an instance of the measure
@@ -98,17 +97,23 @@ class LadybugEnergyModelMeasure_Test < Minitest::Test
     model.save(output_file_path, true)
   end
 
-  def test_example_model
+  def test_model_single_zone_house
     args = {}
-    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_model.json')
-
-    apply_measure_to_model(__method__.to_s.gsub('test_', ''), args, nil)
+    args['ladybug_json'] = File.join(File.dirname(__FILE__),
+    'model_single_zone_tiny_house.json')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
-  
-  def test_example_face_by_face_model
+
+  def test_model_multi_zone_single_family_house
     args = {}
-    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'example_face_by_face_model.json')
-
-    apply_measure_to_model(__method__.to_s.gsub('test_', ''), args, nil)
+    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'model_multi_zone_single_family_house.json')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
+
+  def test_shoe_box
+    args = {}
+    args['ladybug_json'] = File.join(File.dirname(__FILE__), 'model_shoe_box.json')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
 end

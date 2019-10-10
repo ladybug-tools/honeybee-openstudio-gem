@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,4 +31,24 @@
 
 require 'ladybug/energy_model/version'
 require 'ladybug/energy_model/extension'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/energy_material'
+require 'ladybug/energy_model/energy_material_no_mass'
+require 'ladybug/energy_model/energy_window_material_gas'
+require 'ladybug/energy_model/energy_window_material_gas_mixture'
+require 'ladybug/energy_model/energy_window_material_gas_custom'
+require 'ladybug/energy_model/energy_window_material_blind'
+require 'ladybug/energy_model/energy_window_material_glazing'
+require 'ladybug/energy_model/energy_window_material_shade'
+require 'ladybug/energy_model/energy_window_material_simpleglazsys'
+require 'ladybug/energy_model/opaque_construction_abridged'
+require 'ladybug/energy_model/window_construction_abridged'
+require 'ladybug/energy_model/shade_construction'
+require 'ladybug/energy_model/construction_set'
+require 'ladybug/energy_model/face'
 require 'ladybug/energy_model/model'
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/room'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/door'
+require 'ladybug/energy_model/shade'

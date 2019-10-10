@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable 
+# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -29,44 +29,52 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+require 'ladybug/energy_model/model_object'
 
-RSpec.describe Ladybug::EnergyModel do
-  it 'has a version number' do
-    expect(Ladybug::EnergyModel::VERSION).not_to be nil
-  end
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-  
-  it 'has a files directory' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
-  
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
-  
-  it 'can load and validate example model' do
-    file = File.join(File.dirname(__FILE__), '../files/example_model.json')
-    model = Ladybug::EnergyModel::Model.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    model.to_openstudio
-  end
- 
-  it 'can load and validate example face by face model' do
-    file = File.join(File.dirname(__FILE__), '../files/example_face_by_face_model.json')
-    model = Ladybug::EnergyModel::Model.new(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true 
-    model.to_openstudio
-  end
+module Ladybug
+  module EnergyModel
+    class OpaqueConstructionAbridged < ModelObject
+      attr_reader :errors, :warnings
 
-end
+      def initialize(hash = {})
+        super(hash)
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getConstructionByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
+      def create_openstudio_object(openstudio_model)
+        openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
+        openstudio_construction.setName(@hash[:name])
+        openstudio_materials = OpenStudio::Model::MaterialVector.new
+       
+        @hash[:layers].each do |layer|
+          openstudio_material = nil
+          material_name = layer
+          material = openstudio_model.getMaterialByName(material_name)
+          unless material.empty?
+            openstudio_material = material.get
+            openstudio_materials << openstudio_material
+          end
+        end
+
+        openstudio_construction.setLayers(openstudio_materials)
+        openstudio_construction
+      end
+
+    end #OpaqueConstructionAbridged
+  end #EnergyModel
+end #Ladybug
+  
