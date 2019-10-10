@@ -66,7 +66,6 @@ module Ladybug
         ground_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
         interior_subsurface_construction = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
         exterior_subsurface_construction = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
-        ground_subsurface_construction = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)        
         
 
         if @hash[:wall_set]
@@ -164,7 +163,7 @@ module Ladybug
                 interior_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:interior_construction])
                 unless interior_aperture_object.empty?
                     interior_aperture = interior_aperture_object.get
-                    interior_subsurface_construction.setFixedWindowConstruction(interior_aperture)
+                    interior_subsurface_construction.setOperableWindowConstruction(interior_aperture)
                     openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
                 end
             end
@@ -203,7 +202,7 @@ module Ladybug
                 interior_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:interior_construction])
                 unless interior_door_object.empty?
                     interior_door = interior_door_object.get
-                    interior_subsurface_construction.setDoorConstruction(interior_door)
+                    interior_subsurface_construction.setOverheadDoorConstruction(interior_door)
                     openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
                 end
             end
@@ -221,8 +220,8 @@ module Ladybug
                 overhead_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:overhead_construction])
                 unless overhead_door_object.empty?
                     overhead_door = overhead_door_object.get
-                    interior_subsurface_construction.setDoorConstruction(overhead_door)
-                    openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
+                    exterior_subsurface_construction.setDoorConstruction(overhead_door)
+                    openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
             exterior_glass_door = nil
@@ -251,7 +250,7 @@ module Ladybug
                 shade_construction_object = openstudio_model.getConstructionByName(@hash[:shade_construction])
                 unless shade_construction_object.empty?
                     shade_construction = shade_construction_object.get
-                    openstudio_construction_set.setBuildingShadingConstruction(shade_construction)
+                    openstudio_construction_set.setSpaceShadingConstruction(shade_construction)
                 end
             end
         end

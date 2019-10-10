@@ -76,23 +76,7 @@ module Ladybug
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
         
         if @hash[:boundary_condition][:type] == 'Surface'
-          openstudio_subsurface.setAdjacentSurace(@hash[:boundary_condition][:boundary_condition_objects][2])
-        end
-
-        if @hash[:indoor_shades]
-          @hash[:indoor_shades].each do |indoor_shade|
-            indoor_shade = Shade.new(indoor_shade)
-            openstudio_indoor_shade = indoor_shade.to_openstudio(openstudio_model)
-            openstudio_indoor_shade.setShadedSubSurface(openstudio_subsurface)
-          end
-        end
-
-        if @hash[:outdoor_shades]
-          @hash[:outdoor_shades].each do |outdoor_shade|
-            outdoor_shade = Shade.new(outdoor_shade)
-            opentsudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_outdoor_shade.setShadedSubSurface(openstudio_subsurface)
-          end
+          openstudio_subsurface.setAdjacentSurace(@hash[:boundary_condition][:boundary_condition_objects][0])
         end
 
         if @hash[:is_glass] == false

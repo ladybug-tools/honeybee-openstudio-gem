@@ -216,19 +216,19 @@ module Ladybug
 #runlog
       def create_orphaned_faces
         if @hash[:orphaned_faces]
-          raise "Face is not translatable to OpenStudio object."
+          raise "Orphaned Faces are not translatable to OpenStudio."
         end
       end
 
       def create_orphaned_apertures
         if @hash[:orphaned_apertures]
-          raise "Aperture is not translatable to OpenStudio object."
+          raise "Orphaned Apertures are not translatable to OpenStudio."
         end
       end
       
       def create_orphaned_doors
         if @hash[:orphaned_doors]
-          raise "Door is not translatable to OpenStudio object."
+          raise "Orphaned Doors are not translatable to OpenStudio."
         end
       end
 

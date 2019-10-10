@@ -114,6 +114,9 @@ module Ladybug
           @hash[:apertures].each do |aperture|
             aperture = Aperture.new(aperture)
             openstudio_subsurface_aperture = aperture.to_openstudio(openstudio_model)
+            if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
+              openstudio_subsurface_aperture.setSubSurfaceType('Skylight')
+            end
             openstudio_subsurface_aperture.setSurface(openstudio_surface)
           end
         end
@@ -122,15 +125,10 @@ module Ladybug
           @hash[:doors].each do |door|
             door = Door.new(door)
             openstudio_subsurface_door = door.to_openstudio(openstudio_model)
+            if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors'
+              openstudio_subsurface_aperture.setSubSurfaceType('OverheadDoor')
+            end
             openstudio_subsurface_door.setSurface(openstudio_surface)
-          end
-        end
-
-        if @hash[:indoor_shades]
-          @hash[:indoor_shades].each do |indoor_shade|
-            indoor_shade = Shade.new(indoor_shade)
-            openstudio_indoor_shade = indoor_shade.to_openstudio(openstudio_model)
-            openstudio_indoor_shade.setShadedSurface(openstudio_surface)
           end
         end
 
