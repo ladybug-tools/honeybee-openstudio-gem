@@ -77,10 +77,8 @@ module Ladybug
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
         openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
         boundary_condition = (@hash[:boundary_condition][:type])
        
-
         case boundary_condition
         when 'Outdoors'
           if @hash[:boundary_condition][:sun_exposure] == true
@@ -99,16 +97,26 @@ module Ladybug
             openstudio_surface.setViewFactortoGround(@hash[:boundary_condition][:view_factor])
           end
         when 'Surface'
-          surface = nil 
           if @hash[:boundary_condition][:boundary_condition_objects][0]
+            surface = nil
             surface_object = openstudio_model.getSurfaceByName(@hash[:boundary_condition][:boundary_condition_objects][0])
             unless surface_object.empty?
               surface = surface_object.get
               openstudio_surface.setAdjacentSurface(surface)
             end
           end
+                   
+          #key = @hash
+          #value = @hash[:boundary_condition][:boundary_condition_objects][0]
+          
+          #$surfaces.store(:key, value)
+
+          #$surfaces.merge!(key: value)
+
+          puts "#{$surfaces}"
         end
 
+        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type]) unless @hash[:boundary_condition][:type] == 'Surface'
 
         if @hash[:apertures]
           @hash[:apertures].each do |aperture|
@@ -132,14 +140,17 @@ module Ladybug
           end
         end
 
+        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+        
         if @hash[:outdoor_shades]
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
-            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_outdoor_shade.setShadedSurface(openstudio_surface)
+            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model) 
+            openstudio_shading_surface_group.setShadedSurface(openstudio_surface)
+            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
           end
         end
-
+        
         openstudio_surface
       end
     end # Face

@@ -201,19 +201,46 @@ module Ladybug
           @hash[:rooms].each do |room|
           room_object = Room.new(room)
           room_object.to_openstudio(@openstudio_model)
+          
+          
+          room[:faces].each do |face|
+            if face[:boundary_condition][:type] == 'Surface'
+              surface_name = face[:name]
+              adjacent_surface_name = face[:boundary_condition][:boundary_condition_objects][0]
+              
+              openstudio_surface = nil
+              openstudio_surface_object = @openstudio_model.getSurfaceByName(surface_name)
+              unless openstudio_surface_object.empty?
+                openstudio_surface = openstudio_surface_object.get
+              end
+
+              openstudio_adjacent_surface = nil
+              openstudio_adjacent_surface_object = @openstudio_model.getSurfaceByName(adjacent_surface_name)
+              unless openstudio_adjacent_surface_object.empty?
+                openstudio_adjacent_surface = openstudio_adjacent_surface_object.get
+              end
+
+              #openstudio_surface.setAdjacentSurface(openstudio_adjacent_surface)
+              end
+            end
           end
         end
       end
 
+      
       def create_orphaned_shades
         if @hash[:orphaned_shades]
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
           @hash[:orphaned_shades].each do |shade|
           shade_object = Shade.new(shade)
-          shade_object.to_openstudio(@openstudio_model)
+          openstudio_shade = shade_object.to_openstudio(@openstudio_model)
+          openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
           end
         end
       end
-#runlog
+
+#TODO: create runlog for errors. 
       def create_orphaned_faces
         if @hash[:orphaned_faces]
           raise "Orphaned Faces are not translatable to OpenStudio."
@@ -231,6 +258,7 @@ module Ladybug
           raise "Orphaned Doors are not translatable to OpenStudio."
         end
       end
+
 
         # for now make parent a space, check if should be a zone?
 

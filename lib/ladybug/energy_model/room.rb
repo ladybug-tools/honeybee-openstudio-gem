@@ -77,9 +77,39 @@ module Ladybug
           face = Face.new(face)
           openstudio_face = face.to_openstudio(openstudio_model)
           openstudio_face.setSpace(openstudio_space)
+
           nil
         end
 
+        openstudio_surfaces = openstudio_space.surfaces.each do |surface|
+          if surface.outsideBoundaryCondition == 'Adiabatic'
+            default_construction_set = openstudio_space.getDefaultConstruction(surface) unless openstudio_space.getDefaultConstruction(surface).empty?
+            default_interior_surface_construction_set = default_construction_set.defaultInteriorSurfaceConstructions.get unless default_construction_set.defaultInteriorSurfaceConstructions.empty?
+            case surface.surfaceType
+            when 'Wall'
+              interior_wall_construction = default_interior_surface_construction_set.wallConstruction.get unless default_interior_surface_construction_set.wallConstruction.empty? 
+              surface.setConstruction(interior_wall_construction)
+            when 'RoofCeiling'
+              interior_roofceiling_construction = default_interior_surface_construction_set.roofCeilingConstruction.get unless default_interior_surface_construction_set.roofCeilingConstruction.empty?
+              surface.setConstruction(interior_roofceiling_construction)
+            when 'Floor'
+              interior_floor_construction = default_interior_surface_construction_set.floorConstruction.get unless default_interior_surface_construction_set.floorConstruction.empty?
+              surface.setConstruction(interior_floor_construction)
+            end
+          end
+        end
+
+        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+        
+        if @hash[:outdoor_shades]
+          @hash[:outdoor_shades].each do |outdoor_shade|
+            outdoor_shade = Shade.new(outdoor_shade)
+            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+            openstudio_shading_surface_group.setSpace(openstudio_surface)
+            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
+          end
+        end
+ 
       end
 
     end # Room

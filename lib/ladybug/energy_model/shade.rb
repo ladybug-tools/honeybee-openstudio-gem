@@ -76,11 +76,8 @@ module Ladybug
         openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
         openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
         
-        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-        
-        openstudio_shading_surface.setShadingSurfaceGroup(openstudio_shading_surface_group)
 
-        openstudio_shading_surface_group
+        openstudio_shading_surface
 
       end
     end # Shade

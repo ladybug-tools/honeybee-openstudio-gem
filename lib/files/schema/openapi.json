@@ -1160,7 +1160,7 @@
             }
           ]
         }
-      },
+        },
       "required": [
         "type"
       ]
@@ -1490,6 +1490,803 @@
         "name"
       ]
     },
+    "PeopleAbridged": {
+      "title": "PeopleAbridged",
+      "description": "Used to model the occupant's effect on the space conditions.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "PeopleAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "people_per_area": {
+          "title": "People_Per_Area",
+          "description": "People per floor area expressed as people/m\u00b2",
+          "minimum": 0,
+          "type": "number"
+        },
+        "radiant_fraction": {
+          "title": "Radiant_Fraction",
+          "description": "The radiant fraction of sensible heat released by people. The defaultvalue is 0.30.",
+          "default": 0.3,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "latent_fraction": {
+          "title": "Latent_Fraction",
+          "description": "Used to specify a fixed latent fraction of heat gain due to people.",
+          "default": "autocalculate",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "occupancy_schedule": {
+          "title": "Occupancy_Schedule",
+          "description": "Used to describe the occupancy schedule for people.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "activity_schedule": {
+          "title": "Activity_Schedule",
+          "description": "Schedule that determines the amount of heat gain per person.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "people_per_area",
+        "occupancy_schedule",
+        "activity_schedule"
+      ]
+    },
+    "LightingAbridged": {
+      "title": "LightingAbridged",
+      "description": "Used to specify the information about the electric lighting system.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "LightingAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "watts_per_area": {
+          "title": "Watts_Per_Area",
+          "description": "Lighting per floor area expressed as watts/m\u00b2.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "visible_fraction": {
+          "title": "Visible_Fraction",
+          "description": "The fraction of heat from lights that goes into the zone as visible (short-wave) radiation. The default value is `0.25`.",
+          "default": 0.25,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "radiant_fraction": {
+          "title": "Radiant_Fraction",
+          "description": "The fraction of heat from lights that is long-wave radiation. Default value is `0.32`.",
+          "default": 0.32,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "return_air_fraction": {
+          "title": "Return_Air_Fraction",
+          "description": "The fraction of the heat from lights that goes into the zone return air. Default value is `0`.",
+          "default": 0.0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "description": "Used to describe the schedule for lighting as a fraction applied to design level of lights.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "watts_per_area",
+        "schedule"
+      ]
+    },
+    "ElectricalEquipmentAbridged": {
+      "title": "ElectricalEquipmentAbridged",
+      "description": "Used to specify information about the electrical equipment.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ElectricalEquipmentAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "watts_per_area": {
+          "title": "Watts_Per_Area",
+          "description": "Equipment level per floor area expressed as watts/m\u00b2.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "radiant_fraction": {
+          "title": "Radiant_Fraction",
+          "description": "Used to characterise the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "latent_fraction": {
+          "title": "Latent_Fraction",
+          "description": "Used to characterise the amount of latent heat given off by electricequipment. Default value is 0.",
+          "default": 0,
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "lost_fraction": {
+          "title": "Lost_Fraction",
+          "description": "Used to characterize the amount of \u201clost\u201d heat being given off by equipment. The default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "watts_per_area",
+        "schedule"
+      ]
+    },
+    "GasEquipmentAbridged": {
+      "title": "GasEquipmentAbridged",
+      "description": "Used to specify information about the gas equipment.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "GasEquipmentAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "watts_per_area": {
+          "title": "Watts_Per_Area",
+          "description": "Equipment level per floor area expressed as watts/m\u00b2.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "radiant_fraction": {
+          "title": "Radiant_Fraction",
+          "description": "Used to characterise the amount of long-wave radiation heat given off by electric equipment.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "latent_fraction": {
+          "title": "Latent_Fraction",
+          "description": "Used to characterise the amount of latent heat given off by electricequipment. Default value is 0.",
+          "default": 0,
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "lost_fraction": {
+          "title": "Lost_Fraction",
+          "description": "Used to characterize the amount of \u201clost\u201d heat being given off by equipment. The default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "watts_per_area",
+        "schedule"
+      ]
+    },
+    "InfiltrationAbridged": {
+      "title": "InfiltrationAbridged",
+      "description": "Used to model the infiltration of air from the outdoor environment into a thermal zone.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "InfiltrationAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "flow_per_exterior_area": {
+          "title": "Flow_Per_Exterior_Area",
+          "description": "Used to model the infiltration per exterior surface area in m3/s-m2.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "constant_coefficient": {
+          "title": "Constant_Coefficient",
+          "default": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "temperature_coefficient": {
+          "title": "Temperature_Coefficient",
+          "default": 0,
+          "minimum": 0,
+          "type": "number"
+        },
+        "velocity_coefficient": {
+          "title": "Velocity_Coefficient",
+          "default": 0,
+          "minimum": 0,
+          "type": "number"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "flow_per_exterior_area",
+        "schedule"
+      ]
+    },
+    "VentilationAbridged": {
+      "title": "VentilationAbridged",
+      "description": "Used to model the purposeful flow of air from the outdoor environment directly into a thermal zone.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "VentilationAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "air_changes_per_hour": {
+          "title": "Air_Changes_Per_Hour",
+          "default": 0,
+          "minimum": 0,
+          "type": "number"
+        },
+        "flow_per_zone": {
+          "title": "Flow_Per_Zone",
+          "description": "Unit is m3/s. Default value is 0.",
+          "default": 0,
+          "minimum": 0,
+          "type": "number"
+        },
+        "flow_per_person": {
+          "title": "Flow_Per_Person",
+          "description": "Used to model the ventilation flow rate per person in m3/s-person.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "flow_per_area": {
+          "title": "Flow_Per_Area",
+          "description": "Used to model the ventilation flow rate per zone floor area in m3/s-m2.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "SetpointAbridged": {
+      "title": "SetpointAbridged",
+      "description": "Used to specify information about the setpoint schedule.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "SetpointAbridged"
+          ]
+        },
+        "cooling_schedule": {
+          "title": "Cooling_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "heating_schedule": {
+          "title": "Heating_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "humidification_schedule": {
+          "title": "Humidification_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "dehumidification_schedule": {
+          "title": "Dehumidification_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "cooling_schedule",
+        "heating_schedule"
+      ]
+    },
+    "ProgramTypeAbridged": {
+      "title": "ProgramTypeAbridged",
+      "description": "A set of programs.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ProgramTypeAbridged"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "people": {
+          "$ref": "#/definitions/PeopleAbridged"
+        },
+        "lighting": {
+          "$ref": "#/definitions/LightingAbridged"
+        },
+        "electrical_equipment": {
+          "$ref": "#/definitions/ElectricalEquipmentAbridged"
+        },
+        "gas_equipment": {
+          "$ref": "#/definitions/GasEquipmentAbridged"
+        },
+        "infiltration": {
+          "$ref": "#/definitions/InfiltrationAbridged"
+        },
+        "ventilation": {
+          "$ref": "#/definitions/VentilationAbridged"
+        },
+        "setpoint": {
+          "$ref": "#/definitions/SetpointAbridged"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "ScheduleDay": {
+      "title": "ScheduleDay",
+      "description": "Used to describe the daily schedule for a single simulation day.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleDay"
+          ]
+        },
+        "values": {
+          "title": "Values",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "times": {
+          "title": "Times",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "interpolate": {
+          "title": "Interpolate",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "values",
+        "times",
+        "name"
+      ]
+    },
+    "ScheduleRule": {
+      "title": "ScheduleRule",
+      "description": "A set of rules assigned to schedule ruleset for specific periods of time and for\n  particular days of the week according to a priority sequence.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleRule"
+          ]
+        },
+        "schedule_day": {
+          "$ref": "#/definitions/ScheduleDay"
+        },
+        "apply_sunday": {
+          "title": "Apply_Sunday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_monday": {
+          "title": "Apply_Monday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_tuesday": {
+          "title": "Apply_Tuesday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_wednesday": {
+          "title": "Apply_Wednesday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_thursday": {
+          "title": "Apply_Thursday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_friday": {
+          "title": "Apply_Friday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_saturday": {
+          "title": "Apply_Saturday",
+          "default": false,
+          "type": "boolean"
+        },
+        "apply_holiday": {
+          "title": "Apply_Holiday",
+          "default": false,
+          "type": "boolean"
+        },
+        "start_date": {
+          "title": "Start_Date",
+          "default": [
+            1,
+            1
+          ],
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "end_date": {
+          "title": "End_Date",
+          "default": [
+            12,
+            31
+          ],
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "schedule_day"
+      ]
+    },
+    "ScheduleRulesetAbridged": {
+      "title": "ScheduleRulesetAbridged",
+      "description": "Used to define a schedule for a default day, further described by ScheduleRule.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleRulesetAbridged"
+          ]
+        },
+        "default_day_schedule": {
+          "$ref": "#/definitions/ScheduleDay"
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "schedule_type_limit": {
+          "title": "Schedule_Type_Limit",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "schedule_rules": {
+          "title": "Schedule_Rules",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ScheduleRule"
+          }
+        },
+        "summer_designday_schedule": {
+          "$ref": "#/definitions/ScheduleDay"
+        },
+        "winter_designday_schedule": {
+          "$ref": "#/definitions/ScheduleDay"
+        }
+      },
+      "required": [
+        "type",
+        "default_day_schedule",
+        "name"
+      ]
+    },
+    "Date": {
+      "title": "Date",
+      "description": "Date.",
+      "type": "object",
+      "properties": {
+        "is_leap_year": {
+          "title": "Is_Leap_Year",
+          "description": "A boolean to indicate if datetime is for a leap year. Default is `false`.",
+          "default": false,
+          "type": "boolean"
+        },
+        "month": {
+          "title": "Month",
+          "description": "A value for month between `1`-`12`. Default is `1`.",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 12,
+          "type": "integer"
+        },
+        "day": {
+          "title": "Day",
+          "description": "A value for day between `1`-`31`. Default is `1`.",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 31,
+          "type": "integer"
+        }
+      }
+    },
+    "ScheduleFixedIntervalAbridged": {
+      "title": "ScheduleFixedIntervalAbridged",
+      "description": "Used to specify a start date and a list of values for a period of analysis.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleFixedIntervalAbridged"
+          ]
+        },
+        "start_date": {
+          "$ref": "#/definitions/Date"
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "schedule_type_limit": {
+          "title": "Schedule_Type_Limit",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "timestep": {
+          "title": "Timestep",
+          "default": 1,
+          "type": "number"
+        },
+        "interpolate": {
+          "title": "Interpolate",
+          "default": false,
+          "type": "boolean"
+        },
+        "is_leap_year": {
+          "title": "Is_Leap_Year",
+          "default": false,
+          "type": "boolean"
+        },
+        "values": {
+          "title": "Values",
+          "description": "A list of hourly values for the simulation.",
+          "minItems": 24,
+          "maxItems": 8784,
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "start_date",
+        "name",
+        "values"
+      ]
+    },
+    "ScheduleTypeLimit": {
+      "title": "ScheduleTypeLimit",
+      "description": "Specifies the data types and limits for values contained in schedules.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "ScheduleTypeLimit"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "pattern": "^[\\s.A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        "lower_limit": {
+          "title": "Lower_Limit",
+          "description": "Lower limit for the schedule type is entered.",
+          "type": "number"
+        },
+        "upper_limit": {
+          "title": "Upper_Limit",
+          "description": "Upper limit for the schedule type is entered.",
+          "type": "number"
+        },
+        "numeric_type": {
+          "title": "Numeric_Type",
+          "default": "Continuous",
+          "enum": [
+            "Continuous",
+            "Discrete"
+          ],
+          "type": "string"
+        },
+        "unit_type": {
+          "title": "Unit_Type",
+          "default": "Dimensionless",
+          "enum": [
+            "Dimensionless",
+            "Temperature",
+            "DeltaTemperature",
+            "PrecipitationRate",
+            "Angle",
+            "ConvectionCoefficient",
+            "ActivityLevel",
+            "Velocity",
+            "Capacity",
+            "Power",
+            "Availability",
+            "Percent",
+            "Control",
+            "Mode"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
     "ModelEnergyProperties": {
       "title": "ModelEnergyProperties",
       "type": "object",
@@ -1565,6 +2362,34 @@
           "minLength": 1,
           "pattern": "[A-Za-z0-9_-]",
           "type": "string"
+        },
+        "program_types": {
+          "title": "Program_Types",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProgramTypeAbridged"
+          }
+        },
+        "schedules": {
+          "title": "Schedules",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ScheduleRulesetAbridged"
+              },
+              {
+                "$ref": "#/definitions/ScheduleFixedIntervalAbridged"
+              }
+            ]
+          }
+        },
+        "schedule_type_limits": {
+          "title": "Schedule_Type_Limits",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ScheduleTypeLimit"
+          }
         }
       },
       "required": [
