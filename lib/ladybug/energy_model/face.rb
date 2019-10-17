@@ -105,15 +105,6 @@ module Ladybug
               openstudio_surface.setAdjacentSurface(surface)
             end
           end
-                   
-          #key = @hash
-          #value = @hash[:boundary_condition][:boundary_condition_objects][0]
-          
-          #$surfaces.store(:key, value)
-
-          #$surfaces.merge!(key: value)
-
-          puts "#{$surfaces}"
         end
 
         openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type]) unless @hash[:boundary_condition][:type] == 'Surface'
