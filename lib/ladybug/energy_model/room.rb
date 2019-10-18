@@ -77,9 +77,51 @@ module Ladybug
           face = Face.new(face)
           openstudio_face = face.to_openstudio(openstudio_model)
           openstudio_face.setSpace(openstudio_space)
+
           nil
         end
 
+        @hash[:faces].each do |face|
+          if face[:boundary_condition][:type] == 'Adiabatic' && !face[:properties][:energy][:construction]
+            openstudio_surfaces = openstudio_space.surfaces.each do |surface|
+
+              if surface.outsideBoundaryCondition == 'Adiabatic'
+                default_construction_set = openstudio_space.getDefaultConstruction(surface) unless openstudio_space.getDefaultConstruction(surface).empty?
+                default_interior_surface_construction_set = default_construction_set.defaultInteriorSurfaceConstructions
+                default_interior_surface_construction_set = default_interior_surface_construction_set.get unless default_interior_surface_construction_set.empty?
+
+                case surface.surfaceType
+                when 'Wall'
+                  interior_wall_construction = default_interior_surface_construction_set.wallConstruction
+                  interior_wall_construction = interior_wall_construction.get unless interior_wall_construction.empty? 
+                  surface.setConstruction(interior_wall_construction)
+                when 'RoofCeiling'
+                  interior_roofceiling_construction = default_interior_surface_construction_set.roofCeilingConstruction
+                  interior_roofceiling_construction = interior_roofceiling_construction.get unless interior_roofceiling_construction.empty?
+                  surface.setConstruction(interior_roofceiling_construction)
+                when 'Floor'
+                  interior_floor_construction = default_interior_surface_construction_set.floorConstruction
+                  interior_floor_construction = interior_floor_construction.get unless interior_floor_construction.empty?
+                  surface.setConstruction(interior_floor_construction)
+                end
+
+              end
+            end
+          end
+        end
+      
+
+        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+        
+        if @hash[:outdoor_shades]
+          @hash[:outdoor_shades].each do |outdoor_shade|
+            outdoor_shade = Shade.new(outdoor_shade)
+            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+            openstudio_shading_surface_group.setSpace(openstudio_surface)
+            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
+          end
+        end
+ 
       end
 
     end # Room

@@ -205,15 +205,20 @@ module Ladybug
         end
       end
 
+      
       def create_orphaned_shades
         if @hash[:orphaned_shades]
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
           @hash[:orphaned_shades].each do |shade|
           shade_object = Shade.new(shade)
-          shade_object.to_openstudio(@openstudio_model)
+          openstudio_shade = shade_object.to_openstudio(@openstudio_model)
+          openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
           end
         end
       end
-#runlog
+
+#TODO: create runlog for errors. 
       def create_orphaned_faces
         if @hash[:orphaned_faces]
           raise "Orphaned Faces are not translatable to OpenStudio."
@@ -231,6 +236,7 @@ module Ladybug
           raise "Orphaned Doors are not translatable to OpenStudio."
         end
       end
+
 
         # for now make parent a space, check if should be a zone?
 

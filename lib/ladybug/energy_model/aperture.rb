@@ -75,15 +75,15 @@ module Ladybug
         openstudio_subsurface.setName(@hash[:name])
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
         
-        if @hash[:boundary_condition][:type] == 'Surface' # TODO get the openstudio object , loop through all the openstudio objects, then set adjacency later. 
-          openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
-        end
+
+        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
 
         if @hash[:outdoor_shades]
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
             openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_outdoor_shade.setShadedSubSurface(openstudio_subsurface)
+            openstudio_shading_surface_group.setShadedSubSurface(openstudio_subsurface)
+            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
           end
         end
 
