@@ -201,28 +201,6 @@ module Ladybug
           @hash[:rooms].each do |room|
           room_object = Room.new(room)
           room_object.to_openstudio(@openstudio_model)
-          
-          
-          #room[:faces].each do |face|
-          #  if face[:boundary_condition][:type] == 'Surface'
-          #    surface_name = face[:name]
-          #    adjacent_surface_name = face[:boundary_condition][:boundary_condition_objects][0]
-              
-          #    openstudio_surface = nil
-          #    openstudio_surface_object = @openstudio_model.getSurfaceByName(surface_name)
-          #    unless openstudio_surface_object.empty?
-          #      openstudio_surface = openstudio_surface_object.get
-          #    end
-
-          #    openstudio_adjacent_surface = nil
-          #    openstudio_adjacent_surface_object = @openstudio_model.getSurfaceByName(adjacent_surface_name)
-          #    unless openstudio_adjacent_surface_object.empty?
-          #      openstudio_adjacent_surface = openstudio_adjacent_surface_object.get
-          #    end
-
-              #openstudio_surface.setAdjacentSurface(openstudio_adjacent_surface)
-          #    end
-          #  end
           end
         end
       end
