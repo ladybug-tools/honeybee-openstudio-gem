@@ -121,7 +121,17 @@ module Ladybug
             openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
           end
         end
- 
+
+        if @hash[:properties][:energy][:program_type]
+          space_type_object = nil
+          space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
+          unless space_type.empty?
+            space_type_object = space_type.get
+          end
+          openstudio_space.setSpaceType(space_type_object)
+        end
+
+
       end
 
     end # Room

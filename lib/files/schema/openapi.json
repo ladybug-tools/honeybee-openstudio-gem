@@ -2244,12 +2244,26 @@
         "lower_limit": {
           "title": "Lower_Limit",
           "description": "Lower limit for the schedule type is entered.",
-          "type": "number"
+          "oneOf":[
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "upper_limit": {
           "title": "Upper_Limit",
           "description": "Upper limit for the schedule type is entered.",
-          "type": "number"
+          "oneOf":[
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "numeric_type": {
           "title": "Numeric_Type",

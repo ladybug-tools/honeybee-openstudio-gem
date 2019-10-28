@@ -50,6 +50,10 @@ require 'ladybug/energy_model/energy_window_material_simpleglazsys'
 require 'ladybug/energy_model/room'
 require 'ladybug/energy_model/shade'
 require 'ladybug/energy_model/shade_construction'
+require 'ladybug/energy_model/schedule_type_limit'
+require 'ladybug/energy_model/schedule_fixed_interval_abridged'
+require 'ladybug/energy_model/schedule_ruleset_abridged'
+require 'ladybug/energy_model/space_type'
 require 'json-schema'
 require 'json'
 require 'openstudio'
@@ -117,6 +121,9 @@ module Ladybug
         create_constructions
         create_construction_set
         create_global_construction_set
+        create_schedule_type_limits
+        create_schedules
+        create_space_types
         create_rooms
         create_orphaned_shades
         create_orphaned_faces
@@ -195,6 +202,44 @@ module Ladybug
           @openstudio_model.getBuilding.setDefaultConstructionSet(openstudio_construction)
         end
       end
+
+      def create_schedule_type_limits
+        if @hash[:properties][:energy][:schedule_type_limits]
+          @hash[:properties][:energy][:schedule_type_limits].each do |schedule_type_limit|
+            schedule_type_limit_object = ScheduleTypeLimit.new(schedule_type_limit)
+            schedule_type_limit_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end
+
+      def create_schedules
+        if @hash[:properties][:energy][:schedules]
+          @hash[:properties][:energy][:schedules].each do |schedule|
+            schedule_type = schedule[:type]
+            schedule_object= nil
+
+            case schedule_type
+            when 'ScheduleRulesetAbridged'
+              schedule_object = ScheduleRulesetAbridged.new(schedule)
+            when 'ScheduleFixedIntervalAbridged'
+              schedule_object = ScheduleFixedIntervalAbridged.new(schedule)
+            else
+              raise("Unknown schedule type #{schedule_type}.")
+            end
+
+            schedule_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end
+
+      def create_space_types
+        if @hash[:properties][:energy][:program_types]
+          @hash[:properties][:energy][:program_types].each do |space_type|
+            space_type_object = SpaceType.new(space_type)
+            space_type_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end 
 
       def create_rooms
         if @hash[:rooms] 

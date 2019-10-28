@@ -28,31 +28,57 @@
 # STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
-
-require 'ladybug/energy_model/version'
 require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/opaque_construction_abridged'
-require 'ladybug/energy_model/window_construction_abridged'
-require 'ladybug/energy_model/shade_construction'
-require 'ladybug/energy_model/construction_set'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/model'
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/room'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/door'
-require 'ladybug/energy_model/shade'
-require 'ladybug/energy_model/schedule_type_limit'
-require 'ladybug/energy_model/schedule_fixed_interval_abridged'
-require 'ladybug/energy_model/schedule_ruleset_abridged'
-require 'ladybug/energy_model/space_type'
+
+require 'json-schema'
+require 'json'
+require 'openstudio'
+
+module Ladybug
+  module EnergyModel
+    class ScheduleTypeLimit < ModelObject
+      attr_reader :errors, :warnings
+
+      def initialize(hash = {})
+        super(hash)
+
+        raise "Incorrect model type '#{@type}'" unless @type == 'ScheduleTypeLimit'
+      end
+
+      def defaults
+        result = {}
+        result
+      end
+
+      def find_existing_openstudio_object(openstudio_model)
+        object = openstudio_model.getScheduleTypeLimitsByName(@hash[:name])
+        return object.get if object.is_initialized
+        nil
+      end
+
+      def create_openstudio_object(openstudio_model)
+        openstudio_schedule_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
+        openstudio_schedule_type_limit.setName(@hash[:name])
+        if @hash[:lower_limit]
+          openstudio_schedule_type_limit.setLowerLimitValue(@hash[:lower_limit])
+        end
+        if @hash[:upper_limit]
+          openstudio_schedule_type_limit.setUpperLimitValue(@hash[:upper_limit])
+        end
+        if @hash[:numeric_type]
+          openstudio_schedule_type_limit.setNumericType(@hash[:numeric_type])
+        else
+          openstudio_schedule_type_limit.setNumericType(@@schema[:definitions][:ScheduleTypeLimit][:properties][:numeric_type])
+        end
+        if @hash[:unit_type]
+          openstudio_schedule_type_limit.setUnitType(@hash[:unit_type])
+        else 
+          openstudio_schedule_type_limit.setUnitType(@@schema[:definitions][:ScheduleTypeLimit][:properties][:unit_type])
+        end
+        openstudio_schedule_type_limit
+      end
+
+    end # ScheduleTypeLimit
+  end # EnergyModel
+end # Ladybug
