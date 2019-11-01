@@ -60,36 +60,34 @@ module Ladybug
       def create_openstudio_object(openstudio_model)
         openstudio_schedule_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
         openstudio_schedule_ruleset.setName(@hash[:name])
+
+        def create_day_schedule(openstudio_model, name, values_hash, times_hash )
+          @day_schedule = OpenStudio::Model::ScheduleDay.new(openstudio_model)
+          @day_schedule.setName(name)
+          values = values_hash
+          times = times_hash
+          values.each_index do |i|
+            @day_schedule.addValue(OpenStudio::Time.new(0,times[i][0], times[i][0], 0), values[i])
+          end
+        end
+
         
         if @hash[:summer_designday_schedule]
-          summer_designday_schedule = OpenStudio::Model::ScheduleDay.new(openstudio_model)
-          values = @hash[:summer_designday_schedule][:values]
-          times = @hash[:summer_designday_schedule][:times]
-          values.each_index do |i|
-            summer_designday_schedule.addValue(OpenStudio::Time.new(0,times[i][0],times[i][1] ,0), values[i])
-          end 
+          create_day_schedule(openstudio_model,@hash[:summer_designday_schedule][:name] , @hash[:summer_designday_schedule][:values], @hash[:summer_designday_schedule][:times])
+          openstudio_schedule_ruleset.setSummerDesignDaySchedule(@day_schedule)
         end
-
-        openstudio_schedule_ruleset.setSummerDesignDaySchedule(summer_designday_schedule)
 
         if @hash[:winter_designday_schedule]
-          winter_designday_schedule = OpenStudio::Model::ScheduleDay.new(openstudio_model)
-          values = @hash[:winter_designday_schedule][:values]
-          times = @hash[:winter_designday_schedule][:times]
-          values.each_index do |i|
-            winter_designday_schedule.addValue(OpenStudio::Time.new(0,times[i][0],times[i][1] ,0), values[i])
-          end 
-        end
-
-        openstudio_schedule_ruleset.setWinterDesignDaySchedule(winter_designday_schedule)
-        
+          create_day_schedule(openstudio_model,@hash[:winter_designday_schedule][:name] , @hash[:winter_designday_schedule][:values], @hash[:winter_designday_schedule][:times])
+          openstudio_schedule_ruleset.setWinterDesignDaySchedule(@day_schedule)
+        end       
      
         values_default_day = @hash[:default_day_schedule][:values]
         times_default_day = @hash[:default_day_schedule][:times]
 
         values_default_day.each_index do |i|
           openstudio_schedule_ruleset.defaultDaySchedule.addValue(OpenStudio::Time.new(0,times_default_day[i][0],times_default_day[i][1] ,0), values_default_day[i])
-        end 
+        end
 
         if @hash[:schedule_type_limit]
           
@@ -123,8 +121,12 @@ module Ladybug
             values_day.each_index do |i|
               openstudio_schedule_rule.daySchedule.addValue(OpenStudio::Time.new(0,times_day[i][0], times_day[i][1], 0), values_day[i])
             end
-
           end
+
+          @hash[:schedule_rules].each_index do |i|
+            openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_ruleset.scheduleRules[i], i)
+          end
+          
         end
       end
       

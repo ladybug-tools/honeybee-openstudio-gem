@@ -43,7 +43,6 @@ module Ladybug
 
       def initialize(hash = {})
         super(hash)
-        
         raise "Incorrect model type '#{@type}'" unless @type == 'Room'
       end
 
@@ -110,7 +109,6 @@ module Ladybug
           end
         end
       
-
         openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
         
         if @hash[:outdoor_shades]
@@ -122,6 +120,7 @@ module Ladybug
           end
         end
 
+
         if @hash[:properties][:energy][:program_type]
           space_type_object = nil
           space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
@@ -131,7 +130,75 @@ module Ladybug
           openstudio_space.setSpaceType(space_type_object)
         end
 
+        people_object = nil
+        if @hash[:properties][:energy][:people]
+          people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:name])
+          unless people.empty?
+            people_object = people.get
+            people_object.setSpace(openstudio_space)
+          end
+        end
 
+        if @hash[:properties][:energy][:lighting]
+          lighting_object = nil
+          lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:name])
+          unless lighting.empty?
+            lighting_object = lighting.get
+          end
+          lighting_object.setSpace(openstudio_space)
+        end
+
+        if @hash[:properties][:energy][:electrical_equipment]
+          electrical_equipment_object = nil
+          electrical_equipment = openstudio_model.getElectricEquipmentByName(@hash[:properties][:energy][:electrical_equipment][:name])
+          unless electrical_equipment.empty?
+            electrical_equipment_object = electrical_equipment.get
+          end
+          electrical_equipment_object.setSpace(openstudio_space)
+        end
+        
+        if @hash[:properties][:energy][:gas_equipment]
+          gas_equipment_object = nil
+          gas_equipment = openstudio_model.getGasEquipmentByName(@hash[:properties][:energy][:gas_equipment][:name])
+          unless gas_equipment.empty?
+            gas_equipment_object = gas_equipment.get
+          end
+          gas_equipment_object.setSpace(openstudio_space)
+        end
+
+        if @hash[:properties][:energy][:infiltration]
+          infiltration_object = nil
+          infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRate(@hash[:properties][:energy][:infiltration][:name])
+          unless infiltration_object.empty?
+            infiltration_object = infiltration.get
+          end
+          infiltration_object.setSpace(openstudio_space)
+        end
+          
+        if @hash[:properties][:energy][:ventilation] 
+          ventilation_object = nil
+          ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:properties][:energy][:ventilation][:name])
+          unless ventilation_object.empty?
+            ventilation_object = ventilation.get
+          end
+          ventilation_object.setSpace(openstudio_space)
+        end
+
+        #if @hash[:properties][:energy][:setpoint]
+        #  setpoint_thermostat_object = nil
+        #  setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:properties][:energy][:setpoint])
+        #  unless setpoint_thermostat_object.empty?
+        #    setpoint_thermostat_object = setpoint_thermostat.get
+        #  end
+        #end
+
+        #if @hash[:properties][:energy][:setpoint][:humidification_schedule] or @hash[:properties][:energy][:setpoint][:dehumidification_schedule]
+        #  setpoint_humidistat_object = nil
+        #  setpoint_humidistat = openstudio_model.getZoneControlHumidistatByName(@hash[:properties][:energy][:setpoint])
+        #  unless setpoint_humidistat_object.empty?
+        #    setpoint_humidistat_object = setpoint_humidistat.get
+        #  end
+        #end
       end
 
     end # Room

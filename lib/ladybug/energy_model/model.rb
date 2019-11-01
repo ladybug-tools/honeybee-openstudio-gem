@@ -228,6 +228,9 @@ module Ladybug
             end
 
             schedule_object.to_openstudio(@openstudio_model)
+
+            
+
           end
         end
       end

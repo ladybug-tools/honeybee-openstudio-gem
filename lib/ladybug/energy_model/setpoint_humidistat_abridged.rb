@@ -29,39 +29,55 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/version'
 require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/opaque_construction_abridged'
-require 'ladybug/energy_model/window_construction_abridged'
-require 'ladybug/energy_model/shade_construction'
-require 'ladybug/energy_model/construction_set'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/model'
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/room'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/door'
-require 'ladybug/energy_model/shade'
-require 'ladybug/energy_model/schedule_type_limit'
-require 'ladybug/energy_model/schedule_fixed_interval_abridged'
-require 'ladybug/energy_model/schedule_ruleset_abridged'
-require 'ladybug/energy_model/space_type'
-require 'ladybug/energy_model/people_abridged'
-require 'ladybug/energy_model/lighting_abridged'
-require 'ladybug/energy_model/electrical_equipment_abridged'
-require 'ladybug/energy_model/gas_equipment_abridged'
-require 'ladybug/energy_model/infiltration_abridged'
-require 'ladybug/energy_model/ventilation_abridged'
-require 'ladybug/energy_model/setpoint_thermostat_abridged'
-require 'ladybug/energy_model/setpoint_humidistat_abridged'
 
+module Ladybug
+  module EnergyModel
+    class SetpointHumidistatAbridged < ModelObject
+      attr_reader :errors, :warnings
+  
+      def initialize(hash = {})
+        super(hash)
+        raise "Incorrect model type '#{@type}'" unless @type == 'SetpointAbridged'
+      end
+    
+      def defaults
+        result = {}
+        result
+      end
+    
+      def find_existing_openstudio_object(openstudio_model)
+        model_setpoint_humidistat = openstudio_model.getZoneControlHumistatByName(@hash[:name])
+        return model_setpoint_humidistat.get unless model_setpoint_humidistat.empty?
+        nil
+      end
+    
+      def create_openstudio_object(openstudio_model)
+        openstudio_setpoint_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
+        openstudio_setpoint_humidistat.setName(@hash[:name])
+        
+        if @hash[:setpoint][:humidification_schedule]
+          humidification_schedule_object = nil
+          humidification_schedule = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
+          unless humidification_schedule.empty?
+            humidification_schedule_object = humidification_schedule.get
+          end
+          openstudio_setpoint_humidistat.setHumidifyingRelativeHumiditySetpointSchedule(humidification_schedule_object)
+        end
+          
+        if @hash[:setpoint][:dehumidification_schedule]
+          dehumidification_schedule_object = nil
+          dehumidification_schedule = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
+          unless dehumidification_schedule.empty?
+            dehumidification_schedule_object = dehumidification_schedule.get
+          end
+          openstudio_setpoint_humidistat.setDehumidifyingRelativeHumiditySetpointSchedule(dehumidification_schedule_object)
+        end
+
+        openstudio_setpoint_humidistat
+      end
+
+    end #SetpointHumidistatAbridged
+  end #EnergyModel
+end #Ladybug
