@@ -120,6 +120,8 @@ module Ladybug
           end
         end
 
+        openstudio_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
+        openstudio_space.setThermalZone(openstudio_thermal_zone)
 
         if @hash[:properties][:energy][:program_type]
           space_type_object = nil
@@ -184,21 +186,26 @@ module Ladybug
           ventilation_object.setSpace(openstudio_space)
         end
 
-        #if @hash[:properties][:energy][:setpoint]
-        #  setpoint_thermostat_object = nil
-        #  setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:properties][:energy][:setpoint])
-        #  unless setpoint_thermostat_object.empty?
-        #    setpoint_thermostat_object = setpoint_thermostat.get
-        #  end
-        #end
-
-        #if @hash[:properties][:energy][:setpoint][:humidification_schedule] or @hash[:properties][:energy][:setpoint][:dehumidification_schedule]
-        #  setpoint_humidistat_object = nil
-        #  setpoint_humidistat = openstudio_model.getZoneControlHumidistatByName(@hash[:properties][:energy][:setpoint])
-        #  unless setpoint_humidistat_object.empty?
-        #    setpoint_humidistat_object = setpoint_humidistat.get
-        #  end
-        #end
+        if @hash[:properties][:energy][:setpoint]
+          setpoint_thermostat_object = nil
+          setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:properties][:energy][:setpoint][:name])
+          puts "5HELLO = #{setpoint_thermostat}"
+          unless setpoint_thermostat.empty?
+            setpoint_thermostat_object = setpoint_thermostat.get
+          end
+          openstudio_thermal_zone.setThermostatSetpointDualSetpoint(setpoint_thermostat_object)
+          if @hash[:properties][:energy][:setpoint][:humidification_schedule]
+            setpoint_humidistat_object = nil
+            setpoint_humidistat = openstudio_model.getZoneControlHumidistatByName(@hash[:properties][:energy][:setpoint][:name])
+            unless setpoint_humidistat.empty?
+              setpoint_humidistat_object = setpoint_humidistat.get
+            end
+            puts "6HELLO = #{setpoint_humidistat_object}"
+            openstudio_thermal_zone.setZoneControlHumidistat(setpoint_humidistat_object)
+          end
+        end
+      
+        openstudio_space
       end
 
     end # Room

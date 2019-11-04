@@ -97,13 +97,11 @@ module Ladybug
         if @hash[:setpoint]
           setpoint_thermostat = SetpointThermostatAbridged.new(@hash[:setpoint])
           openstudio_setpoint_thermostat = setpoint_thermostat.to_openstudio(openstudio_model)
-          #TODO: thermostat can only be set for a thermal zone.
         end
 
         if @hash[:setpoint][:humidification_schedule] or @hash[:setpoint][:dehumidification_schedule]
-          setpoint_humidistat = SetpointHumidistatAbridged.new
+          setpoint_humidistat = SetpointHumidistatAbridged.new(@hash[:setpoint])
           openstudio_setpoint_humidistat = setpoint_humidistat.to_openstudio(openstudio_model)
-          #TODO: humidistat can only be set for a thermal zone.
         end
           #TODO: check for schedule for room else get spacetype.
         openstudio_space_type

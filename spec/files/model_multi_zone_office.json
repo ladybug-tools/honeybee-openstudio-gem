@@ -476,7 +476,9 @@
                         "type": "SetpointAbridged",
                         "name": "Generic Office Setpoints",
                         "heating_schedule": "Generic Office Heating",
-                        "cooling_schedule": "Generic Office Cooling"
+                        "cooling_schedule": "Generic Office Cooling", 
+                        "humidification_schedule": "Generic Office Heating",
+                        "dehumidification_schedule": "Generic Office Heating"
                     }
                 }
             ],
@@ -1649,6 +1651,14 @@
                     "program_type": "Generic Office Program",
                     "hvac": {
                         "type": "IdealAirSystem"
+                    },
+                    "setpoint": {
+                        "type": "SetpointAbridged",
+                        "name": "Generic Office Setpoints",
+                        "heating_schedule": "Generic Office Heating",
+                        "cooling_schedule": "Generic Office Cooling",
+                        "humidification_schedule": "Generic Office Heating",
+                        "dehumidification_schedule": "Generic Office Heating"
                     }
                 }
             },

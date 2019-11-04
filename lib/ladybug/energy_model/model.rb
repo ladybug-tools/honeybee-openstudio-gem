@@ -226,11 +226,8 @@ module Ladybug
             else
               raise("Unknown schedule type #{schedule_type}.")
             end
-
             schedule_object.to_openstudio(@openstudio_model)
-
-            
-
+          
           end
         end
       end

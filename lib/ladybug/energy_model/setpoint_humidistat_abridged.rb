@@ -48,16 +48,17 @@ module Ladybug
       end
     
       def find_existing_openstudio_object(openstudio_model)
-        model_setpoint_humidistat = openstudio_model.getZoneControlHumistatByName(@hash[:name])
-        return model_setpoint_humidistat.get unless model_setpoint_humidistat.empty?
-        nil
+        #model_setpoint_humidistat = openstudio_model.getModelObjectByName(@hash[:name])
+        #return model_setpoint_humidistat.get unless model_setpoint_humidistat.empty?
+        #nil
+        #puts "8HELLO = #{model_setpoint_humidistat}"
       end
     
       def create_openstudio_object(openstudio_model)
         openstudio_setpoint_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
         openstudio_setpoint_humidistat.setName(@hash[:name])
         
-        if @hash[:setpoint][:humidification_schedule]
+        if @hash[:humidification_schedule]
           humidification_schedule_object = nil
           humidification_schedule = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
           unless humidification_schedule.empty?
@@ -66,7 +67,7 @@ module Ladybug
           openstudio_setpoint_humidistat.setHumidifyingRelativeHumiditySetpointSchedule(humidification_schedule_object)
         end
           
-        if @hash[:setpoint][:dehumidification_schedule]
+        if @hash[:dehumidification_schedule]
           dehumidification_schedule_object = nil
           dehumidification_schedule = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
           unless dehumidification_schedule.empty?
@@ -75,6 +76,7 @@ module Ladybug
           openstudio_setpoint_humidistat.setDehumidifyingRelativeHumiditySetpointSchedule(dehumidification_schedule_object)
         end
 
+        puts "10HELLO = #{openstudio_setpoint_humidistat}"
         openstudio_setpoint_humidistat
       end
 
