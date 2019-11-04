@@ -51,7 +51,6 @@ module Ladybug
         #model_setpoint_humidistat = openstudio_model.getModelObjectByName(@hash[:name])
         #return model_setpoint_humidistat.get unless model_setpoint_humidistat.empty?
         #nil
-        #puts "8HELLO = #{model_setpoint_humidistat}"
       end
     
       def create_openstudio_object(openstudio_model)
@@ -76,7 +75,6 @@ module Ladybug
           openstudio_setpoint_humidistat.setDehumidifyingRelativeHumiditySetpointSchedule(dehumidification_schedule_object)
         end
 
-        puts "10HELLO = #{openstudio_setpoint_humidistat}"
         openstudio_setpoint_humidistat
       end
 

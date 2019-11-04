@@ -70,9 +70,7 @@ module Ladybug
           cooling_schedule_object = cooling_schedule.get
         end
         openstudio_setpoint_thermostat.setCoolingSetpointTemperatureSchedule(cooling_schedule_object)
-        
-        puts "9HELLO = #{openstudio_setpoint_thermostat}"
-        
+                
         openstudio_setpoint_thermostat
       end
   

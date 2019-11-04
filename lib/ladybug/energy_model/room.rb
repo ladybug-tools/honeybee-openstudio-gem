@@ -189,7 +189,6 @@ module Ladybug
         if @hash[:properties][:energy][:setpoint]
           setpoint_thermostat_object = nil
           setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:properties][:energy][:setpoint][:name])
-          puts "5HELLO = #{setpoint_thermostat}"
           unless setpoint_thermostat.empty?
             setpoint_thermostat_object = setpoint_thermostat.get
           end
@@ -200,7 +199,6 @@ module Ladybug
             unless setpoint_humidistat.empty?
               setpoint_humidistat_object = setpoint_humidistat.get
             end
-            puts "6HELLO = #{setpoint_humidistat_object}"
             openstudio_thermal_zone.setZoneControlHumidistat(setpoint_humidistat_object)
           end
         end
