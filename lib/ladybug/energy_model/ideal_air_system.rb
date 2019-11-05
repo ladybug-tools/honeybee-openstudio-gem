@@ -53,7 +53,7 @@ module Ladybug
           openstudio_ideal_air.setHeatingLimit('LimitCapacity')
           if @hash[:heating_limit] == 'autocalculate'
             openstudio_ideal_air.autosizeMaximumSensibleHeatingCapacity()
-          elsif 
+          else
             openstudio_ideal_air.setMaximumSensibleHeatingCapacity(@hash[:heating_limit])
           end
         end
@@ -62,7 +62,7 @@ module Ladybug
           if @hash[:cooling_limit] == 'autocalculate'
             openstudio_ideal_air.autosizeMaximumTotalCoolingCapacity ()
             openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
-          elsif
+          else
             openstudio_ideal_air.setMaximumTotalCoolingCapacity(@hash[:cooling_limit])
             openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
           end
@@ -85,7 +85,7 @@ module Ladybug
         if @hash[:demand_control_ventilation]
           if @hash[:demand_control_ventilation] == true
             openstudio_ideal_air.setDemandControlledVentilationType('OccupancySchedule') #TODO: when true, what is demand control vent. type?
-          elsif @hash[:demand_control_ventilation] == false
+          else 
             openstudio_ideal_air.setDemandControlledVentilationType('None')
           end
         else 
