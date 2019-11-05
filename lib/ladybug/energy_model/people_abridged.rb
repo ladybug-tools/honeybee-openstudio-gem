@@ -61,8 +61,14 @@ module Ladybug
         else
           openstudio_people_definition.setFractionRadiant(@@schema[:definitions][:PeopleAbridged][:radiant_fraction][:default])
         end
-        #TODO if @hash[:people][:latent_fraction]
-        
+        if @hash[:latent_fraction]
+          if @hash[:latent_fraction] == 'autocalculate'
+            openstudio_people_definition.autocalculateSensibleHeatFraction()
+          elsif
+            sensible_fraction = 1 - (@hash[:latent_fraction]).to_f
+            openstudio_people_definition.setSensibleHeatFraction(sensible_fraction)
+          end
+        end
         openstudio_people = OpenStudio::Model::People.new(openstudio_people_definition)
         openstudio_people.setPeopleDefinition(openstudio_people_definition)
         openstudio_people.setName(@hash[:name])
@@ -81,7 +87,6 @@ module Ladybug
         openstudio_people.setNumberofPeopleSchedule(people_occupancy_schedule_object)
 
         openstudio_people
-
       end
 
     end #PeopleAbridged

@@ -249,7 +249,6 @@ module Ladybug
           end
         end
       end
-
       
       def create_orphaned_shades
         if @hash[:orphaned_shades]

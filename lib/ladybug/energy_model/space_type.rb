@@ -31,6 +31,18 @@
 
 require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/people_abridged'
+require 'ladybug/energy_model/lighting_abridged'
+require 'ladybug/energy_model/electrical_equipment_abridged'
+require 'ladybug/energy_model/gas_equipment_abridged'
+require 'ladybug/energy_model/infiltration_abridged'
+require 'ladybug/energy_model/ventilation_abridged'
+require 'ladybug/energy_model/setpoint_thermostat'
+require 'ladybug/energy_model/setpoint_humidistat'
+
+require 'json-schema'
+require 'json'
+require 'openstudio'
 
 module Ladybug
   module EnergyModel
@@ -95,12 +107,12 @@ module Ladybug
         end
 
         if @hash[:setpoint]
-          setpoint_thermostat = SetpointThermostatAbridged.new(@hash[:setpoint])
+          setpoint_thermostat = SetpointThermostat.new(@hash[:setpoint])
           openstudio_setpoint_thermostat = setpoint_thermostat.to_openstudio(openstudio_model)
         end
 
         if @hash[:setpoint][:humidification_schedule] or @hash[:setpoint][:dehumidification_schedule]
-          setpoint_humidistat = SetpointHumidistatAbridged.new(@hash[:setpoint])
+          setpoint_humidistat = SetpointHumidistat.new(@hash[:setpoint])
           openstudio_setpoint_humidistat = setpoint_humidistat.to_openstudio(openstudio_model)
         end
           #TODO: check for schedule for room else get spacetype.

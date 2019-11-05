@@ -62,14 +62,14 @@ module Ladybug
           openstudio_gas_equipment_definition.setFractionRadiant(@@schema[:definitions][:GasEquipmentAbridged][:properties][:radiant_fraction][:default])
         end
         if @hash[:gas_equipment][:latent_fraction]
-          openstudio_electric_equipment_definition.setFractionLatent(@hash[:gas_equipment][:latent_fraction])
+          openstudio_gas_equipment_definition.setFractionLatent(@hash[:gas_equipment][:latent_fraction])
         else
-          openstudio_lights_definition.setFractionLatent(@@schema[:definitions][:GasEquipmentAbridged][:properties][:latent_fraction][:default])
+          openstudio_gas_equipment_definition.setFractionLatent(@@schema[:definitions][:GasEquipmentAbridged][:properties][:latent_fraction][:default])
         end
         if @hash[:gas_equipment][:lost_fraction]
           openstudio_gas_equipment_definition.setFractionLost(@hash[:gas_equipment][:lost_fraction])
         else 
-          openstudio_gas_definition.setReturnAirFraction(@@schema[:definitions][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_gas_equipment_definition.setReturnAirFraction(@@schema[:definitions][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
         openstudio_gas_equipment = OpenStudio::Model::GasEquipment.new(openstudio_model)

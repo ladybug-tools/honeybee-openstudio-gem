@@ -34,7 +34,7 @@ require 'ladybug/energy_model/model_object'
 
 module Ladybug
   module EnergyModel
-    class SetpointHumidistatAbridged < ModelObject
+    class SetpointHumidistat < ModelObject
       attr_reader :errors, :warnings
   
       def initialize(hash = {})
@@ -46,13 +46,7 @@ module Ladybug
         result = {}
         result
       end
-    
-      def find_existing_openstudio_object(openstudio_model)
-        #model_setpoint_humidistat = openstudio_model.getModelObjectByName(@hash[:name])
-        #return model_setpoint_humidistat.get unless model_setpoint_humidistat.empty?
-        #nil
-      end
-    
+        
       def create_openstudio_object(openstudio_model)
         openstudio_setpoint_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
         openstudio_setpoint_humidistat.setName(@hash[:name])
@@ -78,6 +72,6 @@ module Ladybug
         openstudio_setpoint_humidistat
       end
 
-    end #SetpointHumidistatAbridged
+    end #SetpointHumidistat
   end #EnergyModel
 end #Ladybug

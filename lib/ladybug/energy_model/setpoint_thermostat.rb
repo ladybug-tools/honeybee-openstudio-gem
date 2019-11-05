@@ -34,7 +34,7 @@ require 'ladybug/energy_model/model_object'
 
 module Ladybug
   module EnergyModel
-    class SetpointThermostatAbridged < ModelObject
+    class SetpointThermostat < ModelObject
       attr_reader :errors, :warnings
   
       def initialize(hash = {})
@@ -45,12 +45,6 @@ module Ladybug
       def defaults
         result = {}
         result
-      end
-    
-      def find_existing_openstudio_object(openstudio_model)
-        model_setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:name])
-        return model_setpoint_thermostat.get unless model_setpoint_thermostat.empty?
-        nil
       end
     
       def create_openstudio_object(openstudio_model)
@@ -74,6 +68,6 @@ module Ladybug
         openstudio_setpoint_thermostat
       end
   
-    end #SetpointThermostatAbridged
+    end #SetpointThermostat
   end #EnergyModel
 end #Ladybug

@@ -48,8 +48,8 @@ module Ladybug
       end
     
       def find_existing_openstudio_object(openstudio_model)
-        model_gas_equipment = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:name])
-        return model_gas_equipment.get unless model_gas_equipment.empty?
+        model_infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:name])
+        return model_infiltration.get unless model_infiltration.empty?
         nil
       end
     

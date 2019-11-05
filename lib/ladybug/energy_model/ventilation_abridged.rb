@@ -55,30 +55,34 @@ module Ladybug
     
       def create_openstudio_object(openstudio_model)       
         openstudio_ventilation = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
-         openstudio_ventilation.setName(@hash[:name])
-         if @hash[:air_changes_per_hour]
-           openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
-         else
-           openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:definitions][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
-         end
-         #TODO if @hash[:ventilation][:flow_per_zone]
-         if @hash[:flow_per_person]
-           openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
-         else 
-           openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_person][:default])
-         end
-         if @hash[:flow_per_area]
-           openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
-         else 
-           openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
-         end
-         if @hash[:schedule]
-           ventilation_schedule_object = nil
-           ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
-           unless ventilation_schedule.empty?
+        openstudio_ventilation.setName(@hash[:name])
+        if @hash[:air_changes_per_hour]
+          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
+        else
+          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:definitions][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
+        end
+        if @hash[:flow_per_zone]
+          openstudio_ventilation.setOutdoorAirFlowRate(@hash[:flow_per_zone])
+        else
+          openstudio_ventilation.setOutdoorAirFlowRate(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_zone][:default])
+        end
+        if @hash[:flow_per_person]
+          openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
+        else 
+          openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_person][:default])
+        end
+        if @hash[:flow_per_area]
+          openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
+        else 
+          openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
+        end
+        if @hash[:schedule]
+          ventilation_schedule_object = nil
+          ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
+          unless ventilation_schedule.empty?
             ventilation_schedule_object = ventilation_schedule.get
-           end
-           openstudio_ventilation.setOutdoorAirFlowRateFractionSchedule(ventilation_schedule_object)
+          end
+          openstudio_ventilation.setOutdoorAirFlowRateFractionSchedule(ventilation_schedule_object)
         end
 
         openstudio_ventilation

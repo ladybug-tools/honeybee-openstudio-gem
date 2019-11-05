@@ -2441,7 +2441,7 @@
           "enum": [
             "IdealAirSystem"
           ]
-        },
+        },        
         "heating_limit": {
           "title": "Heating_Limit",
           "default": "autocalculate",

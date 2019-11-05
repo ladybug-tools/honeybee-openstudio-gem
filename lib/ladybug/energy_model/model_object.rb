@@ -119,7 +119,7 @@ module Ladybug
 
       # find an equivalent existing object in the openstudio model, return nil if not found
       def find_existing_openstudio_object(_openstudio_model)
-        raise 'find_existing_openstudio_object not implemented for ModelObject, override in your class'
+        
       end
 
       # create a new object in the openstudio model, return new object

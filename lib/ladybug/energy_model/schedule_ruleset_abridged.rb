@@ -124,12 +124,11 @@ module Ladybug
           end
 
           @hash[:schedule_rules].each_index do |i|
-            openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_ruleset.scheduleRules[i], i)
+            openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_ruleset.scheduleRules()[i], i)
           end
-          
+
         end
       end
-      
 
     end #ScheduleRulesetAbridged
   end #EnergyModel

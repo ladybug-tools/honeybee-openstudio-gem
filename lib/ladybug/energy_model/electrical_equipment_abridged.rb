@@ -64,12 +64,12 @@ module Ladybug
         if @hash[:latent_fraction]
           openstudio_electric_equipment_definition.setFractionLatent(@hash[:latent_fraction])
         else
-          openstudio_lights_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:latent_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:latent_fraction][:default])
         end
         if @hash[:lost_fraction]
-          openstudio_lights_definition.setFractionLost(@hash[:lost_fraction])
+          openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
         else 
-          openstudio_lights_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
         openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_model)
@@ -84,7 +84,8 @@ module Ladybug
         openstudio_electric_equipment.setSchedule(electric_equipment_schedule_object)
 
         openstudio_electric_equipment
-        end
+      end
+
     end #ElectricalEquipmentAbridged
   end #EnergyModel
 end #Ladybug
