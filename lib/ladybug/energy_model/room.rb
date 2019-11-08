@@ -60,7 +60,6 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
-        default_construction_set = nil
         if @hash[:properties][:energy][:construction_set]
           construction_set_name = @hash[:properties][:energy][:construction_set]
           construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
@@ -124,7 +123,6 @@ module Ladybug
         openstudio_space.setThermalZone(openstudio_thermal_zone)
 
         if @hash[:properties][:energy][:program_type]
-          space_type_object = nil
           space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
           unless space_type.empty?
             space_type_object = space_type.get
@@ -132,7 +130,6 @@ module Ladybug
           openstudio_space.setSpaceType(space_type_object)
         end
 
-        people_object = nil
         if @hash[:properties][:energy][:people]
           people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:name])
           unless people.empty?
@@ -146,7 +143,6 @@ module Ladybug
         end
 
         if @hash[:properties][:energy][:lighting]
-          lighting_object = nil
           lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:name])
           unless lighting.empty?
             lighting_object = lighting.get
@@ -159,7 +155,6 @@ module Ladybug
         end
 
         if @hash[:properties][:energy][:electrical_equipment]
-          electrical_equipment_object = nil
           electrical_equipment = openstudio_model.getElectricEquipmentByName(@hash[:properties][:energy][:electrical_equipment][:name])
           unless electrical_equipment.empty?
             electrical_equipment_object = electrical_equipment.get
@@ -172,7 +167,6 @@ module Ladybug
         end
         
         if @hash[:properties][:energy][:gas_equipment]
-          gas_equipment_object = nil
           gas_equipment = openstudio_model.getGasEquipmentByName(@hash[:properties][:energy][:gas_equipment][:name])
           unless gas_equipment.empty?
             gas_equipment_object = gas_equipment.get
@@ -185,7 +179,6 @@ module Ladybug
         end
 
         if @hash[:properties][:energy][:infiltration]
-          infiltration_object = nil
           infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRate(@hash[:properties][:energy][:infiltration][:name])
           unless infiltration_object.empty?
             infiltration_object = infiltration.get
@@ -198,7 +191,6 @@ module Ladybug
         end
           
         if @hash[:properties][:energy][:ventilation] 
-          ventilation_object = nil
           ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:properties][:energy][:ventilation][:name])
           unless ventilation_object.empty?
             ventilation_object = ventilation.get
@@ -211,27 +203,13 @@ module Ladybug
         end
 
         if @hash[:properties][:energy][:setpoint]
-          setpoint_thermostat_object = nil
-          setpoint_thermostat = openstudio_model.getThermostatSetpointDualSetpointByName(@hash[:properties][:energy][:setpoint][:name])
-          unless setpoint_thermostat.empty?
-            setpoint_thermostat_object = setpoint_thermostat.get
-            openstudio_thermal_zone.setThermostatSetpointDualSetpoint(setpoint_thermostat_object)
-          else
-            setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
-            openstudio_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
-            openstudio_setpoint_thermostat_space.setSpace(openstudio_space)
-          end
+          setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
+          openstudio_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
+          openstudio_thermal_zone.setThermostatSetpointDualSetpoint(openstudio_setpoint_thermostat_space)
           if @hash[:properties][:energy][:setpoint][:humidification_schedule]
-            setpoint_humidistat_object = nil
-            setpoint_humidistat = openstudio_model.getZoneControlHumidistatByName(@hash[:properties][:energy][:setpoint][:name])
-            unless setpoint_humidistat.empty?
-              setpoint_humidistat_object = setpoint_humidistat.get
-              openstudio_thermal_zone.setZoneControlHumidistat(setpoint_humidistat_object)
-            else
-              setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
-              openstudio_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
-              openstudio_setpoint_humidistat_space.setSpace(openstudio_space)
-            end
+            setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
+            openstudio_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
+            openstudio_thermal_zone.setZoneControlHumidistat(openstudio_setpoint_humidistat_space)
           end
         end
 

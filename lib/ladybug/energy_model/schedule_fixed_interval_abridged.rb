@@ -66,7 +66,6 @@ module Ladybug
         end
         
         if @hash[:schedule_type_limit]
-          schedule_type_limit_object = nil
           schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
           unless schedule_type_limit.empty?
             schedule_type_limit_object = schedule_type_limit.get

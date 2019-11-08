@@ -74,10 +74,9 @@ module Ladybug
         if @hash[:flow_per_area]
           openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
         else 
-          openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
+          openstudio_ventilation.setOutdoorAirFlowperFloorArea(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
         end
         if @hash[:schedule]
-          ventilation_schedule_object = nil
           ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
           unless ventilation_schedule.empty?
             ventilation_schedule_object = ventilation_schedule.get

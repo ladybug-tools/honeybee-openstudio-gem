@@ -19145,15 +19145,17 @@
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Generic Office Program",
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystem",
+                        "heating_limit": 1,
+                        "cooling_limit": "autosize"
                     },
                     "people": {
                         "type": "PeopleAbridged",
-                        "name": "Generic Office People",
+                        "name": "Generic Office People 2",
                         "people_per_area": 0.0565,
                         "radiant_fraction": 0.3,
                         "latent_fraction": "autocalculate",
-                        "occupancy_schedule": "Random Occupancy",
+                        "occupancy_schedule": "Generic Office Activity",
                         "activity_schedule": "Generic Office Activity"
                     }
                 }

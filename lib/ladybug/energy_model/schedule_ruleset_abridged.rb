@@ -91,7 +91,6 @@ module Ladybug
 
         if @hash[:schedule_type_limit]
           
-          schedule_type_limit_object = nil
           schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
           unless schedule_type_limit.empty?
             schedule_type_limit_object = schedule_type_limit.get
@@ -121,13 +120,12 @@ module Ladybug
             values_day.each_index do |i|
               openstudio_schedule_rule.daySchedule.addValue(OpenStudio::Time.new(0,times_day[i][0], times_day[i][1], 0), values_day[i])
             end
+            index = @hash[:schedule_rules].find_index(rule)
+            openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_rule, index)
           end
-
-          @hash[:schedule_rules].each_index do |i|
-            openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_ruleset.scheduleRules()[i], i)
-          end
-
         end
+
+        openstudio_schedule_ruleset
       end
 
     end #ScheduleRulesetAbridged

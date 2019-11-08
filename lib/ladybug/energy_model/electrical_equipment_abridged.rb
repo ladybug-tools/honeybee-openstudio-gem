@@ -69,14 +69,13 @@ module Ladybug
         if @hash[:lost_fraction]
           openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
         else 
-          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLost(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
         openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_model)
         openstudio_electric_equipment.setName(@hash[:name])
         openstudio_electric_equipment.setElectricEquipmentDefinition(openstudio_electric_equipment_definition)
 
-        electric_equipment_schedule_object = nil
         electric_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
         unless electric_equipment_schedule.empty?
           electric_equipment_schedule_object = electric_equipment_schedule.get

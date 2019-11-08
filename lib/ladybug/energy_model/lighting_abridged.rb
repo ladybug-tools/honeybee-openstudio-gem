@@ -76,7 +76,6 @@ module Ladybug
         openstudio_lights.setName(@hash[:name])
         openstudio_lights.setLightsDefinition(openstudio_lights_definition)
 
-        lighting_schedule_object = nil
         lighting_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
         unless lighting_schedule.empty?
           lighting_schedule_object = lighting_schedule.get

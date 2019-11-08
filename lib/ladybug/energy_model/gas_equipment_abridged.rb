@@ -69,14 +69,13 @@ module Ladybug
         if @hash[:gas_equipment][:lost_fraction]
           openstudio_gas_equipment_definition.setFractionLost(@hash[:gas_equipment][:lost_fraction])
         else 
-          openstudio_gas_equipment_definition.setReturnAirFraction(@@schema[:definitions][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_gas_equipment_definition.setFractionLost(@@schema[:definitions][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
         openstudio_gas_equipment = OpenStudio::Model::GasEquipment.new(openstudio_model)
         openstudio_gas_equipment.setName(@hash[:name])
         openstudio_gas_equipment.setGasEquipmentDefinition(openstudio_gas_equipment_definition)
 
-        gas_equipment_schedule_object = nil
         gas_equipment_schedule = openstudio_model.getScheduleByName(@hash[:gas_equipment][:schedule])
         unless gas_equipment_schedule.empty?
           gas_equipment_schedule_object = gas_equipment_schedule.get

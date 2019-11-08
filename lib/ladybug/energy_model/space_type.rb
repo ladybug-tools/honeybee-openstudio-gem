@@ -106,16 +106,12 @@ module Ladybug
          openstudio_space_type.setDesignSpecificationOutdoorAir(openstudio_ventilation)
         end
 
+        #thermostat
         if @hash[:setpoint]
-          setpoint_thermostat = SetpointThermostat.new(@hash[:setpoint])
-          openstudio_setpoint_thermostat = setpoint_thermostat.to_openstudio(openstudio_model)
+          $setpoint_array = []
+          $setpoint_array << @hash[:setpoint]
         end
 
-        if @hash[:setpoint][:humidification_schedule] or @hash[:setpoint][:dehumidification_schedule]
-          setpoint_humidistat = SetpointHumidistat.new(@hash[:setpoint])
-          openstudio_setpoint_humidistat = setpoint_humidistat.to_openstudio(openstudio_model)
-        end
-          #TODO: check for schedule for room else get spacetype.
         openstudio_space_type
       end
 

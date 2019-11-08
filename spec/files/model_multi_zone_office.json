@@ -476,9 +476,7 @@
                         "type": "SetpointAbridged",
                         "name": "Generic Office Setpoints",
                         "heating_schedule": "Generic Office Heating",
-                        "cooling_schedule": "Generic Office Cooling", 
-                        "humidification_schedule": "Generic Office Heating",
-                        "dehumidification_schedule": "Generic Office Heating"
+                        "cooling_schedule": "Generic Office Cooling" 
                     }
                 }
             ],
@@ -1656,9 +1654,7 @@
                         "type": "SetpointAbridged",
                         "name": "Generic Office Setpoints",
                         "heating_schedule": "Generic Office Heating",
-                        "cooling_schedule": "Generic Office Cooling",
-                        "humidification_schedule": "Generic Office Heating",
-                        "dehumidification_schedule": "Generic Office Heating"
+                        "cooling_schedule": "Generic Office Cooling"
                     }
                 }
             },
@@ -2566,6 +2562,7 @@
                 "type": "RoomPropertiesAbridged",
                 "energy": {
                     "type": "RoomEnergyPropertiesAbridged",
+                    "program_type": "Generic Office Program",
                     "construction_set": "Attic Construction Set"
                 }
             },

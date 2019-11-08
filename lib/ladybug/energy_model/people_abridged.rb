@@ -72,14 +72,12 @@ module Ladybug
         openstudio_people = OpenStudio::Model::People.new(openstudio_people_definition)
         openstudio_people.setPeopleDefinition(openstudio_people_definition)
         openstudio_people.setName(@hash[:name])
-        people_activity_schedule_object = nil
         people_activity_schedule = openstudio_model.getScheduleByName(@hash[:activity_schedule])
         unless people_activity_schedule.empty?
           people_activity_schedule_object = people_activity_schedule.get
         end
         openstudio_people.setActivityLevelSchedule(people_activity_schedule_object)
 
-        people_occupancy_schedule_object = nil
         people_occupancy_schedule = openstudio_model.getScheduleByName(@hash[:occupancy_schedule])
         unless people_occupancy_schedule.empty?
           people_occupancy_schedule_object = people_occupancy_schedule.get

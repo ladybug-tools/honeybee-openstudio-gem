@@ -49,23 +49,27 @@ module Ladybug
 
       def create_openstudio_object(openstudio_model)       
         openstudio_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
-        if @hash[:heating_limit]
+        if @hash[:heating_limit] && @hash[:heating_limit] != 'NoLimit'
           openstudio_ideal_air.setHeatingLimit('LimitCapacity')
-          if @hash[:heating_limit] == 'autocalculate'
+          if @hash[:heating_limit] == 'autosize'
             openstudio_ideal_air.autosizeMaximumSensibleHeatingCapacity()
           else
             openstudio_ideal_air.setMaximumSensibleHeatingCapacity(@hash[:heating_limit])
           end
+        else
+          openstudio_ideal_air.setHeatingLimit('NoLimit')
         end
-        if @hash[:cooling_limit]
+        if @hash[:cooling_limit] && @hash[:cooling_limit] != 'NoLimit'
           openstudio_ideal_air.setCoolingLimit('LimitFlowRateAndCapacity')
-          if @hash[:cooling_limit] == 'autocalculate'
-            openstudio_ideal_air.autosizeMaximumTotalCoolingCapacity ()
+          if @hash[:cooling_limit] == 'autosize' 
+            openstudio_ideal_air.autosizeMaximumTotalCoolingCapacity()
             openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
           else
             openstudio_ideal_air.setMaximumTotalCoolingCapacity(@hash[:cooling_limit])
             openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
           end
+        else 
+          openstudio_ideal_air.setCoolingLimit('NoLimit')
         end
         if @hash[:economizer_type]
           openstudio_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
@@ -84,13 +88,14 @@ module Ladybug
         end
         if @hash[:demand_control_ventilation]
           if @hash[:demand_control_ventilation] == true
-            openstudio_ideal_air.setDemandControlledVentilationType('OccupancySchedule') #TODO: when true, what is demand control vent. type?
+            openstudio_ideal_air.setDemandControlledVentilationType('OccupancySchedule') 
           else 
             openstudio_ideal_air.setDemandControlledVentilationType('None')
           end
         else 
           openstudio_ideal_air.setDemandControlledVentilationType('None')
         end
+
         openstudio_ideal_air
       end
 

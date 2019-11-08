@@ -72,7 +72,6 @@ module Ladybug
         else 
           openstudio_infiltration.setVelocityTermCoefficient(@@schema[:definitions][:InfiltrationAbridged][:properties][:velocity_coefficient][:default])
         end
-        infiltration_schedule_object = nil
         infiltration_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
         unless infiltration_schedule.empty?
           infiltration_schedule_object = infiltration_schedule.get

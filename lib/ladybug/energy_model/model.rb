@@ -54,6 +54,8 @@ require 'ladybug/energy_model/schedule_type_limit'
 require 'ladybug/energy_model/schedule_fixed_interval_abridged'
 require 'ladybug/energy_model/schedule_ruleset_abridged'
 require 'ladybug/energy_model/space_type'
+require 'ladybug/energy_model/setpoint_thermostat'
+require 'ladybug/energy_model/setpoint_humidistat'
 require 'json-schema'
 require 'json'
 require 'openstudio'
@@ -192,7 +194,6 @@ module Ladybug
       end
 
       def create_global_construction_set
-        openstudio_construction = nil
         if @hash[:properties][:energy][:global_construction_set]
           construction_name = @hash[:properties][:energy][:global_construction_set]
           construction = @openstudio_model.getDefaultConstructionSetByName(construction_name)
@@ -242,11 +243,36 @@ module Ladybug
       end 
 
       def create_rooms
-        if @hash[:rooms] 
+        if @hash[:rooms]
+          $room_array_setpoint = [] 
           @hash[:rooms].each do |room|
           room_object = Room.new(room)
-          room_object.to_openstudio(@openstudio_model)
+          openstudio_room = room_object.to_openstudio(@openstudio_model)
+          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
+            $room_array_setpoint << room
+            if $setpoint_array
+              $setpoint_array.each do |setpoint|
+              setpoint_name = setpoint[:name]
+              room_hash = $room_array_setpoint.detect {|h| h[:properties][:energy][:program_type] = setpoint_name}
+              thermostat_object = SetpointThermostat.new(setpoint)  
+              openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)   
+              room_name = room_hash[:name]
+              room_get = @openstudio_model.getSpaceByName(room_name)
+              unless room_get.empty?
+                room_object_get = room_get.get
+              end
+              thermal_zone = room_object_get.thermalZone()
+              thermal_zone_object = thermal_zone.get
+              thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+              if setpoint[:humidification_schedule] or setpoint[:dehumidification_schedule]
+                humidistat_object = ZoneControlHumidistat.new(setpoint)
+                openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+              end
+              end
+            end
           end
+        end
         end
       end
       
@@ -281,8 +307,7 @@ module Ladybug
         end
       end
 
-
-        # for now make parent a space, check if should be a zone?
+      # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
         # if air_wall

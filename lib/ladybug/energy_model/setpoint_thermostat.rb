@@ -49,16 +49,15 @@ module Ladybug
     
       def create_openstudio_object(openstudio_model)
         openstudio_setpoint_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
-        openstudio_setpoint_thermostat.setName(@hash[:name])
 
-        heating_schedule_object = nil
         heating_schedule = openstudio_model.getScheduleByName(@hash[:heating_schedule])
         unless heating_schedule.empty?
           heating_schedule_object = heating_schedule.get
         end
         openstudio_setpoint_thermostat.setHeatingSetpointTemperatureSchedule(heating_schedule_object)
-        
-        cooling_schedule_object = nil
+        puts "5HELLO = #{heating_schedule_object}"
+
+
         cooling_schedule = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
         unless cooling_schedule.empty?
           cooling_schedule_object = cooling_schedule.get

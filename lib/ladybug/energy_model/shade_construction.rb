@@ -60,7 +60,6 @@ module Ladybug
         openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
         openstudio_construction.setName(@hash[:name])
         openstudio_materials = OpenStudio::Model::MaterialVector.new
-        openstudio_material = nil
 
         if @hash[:is_specular] == true
           openstudio_material = OpenStudio::Model::StandardGlazing.new(openstudio_model)
