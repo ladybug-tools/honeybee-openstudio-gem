@@ -55,9 +55,6 @@ module Ladybug
           heating_schedule_object = heating_schedule.get
         end
         openstudio_setpoint_thermostat.setHeatingSetpointTemperatureSchedule(heating_schedule_object)
-        puts "5HELLO = #{heating_schedule_object}"
-
-
         cooling_schedule = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
         unless cooling_schedule.empty?
           cooling_schedule_object = cooling_schedule.get

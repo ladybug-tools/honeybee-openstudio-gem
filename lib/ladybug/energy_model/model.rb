@@ -244,36 +244,49 @@ module Ladybug
 
       def create_rooms
         if @hash[:rooms]
+          #global hash
           $room_array_setpoint = [] 
           @hash[:rooms].each do |room|
           room_object = Room.new(room)
           openstudio_room = room_object.to_openstudio(@openstudio_model)
+          
           if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
+            #adding room to global hash if a programtype is assigned and no setpoints
+            #are assigned. 
             $room_array_setpoint << room
-            if $setpoint_array
-              $setpoint_array.each do |setpoint|
-              setpoint_name = setpoint[:name]
-              room_hash = $room_array_setpoint.detect {|h| h[:properties][:energy][:program_type] = setpoint_name}
-              thermostat_object = SetpointThermostat.new(setpoint)  
-              openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)   
-              room_name = room_hash[:name]
-              room_get = @openstudio_model.getSpaceByName(room_name)
-              unless room_get.empty?
-                room_object_get = room_get.get
+            #checking whether global hash containing setpoints is non empty.
+            if $programtype_array
+              $programtype_array.each do |programtype|
+              programtype_name = programtype[:name]
+              #stores an aray containing all rooms whose programtype lies in the programtype_array
+              if room_array = $room_array_setpoint.select {|h| h[:properties][:energy][:program_type] = programtype_name}
+                room_array.each do |single_room|
+                  #looping through all rooms in the array to get room name
+                  room_name = single_room[:name]
+                  room_get = @openstudio_model.getSpaceByName(room_name)
+                  unless room_get.empty?
+                    room_object_get = room_get.get
+                  end
+                  thermal_zone = room_object_get.thermalZone()
+                  thermal_zone_object = thermal_zone.get
+                  
+                  #creating thermostat for the programtype setpoint
+                  thermostat_object = SetpointThermostat.new(programtype[:setpoint])
+                  openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+                  thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+                  
+                  if programtype[:setpoint][:humidification_schedule] or programtype[:setpoint][:dehumidification_schedule]
+                    humidistat_object = ZoneControlHumidistat.new(programtype[:setpoint])
+                    openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                    thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+                  end
+                end
               end
-              thermal_zone = room_object_get.thermalZone()
-              thermal_zone_object = thermal_zone.get
-              thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-              if setpoint[:humidification_schedule] or setpoint[:dehumidification_schedule]
-                humidistat_object = ZoneControlHumidistat.new(setpoint)
-                openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-                thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
-              end
-              end
+            end
             end
           end
         end
-        end
+      end
       end
       
       def create_orphaned_shades

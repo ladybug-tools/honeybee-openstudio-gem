@@ -106,10 +106,10 @@ module Ladybug
          openstudio_space_type.setDesignSpecificationOutdoorAir(openstudio_ventilation)
         end
 
-        #thermostat
+        #Creating a global hash and adding setpoints from space types.
         if @hash[:setpoint]
-          $setpoint_array = []
-          $setpoint_array << @hash[:setpoint]
+          $programtype_array = []
+          $programtype_array << @hash
         end
 
         openstudio_space_type
