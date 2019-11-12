@@ -29,56 +29,63 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-
-require 'json-schema'
-require 'json'
-require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Shade < ModelObject
+    class LightingAbridged < ModelObject
       attr_reader :errors, :warnings
-
-      def initialize(hash)
+  
+      def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+        raise "Incorrect model type '#{@type}'" unless @type == 'LightingAbridged'
       end
-
+    
       def defaults
         result = {}
         result
       end
-
+    
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
-        return object.get if object.is_initialized
+        model_lights = openstudio_model.getLightsDefinitionByName(@hash[:name])
+        return model_lights.get unless model_lights.empty?
         nil
       end
-
+    
       def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:geometry][:boundary].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        openstudio_lights_definition = OpenStudio::Model::LightsDefinition.new(openstudio_model)
+        openstudio_lights_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
+        if @hash[:visible_fraction]
+          openstudio_lights_definition.setFractionVisible(@hash[:visible_fraction])
+        else
+          openstudio_lights_definition.setFractionVisible(@@schema[:definitions][:LightingAbridged][:properties][:visible_fraction][:default])
         end
-
-        if @hash[:properties][:energy][:construction]
-          construction_name = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_name)
-          unless construction.empty?
-            openstudio_construction = construction.get
-          end
+        if @hash[:radiant_fraction]
+          openstudio_lights_definition.setFractionRadiant(@hash[:radiant_fraction])
+        else
+          openstudio_lights_definition.setFractionRadiant(@@schema[:definitions][:LightingAbridged][:properties][:radiant_fraction][:default])
         end
+        if @hash[:return_air_fraction]
+          openstudio_lights_definition.setReturnAirFraction(@hash[:return_air_fraction])
+        else 
+          openstudio_lights_definition.setReturnAirFraction(@@schema[:definitions][:LightingAbridged][:properties][:return_air_fraction][:default])
+        end
+          
+        openstudio_lights = OpenStudio::Model::Lights.new(openstudio_lights_definition)
+        openstudio_lights.setName(@hash[:name])
+        openstudio_lights.setLightsDefinition(openstudio_lights_definition)
 
-        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_shading_surface.setName(@hash[:name])
-        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
+        lighting_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
+        unless lighting_schedule.empty?
+          lighting_schedule_object = lighting_schedule.get
+        end         
+        openstudio_lights.setSchedule(lighting_schedule_object)
         
-
-        openstudio_shading_surface
-
+        openstudio_lights
       end
-    end # Shade
-  end # EnergyModel
-end # Ladybug
+
+    end #LightingAbridged
+  end #EnergyModel
+end #Ladybug
+

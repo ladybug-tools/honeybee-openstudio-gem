@@ -62,7 +62,6 @@ module Ladybug
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
-        openstudio_construction = nil
         if @hash[:properties][:energy][:construction]
           construction_name = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_name)

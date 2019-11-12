@@ -29,56 +29,62 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-
-require 'json-schema'
-require 'json'
-require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Shade < ModelObject
+    class GasEquipmentAbridged < ModelObject
       attr_reader :errors, :warnings
-
-      def initialize(hash)
+  
+      def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+        raise "Incorrect model type '#{@type}'" unless @type == 'GasEquipmentAbridged'
       end
-
+    
       def defaults
         result = {}
         result
       end
-
+    
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
-        return object.get if object.is_initialized
+        model_gas_equipment = openstudio_model.getGasEquipmentDefinitionByName(@hash[:name])
+        return model_gas_equipment.get unless model_gas_equipment.empty?
         nil
       end
-
+    
       def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:geometry][:boundary].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        openstudio_gas_equipment_definition = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
+        openstudio_gas_equipment_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
+        if @hash[:gas_equipment][:radiant_fraction]
+          openstudio_gas_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
+        else 
+          openstudio_gas_equipment_definition.setFractionRadiant(@@schema[:definitions][:GasEquipmentAbridged][:properties][:radiant_fraction][:default])
+        end
+        if @hash[:gas_equipment][:latent_fraction]
+          openstudio_gas_equipment_definition.setFractionLatent(@hash[:gas_equipment][:latent_fraction])
+        else
+          openstudio_gas_equipment_definition.setFractionLatent(@@schema[:definitions][:GasEquipmentAbridged][:properties][:latent_fraction][:default])
+        end
+        if @hash[:gas_equipment][:lost_fraction]
+          openstudio_gas_equipment_definition.setFractionLost(@hash[:gas_equipment][:lost_fraction])
+        else 
+          openstudio_gas_equipment_definition.setFractionLost(@@schema[:definitions][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
-        if @hash[:properties][:energy][:construction]
-          construction_name = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_name)
-          unless construction.empty?
-            openstudio_construction = construction.get
-          end
+        openstudio_gas_equipment = OpenStudio::Model::GasEquipment.new(openstudio_model)
+        openstudio_gas_equipment.setName(@hash[:name])
+        openstudio_gas_equipment.setGasEquipmentDefinition(openstudio_gas_equipment_definition)
+
+        gas_equipment_schedule = openstudio_model.getScheduleByName(@hash[:gas_equipment][:schedule])
+        unless gas_equipment_schedule.empty?
+          gas_equipment_schedule_object = gas_equipment_schedule.get
         end
+        openstudio_gas_equipment.setSchedule(gas_equipment_schedule_object)
 
-        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_shading_surface.setName(@hash[:name])
-        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
-        
-
-        openstudio_shading_surface
-
+        openstudio_gas_equipment
       end
-    end # Shade
-  end # EnergyModel
-end # Ladybug
+
+    end #GasEquipmentAbridged
+  end #EnergyModel 
+end #Ladybug

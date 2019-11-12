@@ -29,56 +29,64 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-
-require 'json-schema'
-require 'json'
-require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Shade < ModelObject
+    class PeopleAbridged < ModelObject
       attr_reader :errors, :warnings
-
-      def initialize(hash)
+  
+      def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+        raise "Incorrect model type '#{@type}'" unless @type == 'PeopleAbridged'
       end
-
+    
       def defaults
         result = {}
         result
       end
-
+    
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
-        return object.get if object.is_initialized
+        model_people = openstudio_model.getPeopleDefinitionByName(@hash[:name])
+        return model_people.get unless model_people.empty?
         nil
       end
-
+    
       def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:geometry][:boundary].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        openstudio_people_definition = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
+        openstudio_people_definition.setPeopleperSpaceFloorArea(@hash[:people_per_area])
+        if @hash[:radiant_fraction]
+          openstudio_people_definition.setFractionRadiant(@hash[:radiant_fraction])
+        else
+          openstudio_people_definition.setFractionRadiant(@@schema[:definitions][:PeopleAbridged][:radiant_fraction][:default])
         end
-
-        if @hash[:properties][:energy][:construction]
-          construction_name = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_name)
-          unless construction.empty?
-            openstudio_construction = construction.get
+        if @hash[:latent_fraction]
+          if @hash[:latent_fraction] == 'autocalculate'
+            openstudio_people_definition.autocalculateSensibleHeatFraction()
+          elsif
+            sensible_fraction = 1 - (@hash[:latent_fraction]).to_f
+            openstudio_people_definition.setSensibleHeatFraction(sensible_fraction)
           end
         end
+        openstudio_people = OpenStudio::Model::People.new(openstudio_people_definition)
+        openstudio_people.setPeopleDefinition(openstudio_people_definition)
+        openstudio_people.setName(@hash[:name])
+        people_activity_schedule = openstudio_model.getScheduleByName(@hash[:activity_schedule])
+        unless people_activity_schedule.empty?
+          people_activity_schedule_object = people_activity_schedule.get
+        end
+        openstudio_people.setActivityLevelSchedule(people_activity_schedule_object)
 
-        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_shading_surface.setName(@hash[:name])
-        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
-        
+        people_occupancy_schedule = openstudio_model.getScheduleByName(@hash[:occupancy_schedule])
+        unless people_occupancy_schedule.empty?
+          people_occupancy_schedule_object = people_occupancy_schedule.get
+        end
+        openstudio_people.setNumberofPeopleSchedule(people_occupancy_schedule_object)
 
-        openstudio_shading_surface
-
+        openstudio_people
       end
-    end # Shade
-  end # EnergyModel
-end # Ladybug
+
+    end #PeopleAbridged
+  end #EnergyModel
+end #Ladybug

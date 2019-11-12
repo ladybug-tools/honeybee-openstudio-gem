@@ -29,56 +29,62 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-
-require 'json-schema'
-require 'json'
-require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Shade < ModelObject
+    class ElectricalEquipmentAbridged < ModelObject
       attr_reader :errors, :warnings
-
-      def initialize(hash)
+  
+      def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+        raise "Incorrect model type '#{@type}'" unless @type == 'ElectricalEquipmentAbridged'
       end
-
+    
       def defaults
         result = {}
         result
       end
-
+    
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
-        return object.get if object.is_initialized
+        model_electrical_equipment = openstudio_model.getElectricalEquipmentDefinitionByName(@hash[:name])
+        return model_electrical_equipment.get unless model_electrical_equipment.empty?
         nil
       end
-
+    
       def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:geometry][:boundary].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        openstudio_electric_equipment_definition = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
+        openstudio_electric_equipment_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
+        if @hash[:radiant_fraction]
+          openstudio_electric_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
+        else 
+          openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:radiant_fraction][:default])
+        end
+        if @hash[:latent_fraction]
+          openstudio_electric_equipment_definition.setFractionLatent(@hash[:latent_fraction])
+        else
+          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:latent_fraction][:default])
+        end
+        if @hash[:lost_fraction]
+          openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
+        else 
+          openstudio_electric_equipment_definition.setFractionLost(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
-        if @hash[:properties][:energy][:construction]
-          construction_name = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_name)
-          unless construction.empty?
-            openstudio_construction = construction.get
-          end
+        openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_model)
+        openstudio_electric_equipment.setName(@hash[:name])
+        openstudio_electric_equipment.setElectricEquipmentDefinition(openstudio_electric_equipment_definition)
+
+        electric_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
+        unless electric_equipment_schedule.empty?
+          electric_equipment_schedule_object = electric_equipment_schedule.get
         end
+        openstudio_electric_equipment.setSchedule(electric_equipment_schedule_object)
 
-        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_shading_surface.setName(@hash[:name])
-        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
-        
-
-        openstudio_shading_surface
-
+        openstudio_electric_equipment
       end
-    end # Shade
-  end # EnergyModel
-end # Ladybug
+
+    end #ElectricalEquipmentAbridged
+  end #EnergyModel
+end #Ladybug

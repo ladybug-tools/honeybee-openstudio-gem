@@ -1,0 +1,190 @@
+{
+    "type": "ScheduleRulesetAbridged",
+    "name": "Large Office Bldg Occ",
+    "default_day_schedule": {
+        "type": "ScheduleDay",
+        "name": "Large Office Bldg Occ_Default",
+        "values": [
+            0.0,
+            0.1,
+            0.2,
+            0.95,
+            0.5,
+            0.95,
+            0.7,
+            0.4,
+            0.1,
+            0.05
+        ],
+        "times": [
+            [
+                0,
+                0
+            ],
+            [
+                6,
+                0
+            ],
+            [
+                7,
+                0
+            ],
+            [
+                8,
+                0
+            ],
+            [
+                12,
+                0
+            ],
+            [
+                13,
+                0
+            ],
+            [
+                17,
+                0
+            ],
+            [
+                18,
+                0
+            ],
+            [
+                20,
+                0
+            ],
+            [
+                22,
+                0
+            ]
+        ],
+        "interpolate": false
+    },
+    "schedule_rules": [
+        {
+            "type": "ScheduleRule",
+            "schedule_day": {
+                "type": "ScheduleDay",
+                "name": "Large Office Bldg Occ_Sat",
+                "values": [
+                    0.0,
+                    0.1,
+                    0.5,
+                    0.1,
+                    0.0
+                ],
+                "times": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        6,
+                        0
+                    ],
+                    [
+                        8,
+                        0
+                    ],
+                    [
+                        14,
+                        0
+                    ],
+                    [
+                        17,
+                        0
+                    ]
+                ],
+                "interpolate": false
+            },
+            "apply_sunday": false,
+            "apply_monday": false,
+            "apply_tuesday": false,
+            "apply_wednesday": false,
+            "apply_thursday": false,
+            "apply_friday": false,
+            "apply_saturday": true,
+            "apply_holiday": false,
+            "start_date": [
+                1,
+                1
+            ],
+            "end_date": [
+                12,
+                31
+            ]
+        },
+        {
+            "type": "ScheduleRule",
+            "schedule_day": {
+                "type": "ScheduleDay",
+                "name": "Large Office Bldg Occ_WntrDsnSun",
+                "values": [
+                    0.0
+                ],
+                "times": [
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "interpolate": false
+            },
+            "apply_sunday": true,
+            "apply_monday": false,
+            "apply_tuesday": false,
+            "apply_wednesday": false,
+            "apply_thursday": false,
+            "apply_friday": false,
+            "apply_saturday": false,
+            "apply_holiday": false,
+            "start_date": [
+                1,
+                1
+            ],
+            "end_date": [
+                12,
+                31
+            ]
+        }
+    ],
+    "summer_designday_schedule": {
+        "type": "ScheduleDay",
+        "name": "Large Office Bldg Occ_SmrDsn",
+        "values": [
+            0.0,
+            1.0,
+            0.05
+        ],
+        "times": [
+            [
+                0,
+                0
+            ],
+            [
+                6,
+                0
+            ],
+            [
+                22,
+                0
+            ]
+        ],
+        "interpolate": false
+    },
+    "winter_designday_schedule": {
+        "type": "ScheduleDay",
+        "name": "Large Office Bldg Occ_WntrDsnSun",
+        "values": [
+            0.0
+        ],
+        "times": [
+            [
+                0,
+                0
+            ]
+        ],
+        "interpolate": false
+    },
+    "schedule_type_limit": "Fractional"
+}

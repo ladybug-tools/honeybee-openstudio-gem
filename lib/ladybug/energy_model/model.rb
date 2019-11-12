@@ -50,6 +50,12 @@ require 'ladybug/energy_model/energy_window_material_simpleglazsys'
 require 'ladybug/energy_model/room'
 require 'ladybug/energy_model/shade'
 require 'ladybug/energy_model/shade_construction'
+require 'ladybug/energy_model/schedule_type_limit'
+require 'ladybug/energy_model/schedule_fixed_interval_abridged'
+require 'ladybug/energy_model/schedule_ruleset_abridged'
+require 'ladybug/energy_model/space_type'
+require 'ladybug/energy_model/setpoint_thermostat'
+require 'ladybug/energy_model/setpoint_humidistat'
 require 'json-schema'
 require 'json'
 require 'openstudio'
@@ -117,6 +123,9 @@ module Ladybug
         create_constructions
         create_construction_set
         create_global_construction_set
+        create_schedule_type_limits
+        create_schedules
+        create_space_types
         create_rooms
         create_orphaned_shades
         create_orphaned_faces
@@ -185,7 +194,6 @@ module Ladybug
       end
 
       def create_global_construction_set
-        openstudio_construction = nil
         if @hash[:properties][:energy][:global_construction_set]
           construction_name = @hash[:properties][:energy][:global_construction_set]
           construction = @openstudio_model.getDefaultConstructionSetByName(construction_name)
@@ -196,15 +204,90 @@ module Ladybug
         end
       end
 
-      def create_rooms
-        if @hash[:rooms] 
-          @hash[:rooms].each do |room|
-          room_object = Room.new(room)
-          room_object.to_openstudio(@openstudio_model)
+      def create_schedule_type_limits
+        if @hash[:properties][:energy][:schedule_type_limits]
+          @hash[:properties][:energy][:schedule_type_limits].each do |schedule_type_limit|
+            schedule_type_limit_object = ScheduleTypeLimit.new(schedule_type_limit)
+            schedule_type_limit_object.to_openstudio(@openstudio_model)
           end
         end
       end
 
+      def create_schedules
+        if @hash[:properties][:energy][:schedules]
+          @hash[:properties][:energy][:schedules].each do |schedule|
+            schedule_type = schedule[:type]
+            schedule_object= nil
+
+            case schedule_type
+            when 'ScheduleRulesetAbridged'
+              schedule_object = ScheduleRulesetAbridged.new(schedule)
+            when 'ScheduleFixedIntervalAbridged'
+              schedule_object = ScheduleFixedIntervalAbridged.new(schedule)
+            else
+              raise("Unknown schedule type #{schedule_type}.")
+            end
+            schedule_object.to_openstudio(@openstudio_model)
+          
+          end
+        end
+      end
+
+      def create_space_types
+        if @hash[:properties][:energy][:program_types]
+          @hash[:properties][:energy][:program_types].each do |space_type|
+            space_type_object = SpaceType.new(space_type)
+            space_type_object.to_openstudio(@openstudio_model)
+          end
+        end
+      end 
+
+      def create_rooms
+        if @hash[:rooms]
+          #global hash
+          $room_array_setpoint = [] 
+          @hash[:rooms].each do |room|
+          room_object = Room.new(room)
+          openstudio_room = room_object.to_openstudio(@openstudio_model)
+          
+          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
+            #adding room to global hash if a programtype is assigned and no setpoints
+            #are assigned. 
+            $room_array_setpoint << room
+            #checking whether global hash containing setpoints is non empty.
+            if $programtype_array
+              $programtype_array.each do |programtype|
+              programtype_name = programtype[:name]
+              #stores an aray containing all rooms whose programtype lies in the programtype_array
+              if room_array = $room_array_setpoint.select {|h| h[:properties][:energy][:program_type] = programtype_name}
+                room_array.each do |single_room|
+                  #looping through all rooms in the array to get room name
+                  room_name = single_room[:name]
+                  room_get = @openstudio_model.getSpaceByName(room_name)
+                  unless room_get.empty?
+                    room_object_get = room_get.get
+                  end
+                  thermal_zone = room_object_get.thermalZone()
+                  thermal_zone_object = thermal_zone.get
+                  
+                  #creating thermostat for the programtype setpoint
+                  thermostat_object = SetpointThermostat.new(programtype[:setpoint])
+                  openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+                  thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+                  
+                  if programtype[:setpoint][:humidification_schedule] or programtype[:setpoint][:dehumidification_schedule]
+                    humidistat_object = ZoneControlHumidistat.new(programtype[:setpoint])
+                    openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                    thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+                  end
+                end
+              end
+            end
+            end
+          end
+        end
+      end
+      end
       
       def create_orphaned_shades
         if @hash[:orphaned_shades]
@@ -237,8 +320,7 @@ module Ladybug
         end
       end
 
-
-        # for now make parent a space, check if should be a zone?
+      # for now make parent a space, check if should be a zone?
 
         # add if statement and to_openstudio object
         # if air_wall

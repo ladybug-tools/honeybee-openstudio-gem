@@ -64,7 +64,6 @@ module Ladybug
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
-        openstudio_construction = nil
         if @hash[:properties][:energy][:construction]
           construction_name = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_name)
@@ -98,7 +97,6 @@ module Ladybug
           end
         when 'Surface'
           if @hash[:boundary_condition][:boundary_condition_objects][0]
-            surface = nil
             surface_object = openstudio_model.getSurfaceByName(@hash[:boundary_condition][:boundary_condition_objects][0])
             unless surface_object.empty?
               surface = surface_object.get

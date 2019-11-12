@@ -2244,12 +2244,26 @@
         "lower_limit": {
           "title": "Lower_Limit",
           "description": "Lower limit for the schedule type is entered.",
-          "type": "number"
+          "oneOf":[
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "upper_limit": {
           "title": "Upper_Limit",
           "description": "Upper limit for the schedule type is entered.",
-          "type": "number"
+          "oneOf":[
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "numeric_type": {
           "title": "Numeric_Type",
@@ -2417,6 +2431,75 @@
         "energy"
       ]
     },
+    "IdealAirSystem": {
+      "title": "IdealAirSystem",
+      "description": "Provides a model for an ideal HVAC system.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "enum": [
+            "IdealAirSystem"
+          ]
+        },        
+        "heating_limit": {
+          "title": "Heating_Limit",
+          "default": "autosize",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "cooling_limit": {
+          "title": "Cooling_Limit",
+          "default": "autosize",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "economizer_type": {
+          "title": "Economizer_Type",
+          "default": "DifferentialDryBulb",
+          "enum": [
+            "NoEconomizer",
+            "DifferentialDryBulb",
+            "DifferentialEnthalpy"
+          ],
+          "type": "string"
+        },
+        "demand_control_ventilation": {
+          "title": "Demand_Control_Ventilation",
+          "default": false,
+          "type": "boolean"
+        },
+        "sensible_heat_recovery": {
+          "title": "Sensible_Heat_Recovery",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "latent_heat_recovery": {
+          "title": "Latent_Heat_Recovery",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
     "RoomEnergyPropertiesAbridged": {
       "title": "RoomEnergyPropertiesAbridged",
       "type": "object",
@@ -2456,13 +2539,9 @@
           ]
         },
         "people": {
-          "title": "People",
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/PeopleAbridged"
             },
             {
               "type": "null"
@@ -2470,13 +2549,9 @@
           ]
         },
         "lighting": {
-          "title": "Lighting", 
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/LightingAbridged"
             },
             {
               "type": "null"
@@ -2484,60 +2559,52 @@
           ]
         },
         "electric_equipment": {
-          "title": "Electric_Equipment",
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/ElectricalEquipmentAbridged"
             },
             {
               "type": "null"
             }
-          ]
-        },
+          ]        },
         "gas_equipment": {
-          "title": "Gas_Equipment",
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/GasEquipmentAbridged"
             },
             {
               "type": "null"
             }
-          ]
-        },
+          ]        },
         "infiltration": {
-          "title": "Infiltration",
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/InfiltrationAbridged"
             },
             {
               "type": "null"
             }
-          ]
-        },
+          ]        },
         "ventilation": {
-          "title": "Ventilation",
           "oneOf": [
             {
-              "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
-              "minLength": 1,
-              "maxLength": 100
+              "$ref": "#/definitions/VentilationAbridged"
             },
             {
               "type": "null"
             }
-          ]
+          ]        },
+        "setpoint": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/SetpointAbridged"
+            },
+            {
+              "type": "null"
+            }
+          ]        },
+        "hvac": {
+          "$ref": "#/definitions/IdealAirSystem"
         }
       },
       "required": [

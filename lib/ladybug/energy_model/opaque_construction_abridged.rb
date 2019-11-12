@@ -61,7 +61,6 @@ module Ladybug
         openstudio_materials = OpenStudio::Model::MaterialVector.new
        
         @hash[:layers].each do |layer|
-          openstudio_material = nil
           material_name = layer
           material = openstudio_model.getMaterialByName(material_name)
           unless material.empty?

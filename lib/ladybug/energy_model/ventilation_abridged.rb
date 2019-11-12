@@ -29,56 +29,64 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
-
-require 'json-schema'
-require 'json'
-require 'openstudio'
 
 module Ladybug
   module EnergyModel
-    class Shade < ModelObject
+    class VentilationAbridged < ModelObject
       attr_reader :errors, :warnings
-
-      def initialize(hash)
+  
+      def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+        raise "Incorrect model type '#{@type}'" unless @type == 'VentilationAbridged'
       end
-
+    
       def defaults
         result = {}
         result
       end
-
+    
       def find_existing_openstudio_object(openstudio_model)
-        object = openstudio_model.getSurfaceByName(@hash[:name])
-        return object.get if object.is_initialized
+        model_ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:name])
+        return model_ventilation.get unless model_ventilation.empty?
         nil
       end
-
-      def create_openstudio_object(openstudio_model)
-        openstudio_vertices = OpenStudio::Point3dVector.new
-        @hash[:geometry][:boundary].each do |vertex|
-          openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+    
+      def create_openstudio_object(openstudio_model)       
+        openstudio_ventilation = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
+        openstudio_ventilation.setName(@hash[:name])
+        if @hash[:air_changes_per_hour]
+          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
+        else
+          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:definitions][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
         end
-
-        if @hash[:properties][:energy][:construction]
-          construction_name = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_name)
-          unless construction.empty?
-            openstudio_construction = construction.get
+        if @hash[:flow_per_zone]
+          openstudio_ventilation.setOutdoorAirFlowRate(@hash[:flow_per_zone])
+        else
+          openstudio_ventilation.setOutdoorAirFlowRate(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_zone][:default])
+        end
+        if @hash[:flow_per_person]
+          openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
+        else 
+          openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_person][:default])
+        end
+        if @hash[:flow_per_area]
+          openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
+        else 
+          openstudio_ventilation.setOutdoorAirFlowperFloorArea(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
+        end
+        if @hash[:schedule]
+          ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
+          unless ventilation_schedule.empty?
+            ventilation_schedule_object = ventilation_schedule.get
           end
+          openstudio_ventilation.setOutdoorAirFlowRateFractionSchedule(ventilation_schedule_object)
         end
 
-        openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_shading_surface.setName(@hash[:name])
-        openstudio_shading_surface.setConstruction(openstudio_construction) if openstudio_construction
-        openstudio_shading_surface.setTransmittanceSchedule(@hash[:transmittance_schedule]) if @hash[:transmittance_schedule]
-        
-
-        openstudio_shading_surface
-
+        openstudio_ventilation
       end
-    end # Shade
-  end # EnergyModel
-end # Ladybug
+
+    end #VentilationAbridged
+  end #EnergyModel
+end #Ladybug
