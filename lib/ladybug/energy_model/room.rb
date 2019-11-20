@@ -62,6 +62,7 @@ module Ladybug
       def create_openstudio_object(openstudio_model)
         if @hash[:properties][:energy][:construction_set]
           construction_set_name = @hash[:properties][:energy][:construction_set]
+          # gets default construction set assigned to room from openstudio_model
           construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
           unless construction_set.empty?
             default_construction_set = construction_set.get
@@ -70,39 +71,44 @@ module Ladybug
         
         openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
         openstudio_space.setName(@hash[:name])   
-        openstudio_space.setDefaultConstructionSet(default_construction_set) if default_construction_set
+        if default_construction_set
+          openstudio_space.setDefaultConstructionSet(default_construction_set) 
+        end
       
         @hash[:faces].each do |face|
-          face = Face.new(face)
-          openstudio_face = face.to_openstudio(openstudio_model)
+          ladybug_face = Face.new(face)
+          openstudio_face = ladybug_face.to_openstudio(openstudio_model)
           openstudio_face.setSpace(openstudio_space)
-          nil
-        end
-
-        @hash[:faces].each do |face|
+          
           if face[:boundary_condition][:type] == 'Adiabatic' && !face[:properties][:energy][:construction]
             openstudio_surfaces = openstudio_space.surfaces.each do |surface|
-
-              if surface.outsideBoundaryCondition == 'Adiabatic'
-                default_construction_set = openstudio_space.getDefaultConstruction(surface) unless openstudio_space.getDefaultConstruction(surface).empty?
-                default_interior_surface_construction_set = default_construction_set.defaultInteriorSurfaceConstructions
-                default_interior_surface_construction_set = default_interior_surface_construction_set.get unless default_interior_surface_construction_set.empty?
-
-                case surface.surfaceType
-                when 'Wall'
-                  interior_wall_construction = default_interior_surface_construction_set.wallConstruction
-                  interior_wall_construction = interior_wall_construction.get unless interior_wall_construction.empty? 
-                  surface.setConstruction(interior_wall_construction)
-                when 'RoofCeiling'
-                  interior_roofceiling_construction = default_interior_surface_construction_set.roofCeilingConstruction
-                  interior_roofceiling_construction = interior_roofceiling_construction.get unless interior_roofceiling_construction.empty?
-                  surface.setConstruction(interior_roofceiling_construction)
-                when 'Floor'
-                  interior_floor_construction = default_interior_surface_construction_set.floorConstruction
-                  interior_floor_construction = interior_floor_construction.get unless interior_floor_construction.empty?
-                  surface.setConstruction(interior_floor_construction)
+              construction_set_space = openstudio_space.defaultConstructionSet
+              unless construction_set_space.empty?
+                construction_set_space_object = construction_set_space.get
+                default_interior_surface_construction_set = construction_set_space_object.defaultInteriorSurfaceConstructions
+                unless default_interior_surface_construction_set.empty?
+                  default_interior_surface_construction_set = default_interior_surface_construction_set.get
+                  case surface.surfaceType
+                  when 'Wall'
+                    interior_wall_construction = default_interior_surface_construction_set.wallConstruction
+                    unless interior_wall_construction.empty?
+                      interior_wall_construction = interior_wall_construction.get  
+                      surface.setConstruction(interior_wall_construction)
+                    end
+                  when 'RoofCeiling'
+                    interior_roofceiling_construction = default_interior_surface_construction_set.roofCeilingConstruction
+                    unless interior_roofceiling_construction.empty?
+                      interior_roofceiling_construction = interior_roofceiling_construction.get 
+                      surface.setConstruction(interior_roofceiling_construction)
+                    end
+                  when 'Floor'
+                    interior_floor_construction = default_interior_surface_construction_set.floorConstruction
+                    unless interior_floor_construction.empty?
+                      interior_floor_construction = interior_floor_construction.get
+                      surface.setConstruction(interior_floor_construction)
+                    end
+                  end
                 end
-
               end
             end
           end
@@ -154,15 +160,15 @@ module Ladybug
           end
         end
 
-        if @hash[:properties][:energy][:electrical_equipment]
-          electrical_equipment = openstudio_model.getElectricEquipmentByName(@hash[:properties][:energy][:electrical_equipment][:name])
-          unless electrical_equipment.empty?
-            electrical_equipment_object = electrical_equipment.get
-            electrical_equipment_object.setSpace(openstudio_space)
+        if @hash[:properties][:energy][:electric_equipment]
+          electric_equipment = openstudio_model.getElectricEquipmentByName(@hash[:properties][:energy][:electric_equipment][:name])
+          unless electric_equipment.empty?
+            electric_equipment_object = electric_equipment.get
+            electric_equipment_object.setSpace(openstudio_space)
           else
-            electrical_equipment_space = ElectricalEquipmentAbridged.new(@hash[:properties][:energy][:electrical_equipment])
-            openstudio_electrical_equipment_space = electrical_equipment_space.to_openstudio(openstudio_model)
-            openstudio_electrical_equipment_space.setSpace(openstudio_space)
+            electric_equipment_space = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
+            openstudio_electric_equipment_space = electric_equipment_space.to_openstudio(openstudio_model)
+            openstudio_electric_equipment_space.setSpace(openstudio_space)
           end
         end
         
@@ -179,8 +185,8 @@ module Ladybug
         end
 
         if @hash[:properties][:energy][:infiltration]
-          infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRate(@hash[:properties][:energy][:infiltration][:name])
-          unless infiltration_object.empty?
+          infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:properties][:energy][:infiltration][:name])
+          unless infiltration.empty?
             infiltration_object = infiltration.get
             infiltration_object.setSpace(openstudio_space)
           else
@@ -192,13 +198,13 @@ module Ladybug
           
         if @hash[:properties][:energy][:ventilation] 
           ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:properties][:energy][:ventilation][:name])
-          unless ventilation_object.empty?
+          unless ventilation.empty?
             ventilation_object = ventilation.get
             ventilation_object.setSpace(openstudio_space)
           else
             ventilation_space = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
             openstudio_ventilation_space = ventilation_space.to_openstudio(openstudio_model)
-            openstudio_ventilation_space.setSpace(openstudio_space)
+            openstudio_space.setDesignSpecificationOutdoorAir(openstudio_ventilation_space)
           end
         end
 

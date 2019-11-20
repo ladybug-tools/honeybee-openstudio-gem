@@ -29,41 +29,60 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/version'
-require 'ladybug/energy_model/extension'
+require_relative '../spec_helper'
 require 'ladybug/energy_model/extension_simulation_parameter'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/opaque_construction_abridged'
-require 'ladybug/energy_model/window_construction_abridged'
-require 'ladybug/energy_model/shade_construction'
-require 'ladybug/energy_model/construction_set'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/model'
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/room'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/door'
-require 'ladybug/energy_model/shade'
-require 'ladybug/energy_model/schedule_type_limit'
-require 'ladybug/energy_model/schedule_fixed_interval_abridged'
-require 'ladybug/energy_model/schedule_ruleset_abridged'
-require 'ladybug/energy_model/space_type'
-require 'ladybug/energy_model/people_abridged'
-require 'ladybug/energy_model/lighting_abridged'
-require 'ladybug/energy_model/electric_equipment_abridged'
-require 'ladybug/energy_model/gas_equipment_abridged'
-require 'ladybug/energy_model/infiltration_abridged'
-require 'ladybug/energy_model/ventilation_abridged'
-require 'ladybug/energy_model/setpoint_thermostat'
-require 'ladybug/energy_model/setpoint_humidistat'
-require 'ladybug/energy_model/ideal_air_system'
-require 'ladybug/energy_model/simulation_parameter'
+
+RSpec.describe Ladybug::EnergyModel do
+ 
+  it 'has a version number' do
+    expect(Ladybug::EnergyModel::VERSION).not_to be nil
+  end
+
+  it 'has a measures directory' do
+    extension = Ladybug::EnergyModel::ExtensionSimulationParameter.new
+    expect(File.exist?(extension.measures_dir)).to be true
+  end
+
+  it 'has a files directory' do
+    extension = Ladybug::EnergyModel::ExtensionSimulationParameter.new
+    expect(File.exist?(extension.files_dir)).to be true
+  end
+
+  it 'has a valid schema' do
+    extension = Ladybug::EnergyModel::ExtensionSimulationParameter.new
+    expect(extension.schema.nil?).to be false
+
+    errors = extension.schema_validation_errors
+
+    expect(extension.schema_valid?).to be true
+    expect(extension.schema_validation_errors.empty?).to be true
+  end
+
+  it 'can load and validate simple simulation parameter' do
+    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
+    model = Ladybug::EnergyModel::SimulationParameter.read_from_disk(file)
+
+    errors = model.validation_errors
+        
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
+
+    openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model = model.to_openstudio_model(openstudio_model)
+  end
+
+
+  it 'can load and validate detailed simulation parameter' do
+    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
+    model = Ladybug::EnergyModel::SimulationParameter.read_from_disk(file)
+
+    errors = model.validation_errors
+        
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
+
+    openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model = model.to_openstudio_model(openstudio_model)
+  end
+end
+

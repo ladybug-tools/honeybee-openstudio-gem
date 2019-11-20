@@ -34,12 +34,12 @@ require 'ladybug/energy_model/model_object'
 
 module Ladybug
   module EnergyModel
-    class ElectricalEquipmentAbridged < ModelObject
+    class ElectricEquipmentAbridged < ModelObject
       attr_reader :errors, :warnings
   
       def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'ElectricalEquipmentAbridged'
+        raise "Incorrect model type '#{@type}'" unless @type == 'ElectricEquipmentAbridged'
       end
     
       def defaults
@@ -48,8 +48,8 @@ module Ladybug
       end
     
       def find_existing_openstudio_object(openstudio_model)
-        model_electrical_equipment = openstudio_model.getElectricalEquipmentDefinitionByName(@hash[:name])
-        return model_electrical_equipment.get unless model_electrical_equipment.empty?
+        model_electric_equipment = openstudio_model.getElectricEquipmentDefinitionByName(@hash[:name])
+        return model_electric_equipment.get unless model_electric_equipment.empty?
         nil
       end
     
@@ -59,20 +59,20 @@ module Ladybug
         if @hash[:radiant_fraction]
           openstudio_electric_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
         else 
-          openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:radiant_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:radiant_fraction][:default])
         end
         if @hash[:latent_fraction]
           openstudio_electric_equipment_definition.setFractionLatent(@hash[:latent_fraction])
         else
-          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:latent_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:latent_fraction][:default])
         end
         if @hash[:lost_fraction]
           openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
         else 
-          openstudio_electric_equipment_definition.setFractionLost(@@schema[:definitions][:ElectricalEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLost(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
-        openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_model)
+        openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_electric_equipment_definition)
         openstudio_electric_equipment.setName(@hash[:name])
         openstudio_electric_equipment.setElectricEquipmentDefinition(openstudio_electric_equipment_definition)
 
@@ -85,6 +85,6 @@ module Ladybug
         openstudio_electric_equipment
       end
 
-    end #ElectricalEquipmentAbridged
+    end #ElectricEquipmentAbridged
   end #EnergyModel
 end #Ladybug
