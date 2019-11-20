@@ -78,7 +78,6 @@ RSpec.describe Ladybug::EnergyModel do
   end
 
 
-
   it 'can load and validate opaque construction' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_roof.json')

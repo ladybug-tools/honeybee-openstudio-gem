@@ -1624,15 +1624,15 @@
         "schedule"
       ]
     },
-    "ElectricalEquipmentAbridged": {
-      "title": "ElectricalEquipmentAbridged",
-      "description": "Used to specify information about the electrical equipment.",
+    "ElectricEquipmentAbridged": {
+      "title": "ElectricEquipmentAbridged",
+      "description": "Used to specify information about the electric equipment.",
       "type": "object",
       "properties": {
         "type": {
           "title": "Type",
           "enum": [
-            "ElectricalEquipmentAbridged"
+            "ElectricEquipmentAbridged"
           ]
         },
         "name": {
@@ -1946,8 +1946,8 @@
         "lighting": {
           "$ref": "#/definitions/LightingAbridged"
         },
-        "electrical_equipment": {
-          "$ref": "#/definitions/ElectricalEquipmentAbridged"
+        "electric_equipment": {
+          "$ref": "#/definitions/ElectricEquipmentAbridged"
         },
         "gas_equipment": {
           "$ref": "#/definitions/GasEquipmentAbridged"
@@ -2561,7 +2561,7 @@
         "electric_equipment": {
           "oneOf": [
             {
-              "$ref": "#/definitions/ElectricalEquipmentAbridged"
+              "$ref": "#/definitions/ElectricEquipmentAbridged"
             },
             {
               "type": "null"

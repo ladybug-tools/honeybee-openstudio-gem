@@ -53,7 +53,6 @@ RSpec.describe Ladybug::EnergyModel do
 
     errors = extension.schema_validation_errors
 
-
     expect(extension.schema_valid?).to be true
     expect(extension.schema_validation_errors.empty?).to be true
   end

@@ -33,7 +33,7 @@ require 'ladybug/energy_model/extension'
 require 'ladybug/energy_model/model_object'
 require 'ladybug/energy_model/people_abridged'
 require 'ladybug/energy_model/lighting_abridged'
-require 'ladybug/energy_model/electrical_equipment_abridged'
+require 'ladybug/energy_model/electric_equipment_abridged'
 require 'ladybug/energy_model/gas_equipment_abridged'
 require 'ladybug/energy_model/infiltration_abridged'
 require 'ladybug/energy_model/ventilation_abridged'
@@ -82,10 +82,10 @@ module Ladybug
           openstudio_lights.setSpaceType(openstudio_space_type)
         end
 
-        if @hash[:electrical_equipment]
-          electrical_equipment = ElectricalEquipmentAbridged.new(@hash[:electrical_equipment])
-          openstudio_electrical_equipment = electrical_equipment.to_openstudio(openstudio_model)
-          openstudio_electrical_equipment.setSpaceType(openstudio_space_type)
+        if @hash[:electric_equipment]
+          electric_equipment = ElectricEquipmentAbridged.new(@hash[:electric_equipment])
+          openstudio_electric_equipment = electric_equipment.to_openstudio(openstudio_model)
+          openstudio_electric_equipment.setSpaceType(openstudio_space_type)
         end
 
         if @hash[:gas_equipment]

@@ -145,7 +145,7 @@ RSpec.describe Ladybug::EnergyModel do
     expect(schedule_type_limits.nameString).to eq 'Activity Level'   
   end
 
-  it 'can load and validate a single zone office fixed interval original' do
+  it 'can load and validate a single zone office fixed interval' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_office_fixed_interval.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
@@ -191,6 +191,20 @@ RSpec.describe Ladybug::EnergyModel do
 
     openstudio_occupancy_schedule = openstudio_occupancy_schedule.get
     expect(openstudio_occupancy_schedule.nameString).to eq 'Generic Office Occupancy' 
+  end
+
+  it 'can load and validate single zone office with detailed loads' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/model_single_zone_office_detailed_loads.json')
+    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+  
+    errors = model.validation_errors
+
+    expect(model.valid?).to be true
+    expect(model.validation_errors.empty?).to be true
+    
+    openstudio_model = model.to_openstudio_model(openstudio_model)
+    expect(openstudio_model).not_to be nil
   end
 
   it 'can load and validate a schedule fixed interval' do
