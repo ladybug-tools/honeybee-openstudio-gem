@@ -88,7 +88,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "layers": {
@@ -100,7 +99,6 @@
           "items": {
             "minLength": 1,
             "maxLength": 100,
-            "pattern": "^[\\s.A-Za-z0-9_-]*$",
             "type": "string"
           }
         }
@@ -126,7 +124,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "layers": {
@@ -138,7 +135,6 @@
           "items": {
             "minLength": 1,
             "maxLength": 100,
-            "pattern": "^[\\s.A-Za-z0-9_-]*$",
             "type": "string"
           }
         }
@@ -167,7 +163,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "solar_reflectance": {
@@ -206,7 +201,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "roughness": {
@@ -296,7 +290,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "r_value": {
@@ -365,7 +358,6 @@
           "default": "AIRGAP",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "gas_type": {
@@ -406,7 +398,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "thickness": {
@@ -534,7 +525,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "thickness": {
@@ -573,7 +563,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "u_factor": {
@@ -630,7 +619,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "slat_width": {
@@ -870,7 +858,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "thickness": {
@@ -988,7 +975,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "solar_transmittance": {
@@ -1123,7 +1109,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1137,7 +1122,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1151,7 +1135,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1181,7 +1164,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1195,7 +1177,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1209,7 +1190,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1239,7 +1219,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1253,7 +1232,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1267,7 +1245,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1297,7 +1274,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1311,7 +1287,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1325,7 +1300,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1339,7 +1313,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1369,7 +1342,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1383,7 +1355,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1397,7 +1368,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1411,7 +1381,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1425,7 +1394,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1452,7 +1420,6 @@
         },
         "name": {
           "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "wall_set": {
@@ -1475,7 +1442,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -1505,7 +1471,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "people_per_area": {
@@ -1540,7 +1505,6 @@
           "description": "Used to describe the occupancy schedule for people.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "activity_schedule": {
@@ -1548,7 +1512,6 @@
           "description": "Schedule that determines the amount of heat gain per person.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1575,7 +1538,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "watts_per_area": {
@@ -1613,7 +1575,6 @@
           "description": "Used to describe the schedule for lighting as a fraction applied to design level of lights.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1639,7 +1600,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "watts_per_area": {
@@ -1682,7 +1642,6 @@
           "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1708,7 +1667,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "watts_per_area": {
@@ -1751,7 +1709,6 @@
           "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1777,7 +1734,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "flow_per_exterior_area": {
@@ -1809,7 +1765,6 @@
           "description": "Used to describe the schedule for equipment as a fraction applied to design level for electric equipment.",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1835,7 +1790,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "air_changes_per_hour": {
@@ -1867,7 +1821,6 @@
           "title": "Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1891,28 +1844,24 @@
           "title": "Cooling_Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "heating_schedule": {
           "title": "Heating_Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "humidification_schedule": {
           "title": "Humidification_Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "dehumidification_schedule": {
           "title": "Dehumidification_Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -1937,7 +1886,6 @@
           "title": "Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "people": {
@@ -1997,7 +1945,6 @@
         },
         "name": {
           "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "interpolate": {
@@ -2111,12 +2058,10 @@
         },
         "name": {
           "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "schedule_type_limit": {
           "title": "Schedule_Type_Limit",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "schedule_rules": {
@@ -2144,12 +2089,6 @@
       "description": "Date.",
       "type": "object",
       "properties": {
-        "is_leap_year": {
-          "title": "Is_Leap_Year",
-          "description": "A boolean to indicate if datetime is for a leap year. Default is `false`.",
-          "default": false,
-          "type": "boolean"
-        },
         "month": {
           "title": "Month",
           "description": "A value for month between `1`-`12`. Default is `1`.",
@@ -2184,12 +2123,10 @@
         },
         "name": {
           "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "schedule_type_limit": {
           "title": "Schedule_Type_Limit",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "timestep": {
@@ -2238,7 +2175,6 @@
         },
         "name": {
           "title": "Name",
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         },
         "lower_limit": {
@@ -2374,7 +2310,6 @@
           "title": "Global_Construction_Set",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
           "type": "string"
         },
         "program_types": {
@@ -2515,7 +2450,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[\\s.A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -2529,7 +2463,6 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "[A-Za-z0-9_-]",
               "minLength": 1,
               "maxLength": 100
             },
@@ -2720,7 +2653,6 @@
           "title": "Construction",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -2850,7 +2782,6 @@
           "title": "Construction",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
           "type": "string"
         }
       },
@@ -2890,14 +2821,12 @@
           "title": "Transmittance_Schedule",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
           "type": "string"
         },
         "construction": {
           "title": "Construction",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
           "type": "string"
         }
       },
@@ -2950,7 +2879,6 @@
           "title": "Display_Name",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "^[\\s.A-Za-z0-9_-]*$",
           "type": "string"
         }
       },
@@ -3044,7 +2972,6 @@
           "title": "Construction",
           "maxLength": 100,
           "minLength": 1,
-          "pattern": "[A-Za-z0-9_-]",
           "type": "string"
         }
       },

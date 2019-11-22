@@ -59,7 +59,7 @@ module Ladybug
         openstudio_schedule_fixed_interval.setName(@hash[:name])
         openstudio_schedule_fixed_interval.setStartMonth(@hash[:start_date][:month])
         openstudio_schedule_fixed_interval.setStartDay(@hash[:start_date][:day])
-        if @hash[:interpolate]
+        unless @hash[:interpolate].nil?
           openstudio_schedule_fixed_interval.setInterpolatetoTimestep(@hash[:interpolate])
         else
           openstudio_schedule_fixed_interval.setInterpolatetoTimestep(@@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:interpolate][:default])
@@ -89,6 +89,12 @@ module Ladybug
         values = @hash[:values]
         timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '') 
         openstudio_schedule_fixed_interval.setTimeSeries(timeseries)
+
+        unless @hash[:is_leap_year].nil?
+          year_description.setIsLeapYear(@hash[:is_leap_year])
+        else
+          year_description.setIsLeapYear(@@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:is_leap_year][:default])
+        end
 
         openstudio_schedule_fixed_interval
       end

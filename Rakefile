@@ -13,6 +13,8 @@ require 'ladybug/energy_model/extension'
 
 os_extension = OpenStudio::Extension::RakeTask.new
 os_extension.set_extension_class(Ladybug::EnergyModel::Extension)
+
+#TODO: Does this need to be implemented?
 #os_extension.set_extension_class(Ladybug::EnergyModel::ExtensionSimulationParameter)
 
 task default: :spec
