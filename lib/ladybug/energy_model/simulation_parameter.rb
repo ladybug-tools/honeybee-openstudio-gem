@@ -63,7 +63,7 @@ module Ladybug
        @hash = hash
        @type = @hash[:type]
        raise 'Unknown model type' if @type.nil?
-       raise "Incorrect model type '#{@type}'" unless @type == 'SimulationParameter'
+       raise "Incorrect model type for SimulationParameter '#{@type}'" unless @type == 'SimulationParameter'
       end
 
       # check if the model is valid
@@ -96,27 +96,27 @@ module Ladybug
         if @hash[:simulation_control]
           #Gets or creates new SimulationControl object from the OpenStudio model
           openstudio_simulation_control = @openstudio_model.getSimulationControl
-          if @hash[:simulation_control][:do_zone_sizing]
+          unless @hash[:simulation_control][:do_zone_sizing].nil?
             openstudio_simulation_control.setDoZoneSizingCalculation(@hash[:simulation_control][:do_zone_sizing])
           else 
             openstudio_simulation_control.setDoZoneSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_zone_sizing][:default])
           end
-          if @hash[:simulation_control][:do_system_sizing]
+          unless @hash[:simulation_control][:do_system_sizing].nil?
             openstudio_simulation_control.setDoSystemSizingCalculation(@hash[:simulation_control][:do_system_sizing])
           else
             openstudio_simulation_control.setDoSystemSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_system_sizing][:default])
           end
-          if @hash[:simulation_control][:do_plant_sizing]
+          unless @hash[:simulation_control][:do_plant_sizing].nil?
             openstudio_simulation_control.setDoPlantSizingCalculation(@hash[:simulation_control][:do_plant_sizing])
           else
             openstudio_simulation_control.setDoPlantSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_plant_sizing][:default])
           end
-          if @hash[:simulation_control][:run_for_run_periods]
+          unless @hash[:simulation_control][:run_for_run_periods].nil?
             openstudio_simulation_control.setRunSimulationforWeatherFileRunPeriods(@hash[:simulation_control][:run_for_run_periods])
           else
             openstudio_simulation_control.setRunSimulationforWeatherFileRunPeriods(@@schema[:definitions][:SimulationControl][:properties][:run_for_run_periods][:default])
           end
-          if @hash[:simulation_control][:run_for_sizing_periods]
+          unless @hash[:simulation_control][:run_for_sizing_periods].nil?
             openstudio_simulation_control.setRunSimulationforSizingPeriods(@hash[:simulation_control][:run_for_sizing_periods])
           else
             openstudio_simulation_control.setRunSimulationforSizingPeriods(@@schema[:definitions][:SimulationControl][:properties][:run_for_sizing_periods][:default])
@@ -160,13 +160,13 @@ module Ladybug
             end
           end
         end
-        if @hash[:runperiod]
-          openstudio_runperiod = OpenStudio::Model::RunPeriod(@openstudio_model)
-          openstudio_runperiod.setBeginMonth(@hash[:runperiod][:start_date][:month])
-          openstudio_runperiod.setBeginDayOfMonth(@hash[:runperiod][:start_date][:day])
-          openstudio_runperiod.setEndMonth(@hash[:runperiod][:end_date][:month])
-          openstudio_runperiod.setEndDayOfMonth(@hash[:runperiod][:end_date][:day])
-          if @hash[:runperiod][:daylight_savings_time]
+        if @hash[:run_period]
+          openstudio_runperiod = @openstudio_model.getRunPeriod
+          openstudio_runperiod.setBeginMonth(@hash[:run_period][:start_date][:month])
+          openstudio_runperiod.setBeginDayOfMonth(@hash[:run_period][:start_date][:day])
+          openstudio_runperiod.setEndMonth(@hash[:run_period][:end_date][:month])
+          openstudio_runperiod.setEndDayOfMonth(@hash[:run_period][:end_date][:day])
+          if @hash[:run_period][:daylight_savings_time]
             openstudio_daylight_savings = OpenStudio::Model::RunPeriodControlDaylightSavingTime.new(@openstudio_model)
             year_description = openstudio_model.getYearDescription
             start_date = year_description.makeDate(@hash[:run_period][:daylight_savings_time][:start_date][:month], @hash[:run_period][:daylight_savings_time][:start_date][:day])

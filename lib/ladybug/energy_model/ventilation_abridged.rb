@@ -68,13 +68,9 @@ module Ladybug
         end
         if @hash[:flow_per_person]
           openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
-        else 
-          openstudio_ventilation.setOutdoorAirFlowperPerson(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_person][:default])
         end
         if @hash[:flow_per_area]
           openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
-        else 
-          openstudio_ventilation.setOutdoorAirFlowperFloorArea(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_area][:default])
         end
         if @hash[:schedule]
           ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
