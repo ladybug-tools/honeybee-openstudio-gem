@@ -121,6 +121,12 @@ module Ladybug
           else
             openstudio_simulation_control.setRunSimulationforSizingPeriods(@@schema[:definitions][:SimulationControl][:properties][:run_for_sizing_periods][:default])
           end
+          #TODO: Check if solar distribution can be added to simulationcontrol in the schema 
+          if @hash[:shadow_calculation][:solar_distribution]
+            openstudio_simulation_control.setSolarDistribution(@hash[:shadow_calculation][:solar_distribution])
+          else
+            openstudio_simulation_control.setSolarDistribution(@@schema[:definitions][:ShadowCalculation][:properties][:solar_distribution][:default])
+          end
         end
         if @hash[:shadow_calculation]
           openstudio_shadow_calculation = @openstudio_model.getShadowCalculation

@@ -137,7 +137,6 @@ module Ladybug
       def create_materials
         @hash[:properties][:energy][:materials].each do |material|
           material_type = material[:type]
-          material_object = nil
 
           case material_type
           when 'EnergyMaterial'
@@ -168,7 +167,6 @@ module Ladybug
         @hash[:properties][:energy][:constructions].each do |construction|
           name = construction[:name]
           construction_type = construction[:type]
-          construction_object = nil
           
           case construction_type
           when 'OpaqueConstructionAbridged'
@@ -217,7 +215,6 @@ module Ladybug
         if @hash[:properties][:energy][:schedules]
           @hash[:properties][:energy][:schedules].each do |schedule|
             schedule_type = schedule[:type]
-            schedule_object= nil
 
             case schedule_type
             when 'ScheduleRulesetAbridged'

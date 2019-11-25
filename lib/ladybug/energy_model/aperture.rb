@@ -30,6 +30,7 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/shade'
 
 require 'json-schema'
 require 'json'
@@ -74,6 +75,9 @@ module Ladybug
         openstudio_subsurface.setName(@hash[:name])
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
         
+        if @hash[:boundary_condition][:type] == 'Surface'
+          openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
+        end
 
         openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
 

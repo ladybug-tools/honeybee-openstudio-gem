@@ -75,7 +75,7 @@ module Ladybug
         openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
         
         if @hash[:boundary_condition][:type] == 'Surface'
-          openstudio_subsurface.setAdjacentSurace(@hash[:boundary_condition][:boundary_condition_objects][0])
+          openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
         end
 
         if @hash[:is_glass] == false
