@@ -61,6 +61,7 @@ module Ladybug
         openstudio_schedule_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
         openstudio_schedule_ruleset.setName(@hash[:name])
 
+        #create method for day schedule, to be used in summer and winter design day
         def create_day_schedule(openstudio_model, name, values_hash, times_hash )
           @day_schedule = OpenStudio::Model::ScheduleDay.new(openstudio_model)
           @day_schedule.setName(name)
@@ -90,7 +91,6 @@ module Ladybug
         end
 
         if @hash[:schedule_type_limit]
-          
           schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
           unless schedule_type_limit.empty?
             schedule_type_limit_object = schedule_type_limit.get
@@ -120,6 +120,8 @@ module Ladybug
             values_day.each_index do |i|
               openstudio_schedule_rule.daySchedule.addValue(OpenStudio::Time.new(0,times_day[i][0], times_day[i][1], 0), values_day[i])
             end
+
+            #set schedule rule index
             index = @hash[:schedule_rules].find_index(rule)
             openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_rule, index)
           end

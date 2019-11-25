@@ -76,11 +76,11 @@ module Ladybug
         if @hash[:timestep]
           timestep = @hash[:timestep]
           interval_length = 60/timestep
-          openstudio_schedule_fixed_interval.setIntervalLength(60/timestep)
+          openstudio_schedule_fixed_interval.setIntervalLength(interval_length)
         else
           timestep = @@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:timestep][:default]
           interval_length = 60/timestep
-          openstudio_schedule_fixed_interval.setIntervalLength(60/timestep)
+          openstudio_schedule_fixed_interval.setIntervalLength(interval_length)
         end
         openstudio_interval_length = OpenStudio::Time.new(0,0,interval_length) 
 

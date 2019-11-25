@@ -76,6 +76,7 @@ module Ladybug
         else 
           openstudio_schedule_type_limit.setUnitType(@@schema[:definitions][:ScheduleTypeLimit][:properties][:unit_type])
         end
+        
         openstudio_schedule_type_limit
       end
 
