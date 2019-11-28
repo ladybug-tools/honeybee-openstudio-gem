@@ -1945,6 +1945,8 @@
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "type": "string"
         },
         "interpolate": {
@@ -1968,11 +1970,14 @@
         "type": {
           "title": "Type",
           "enum": [
-            "ScheduleRule"
+            "ScheduleRuleAbridged"
           ]
         },
         "schedule_day": {
-          "$ref": "#/definitions/ScheduleDay"
+          "title": "Schedule_Day",
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
         },
         "apply_sunday": {
           "title": "Apply_Sunday",
@@ -2053,15 +2058,23 @@
             "ScheduleRulesetAbridged"
           ]
         },
-        "default_day_schedule": {
-          "$ref": "#/definitions/ScheduleDay"
+        "day_schedules": {
+          "title": "Day_Schedules",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ScheduleDay"
+          }
         },
         "name": {
           "title": "Name",
+          "maxLength": 100,
+          "minLength": 1,
           "type": "string"
         },
-        "schedule_type_limit": {
-          "title": "Schedule_Type_Limit",
+        "default_day_schedule": {
+          "title": "Default_Day_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
           "type": "string"
         },
         "schedule_rules": {
@@ -2072,16 +2085,29 @@
           }
         },
         "summer_designday_schedule": {
-          "$ref": "#/definitions/ScheduleDay"
+          "title": "Summer_Designday_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
         },
         "winter_designday_schedule": {
-          "$ref": "#/definitions/ScheduleDay"
+          "title": "Winter_Designday_Schedule",
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        "schedule_type_limit": {
+          "title": "Schedule_Type_Limit",
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
         }
       },
       "required": [
         "type",
-        "default_day_schedule",
-        "name"
+        "day_schedules",
+        "name",
+        "default_day_schedule"
       ]
     },
     "Date": {
@@ -2089,6 +2115,12 @@
       "description": "Date.",
       "type": "object",
       "properties": {
+        "is_leap_year": {
+          "title": "Is_Leap_Year",
+          "description": "A boolean to indicate if datetime is for a leap year. Default is `false`.",
+          "default": false,
+          "type": "boolean"
+        },
         "month": {
           "title": "Month",
           "description": "A value for month between `1`-`12`. Default is `1`.",
