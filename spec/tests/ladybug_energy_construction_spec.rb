@@ -220,7 +220,6 @@ RSpec.describe Ladybug::EnergyModel do
     file = File.join(File.dirname(__FILE__), '../files/in_window_blind.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialBlind.read_from_disk(file)
 
-
     expect(material1.valid?).to be true
     expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)

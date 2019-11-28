@@ -86,16 +86,6 @@ RSpec.describe Ladybug::EnergyModel do
     
     openstudio_space_thermal_zone_1 = openstudio_space_1.thermalZone
     expect(openstudio_space_thermal_zone_1.empty?).to be false
-
-    #openstudio_space_thermal_zone_1 = openstudio_space_thermal_zone_1.get
-
-    #openstudio_humidistat = openstudio_space_thermal_zone_1.zoneControlHumidistat
-    #expect(openstudio_humidistat.empty?).to be false
-
-    #openstudio_humidistat = openstudio_humidistat.get
-
-    #openstudio_humidistat_humidifying_schedule = openstudio_humidistat.humidifyingRelativeHumiditySetpointSchedule
-    #expect(openstudio_humidistat_humidifying_schedule.empty?).to be false
   end
 
   it 'can load and validate single zone office' do
@@ -127,9 +117,6 @@ RSpec.describe Ladybug::EnergyModel do
     expect(openstudio_people.empty?).to be false
 
     openstudio_people = openstudio_people[0]
-
-    #openstudio_people_definition = openstudio_people.peopleDefinition
-    #expect(openstudio_people_definition.empty?).to be false
 
     openstudio_activity_schedule = openstudio_people.activityLevelSchedule
     expect(openstudio_activity_schedule.empty?).to be false
@@ -168,29 +155,22 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_space_type = openstudio_space.spaceType
     expect(openstudio_space_type.empty?).to be false
 
+    openstudio_space_type_object = openstudio_space_type.get
+    expect(openstudio_space_type_object.nameString).to eq 'Generic Office Program'
+
     openstudio_space_people = openstudio_space.people
     expect(openstudio_space_people.empty?).to be false
 
-    openstudio_space_thermal_zone = openstudio_space.thermalZone
-    expect(openstudio_space_thermal_zone.empty?).to be false
-
-    #openstudio_space_thermal_zone = openstudio_space.thermalZone.get
-    #openstudio_thermostat_object = nil
-    #openstudio_thermostat = openstudio_space_thermal_zone.thermostatSetpointDualSetpoint
-    
-    openstudio_space_type = openstudio_space_type.get
-    expect(openstudio_space_type.nameString).to eq 'Generic Office Program'
-
-    openstudio_people = openstudio_space_type.people
-    expect(openstudio_people.empty?).to be false
-
-    openstudio_people = openstudio_people[0]
+    openstudio_people = openstudio_space_people[0]
 
     openstudio_occupancy_schedule = openstudio_people.numberofPeopleSchedule
     expect(openstudio_occupancy_schedule.empty?).to be false
 
-    openstudio_occupancy_schedule = openstudio_occupancy_schedule.get
-    expect(openstudio_occupancy_schedule.nameString).to eq 'Generic Office Occupancy' 
+    openstudio_occupancy_schedule_object = openstudio_occupancy_schedule.get
+    expect(openstudio_occupancy_schedule_object.nameString).to eq 'Generic Office Occupancy' 
+
+    openstudio_space_thermal_zone = openstudio_space.thermalZone
+    expect(openstudio_space_thermal_zone.empty?).to be false
   end
 
   it 'can load and validate single zone office with detailed loads' do
@@ -276,5 +256,5 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
   end
-
+  
 end
