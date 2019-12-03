@@ -1962,8 +1962,8 @@
         "name"
       ]
     },
-    "ScheduleRule": {
-      "title": "ScheduleRule",
+    "ScheduleRuleAbridged": {
+      "title": "ScheduleRuleAbridged",
       "description": "A set of rules assigned to schedule ruleset for specific periods of time and for\n  particular days of the week according to a priority sequence.",
       "type": "object",
       "properties": {
@@ -2081,7 +2081,7 @@
           "title": "Schedule_Rules",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ScheduleRule"
+            "$ref": "#/definitions/ScheduleRuleAbridged"
           }
         },
         "summer_designday_schedule": {
