@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'json_pure'
   spec.add_dependency 'openstudio-extension', '~> 0.1.0'
   spec.add_dependency 'openstudio-standards', '~> 0.2.7'
-  spec.add_dependency 'public_suffix', '~> 3.0.3'
+  spec.add_dependency 'public_suffix', '~> 3.1.1'
 end

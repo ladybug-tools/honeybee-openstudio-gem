@@ -62,7 +62,7 @@ module Ladybug
       def create_openstudio_object(openstudio_model)
         if @hash[:properties][:energy][:construction_set]
           construction_set_name = @hash[:properties][:energy][:construction_set]
-          # gets default construction set assigned to room from openstudio_model
+          #gets default construction set assigned to room from openstudio_model
           construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
           unless construction_set.empty?
             default_construction_set = construction_set.get
