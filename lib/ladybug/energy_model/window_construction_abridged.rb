@@ -29,10 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/opaque_construction_abridged'
+require "#{File.dirname(__FILE__)}/model_object"
+require "#{File.dirname(__FILE__)}/opaque_construction_abridged"
 
-require 'json-schema'
+#require 'json-schema'
 require 'json'
 require 'openstudio'
 

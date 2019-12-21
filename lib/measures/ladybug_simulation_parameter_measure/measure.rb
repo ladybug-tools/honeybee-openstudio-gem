@@ -36,7 +36,7 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'ladybug/energy_model/simulation_parameter'
+require_relative "../../ladybug/energy_model/simulation_parameter"
 
 # start the measure
 class LadybugSimulationParameterMeasure < OpenStudio::Measure::ModelMeasure
@@ -82,14 +82,14 @@ class LadybugSimulationParameterMeasure < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-    simulation_parameter_json = Ladybug::EnergyModel::SimulationParameter.read_from_disk(simulation_parameter_json)
+    sim_par_object = Ladybug::EnergyModel::SimulationParameter.read_from_disk(simulation_parameter_json)
 
-    if !simulation_parameter_json.valid?
-      # runner.registerError("File '#{ladybug_json}' is not valid")
+    if !sim_par_object.valid?
+      # runner.registerError("File '#{simulation_parameter_json}' is not valid")
       # return false
     end
     STDOUT.flush
-    simulation_parameter_json.to_openstudio_model(model)
+    sim_par_object.to_openstudio_model(model)
     STDOUT.flush
     return true
   end

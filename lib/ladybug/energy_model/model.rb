@@ -29,34 +29,33 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/opaque_construction_abridged'
-require 'ladybug/energy_model/window_construction_abridged'
-require 'ladybug/energy_model/face'
-require 'ladybug/energy_model/shade'
-require 'ladybug/energy_model/aperture'
-require 'ladybug/energy_model/construction_set'
-require 'ladybug/energy_model/door'
-require 'ladybug/energy_model/energy_material_no_mass'
-require 'ladybug/energy_model/energy_material'
-require 'ladybug/energy_model/energy_window_material_blind'
-require 'ladybug/energy_model/energy_window_material_gas_custom'
-require 'ladybug/energy_model/energy_window_material_gas'
-require 'ladybug/energy_model/energy_window_material_gas_mixture'
-require 'ladybug/energy_model/energy_window_material_glazing'
-require 'ladybug/energy_model/energy_window_material_shade'
-require 'ladybug/energy_model/energy_window_material_simpleglazsys'
-require 'ladybug/energy_model/room'
-require 'ladybug/energy_model/shade'
-require 'ladybug/energy_model/shade_construction'
-require 'ladybug/energy_model/schedule_type_limit'
-require 'ladybug/energy_model/schedule_fixed_interval_abridged'
-require 'ladybug/energy_model/schedule_ruleset_abridged'
-require 'ladybug/energy_model/space_type'
-require 'ladybug/energy_model/setpoint_thermostat'
-require 'ladybug/energy_model/setpoint_humidistat'
-require 'json-schema'
+require "#{File.dirname(__FILE__)}/extension"
+require "#{File.dirname(__FILE__)}/model_object"
+require "#{File.dirname(__FILE__)}/opaque_construction_abridged"
+require "#{File.dirname(__FILE__)}/window_construction_abridged"
+require "#{File.dirname(__FILE__)}/face"
+require "#{File.dirname(__FILE__)}/shade"
+require "#{File.dirname(__FILE__)}/aperture"
+require "#{File.dirname(__FILE__)}/construction_set"
+require "#{File.dirname(__FILE__)}/door"
+require "#{File.dirname(__FILE__)}/energy_material_no_mass"
+require "#{File.dirname(__FILE__)}/energy_material"
+require "#{File.dirname(__FILE__)}/energy_window_material_blind"
+require "#{File.dirname(__FILE__)}/energy_window_material_gas_custom"
+require "#{File.dirname(__FILE__)}/energy_window_material_gas"
+require "#{File.dirname(__FILE__)}/energy_window_material_gas_mixture"
+require "#{File.dirname(__FILE__)}/energy_window_material_glazing"
+require "#{File.dirname(__FILE__)}/energy_window_material_shade"
+require "#{File.dirname(__FILE__)}/energy_window_material_simpleglazsys"
+require "#{File.dirname(__FILE__)}/room"
+require "#{File.dirname(__FILE__)}/shade"
+require "#{File.dirname(__FILE__)}/shade_construction"
+require "#{File.dirname(__FILE__)}/schedule_type_limit"
+require "#{File.dirname(__FILE__)}/schedule_fixed_interval_abridged"
+require "#{File.dirname(__FILE__)}/schedule_ruleset_abridged"
+require "#{File.dirname(__FILE__)}/space_type"
+require "#{File.dirname(__FILE__)}/setpoint_thermostat"
+require "#{File.dirname(__FILE__)}/setpoint_humidistat"
 require 'json'
 require 'openstudio'
 
@@ -90,13 +89,16 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        return validation_errors.empty?
+        # TODO: uncomment this once valiation checks are optional
+        # return validation_errors.empty?
+        return true
       end
 
+      # TODO: Make this validation check optional and with a check for json-schema gem
       # return detailed model validation errors
-      def validation_errors
-        JSON::Validator.fully_validate(@@schema, @hash)
-      end
+      #def validation_errors
+      #  JSON::Validator.fully_validate(@@schema, @hash)
+      #end
 
       
       # convert to openstudio model, clears errors and warnings

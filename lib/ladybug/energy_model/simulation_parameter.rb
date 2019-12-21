@@ -29,10 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/extension_simulation_parameter'
+require "#{File.dirname(__FILE__)}/model_object"
+require "#{File.dirname(__FILE__)}/extension_simulation_parameter"
 
-require 'json-schema'
+#require 'json-schema'
 require 'json'
 require 'openstudio'
 
@@ -68,13 +68,16 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        return validation_errors.empty?
+        # TODO: uncomment this once valiation checks are optional
+        # return validation_errors.empty?
+        return true
       end
 
+      # TODO: Make this validation check optional and with a check for json-schema gem
       # return detailed model validation errors
-      def validation_errors
-        JSON::Validator.fully_validate(@@schema, @hash)
-      end
+      #def validation_errors
+      #  JSON::Validator.fully_validate(@@schema, @hash)
+      #end
 
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)

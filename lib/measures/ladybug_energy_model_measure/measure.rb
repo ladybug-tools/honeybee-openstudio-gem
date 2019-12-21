@@ -36,7 +36,7 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'ladybug/energy_model/model'
+require_relative "../../ladybug/energy_model/model"
 
 # start the measure
 class LadybugEnergyModelMeasure < OpenStudio::Measure::ModelMeasure
