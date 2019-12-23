@@ -85,7 +85,6 @@ module Ladybug
           else 
             openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default]))
           end
-          openstudio_material.setSpecificHeat(100) #Bug in OpenStudio default Specific Heat is 0.1.
         end
         
         openstudio_materials << openstudio_material
