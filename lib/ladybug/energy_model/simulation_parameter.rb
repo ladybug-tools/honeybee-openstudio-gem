@@ -143,6 +143,11 @@ module Ladybug
           else
             openstudio_shadow_calculation.setMaximumFiguresInShadowOverlapCalculations(@@schema[:definitions][:ShadowCalculation][:properties][:maximum_figures][:default])
           end
+          if @hash[:shadow_calculation][:calculation_method]
+            openstudio_shadow_calculation.setCalculationMethod(@hash[:shadow_calculation][:calculation_method])
+          else
+            openstudio_shadow_calculation.setCalculationMethod(@@schema[:definitions][:ShadowCalculation][:properties][:calculation_method][:default])
+          end
         end
         if @hash[:sizing_parameter]
           openstudio_sizing_parameter = @openstudio_model.getSizingParameters

@@ -111,7 +111,11 @@ module Ladybug
         openstudio_opaque_material.setThickness(@hash[:thickness])
         openstudio_opaque_material.setConductivity(@hash[:conductivity])
         openstudio_opaque_material.setDensity(@hash[:density])
-        openstudio_opaque_material.setSpecificHeat(@hash[:specific_heat])
+        if @hash[:specific_heat]
+          openstudio_opaque_material.setSpecificHeat(@hash[:specific_heat])
+        else
+          openstudio_opaque_material.setSpecificHeat(100) #bug in OpenStudio default Specific Heat is 0.1.
+        end
         if @hash[:thermal_absorptance]
           openstudio_opaque_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
         else
