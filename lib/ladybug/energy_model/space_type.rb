@@ -29,18 +29,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'ladybug/energy_model/extension'
-require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/people_abridged'
-require 'ladybug/energy_model/lighting_abridged'
-require 'ladybug/energy_model/electric_equipment_abridged'
-require 'ladybug/energy_model/gas_equipment_abridged'
-require 'ladybug/energy_model/infiltration_abridged'
-require 'ladybug/energy_model/ventilation_abridged'
-require 'ladybug/energy_model/setpoint_thermostat'
-require 'ladybug/energy_model/setpoint_humidistat'
+require "#{File.dirname(__FILE__)}/extension"
+require "#{File.dirname(__FILE__)}/model_object"
+require "#{File.dirname(__FILE__)}/people_abridged"
+require "#{File.dirname(__FILE__)}/lighting_abridged"
+require "#{File.dirname(__FILE__)}/electric_equipment_abridged"
+require "#{File.dirname(__FILE__)}/gas_equipment_abridged"
+require "#{File.dirname(__FILE__)}/infiltration_abridged"
+require "#{File.dirname(__FILE__)}/ventilation_abridged"
+require "#{File.dirname(__FILE__)}/setpoint_thermostat"
+require "#{File.dirname(__FILE__)}/setpoint_humidistat"
 
-require 'json-schema'
+#require 'json-schema'
 require 'json'
 require 'openstudio'
 

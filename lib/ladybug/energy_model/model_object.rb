@@ -29,7 +29,6 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'json-schema'
 require 'json'
 require 'openstudio'
 
@@ -84,15 +83,18 @@ module Ladybug
 
       # check if the ModelObject is valid
       def valid?
-        return validation_errors.empty?
+        # TODO: uncomment this once valiation checks are optional
+        #return validation_errors.empty?
+        return true
       end
 
+      # TODO: Make this validation check optional and with a check for json-schema gem
       # return detailed model validation errors
-      def validation_errors
-        # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
-        # does not correspond to a definition in the schema
-        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
-      end
+      #def validation_errors
+      #  # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
+      #  # does not correspond to a definition in the schema
+      #  JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
+      #end
 
       # convert ModelObject to an openstudio object
       def to_openstudio(openstudio_model)
@@ -103,7 +105,8 @@ module Ladybug
           end
         end
 
-        @errors = validation_errors
+        # TODO: uncomment this once valiation checks are optional
+        #@errors = validation_errors
         @warnings = []
         @openstudio_object = nil
 

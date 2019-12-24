@@ -43,6 +43,7 @@ module Ladybug
         super
 
         @root_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', '..'))
+        @lib_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..'))
 
         @instance_lock = Mutex.new
         @@schema ||= schema
@@ -50,13 +51,13 @@ module Ladybug
 
       # Return the absolute path of the measures or nil if there is none, can be used when configuring OSWs
       def measures_dir
-        File.absolute_path(File.join(@root_dir, 'lib/measures/'))
+        File.absolute_path(File.join(@lib_dir, 'measures'))
       end
 
       # Relevant files such as weather data, design days, etc.
       # Return the absolute path of the files or nil if there is none, used when configuring OSWs
       def files_dir
-        File.absolute_path(File.join(@root_dir, 'lib/files/'))
+        File.absolute_path(File.join(@lib_dir, 'files'))
       end
 
       # Doc templates are common files like copyright files which are used to update measures and other code

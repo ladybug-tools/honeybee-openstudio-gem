@@ -2,13 +2,13 @@
 
 ###### (Automatically generated documentation)
 
-# Ladybug Energy Model Measure
+# Ladybug Simulation Parameter Measure
 
 ## Description
-Ladybug Energy Model Measure.
+Ladybug Simulation Parameter Measure.
 
 ## Modeler Description
-Ladybug Energy Model Measure.
+Ladybug Simulation Parameter Measure.
 
 ## Measure Type
 ModelMeasure
