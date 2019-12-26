@@ -34,8 +34,8 @@ require "#{File.dirname(__FILE__)}/face"
 require "#{File.dirname(__FILE__)}/people_abridged"
 require "#{File.dirname(__FILE__)}/ideal_air_system"
 
-#require 'json-schema'
-require 'json'
+
+
 require 'openstudio'
 
 module Ladybug

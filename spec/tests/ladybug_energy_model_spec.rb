@@ -47,29 +47,13 @@ RSpec.describe Ladybug::EnergyModel do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-
-    errors = extension.schema_validation_errors
-
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
 
   it 'can load and validate single zone model' do
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_tiny_house.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-   
-    errors = model.validation_errors
-    
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-
     
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
-
 
     openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 6
@@ -108,10 +92,6 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate shoebox model' do
     file = File.join(File.dirname(__FILE__), '../files/model_shoe_box.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-        
-    errors = model.validation_errors
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -153,10 +133,6 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate mutizone model' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_multi_zone_single_family_house.json')
-    
-    model = Ladybug::EnergyModel::Model.read_from_disk(file)
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)

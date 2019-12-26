@@ -31,8 +31,6 @@
 
 require 'openstudio/extension'
 
-require 'json'
-
 module Ladybug
   module EnergyModel
     class Extension < OpenStudio::Extension::Extension
@@ -85,16 +83,21 @@ module Ladybug
         @@schema
       end
 
-      # check if the schema is valid
+    # check if the schema is valid
       def schema_valid?
-        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
-        JSON::Validator.validate(metaschema, @@schema)
+        if Gem.loaded_specs.has_key?("json-schema")
+          require json-schema
+          metaschema = JSON::Validator.validator_for_name('draft6').metaschema
+          JSON::Validator.validate(metaschema, @@schema)
+        end
       end
 
       # return detailed schema validation errors
       def schema_validation_errors
-        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
-        JSON::Validator.fully_validate(metaschema, @@schema)
+        if Gem.loaded_specs.has_key?("json-schema")
+          metaschema = JSON::Validator.validator_for_name('draft6').metaschema
+          JSON::Validator.fully_validate(metaschema, @@schema)
+        end
       end
     end
   end

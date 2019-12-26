@@ -32,8 +32,8 @@
 require "#{File.dirname(__FILE__)}/model_object"
 require "#{File.dirname(__FILE__)}/opaque_construction_abridged"
 
-#require 'json-schema'
-require 'json'
+
+
 require 'openstudio'
 
 module Ladybug

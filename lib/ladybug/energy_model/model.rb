@@ -56,7 +56,6 @@ require "#{File.dirname(__FILE__)}/schedule_ruleset_abridged"
 require "#{File.dirname(__FILE__)}/space_type"
 require "#{File.dirname(__FILE__)}/setpoint_thermostat"
 require "#{File.dirname(__FILE__)}/setpoint_humidistat"
-require 'json'
 require 'openstudio'
 
 module Ladybug
@@ -70,7 +69,6 @@ module Ladybug
         File.open(File.join(file), 'r') do |f|
           hash = JSON.parse(f.read, symbolize_names: true)
         end
-
         Model.new(hash)
       end
 
@@ -89,17 +87,16 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        # TODO: uncomment this once valiation checks are optional
-        # return validation_errors.empty?
-        return true
+        return validation_errors.empty?
       end
 
-      # TODO: Make this validation check optional and with a check for json-schema gem
       # return detailed model validation errors
-      #def validation_errors
-      #  JSON::Validator.fully_validate(@@schema, @hash)
-      #end
-
+      def validation_errors
+        if Gem.loaded_specs.has_key?("json-schema")
+          require json-schema
+          JSON::Validator.fully_validate(@@schema, @hash)
+        end
+      end
       
       # convert to openstudio model, clears errors and warnings
       def to_openstudio_model(openstudio_model = nil)

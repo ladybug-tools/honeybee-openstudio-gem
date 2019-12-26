@@ -31,7 +31,7 @@
 
 require 'openstudio/extension'
 require "#{File.dirname(__FILE__)}/extension"
-require 'json'
+
 
 module Ladybug
   module EnergyModel

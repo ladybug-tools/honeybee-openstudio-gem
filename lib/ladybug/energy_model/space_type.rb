@@ -40,8 +40,8 @@ require "#{File.dirname(__FILE__)}/ventilation_abridged"
 require "#{File.dirname(__FILE__)}/setpoint_thermostat"
 require "#{File.dirname(__FILE__)}/setpoint_humidistat"
 
-#require 'json-schema'
-require 'json'
+
+
 require 'openstudio'
 
 module Ladybug

@@ -47,25 +47,11 @@ RSpec.describe Ladybug::EnergyModel do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-
-    errors = extension.schema_validation_errors
-
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
 
   it 'can load and validate multi zone office' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_multi_zone_office.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-   
-    errors = model.validation_errors
-    
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -92,11 +78,6 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_office.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-   
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -137,11 +118,6 @@ RSpec.describe Ladybug::EnergyModel do
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_office_fixed_interval.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
 
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
     expect(openstudio_model).not_to be nil
@@ -177,11 +153,6 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_office_detailed_loads.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-  
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = model.to_openstudio_model(openstudio_model)
     expect(openstudio_model).not_to be nil
@@ -191,11 +162,6 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_with_humidity_setpoints.json')
     model = Ladybug::EnergyModel::Model.read_from_disk(file)
-  
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = model.to_openstudio_model(openstudio_model)
     expect(openstudio_model).not_to be nil
@@ -206,11 +172,6 @@ RSpec.describe Ladybug::EnergyModel do
     file = File.join(File.dirname(__FILE__), '../files/schedule_fixedinterval_increasing_single_day.json')
     model = Ladybug::EnergyModel::ScheduleFixedIntervalAbridged.read_from_disk(file)
   
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
-    
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
   end
@@ -219,11 +180,6 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/schedule_ruleset_office_occupancy.json')
     model = Ladybug::EnergyModel::ScheduleRulesetAbridged.read_from_disk(file)
-  
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
@@ -233,11 +189,6 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/scheduletypelimit_temperature.json')
     model = Ladybug::EnergyModel::ScheduleTypeLimit.read_from_disk(file)
-  
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
@@ -247,14 +198,8 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/detailed_ideal_air.json')
     model = Ladybug::EnergyModel::IdealAirSystem.read_from_disk(file)
-  
-    errors = model.validation_errors
-
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
     
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
   end
-  
 end

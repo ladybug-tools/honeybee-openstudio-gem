@@ -48,24 +48,9 @@ RSpec.describe Ladybug::EnergyModel do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::ExtensionSimulationParameter.new
-    expect(extension.schema.nil?).to be false
-
-    errors = extension.schema_validation_errors
-
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
-
   it 'can load and validate simple simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
     model = Ladybug::EnergyModel::SimulationParameter.read_from_disk(file)
-
-    errors = model.validation_errors
-        
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -75,11 +60,6 @@ RSpec.describe Ladybug::EnergyModel do
   it 'can load and validate detailed simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
     model = Ladybug::EnergyModel::SimulationParameter.read_from_disk(file)
-
-    errors = model.validation_errors
-        
-    expect(model.valid?).to be true
-    expect(model.validation_errors.empty?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
