@@ -72,7 +72,7 @@ module Ladybug
       # return detailed model validation errors
       def validation_errors
         if Gem.loaded_specs.has_key?("json-schema")
-          require json-schema
+          require 'json-schema'
           JSON::Validator.fully_validate(@@schema, @hash)
         end
       end

@@ -86,7 +86,7 @@ module Ladybug
     # check if the schema is valid
       def schema_valid?
         if Gem.loaded_specs.has_key?("json-schema")
-          require json-schema
+          require 'json-schema'
           metaschema = JSON::Validator.validator_for_name('draft6').metaschema
           JSON::Validator.validate(metaschema, @@schema)
         end
