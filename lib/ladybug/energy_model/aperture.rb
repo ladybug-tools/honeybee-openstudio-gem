@@ -32,8 +32,6 @@
 require "#{File.dirname(__FILE__)}/model_object"
 require "#{File.dirname(__FILE__)}/shade"
 
-#require 'json-schema'
-require 'json'
 require 'openstudio'
 
 module Ladybug

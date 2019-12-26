@@ -46,19 +46,10 @@ RSpec.describe Ladybug::EnergyModel do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  it 'has a valid schema' do
-    extension = Ladybug::EnergyModel::Extension.new
-    expect(extension.schema.nil?).to be false
-    expect(extension.schema_valid?).to be true
-    expect(extension.schema_validation_errors.empty?).to be true
-  end
-
   # add assertions
   it 'create accessors for hash keys' do
     file = File.join(File.dirname(__FILE__), '../files/construction_internal_floor.json')
     construction1 = Ladybug::EnergyModel::OpaqueConstructionAbridged.read_from_disk(file)
-    expect(construction1.valid?).to be true
-    expect(construction1.validation_errors.empty?).to be true
 
     # get and set existing hash key
     expect(construction1.respond_to?(:name)).to be false
@@ -73,8 +64,8 @@ RSpec.describe Ladybug::EnergyModel do
     # DLM: should we make it return nil for the non-existant getter instead?
     # expect( construction1.not_a_key ).to be nil
 
-    expect { construction1.not_a_key }.to raise_error(NoMethodError)
-    expect { construction1.not_a_key = 'Internal Floor' }.to raise_error(NoMethodError)
+    expect{construction1.not_a_key }.to raise_error(NoMethodError)
+    expect{construction1.not_a_key = 'Internal Floor'}.to raise_error(NoMethodError)
   end
 
 
@@ -82,15 +73,11 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_roof.json')
     construction1 = Ladybug::EnergyModel::OpaqueConstructionAbridged.read_from_disk(file)
-    expect(construction1.valid?).to be true
-    expect(construction1.validation_errors.empty?).to be true
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     # load the same construction again in the same model, should find existing construction
     construction2 = Ladybug::EnergyModel::OpaqueConstructionAbridged.read_from_disk(file)
-    expect(construction2.valid?).to be true
-    expect(construction2.validation_errors.empty?).to be true
     object2 = construction2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -100,14 +87,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_window.json')
     construction1 = Ladybug::EnergyModel::WindowConstructionAbridged.read_from_disk(file)
-    expect(construction1.valid?).to be true
-    expect(construction1.validation_errors.empty?).to be true
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     construction2 = Ladybug::EnergyModel::WindowConstructionAbridged.read_from_disk(file)
-    expect(construction2.valid?).to be true
-    expect(construction2.validation_errors.empty?).to be true
     object2 = construction2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -117,13 +100,9 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_material.json')
     material1 = Ladybug::EnergyModel::EnergyMaterial.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
     material2 = Ladybug::EnergyModel::EnergyMaterial.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -133,14 +112,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_material_no_mass.json')
     material1 = Ladybug::EnergyModel::EnergyMaterialNoMass.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyMaterialNoMass.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -150,14 +125,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_gas.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialGas.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialGas.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -167,14 +138,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_gas_custom.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialGasCustom.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialGasCustom.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -184,14 +151,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_gas_mixture.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialGasMixture.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialGasMixture.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -201,14 +164,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_simpleglazing.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialSimpleGlazSys.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialSimpleGlazSys.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -220,14 +179,10 @@ RSpec.describe Ladybug::EnergyModel do
     file = File.join(File.dirname(__FILE__), '../files/in_window_blind.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialBlind.read_from_disk(file)
 
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialBlind.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -237,14 +192,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_glazing.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialGlazing.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialGlazing.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)
@@ -254,14 +205,10 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/in_window_shade.json')
     material1 = Ladybug::EnergyModel::EnergyWindowMaterialShade.read_from_disk(file)
-    expect(material1.valid?).to be true
-    expect(material1.validation_errors.empty?).to be true
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
     material2 = Ladybug::EnergyModel::EnergyWindowMaterialShade.read_from_disk(file)
-    expect(material2.valid?).to be true
-    expect(material2.validation_errors.empty?).to be true
     object2 = material2.to_openstudio(openstudio_model)
     expect(object2).not_to be nil
     expect(object2.handle.to_s).to eq(object1.handle.to_s)

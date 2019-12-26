@@ -34,8 +34,8 @@ require "#{File.dirname(__FILE__)}/aperture"
 require "#{File.dirname(__FILE__)}/door"
 require "#{File.dirname(__FILE__)}/shade"
 
-#require 'json-schema'
-require 'json'
+
+
 require 'openstudio'
 
 module Ladybug
