@@ -29,8 +29,8 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require "#{File.dirname(__FILE__)}/model_object"
-require "#{File.dirname(__FILE__)}/extension_simulation_parameter"
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/extension_simulation_parameter'
 
 require 'openstudio'
 
@@ -66,7 +66,11 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        return validation_errors.empty?
+        if Gem.loaded_specs.has_key?("json-schema")
+          return validation_errors.empty?
+        else
+          return true
+        end
       end
 
       # return detailed model validation errors

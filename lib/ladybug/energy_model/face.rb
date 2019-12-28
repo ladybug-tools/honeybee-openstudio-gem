@@ -29,12 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require "#{File.dirname(__FILE__)}/model_object"
-require "#{File.dirname(__FILE__)}/aperture"
-require "#{File.dirname(__FILE__)}/door"
-require "#{File.dirname(__FILE__)}/shade"
-
-
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/door'
+require 'ladybug/energy_model/shade'
 
 require 'openstudio'
 
