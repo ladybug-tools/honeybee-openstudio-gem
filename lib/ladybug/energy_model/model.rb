@@ -29,33 +29,33 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require "#{File.dirname(__FILE__)}/extension"
-require "#{File.dirname(__FILE__)}/model_object"
-require "#{File.dirname(__FILE__)}/opaque_construction_abridged"
-require "#{File.dirname(__FILE__)}/window_construction_abridged"
-require "#{File.dirname(__FILE__)}/face"
-require "#{File.dirname(__FILE__)}/shade"
-require "#{File.dirname(__FILE__)}/aperture"
-require "#{File.dirname(__FILE__)}/construction_set"
-require "#{File.dirname(__FILE__)}/door"
-require "#{File.dirname(__FILE__)}/energy_material_no_mass"
-require "#{File.dirname(__FILE__)}/energy_material"
-require "#{File.dirname(__FILE__)}/energy_window_material_blind"
-require "#{File.dirname(__FILE__)}/energy_window_material_gas_custom"
-require "#{File.dirname(__FILE__)}/energy_window_material_gas"
-require "#{File.dirname(__FILE__)}/energy_window_material_gas_mixture"
-require "#{File.dirname(__FILE__)}/energy_window_material_glazing"
-require "#{File.dirname(__FILE__)}/energy_window_material_shade"
-require "#{File.dirname(__FILE__)}/energy_window_material_simpleglazsys"
-require "#{File.dirname(__FILE__)}/room"
-require "#{File.dirname(__FILE__)}/shade"
-require "#{File.dirname(__FILE__)}/shade_construction"
-require "#{File.dirname(__FILE__)}/schedule_type_limit"
-require "#{File.dirname(__FILE__)}/schedule_fixed_interval_abridged"
-require "#{File.dirname(__FILE__)}/schedule_ruleset_abridged"
-require "#{File.dirname(__FILE__)}/space_type"
-require "#{File.dirname(__FILE__)}/setpoint_thermostat"
-require "#{File.dirname(__FILE__)}/setpoint_humidistat"
+require 'ladybug/energy_model/extension'
+require 'ladybug/energy_model/model_object'
+require 'ladybug/energy_model/opaque_construction_abridged'
+require 'ladybug/energy_model/window_construction_abridged'
+require 'ladybug/energy_model/face'
+require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/aperture'
+require 'ladybug/energy_model/construction_set'
+require 'ladybug/energy_model/door'
+require 'ladybug/energy_model/energy_material_no_mass'
+require 'ladybug/energy_model/energy_material'
+require 'ladybug/energy_model/energy_window_material_blind'
+require 'ladybug/energy_model/energy_window_material_gas_custom'
+require 'ladybug/energy_model/energy_window_material_gas'
+require 'ladybug/energy_model/energy_window_material_gas_mixture'
+require 'ladybug/energy_model/energy_window_material_glazing'
+require 'ladybug/energy_model/energy_window_material_shade'
+require 'ladybug/energy_model/energy_window_material_simpleglazsys'
+require 'ladybug/energy_model/room'
+require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/shade_construction'
+require 'ladybug/energy_model/schedule_type_limit'
+require 'ladybug/energy_model/schedule_fixed_interval_abridged'
+require 'ladybug/energy_model/schedule_ruleset_abridged'
+require 'ladybug/energy_model/space_type'
+require 'ladybug/energy_model/setpoint_thermostat'
+require 'ladybug/energy_model/setpoint_humidistat'
 require 'openstudio'
 
 module Ladybug
@@ -87,7 +87,11 @@ module Ladybug
 
       # check if the model is valid
       def valid?
-        return validation_errors.empty?
+        if Gem.loaded_specs.has_key?("json-schema")
+          return validation_errors.empty?
+        else
+          return true
+        end
       end
 
       # return detailed model validation errors
@@ -297,7 +301,7 @@ module Ladybug
         end
       end
 
-#TODO: create runlog for errors. 
+      #TODO: create runlog for errors. 
       def create_orphaned_faces
         if @hash[:orphaned_faces]
           raise "Orphaned Faces are not translatable to OpenStudio."

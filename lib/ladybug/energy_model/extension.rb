@@ -31,6 +31,9 @@
 
 require 'openstudio/extension'
 
+# NOTE: This file has been derived from one within the openStudio-extension gem
+# The properties here are a standard part of openstudio extensions
+
 module Ladybug
   module EnergyModel
     class Extension < OpenStudio::Extension::Extension
@@ -40,6 +43,8 @@ module Ladybug
       def initialize
         super
 
+        # Note that the root_dir is only meaningful when the gem is in a github repository
+        # When installed as a Ruby gem, the highest directory within the gem is the lib_dir
         @root_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', '..'))
         @lib_dir = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..'))
 
@@ -47,30 +52,32 @@ module Ladybug
         @@schema ||= schema
       end
 
-      # Return the absolute path of the measures or nil if there is none, can be used when configuring OSWs
+      # Return the absolute path of the measures or nil if there is none.
+      # Can be used when configuring OSWs
       def measures_dir
         File.absolute_path(File.join(@lib_dir, 'measures'))
       end
 
-      # Relevant files such as weather data, design days, etc.
-      # Return the absolute path of the files or nil if there is none, used when configuring OSWs
+      # Relevant files such as the openapi JSON schema files for the honeybee model.
+      # Return the absolute path of the files or nil if there is none.
+      # Used when configuring OSWs
       def files_dir
         File.absolute_path(File.join(@lib_dir, 'files'))
       end
 
-      # Doc templates are common files like copyright files which are used to update measures and other code
-      # Doc templates will only be applied to measures in the current repository
+      # Doc templates are common files like copyright files which are used to update measures
+      # Doc templates will only be applied when the gem is a part of a repository
       # Return the absolute path of the doc templates dir or nil if there is none
       def doc_templates_dir
         File.absolute_path(File.join(@root_dir, 'doc_templates'))
       end
 
-      # return path to schema file
+      # return path to the model schema file
       def schema_file
-        File.join(files_dir, 'schema/openapi.json')
+        File.join(files_dir, 'model_schema.json')
       end
 
-      # return schema
+      # return the model schema
       def schema
         @instance_lock.synchronize do
           if @@schema.nil?
@@ -83,7 +90,7 @@ module Ladybug
         @@schema
       end
 
-    # check if the schema is valid
+    # check if the model schema is valid
       def schema_valid?
         if Gem.loaded_specs.has_key?("json-schema")
           require 'json-schema'

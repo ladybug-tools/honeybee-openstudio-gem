@@ -30,7 +30,7 @@
 # *******************************************************************************
 
 require 'openstudio/extension'
-require "#{File.dirname(__FILE__)}/extension"
+require 'ladybug/energy_model/extension'
 
 
 module Ladybug
@@ -39,7 +39,7 @@ module Ladybug
       @@schema = nil
 
       def schema_file
-        File.join(files_dir, 'schema/simulationparameter.json')
+        File.join(files_dir, 'simulationparameter_schema.json')
       end
 
     end

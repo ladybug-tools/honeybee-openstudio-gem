@@ -29,7 +29,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require "#{File.dirname(__FILE__)}/model_object"
+require 'ladybug/energy_model/model_object'
 
 require 'openstudio'
 
