@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 require 'openstudio'
-require 'json-schema'
 
 module Ladybug
   module EnergyModel
@@ -83,14 +82,13 @@ module Ladybug
 
       # check if the ModelObject is valid
       def valid?
-        if Gem.loaded_specs.has_key?("json-schema")
-          return validation_errors.empty?
-        end
+        return validation_errors.empty?
       end
 
       # return detailed model validation errors
       def validation_errors
         if Gem.loaded_specs.has_key?("json-schema")
+          require 'json-schema'
       #  # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
       #  # does not correspond to a definition in the schema
           JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
