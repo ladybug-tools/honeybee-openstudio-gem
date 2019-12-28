@@ -29,8 +29,6 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-puts "1HELLO = #{File.dirname(__FILE__)}"
-
 require "#{File.dirname(__FILE__)}/energy_model/version"
 require "#{File.dirname(__FILE__)}/energy_model/extension"
 require "#{File.dirname(__FILE__)}/energy_model/extension_simulation_parameter"
