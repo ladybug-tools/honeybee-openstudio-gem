@@ -126,7 +126,6 @@ module Ladybug
         end
 
         if @hash[:roof_ceiling_set]
-            interior_ceiling = nil
             if @hash[:roof_ceiling_set][:interior_construction]
                 interior_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:interior_construction])
                 unless interior_ceiling_object.empty?
@@ -135,8 +134,7 @@ module Ladybug
                     openstudio_construction_set.setDefaultInteriorSurfaceConstructions(interior_surface_construction)
                 end
             end
-            exterior_ceiling = nil
-            if @hash[:floor_set][:exterior_construction]
+            if @hash[:roof_ceiling_set][:exterior_construction]
                 exterior_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:exterior_construction])
                 unless exterior_ceiling_object.empty?
                     exterior_ceiling = exterior_ceiling_object.get
@@ -144,7 +142,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSurfaceConstructions(exterior_surface_construction)
                 end
             end
-            ground_ceiling = nil
             if @hash[:roof_ceiling_set][:ground_construction]
                 ground_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:ground_construction])
                 unless ground_ceiling_object.empty?
@@ -156,16 +153,14 @@ module Ladybug
         end
        
         if @hash[:aperture_set]
-            interior_aperture = nil
             if @hash[:aperture_set][:interior_construction]
                 interior_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:interior_construction])
                 unless interior_aperture_object.empty?
                     interior_aperture = interior_aperture_object.get
-                    interior_subsurface_construction.setOperableWindowConstruction(interior_aperture)
+                    interior_subsurface_construction.setFixedWindowConstruction(interior_aperture)
                     openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
                 end
             end
-            window_aperture = nil
             if @hash[:aperture_set][:window_construction]
                 window_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:window_construction])
                 unless window_aperture_object.empty?
@@ -174,7 +169,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
-            skylight_aperture = nil
             if @hash[:aperture_set][:skylight_construction]
                 skylight_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:skylight_construction])
                 unless skylight_aperture_object.empty?
@@ -183,8 +177,7 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
-            operable_aperture = nil
-            if @hash[:aperture_set][:aperture_construction]
+            if @hash[:aperture_set][:operable_construction]
                 operable_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:operable_construction])
                 unless operable_aperture_object.empty?
                     operable_aperture = operable_aperture_object.get
@@ -195,16 +188,14 @@ module Ladybug
         end    
         
         if @hash[:door_set]
-            interior_door = nil
             if @hash[:door_set][:interior_construction]
                 interior_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:interior_construction])
                 unless interior_door_object.empty?
                     interior_door = interior_door_object.get
-                    interior_subsurface_construction.setOverheadDoorConstruction(interior_door)
+                    interior_subsurface_construction.setDoorConstruction(interior_door)
                     openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
                 end
             end
-            exterior_door = nil
             if @hash[:door_set][:exterior_construction]
                 exterior_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:exterior_construction])
                 unless exterior_door_object.empty?
@@ -213,16 +204,14 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
-            overhead_door = nil
             if @hash[:door_set][:overhead_construction]
                 overhead_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:overhead_construction])
                 unless overhead_door_object.empty?
                     overhead_door = overhead_door_object.get
-                    exterior_subsurface_construction.setDoorConstruction(overhead_door)
+                    exterior_subsurface_construction.setOverheadDoorConstruction(overhead_door)
                     openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
-            exterior_glass_door = nil
             if @hash[:door_set][:exterior_glass_construction]
                 exterior_glass_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:exterior_glass_construction])
                 unless exterior_glass_door_object.empty?
@@ -231,7 +220,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
                 end
             end
-            interior_glass_door = nil
             if @hash[:door_set][:interior_glass_construction]
                 interior_glass_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:interior_glass_construction])
                 unless interior_glass_door_object.empty?

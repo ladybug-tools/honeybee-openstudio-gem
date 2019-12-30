@@ -133,6 +133,7 @@ module Ladybug
         end
 
         openstudio_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
+        openstudio_thermal_zone.setName(@hash[:name])
         openstudio_space.setThermalZone(openstudio_thermal_zone)
 
         if @hash[:properties][:energy][:program_type]
