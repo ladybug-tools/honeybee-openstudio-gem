@@ -235,6 +235,7 @@ module Ladybug
 
       def create_space_types
         if @hash[:properties][:energy][:program_types]
+          $programtype_array = []
           @hash[:properties][:energy][:program_types].each do |space_type|
             space_type_object = SpaceType.new(space_type)
             space_type_object.to_openstudio(@openstudio_model)
@@ -242,52 +243,44 @@ module Ladybug
         end
       end 
 
+
+
       def create_rooms
         if @hash[:rooms]
-          #global hash
           $room_array_setpoint = [] 
+          #global hash
           @hash[:rooms].each do |room|
           room_object = Room.new(room)
           openstudio_room = room_object.to_openstudio(@openstudio_model)
           
           if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
-            #adding room to global hash if a programtype is assigned and no setpoints
-            #are assigned. 
             $room_array_setpoint << room
-            #checking whether global hash containing setpoints is non empty.
-            if $programtype_array
-              $programtype_array.each do |programtype|
-              programtype_name = programtype[:name]
-              #stores an aray containing all rooms whose programtype lies in the programtype_array
-              if room_array = $room_array_setpoint.select {|h| h[:properties][:energy][:program_type] = programtype_name}
-                room_array.each do |single_room|
-                  #looping through all rooms in the array to get room name
-                  room_name = single_room[:name]
-                  room_get = @openstudio_model.getSpaceByName(room_name)
-                  unless room_get.empty?
-                    room_object_get = room_get.get
-                  end
-                  thermal_zone = room_object_get.thermalZone()
-                  thermal_zone_object = thermal_zone.get
-                  
-                  #creating thermostat for the programtype setpoint
-                  thermostat_object = SetpointThermostat.new(programtype[:setpoint])
-                  openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
-                  thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-                  
-                  if programtype[:setpoint][:humidification_schedule] or programtype[:setpoint][:dehumidification_schedule]
-                    humidistat_object = ZoneControlHumidistat.new(programtype[:setpoint])
-                    openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-                    thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
-                  end
-                end
-              end
+          end
+        end
+        $room_array_setpoint.each do |single_room|
+          room_name = single_room[:name]
+          room_get = @openstudio_model.getSpaceByName(room_name)
+
+          unless room_get.empty?
+            room_object_get = room_get.get
+            program_type_name = single_room[:properties][:energy][:program_type]
+            thermal_zone = room_object_get.thermalZone()
+            thermal_zone_object = thermal_zone.get
+            program_type_hash = $programtype_array.select{|k| k[:name] == program_type_name.to_s}
+            thermostat_object = SetpointThermostat.new(program_type_hash[0][:setpoint])
+            openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+            thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+            if program_type_hash[0][:setpoint][:humidification_schedule] or program_type_hash[0][:setpoint][:dehumidification_schedule]
+              humidistat_object = ZoneControlHumidistat.new(program_type_hash[0][:setpoint])
+              openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+              thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
             end
-            end
+
           end
         end
       end
       end
+           
       
       def create_orphaned_shades
         if @hash[:orphaned_shades]

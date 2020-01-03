@@ -47,6 +47,14 @@ RSpec.describe Ladybug::EnergyModel do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
+  it 'can load' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/LabBuilding.json')
+    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+
+    openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model = model.to_openstudio_model(openstudio_model)
+  end
 
   it 'can load and validate multi zone office' do
     openstudio_model = OpenStudio::Model::Model.new
@@ -202,4 +210,5 @@ RSpec.describe Ladybug::EnergyModel do
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
   end
+
 end

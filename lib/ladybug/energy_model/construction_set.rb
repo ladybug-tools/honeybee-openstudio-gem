@@ -67,7 +67,6 @@ module Ladybug
         
 
         if @hash[:wall_set]
-            interior_wall = nil
             if @hash[:wall_set][:interior_construction]
                 interior_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:interior_construction])
                 unless interior_wall_object.empty?
@@ -76,7 +75,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultInteriorSurfaceConstructions(interior_surface_construction)
                 end
             end
-            exterior_wall = nil
             if @hash[:wall_set][:exterior_construction]
                 exterior_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:exterior_construction])
                 unless exterior_wall_object.empty?
@@ -85,7 +83,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultExteriorSurfaceConstructions(exterior_surface_construction)
                 end
             end
-            ground_wall = nil
             if @hash[:wall_set][:ground_construction]
                 ground_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:ground_construction])
                 unless ground_wall_object.empty?
@@ -97,7 +94,6 @@ module Ladybug
         end
 
         if @hash[:floor_set]
-            interior_floor = nil
             if @hash[:floor_set][:interior_construction]
                 interior_floor_object = openstudio_model.getConstructionByName(@hash[:floor_set][:interior_construction])
                 unless interior_floor_object.empty?
@@ -106,7 +102,6 @@ module Ladybug
                     openstudio_construction_set.setDefaultInteriorSurfaceConstructions(interior_surface_construction)
                 end
             end
-            exterior_floor = nil
             if @hash[:floor_set][:exterior_construction]
                 exterior_floor_object = openstudio_model.getConstructionByName(@hash[:floor_set][:exterior_construction])
                 unless exterior_floor_object.empty?
@@ -147,7 +142,7 @@ module Ladybug
                 unless ground_ceiling_object.empty?
                     ground_ceiling = ground_ceiling_object.get
                     ground_surface_construction.setRoofCeilingConstruction(ground_ceiling)
-                    openstudio_construction_set.setDefaultExteriorSurfaceConstructions(ground_surface_construction)
+                    openstudio_construction_set.setDefaultGroundContactSurfaceConstructions(ground_surface_construction)
                 end
             end
         end
@@ -158,6 +153,7 @@ module Ladybug
                 unless interior_aperture_object.empty?
                     interior_aperture = interior_aperture_object.get
                     interior_subsurface_construction.setFixedWindowConstruction(interior_aperture)
+                    interior_subsurface_construction.setOperableWindowConstruction(interior_aperture)
                     openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
                 end
             end

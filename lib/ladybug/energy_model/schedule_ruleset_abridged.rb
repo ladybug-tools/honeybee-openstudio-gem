@@ -64,8 +64,16 @@ module Ladybug
           day_schedule_new.setName(day_schedule[:name])
           values_day_new = day_schedule[:values]
           times_day_new = day_schedule[:times]
+          #Remove [0,0] from array at index 0.
+          times_day_new.delete_at(0)
+          #Add [24,1] at index 0
+          times_day_new.unshift([24,1])
           values_day_new.each_index do |i|
-            day_schedule_new.addValue(OpenStudio::Time.new(0,times_day_new[i][0],times_day_new[i][1], 0), values_day_new[i])
+            list = Array(0..i-1)
+            list.push(-1)
+            list.each_with_index do |item, index|
+              day_schedule_new.addValue((OpenStudio::Time.new(0,times_day_new[item+1][0],times_day_new[item+1][1], 0)-(OpenStudio::Time.new(0,0,1,0))), values_day_new[index])
+            end
           end
         end
        

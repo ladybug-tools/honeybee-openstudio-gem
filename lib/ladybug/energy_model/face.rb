@@ -72,7 +72,7 @@ module Ladybug
           end
         end
 
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)        
         openstudio_surface.setName(@hash[:name])
         openstudio_surface.setSurfaceType(@hash[:face_type])
         openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
@@ -129,18 +129,7 @@ module Ladybug
             openstudio_subsurface_door.setSurface(openstudio_surface)
           end
         end
-
-        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-        
-        if @hash[:outdoor_shades]
-          @hash[:outdoor_shades].each do |outdoor_shade|
-            outdoor_shade = Shade.new(outdoor_shade)
-            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model) 
-            openstudio_shading_surface_group.setShadedSurface(openstudio_surface)
-            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
-          end
-        end
-        
+                
         openstudio_surface
       end
     end # Face
