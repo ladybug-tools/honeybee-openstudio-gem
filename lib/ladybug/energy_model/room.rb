@@ -33,6 +33,7 @@ require 'ladybug/energy_model/model_object'
 require 'ladybug/energy_model/face'
 require 'ladybug/energy_model/people_abridged'
 require 'ladybug/energy_model/ideal_air_system'
+require 'ladybug/energy_model/shade'
 
 require 'openstudio'
 
@@ -78,7 +79,22 @@ module Ladybug
           ladybug_face = Face.new(face)
           openstudio_face = ladybug_face.to_openstudio(openstudio_model)
           openstudio_face.setSpace(openstudio_space)
-          
+          #check if face has outdoor shades
+          if face[:outdoor_shades]
+            openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+            face[:outdoor_shades].each do |outdoor_shade|
+              outdoor_shade = Shade.new(outdoor_shade)
+              openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
+              #add shade to shading surface group
+              openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
+              #set shading surface group to space
+
+              #TODO: Assign setShadingSurfaceType
+
+              openstudio_shading_surface_group.setSpace(openstudio_space)
+            end
+          end
+
           #Check if boundary construction for surface is Adiabatic and no construction is
           #assigned, get default interior
           #surface construction for space and assign construction for interior surface
@@ -120,9 +136,9 @@ module Ladybug
           end
         end
       
-        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-        
+
         if @hash[:outdoor_shades]
+          openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
             openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)

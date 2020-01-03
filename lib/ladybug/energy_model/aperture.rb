@@ -30,7 +30,7 @@
 # *******************************************************************************
 
 require 'ladybug/energy_model/model_object'
-require 'ladybug/energy_model/shade'
+require 'ladybug/energy_model/model_object'
 
 require 'openstudio'
 
@@ -77,9 +77,9 @@ module Ladybug
           openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
         end
 
-        openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
 
         if @hash[:outdoor_shades]
+          openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
             openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)

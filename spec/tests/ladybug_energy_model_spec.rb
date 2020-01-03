@@ -131,11 +131,12 @@ RSpec.describe Ladybug::EnergyModel do
   end
 
   it 'can load and validate mutizone model' do
-    openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model_multi_zone_single_family_house.json')
-    
+    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
+    
 
     openstudio_default_construction = openstudio_model.getBuilding.defaultConstructionSet
     expect(openstudio_default_construction.empty?).to be false
