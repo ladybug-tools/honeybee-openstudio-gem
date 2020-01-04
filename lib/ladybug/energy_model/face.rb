@@ -108,15 +108,19 @@ module Ladybug
             end
           end
         end
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type]) unless @hash[:boundary_condition][:type] == 'Surface'
+        unless @hash[:boundary_condition][:type] == 'Surface'
+          openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
+        end
 
         # assign apertures if they exist
         if @hash[:apertures]
           @hash[:apertures].each do |aperture|
             ladybug_aperture = Aperture.new(aperture)
             openstudio_subsurface_aperture = ladybug_aperture.to_openstudio(openstudio_model)
-            if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
-              openstudio_subsurface_aperture.setSubSurfaceType('Skylight')
+            if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor'
+              if @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
+                openstudio_subsurface_aperture.setSubSurfaceType('Skylight')
+              end
             end
             openstudio_subsurface_aperture.setSurface(openstudio_surface)
           end
