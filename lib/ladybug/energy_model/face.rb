@@ -58,26 +58,29 @@ module Ladybug
         nil
       end
 
-      def create_openstudio_object(openstudio_model)       
+      def create_openstudio_object(openstudio_model)
+        # create the openstudio surface
         openstudio_vertices = OpenStudio::Point3dVector.new
         @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
+        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)        
+        openstudio_surface.setName(@hash[:name])
+        openstudio_surface.setSurfaceType(@hash[:face_type])
+
+        # assign the construction if it is present
         if @hash[:properties][:energy][:construction]
           construction_name = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_name)
           unless construction.empty?
             openstudio_construction = construction.get
+            openstudio_surface.setConstruction(openstudio_construction)
           end
         end
-
-        openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)        
-        openstudio_surface.setName(@hash[:name])
-        openstudio_surface.setSurfaceType(@hash[:face_type])
-        openstudio_surface.setConstruction(openstudio_construction) if openstudio_construction
+        
+        # assign the boundary condition
         boundary_condition = (@hash[:boundary_condition][:type])
-       
         case boundary_condition
         when 'Outdoors'
           if @hash[:boundary_condition][:sun_exposure] == true
@@ -97,7 +100,7 @@ module Ladybug
           end
         when 'Surface'
           if @hash[:boundary_condition][:boundary_condition_objects][0]
-            #get adjacent surface by name from openstudio model
+            # get adjacent surface by name from openstudio model
             surface_object = openstudio_model.getSurfaceByName(@hash[:boundary_condition][:boundary_condition_objects][0])
             unless surface_object.empty?
               surface = surface_object.get
@@ -105,13 +108,13 @@ module Ladybug
             end
           end
         end
-
         openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type]) unless @hash[:boundary_condition][:type] == 'Surface'
 
+        # assign apertures if they exist
         if @hash[:apertures]
           @hash[:apertures].each do |aperture|
-            aperture = Aperture.new(aperture)
-            openstudio_subsurface_aperture = aperture.to_openstudio(openstudio_model)
+            ladybug_aperture = Aperture.new(aperture)
+            openstudio_subsurface_aperture = ladybug_aperture.to_openstudio(openstudio_model)
             if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
               openstudio_subsurface_aperture.setSubSurfaceType('Skylight')
             end
@@ -119,6 +122,7 @@ module Ladybug
           end
         end
 
+        # assign doors if they exist
         if @hash[:doors]
           @hash[:doors].each do |door|
             door = Door.new(door)

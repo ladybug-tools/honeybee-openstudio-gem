@@ -55,27 +55,31 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
+        # create the OpenStudio door object
         openstudio_vertices = OpenStudio::Point3dVector.new
         @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
+        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+        openstudio_subsurface.setName(@hash[:name])
+
+        # assign the construction if it exists
         if @hash[:properties][:energy][:construction]
           construction_name = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_name)
           unless construction.empty?
             openstudio_construction = construction.get
+            openstudio_subsurface.setConstruction(openstudio_construction)
           end
         end
 
-        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_subsurface.setName(@hash[:name])
-        openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
-        
+        # assign the bondary condition object if it's a Surface
         if @hash[:boundary_condition][:type] == 'Surface'
           openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
         end
 
+        # assign the is_glass property
         if @hash[:is_glass] == false
           openstudio_subsurface.setSubSurfaceType('Door')
         else
