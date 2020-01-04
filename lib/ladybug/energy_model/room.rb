@@ -137,37 +137,10 @@ module Ladybug
 
           # assign default interior construciton if Adiabatic and no assigned construction 
           if face[:boundary_condition][:type] == 'Adiabatic' && !face[:properties][:energy][:construction]
-            openstudio_surfaces = openstudio_space.surfaces.each do |surface|
-              # get default construction for space
-              construction_set_space = openstudio_space.defaultConstructionSet
-              unless construction_set_space.empty?
-                construction_set_space_object = construction_set_space.get
-                default_interior_surface_construction_set = construction_set_space_object.defaultInteriorSurfaceConstructions
-                unless default_interior_surface_construction_set.empty?
-                  # get default interior surface construction
-                  default_interior_surface_construction_set = default_interior_surface_construction_set.get
-                  case surface.surfaceType
-                  when 'Wall'
-                    interior_wall_construction = default_interior_surface_construction_set.wallConstruction
-                    unless interior_wall_construction.empty?
-                      interior_wall_construction = interior_wall_construction.get
-                      # set interior surface construction  
-                      surface.setConstruction(interior_wall_construction)
-                    end
-                  when 'RoofCeiling'
-                    interior_roofceiling_construction = default_interior_surface_construction_set.roofCeilingConstruction
-                    unless interior_roofceiling_construction.empty?
-                      interior_roofceiling_construction = interior_roofceiling_construction.get 
-                      surface.setConstruction(interior_roofceiling_construction)
-                    end
-                  when 'Floor'
-                    interior_floor_construction = default_interior_surface_construction_set.floorConstruction
-                    unless interior_floor_construction.empty?
-                      interior_floor_construction = interior_floor_construction.get
-                      surface.setConstruction(interior_floor_construction)
-                    end
-                  end
-                end
+            if face[:face_type] != 'Wall'
+              interior_construction = closest_interior_construction(openstudio_model, openstudio_space, face[:face_type])
+              unless interior_construction.nil?
+                openstudio_surface.setConstruction(interior_construction)
               end
             end
           end
@@ -276,6 +249,50 @@ module Ladybug
 
         openstudio_space
       end
+    
+      # method to check for the closest-assigned interior ceiling or floor construction
+      def closest_interior_construction(openstudio_model, openstudio_space, surface_type)
+        # first check the space-assigned construction set
+        construction_set_space = openstudio_space.defaultConstructionSet
+        unless construction_set_space.empty?
+          construction_set_space_object = construction_set_space.get
+          default_interior_surface_construction_set = construction_set_space_object.defaultInteriorSurfaceConstructions
+          unless default_interior_surface_construction_set.empty?
+            default_interior_surface_construction_set = default_interior_surface_construction_set.get
+            if surface_type == 'RoofCeiling'
+              interior_construction = default_interior_surface_construction_set.roofCeilingConstruction
+            else
+              interior_construction = default_interior_surface_construction_set.floorConstruction
+            end
+            unless interior_construction.empty?
+              return interior_construction.get
+            end
+          end
+        end
+        # if no construction was found, check the building-assigned construction set
+        building = openstudio_model.building
+        unless building.empty?
+          building = building.get
+          construction_set_bldg = building.defaultConstructionSet
+          unless construction_set_bldg.empty?
+            construction_set_bldg_object = construction_set_bldg.get
+            default_interior_surface_construction_set = construction_set_bldg_object.defaultInteriorSurfaceConstructions
+            unless default_interior_surface_construction_set.empty?
+              default_interior_surface_construction_set = default_interior_surface_construction_set.get
+              if surface_type == 'RoofCeiling'
+                interior_construction = default_interior_surface_construction_set.roofCeilingConstruction
+              else
+                interior_construction = default_interior_surface_construction_set.floorConstruction
+              end
+              unless interior_construction.empty?
+                return interior_construction.get
+              end
+            end
+          end
+        end
+        nil  # no construction was found
+      end
+
 
     end #Room
   end #EnergyModel
