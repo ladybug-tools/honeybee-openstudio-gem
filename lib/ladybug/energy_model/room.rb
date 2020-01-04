@@ -59,62 +59,99 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
+        # create the space and thermal zone
+        openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
+        openstudio_space.setName(@hash[:name])
+        openstudio_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
+        openstudio_thermal_zone.setName(@hash[:name])
+        openstudio_space.setThermalZone(openstudio_thermal_zone)
+
+        # assign the programtype
+        if @hash[:properties][:energy][:program_type]
+          space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
+          unless space_type.empty?
+            space_type_object = space_type.get
+            openstudio_space.setSpaceType(space_type_object)
+          end
+        end
+
+        # assign the constructionset
         if @hash[:properties][:energy][:construction_set]
           construction_set_name = @hash[:properties][:energy][:construction_set]
           # gets default construction set assigned to room from openstudio_model
           construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
           unless construction_set.empty?
             default_construction_set = construction_set.get
+            openstudio_space.setDefaultConstructionSet(default_construction_set) 
+          end
+        end
+
+        # assign the hvac system
+        if @hash[:properties][:energy][:hvac]
+          system_type = @hash[:properties][:energy][:hvac][:type]
+          case system_type
+          when 'IdealAirSystem'
+            ideal_air_system = IdealAirSystem.new(@hash[:properties][:energy][:hvac])
+            openstudio_ideal_air_system = ideal_air_system.to_openstudio(openstudio_model)
+            openstudio_ideal_air_system.addToThermalZone(openstudio_thermal_zone)
           end
         end
         
-        openstudio_space = OpenStudio::Model::Space.new(openstudio_model)
-        openstudio_space.setName(@hash[:name])   
-        if default_construction_set
-          openstudio_space.setDefaultConstructionSet(default_construction_set) 
-        end
-        
-        #loop through all faces in the hash and create ladybug face object.
+        # assign all of the faces to the room
         @hash[:faces].each do |face|
           ladybug_face = Face.new(face)
-          openstudio_face = ladybug_face.to_openstudio(openstudio_model)
-          openstudio_face.setSpace(openstudio_space)
-          #check if face has outdoor shades
+          openstudio_surface = ladybug_face.to_openstudio(openstudio_model)
+          openstudio_surface.setSpace(openstudio_space)
+
+          # assign face-level shades if they exist
           if face[:outdoor_shades]
             openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+            openstudio_shading_surface_group.setShadedSurface(openstudio_surface)
+            openstudio_shading_surface_group.setSpace(openstudio_space)
+            openstudio_shading_surface_group.setShadingSurfaceType("Space")
             face[:outdoor_shades].each do |outdoor_shade|
-              outdoor_shade = Shade.new(outdoor_shade)
-              openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-              #add shade to shading surface group
+              ladybug_outdoor_shade = Shade.new(outdoor_shade)
+              openstudio_outdoor_shade = ladybug_outdoor_shade.to_openstudio(openstudio_model)
               openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
-              #set shading surface group to space
-
-              #TODO: Assign setShadingSurfaceType
-
-              openstudio_shading_surface_group.setSpace(openstudio_space)
             end
           end
 
-          #Check if boundary construction for surface is Adiabatic and no construction is
-          #assigned, get default interior
-          #surface construction for space and assign construction for interior surface
-          #type to surface.
+          # assign aperture-level shades if they exist
+          if face[:apertures]
+            face[:apertures].each do |aperture|
+              if aperture[:outdoor_shades]
+                unless openstudio_shading_surface_group
+                  openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+                  openstudio_shading_surface_group.setShadedSurface(openstudio_surface)
+                  openstudio_shading_surface_group.setSpace(openstudio_space)
+                  openstudio_shading_surface_group.setShadingSurfaceType("Space")
+                end
+                aperture[:outdoor_shades].each do |outdoor_shade|
+                  ladybug_outdoor_shade = Shade.new(outdoor_shade)
+                  openstudio_outdoor_shade = ladybug_outdoor_shade.to_openstudio(openstudio_model)
+                  openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
+                end
+              end
+            end
+          end
+
+          # assign default interior construciton if Adiabatic and no assigned construction 
           if face[:boundary_condition][:type] == 'Adiabatic' && !face[:properties][:energy][:construction]
             openstudio_surfaces = openstudio_space.surfaces.each do |surface|
-              #get default construction for space
+              # get default construction for space
               construction_set_space = openstudio_space.defaultConstructionSet
               unless construction_set_space.empty?
                 construction_set_space_object = construction_set_space.get
                 default_interior_surface_construction_set = construction_set_space_object.defaultInteriorSurfaceConstructions
                 unless default_interior_surface_construction_set.empty?
-                  #get default interior surface construction
+                  # get default interior surface construction
                   default_interior_surface_construction_set = default_interior_surface_construction_set.get
                   case surface.surfaceType
                   when 'Wall'
                     interior_wall_construction = default_interior_surface_construction_set.wallConstruction
                     unless interior_wall_construction.empty?
                       interior_wall_construction = interior_wall_construction.get
-                      #set interior surface construction  
+                      # set interior surface construction  
                       surface.setConstruction(interior_wall_construction)
                     end
                   when 'RoofCeiling'
@@ -135,39 +172,26 @@ module Ladybug
             end
           end
         end
-      
 
+        # assign any room-level outdoor shades if they exist
         if @hash[:outdoor_shades]
           openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+          openstudio_shading_surface_group.setSpace(openstudio_space)
+          openstudio_shading_surface_group.setShadingSurfaceType("Space")
           @hash[:outdoor_shades].each do |outdoor_shade|
             outdoor_shade = Shade.new(outdoor_shade)
             openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_shading_surface_group.setSpace(openstudio_space)
-            #set shading surface group for outdoor shade
             openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
           end
         end
 
-        openstudio_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
-        openstudio_thermal_zone.setName(@hash[:name])
-        openstudio_space.setThermalZone(openstudio_thermal_zone)
-
-        if @hash[:properties][:energy][:program_type]
-          space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
-          unless space_type.empty?
-            space_type_object = space_type.get
-          end
-          openstudio_space.setSpaceType(space_type_object)
-        end
-
-        #check whether people object is specified for room
+        #check whether there are any load objects on the room overriding the programtype
         if @hash[:properties][:energy][:people]
           people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:name])
           unless people.empty?
             people_object = people.get
             people_object.setSpace(openstudio_space)
-          else 
-            #create new people object if doesnt exist in model
+          else
             people_space = PeopleAbridged.new(@hash[:properties][:energy][:people])
             openstudio_people_space = people_space.to_openstudio(openstudio_model)
             openstudio_people_space.setSpace(openstudio_space)
@@ -247,16 +271,6 @@ module Ladybug
             setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
             openstudio_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
             openstudio_thermal_zone.setZoneControlHumidistat(openstudio_setpoint_humidistat_space)
-          end
-        end
-
-        if @hash[:properties][:energy][:hvac]
-          system_type = @hash[:properties][:energy][:hvac][:type]
-          case system_type
-          when 'IdealAirSystem'
-            ideal_air_system = IdealAirSystem.new(@hash[:properties][:energy][:hvac])
-            openstudio_ideal_air_system = ideal_air_system.to_openstudio(openstudio_model)
-            openstudio_ideal_air_system.addToThermalZone(openstudio_thermal_zone)
           end
         end
 

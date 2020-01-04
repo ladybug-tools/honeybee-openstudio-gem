@@ -56,38 +56,31 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
+        # create the openstudio subsurface
         openstudio_vertices = OpenStudio::Point3dVector.new
         @hash[:geometry][:boundary].each do |vertex|
           openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
         end
 
+        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+        openstudio_subsurface.setName(@hash[:name])
+
+        # assign the construction if it exists
         if @hash[:properties][:energy][:construction]
           construction_name = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_name)
           unless construction.empty?
             openstudio_construction = construction.get
+            openstudio_subsurface.setConstruction(openstudio_construction)
           end
         end
-
-        openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
-        openstudio_subsurface.setName(@hash[:name])
-        openstudio_subsurface.setConstruction(openstudio_construction) if openstudio_construction
         
+        # assign the bondary condition object if it's a Surface
         if @hash[:boundary_condition][:type] == 'Surface'
           openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
         end
 
-
-        if @hash[:outdoor_shades]
-          openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-          @hash[:outdoor_shades].each do |outdoor_shade|
-            outdoor_shade = Shade.new(outdoor_shade)
-            openstudio_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-            openstudio_shading_surface_group.setShadedSubSurface(openstudio_subsurface)
-            openstudio_outdoor_shade.setShadingSurfaceGroup(openstudio_shading_surface_group)
-          end
-        end
-
+        # assign the operable property
         if @hash[:is_operable] == false
           openstudio_subsurface.setSubSurfaceType('FixedWindow')
         else 
