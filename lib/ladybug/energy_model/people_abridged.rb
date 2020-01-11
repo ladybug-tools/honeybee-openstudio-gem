@@ -59,7 +59,7 @@ module Ladybug
         if @hash[:radiant_fraction]
           openstudio_people_definition.setFractionRadiant(@hash[:radiant_fraction])
         else
-          openstudio_people_definition.setFractionRadiant(@@schema[:definitions][:PeopleAbridged][:radiant_fraction][:default])
+          openstudio_people_definition.setFractionRadiant(@@schema[:components][:schemas][:PeopleAbridged][:radiant_fraction][:default])
         end
         if @hash[:latent_fraction]
           if @hash[:latent_fraction] == 'autocalculate'

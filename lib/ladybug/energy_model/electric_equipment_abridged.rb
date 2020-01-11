@@ -59,17 +59,17 @@ module Ladybug
         if @hash[:radiant_fraction]
           openstudio_electric_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
         else 
-          openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:radiant_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:radiant_fraction][:default])
         end
         if @hash[:latent_fraction]
           openstudio_electric_equipment_definition.setFractionLatent(@hash[:latent_fraction])
         else
-          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:latent_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLatent(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:latent_fraction][:default])
         end
         if @hash[:lost_fraction]
           openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
         else 
-          openstudio_electric_equipment_definition.setFractionLost(@@schema[:definitions][:ElectricEquipmentAbridged][:properties][:lost_fraction][:default])
+          openstudio_electric_equipment_definition.setFractionLost(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:lost_fraction][:default])
         end
 
         openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_electric_equipment_definition)

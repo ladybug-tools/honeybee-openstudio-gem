@@ -44,21 +44,21 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:type][:enum]
-        result[:solar_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:solar_transmittance][:default]
-        result[:solar_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:solar_reflectance][:default]
-        result[:visible_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_transmittance][:default]
-        result[:visible_reflectance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:visible_reflectance][:default]
-        result[:emissivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:emissivity][:default]
-        result[:infrared_transmittance] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:infrared_transmittance][:default]
-        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:thickness][:default]
-        result[:conductivity] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:conductivity][:default]
-        result[:distance_to_glass] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:distance_to_glass][:default]
-        result[:top_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:top_opening_multiplier][:default]
-        result[:bottom_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:bottom_opening_multiplier][:default].to_f
-        result[:left_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:left_opening_multiplier][:default]
-        result[:right_opening_multiplier] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:right_opening_multiplier][:default]
-        result[:airflow_permeability] = @@schema[:definitions][:EnergyWindowMaterialShade][:properties][:airflow_permeability][:default]
+        result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:type][:enum]
+        result[:solar_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:solar_transmittance][:default]
+        result[:solar_reflectance] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:solar_reflectance][:default]
+        result[:visible_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:visible_transmittance][:default]
+        result[:visible_reflectance] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:visible_reflectance][:default]
+        result[:emissivity] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:emissivity][:default]
+        result[:infrared_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:infrared_transmittance][:default]
+        result[:thickness] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:thickness][:default]
+        result[:conductivity] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:conductivity][:default]
+        result[:distance_to_glass] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:distance_to_glass][:default]
+        result[:top_opening_multiplier] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:top_opening_multiplier][:default]
+        result[:bottom_opening_multiplier] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:bottom_opening_multiplier][:default].to_f
+        result[:left_opening_multiplier] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:left_opening_multiplier][:default]
+        result[:right_opening_multiplier] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:right_opening_multiplier][:default]
+        result[:airflow_permeability] = @@schema[:components][:schemas][:EnergyWindowMaterialShade][:properties][:airflow_permeability][:default]
         result
       end
 
@@ -74,72 +74,72 @@ module Ladybug
         if @hash[:solar_transmittance]
           openstudio_material_shade.setSolarTransmittance(@hash[:solar_transmittance])
         else
-          openstudio_material_shade.setSolarTransmittance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default])
+          openstudio_material_shade.setSolarTransmittance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default])
         end
         if @hash[:solar_reflectance]
           openstudio_material_shade.setSolarReflectance(@hash[:solar_reflectance])
         else
-          openstudio_material_shade.setSolarReflectance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default])
+          openstudio_material_shade.setSolarReflectance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default])
         end
         if @hash[:visible_transmittance]
           openstudio_material_shade.setVisibleTransmittance(@hash[:visible_transmittance])
         else
-          openstudio_material_shade.setVisibleTransmittance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default])
+          openstudio_material_shade.setVisibleTransmittance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default])
         end
         if @hash[:visible_reflectance]
           openstudio_material_shade.setVisibleReflectance(@hash[:visible_reflectance])
         else
-          openstudio_material_shade.setVisibleReflectance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default])
+          openstudio_material_shade.setVisibleReflectance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default])
         end
         if @hash[:emissivity]
           openstudio_material_shade.setThermalHemisphericalEmissivity(@hash[:emissivity])
         else
-          openstudio_material_shade.setThermalHemisphericalEmissivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:emissivity][:default])
+          openstudio_material_shade.setThermalHemisphericalEmissivity(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:emissivity][:default])
         end
         if @hash[:infrared_transmittance]
           openstudio_material_shade.setThermalTransmittance(@hash[:infrared_transmittance])
         else
-          openstudio_material_shade.setThermalTransmittance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default])
+          openstudio_material_shade.setThermalTransmittance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default])
         end
         if @hash[:thickness]
           openstudio_material_shade.setThickness(@hash[:thickness])
         else
-          openstudio_material_shade.setThickness(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:thickness][:default])
+          openstudio_material_shade.setThickness(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:thickness][:default])
         end
         if @hash[:conductivity]
           openstudio_material_shade.setConductivity(@hash[:conductivity])
         else
-          openstudio_material_shade.setConductivity(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:conductivity][:default])
+          openstudio_material_shade.setConductivity(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:conductivity][:default])
         end
         if @hash[:distance_to_glass]
           openstudio_material_shade.setShadetoGlassDistance(@hash[:distance_to_glass])
         else
-          openstudio_material_shade.setShadetoGlassDistance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:shade_toglass_distance][:default])
+          openstudio_material_shade.setShadetoGlassDistance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:shade_toglass_distance][:default])
         end
         if @hash[:top_opening_multiplier]
           openstudio_material_shade.setTopOpeningMultiplier(@hash[:top_opening_multiplier])
         else
-          openstudio_material_shade.setTopOpeningMultiplier(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:top_opening_multiplier][:default])
+          openstudio_material_shade.setTopOpeningMultiplier(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:top_opening_multiplier][:default])
         end
         if @hash[:bottom_opening_multiplier]
           openstudio_material_shade.setBottomOpeningMultiplier(@hash[:bottom_opening_multiplier].to_f)
         else
-          openstudio_material_shade.setSolarReflectance(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:bottom_opening_multiplier][:default].to_f)
+          openstudio_material_shade.setSolarReflectance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:bottom_opening_multiplier][:default].to_f)
         end
         if @hash[:left_opening_multiplier]
           openstudio_material_shade.setLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
         else
-          openstudio_material_shade.setLeftSideOpeningMultiplier(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:left_opening_multiplier][:default])
+          openstudio_material_shade.setLeftSideOpeningMultiplier(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:left_opening_multiplier][:default])
         end
         if @hash[:right_opening_multiplier]
           openstudio_material_shade.setRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
         else
-          openstudio_material_shade.setRightSideOpeningMultiplier(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:right_opening_multiplier][:default])
+          openstudio_material_shade.setRightSideOpeningMultiplier(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:right_opening_multiplier][:default])
         end
         if @hash[:airflow_permeability]
           openstudio_material_shade.setAirflowPermeability(@hash[:airflow_permeability])
         else
-          openstudio_material_shade.setAirflowPermeability(@@schema[:definitions][EnergyWindowMaterialGlazing][:properties][:airflow_permeability][:default])
+          openstudio_material_shade.setAirflowPermeability(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:airflow_permeability][:default])
         end
         openstudio_material_shade
       end

@@ -60,17 +60,17 @@ module Ladybug
         if @hash[:constant_coefficient]
           openstudio_infiltration.setConstantTermCoefficient(@hash[:constant_coefficient])
         else 
-          openstudio_infiltration.setConstantTermCoefficient(@@schema[:definitions][:InfiltrationAbridged][:properties][:constant_coefficient][:default])
+          openstudio_infiltration.setConstantTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:constant_coefficient][:default])
         end
         if @hash[:temperature_coefficient]
           openstudio_infiltration.setTemperatureTermCoefficient(@hash[:temperature_coefficient])
         else
-          openstudio_infiltration.setTemperatureTermCoefficient(@@schema[:definitions][:InfiltrationAbridged][:properties][:temperature_coefficient][:default])
+          openstudio_infiltration.setTemperatureTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:temperature_coefficient][:default])
         end
         if @hash[:velocity_coefficient]
           openstudio_infiltration.setVelocityTermCoefficient(@hash[:velocity_coefficient])
         else 
-          openstudio_infiltration.setVelocityTermCoefficient(@@schema[:definitions][:InfiltrationAbridged][:properties][:velocity_coefficient][:default])
+          openstudio_infiltration.setVelocityTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:velocity_coefficient][:default])
         end
         infiltration_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
         unless infiltration_schedule.empty?

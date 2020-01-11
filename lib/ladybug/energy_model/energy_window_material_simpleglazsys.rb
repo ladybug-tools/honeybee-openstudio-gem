@@ -44,7 +44,7 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
+        result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
         result
       end
 
@@ -62,7 +62,7 @@ module Ladybug
         if @hash[:vt]
           openstudio_simple_glazing.setVisibleTransmittance(@hash[:vt])
         else
-          openstudio_simple_glazing.setVisibleTransmittance(@@schema[:definitions][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
+          openstudio_simple_glazing.setVisibleTransmittance(@@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
         end
         openstudio_simple_glazing
       end

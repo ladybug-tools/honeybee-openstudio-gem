@@ -39,7 +39,7 @@ module Ladybug
       @@schema = nil
 
       def schema_file
-        File.join(files_dir, 'simulationparameter_schema.json')
+        File.join(files_dir, 'simulation-parameter.json')
       end
 
     end

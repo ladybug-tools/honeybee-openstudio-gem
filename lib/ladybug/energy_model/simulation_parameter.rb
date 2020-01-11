@@ -98,104 +98,179 @@ module Ladybug
       end
 
       def create_openstudio_objects
+        # set defaults for the Model's SimulationControl object
+        os_sim_control = @openstudio_model.getSimulationControl
+        os_sim_control.setDoZoneSizingCalculation(
+          @@schema[:components][:schemas][:SimulationControl][:properties][:do_zone_sizing][:default])
+        os_sim_control.setDoSystemSizingCalculation(
+          @@schema[:components][:schemas][:SimulationControl][:properties][:do_system_sizing][:default])
+        os_sim_control.setDoPlantSizingCalculation(
+          @@schema[:components][:schemas][:SimulationControl][:properties][:do_plant_sizing][:default])
+        os_sim_control.setRunSimulationforWeatherFileRunPeriods(
+          @@schema[:components][:schemas][:SimulationControl][:properties][:run_for_run_periods][:default])
+        os_sim_control.setRunSimulationforSizingPeriods(
+          @@schema[:components][:schemas][:SimulationControl][:properties][:run_for_sizing_periods][:default])
+        os_sim_control.setSolarDistribution(
+          @@schema[:components][:schemas][:ShadowCalculation][:properties][:solar_distribution][:default])
+
+        # override any SimulationControl defaults with lodaded JSON
         if @hash[:simulation_control]
-          #Gets or creates new SimulationControl object from the OpenStudio model
-          openstudio_simulation_control = @openstudio_model.getSimulationControl
           unless @hash[:simulation_control][:do_zone_sizing].nil?
-            openstudio_simulation_control.setDoZoneSizingCalculation(@hash[:simulation_control][:do_zone_sizing])
-          else 
-            openstudio_simulation_control.setDoZoneSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_zone_sizing][:default])
+            os_sim_control.setDoZoneSizingCalculation(@hash[:simulation_control][:do_zone_sizing])
           end
           unless @hash[:simulation_control][:do_system_sizing].nil?
-            openstudio_simulation_control.setDoSystemSizingCalculation(@hash[:simulation_control][:do_system_sizing])
-          else
-            openstudio_simulation_control.setDoSystemSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_system_sizing][:default])
+            os_sim_control.setDoSystemSizingCalculation(@hash[:simulation_control][:do_system_sizing])            
           end
           unless @hash[:simulation_control][:do_plant_sizing].nil?
-            openstudio_simulation_control.setDoPlantSizingCalculation(@hash[:simulation_control][:do_plant_sizing])
-          else
-            openstudio_simulation_control.setDoPlantSizingCalculation(@@schema[:definitions][:SimulationControl][:properties][:do_plant_sizing][:default])
+            os_sim_control.setDoPlantSizingCalculation(@hash[:simulation_control][:do_plant_sizing])
           end
           unless @hash[:simulation_control][:run_for_run_periods].nil?
-            openstudio_simulation_control.setRunSimulationforWeatherFileRunPeriods(@hash[:simulation_control][:run_for_run_periods])
-          else
-            openstudio_simulation_control.setRunSimulationforWeatherFileRunPeriods(@@schema[:definitions][:SimulationControl][:properties][:run_for_run_periods][:default])
+            os_sim_control.setRunSimulationforWeatherFileRunPeriods(@hash[:simulation_control][:run_for_run_periods])
           end
           unless @hash[:simulation_control][:run_for_sizing_periods].nil?
-            openstudio_simulation_control.setRunSimulationforSizingPeriods(@hash[:simulation_control][:run_for_sizing_periods])
-          else
-            openstudio_simulation_control.setRunSimulationforSizingPeriods(@@schema[:definitions][:SimulationControl][:properties][:run_for_sizing_periods][:default])
-          end
-          #TODO: Check if solar distribution can be added to simulationcontrol in the schema 
-          if @hash[:shadow_calculation][:solar_distribution]
-            openstudio_simulation_control.setSolarDistribution(@hash[:shadow_calculation][:solar_distribution])
-          else
-            openstudio_simulation_control.setSolarDistribution(@@schema[:definitions][:ShadowCalculation][:properties][:solar_distribution][:default])
+            os_sim_control.setRunSimulationforSizingPeriods(@hash[:simulation_control][:run_for_sizing_periods])
           end
         end
+
+        # set defaults for the Model's ShadowCalculation object
+        os_shadow_calc = @openstudio_model.getShadowCalculation
+        os_shadow_calc.setCalculationFrequency(
+          @@schema[:components][:schemas][:ShadowCalculation][:properties][:calculation_frequency][:default])
+        os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(
+          @@schema[:components][:schemas][:ShadowCalculation][:properties][:maximum_figures][:default])
+        os_shadow_calc.setCalculationMethod(
+          @@schema[:components][:schemas][:ShadowCalculation][:properties][:calculation_method][:default])
+
+        # override any ShadowCalculation defaults with lodaded JSON
         if @hash[:shadow_calculation]
-          openstudio_shadow_calculation = @openstudio_model.getShadowCalculation
           if @hash[:shadow_calculation][:calculation_frequency]
-            openstudio_shadow_calculation.setCalculationFrequency(@hash[:shadow_calculation][:calculation_frequency])
-          else
-            openstudio_shadow_calculation.setCalculationFrequency(@@schema[:definitions][:ShadowCalculation][:properties][:calculation_frequency][:default])
+            os_shadow_calc.setCalculationFrequency(@hash[:shadow_calculation][:calculation_frequency])
           end
           if @hash[:shadow_calculation][:maximum_figures]
-            openstudio_shadow_calculation.setMaximumFiguresInShadowOverlapCalculations(@hash[:shadow_calculation][:maximum_figures])
-          else
-            openstudio_shadow_calculation.setMaximumFiguresInShadowOverlapCalculations(@@schema[:definitions][:ShadowCalculation][:properties][:maximum_figures][:default])
+            os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(@hash[:shadow_calculation][:maximum_figures])
           end
           if @hash[:shadow_calculation][:calculation_method]
-            openstudio_shadow_calculation.setCalculationMethod(@hash[:shadow_calculation][:calculation_method])
-          else
-            openstudio_shadow_calculation.setCalculationMethod(@@schema[:definitions][:ShadowCalculation][:properties][:calculation_method][:default])
+            os_shadow_calc.setCalculationMethod(@hash[:shadow_calculation][:calculation_method])
+          end
+          if @hash[:shadow_calculation][:solar_distribution]
+            os_sim_control.setSolarDistribution(@hash[:shadow_calculation][:solar_distribution])
           end
         end
+        
+        # set defaults for the Model's SizingParameter object
+        os_sizing_par = @openstudio_model.getSizingParameters
+        os_sizing_par.setHeatingSizingFactor(
+          @@schema[:components][:schemas][:SizingParameter][:properties][:heating_factor][:default])
+        os_sizing_par.setCoolingSizingFactor(
+          @@schema[:components][:schemas][:SizingParameter][:properties][:cooling_factor][:default])
+
+        # override any SizingParameter defaults with lodaded JSON
         if @hash[:sizing_parameter]
-          openstudio_sizing_parameter = @openstudio_model.getSizingParameters
           if @hash[:sizing_parameter][:heating_factor]
-            openstudio_sizing_parameter.setHeatingSizingFactor(@hash[:sizing_parameter][:heating_factor])
-          else
-            openstudio_sizing_parameter.setHeatingSizingFactor(@@schema[:definitions][:SizingParameter][:properties][:heating_factor][:default])
+            os_sizing_par.setHeatingSizingFactor(@hash[:sizing_parameter][:heating_factor])
           end
           if @hash[:sizing_parameter][:cooling_factor]
-            openstudio_sizing_parameter.setCoolingSizingFactor(@hash[:sizing_parameter][:cooling_factor])
-          else
-            openstudio_sizing_parameter.setCoolingSizingFactor(@@schema[:definitions][:SizingParameter][:properties][:cooling_factor][:default])
+            os_sizing_par.setCoolingSizingFactor(@hash[:sizing_parameter][:cooling_factor])
           end
-        end
-        if @hash[:output]
-          if @hash[:output][:outputs]
-            @hash[:output][:outputs].each do |output|
-              openstudio_output = OpenStudio::Model::OutputVariable.new(output, @openstudio_model)
-              if @hash[:output][:reporting_frequency]
-                openstudio_output.setReportingFrequency(@hash[:output][:reporting_frequency])
-              else
-                openstudio_output.setReportingFrequency(@@schema[:definitions][:SimulationOutput][:properties][:reporting_frequency][:default])
+          # set any design days
+          if @hash[:sizing_parameter][:design_days]
+            @hash[:sizing_parameter][:design_days].each do |des_day|
+              os_des_day = OpenStudio::Model::DesignDay.new(@openstudio_model)
+              os_des_day.setName(des_day[:name])
+              os_des_day.setDayType(des_day[:day_type])
+              os_des_day.setMaximumDryBulbTemperature(des_day[:dry_bulb_condition][:dry_bulb_max])
+              os_des_day.setDailyDryBulbTemperatureRange(des_day[:dry_bulb_condition][:dry_bulb_range])
+              os_des_day.setHumidityIndicatingType(des_day[:humidity_condition][:humidity_type])
+              os_des_day.setHumidityIndicatingConditionsAtMaximumDryBulb(des_day[:humidity_condition][:humidity_value])
+              if des_day[:humidity_condition][:barometric_pressure]
+                os_des_day.setBarometricPressure(des_day[:humidity_condition][:barometric_pressure])
+              end
+              if des_day[:humidity_condition][:rain]
+                os_des_day.setRainIndicator(des_day[:humidity_condition][:rain])
+              end
+              if des_day[:humidity_condition][:snow_on_ground]
+                os_des_day.setSnowIndicator(des_day[:humidity_condition][:snow_on_ground])
+              end
+              os_des_day.setWindSpeed(des_day[:wind_condition][:wind_speed])
+              if des_day[:wind_condition][:wind_direction]
+                os_des_day.setWindDirection(des_day[:wind_condition][:wind_direction])
+              end
+              os_des_day.setMonth(des_day[:sky_condition][:date][0])
+              os_des_day.setDayOfMonth(des_day[:sky_condition][:date][1])
+              os_des_day.setSolarModelIndicator(des_day[:sky_condition][:type])
+              if des_day[:sky_condition][:daylight_savings]
+                os_des_day.setDaylightSavingTimeIndicator(des_day[:sky_condition][:daylight_savings])
+              end
+              if des_day[:sky_condition][:type] == "ASHRAEClearSky"
+                os_des_day.setSkyClearness(des_day[:sky_condition][:clearness])
+              end
+              if des_day[:sky_condition][:type] == "ASHRAETau"
+                os_des_day.setAshraeTaub(des_day[:sky_condition][:tau_b])
+                os_des_day.setAshraeTaud(des_day[:sky_condition][:tau_d])
               end
             end
           end
         end
-        if @hash[:run_period]
-          openstudio_runperiod = @openstudio_model.getRunPeriod
-          openstudio_runperiod.setBeginMonth(@hash[:run_period][:start_date][:month])
-          openstudio_runperiod.setBeginDayOfMonth(@hash[:run_period][:start_date][:day])
-          openstudio_runperiod.setEndMonth(@hash[:run_period][:end_date][:month])
-          openstudio_runperiod.setEndDayOfMonth(@hash[:run_period][:end_date][:day])
-          if @hash[:run_period][:daylight_savings_time]
-            openstudio_daylight_savings = OpenStudio::Model::RunPeriodControlDaylightSavingTime.new(@openstudio_model)
-            year_description = openstudio_model.getYearDescription
-            start_date = year_description.makeDate(@hash[:run_period][:daylight_savings_time][:start_date][:month], @hash[:run_period][:daylight_savings_time][:start_date][:day])
-            openstudio_daylight_savings.setStartDate(start_date)
-            end_date = year_description.makeDate(@hash[:run_period][:daylight_savings_time][:end_date][:month], @hash[:run_period][:daylight_savings_time][:end_date][:day])
-            openstudio_daylight_savings.setEndDate(end_date)
+
+        # set Outputs for the simulation
+        if @hash[:output]
+          if @hash[:output][:outputs]
+            @hash[:output][:outputs].each do |output|
+              os_output = OpenStudio::Model::OutputVariable.new(output, @openstudio_model)
+              if @hash[:output][:reporting_frequency]
+                os_output.setReportingFrequency(@hash[:output][:reporting_frequency])
+              else
+                os_output.setReportingFrequency(
+                  @@schema[:components][:schemas][:SimulationOutput][:properties][:reporting_frequency][:default])
+              end
+            end
           end
-        end  
+        end
+
+        # set defaults for the year description
+        year_description = @openstudio_model.getYearDescription
+        year_description.setDayofWeekforStartDay(
+          @@schema[:components][:schemas][:RunPeriod][:properties][:start_day_of_week][:default])
+
+        # set up the simulation RunPeriod
+        if @hash[:run_period]
+          # set the leap year
+          if @hash[:run_period][:leap_year]
+            year_description.setIsLeapYear(@hash[:run_period][:leap_year])
+          end
+
+          # set the start day of the week
+          if @hash[:run_period][:start_day_of_week]
+            year_description.setDayofWeekforStartDay(@hash[:run_period][:start_day_of_week])
+          end
+
+          # set the run preiod start and end dates
+          openstudio_runperiod = @openstudio_model.getRunPeriod
+          openstudio_runperiod.setBeginMonth(@hash[:run_period][:start_date][0])
+          openstudio_runperiod.setBeginDayOfMonth(@hash[:run_period][:start_date][1])
+          openstudio_runperiod.setEndMonth(@hash[:run_period][:end_date][0])
+          openstudio_runperiod.setEndDayOfMonth(@hash[:run_period][:end_date][1])
+
+          # set the daylight savings time
+          if @hash[:run_period][:daylight_saving_time]
+            os_dl_saving = @openstudio_model.getRunPeriodControlDaylightSavingTime
+            os_dl_saving.setStartDate(
+              OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:start_date][0]),
+              @hash[:run_period][:daylight_saving_time][:start_date][1])
+              os_dl_saving.setEndDate(
+                OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:end_date][0]),
+                @hash[:run_period][:daylight_saving_time][:end_date][1])
+          end
+
+          # TODO: set the holidays once they are available in OpenStudio SDK
+        end
+
+        # set the simulation timestep
+        os_timestep = @openstudio_model.getTimestep
         if @hash[:timestep]
-          openstudio_timestep = @openstudio_model.getTimestep
-          openstudio_timestep.setNumberOfTimestepsPerHour(@hash[:timestep])
+          os_timestep.setNumberOfTimestepsPerHour(@hash[:timestep])
         else
-          openstudio_timestep.setNumberOfTimestepsPerHour(@@schema[:properties][:timestep][:default])
+          os_timestep.setNumberOfTimestepsPerHour(@@schema[:properties][:timestep][:default])
         end
       end
 

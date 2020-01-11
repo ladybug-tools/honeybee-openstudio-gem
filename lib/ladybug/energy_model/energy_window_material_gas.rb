@@ -44,9 +44,9 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:type][:enum]
-        result[:gastype] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:gas_type][:default]
-        result[:thickness] = @@schema[:definitions][:EnergyWindowMaterialGas][:properties][:thickness][:default]
+        result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:type][:enum]
+        result[:gastype] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:gas_type][:default]
+        result[:thickness] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:thickness][:default]
         result
       end
 

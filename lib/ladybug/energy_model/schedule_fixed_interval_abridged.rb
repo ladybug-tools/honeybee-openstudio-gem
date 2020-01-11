@@ -54,49 +54,59 @@ module Ladybug
         nil
       end
     
-      def create_openstudio_object(openstudio_model)    
-        openstudio_schedule_fixed_interval = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
-        openstudio_schedule_fixed_interval.setName(@hash[:name])
-        openstudio_schedule_fixed_interval.setStartMonth(@hash[:start_date][:month])
-        openstudio_schedule_fixed_interval.setStartDay(@hash[:start_date][:day])
-        unless @hash[:interpolate].nil?
-          openstudio_schedule_fixed_interval.setInterpolatetoTimestep(@hash[:interpolate])
+      def create_openstudio_object(openstudio_model)
+        # create the new schedule
+        os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
+        os_fi_schedule.setName(@hash[:name])
+
+        # assign start date
+        if @hash[:start_date]
+          os_fi_schedule.setStartMonth(@hash[:start_date][0])
+          os_fi_schedule.setStartDay(@hash[:start_date][1])
         else
-          openstudio_schedule_fixed_interval.setInterpolatetoTimestep(@@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:interpolate][:default])
+          os_fi_schedule.setStartMonth(
+            @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:start_date][:default][0])
+          os_fi_schedule.setStartDay(
+            @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:start_date][:default][1])
+        end
+
+        # assign the interpolate value
+        unless @hash[:interpolate].nil?
+          os_fi_schedule.setInterpolatetoTimestep(@hash[:interpolate])
+        else
+          os_fi_schedule.setInterpolatetoTimestep(
+            @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:interpolate][:default])
         end
         
+        # assign the schedule type limit
         if @hash[:schedule_type_limit]
           schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
           unless schedule_type_limit.empty?
             schedule_type_limit_object = schedule_type_limit.get
-            openstudio_schedule_fixed_interval.setScheduleTypeLimits(schedule_type_limit_object)
+            os_fi_schedule.setScheduleTypeLimits(schedule_type_limit_object)
           end
         end
         
+        # assign the timestep
         if @hash[:timestep]
           timestep = @hash[:timestep]
           interval_length = 60/timestep
-          openstudio_schedule_fixed_interval.setIntervalLength(interval_length)
+          os_fi_schedule.setIntervalLength(interval_length)
         else
-          timestep = @@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:timestep][:default]
+          timestep = @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:timestep][:default]
           interval_length = 60/timestep
-          openstudio_schedule_fixed_interval.setIntervalLength(interval_length)
+          os_fi_schedule.setIntervalLength(interval_length)
         end
         openstudio_interval_length = OpenStudio::Time.new(0,0,interval_length) 
 
+        # assign the values as a timeseries
         year_description = openstudio_model.getYearDescription
         start_date = year_description.makeDate(@hash[:start_date][:month], @hash[:start_date][:day])
         values = @hash[:values]
         timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '') 
-        openstudio_schedule_fixed_interval.setTimeSeries(timeseries)
+        os_fi_schedule.setTimeSeries(timeseries)
 
-        unless @hash[:is_leap_year].nil?
-          year_description.setIsLeapYear(@hash[:is_leap_year])
-        else
-          year_description.setIsLeapYear(@@schema[:definitions][:ScheduleFixedIntervalAbridged][:properties][:is_leap_year][:default])
-        end
-
-        openstudio_schedule_fixed_interval
+        os_fi_schedule
       end
       
     end #ScheduleFixedIntervalAbridged

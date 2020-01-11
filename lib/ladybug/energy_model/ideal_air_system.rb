@@ -74,17 +74,17 @@ module Ladybug
         if @hash[:economizer_type]
           openstudio_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
         else
-          openstudio_ideal_air.setOutdoorAirEconomizerType(@@schema[:definitions][:IdealAirSystem][:properties][:economizer_type][:default])
+          openstudio_ideal_air.setOutdoorAirEconomizerType(@@schema[:components][:schemas][:IdealAirSystem][:properties][:economizer_type][:default])
         end
         if @hash[:sensible_heat_recovery]
           openstudio_ideal_air.setSensibleHeatRecoveryEffectiveness(@hash[:sensible_heat_recovery])
         else
-          openstudio_ideal_air.setSensibleHeatRecoveryEffectiveness(@@schema[:definitions][:IdealAirSystem][:properties][:sensible_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
+          openstudio_ideal_air.setSensibleHeatRecoveryEffectiveness(@@schema[:components][:schemas][:IdealAirSystem][:properties][:sensible_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
         end
         if @hash[:latent_heat_recovery]
           openstudio_ideal_air.setLatentHeatRecoveryEffectiveness(@hash[:latent_heat_recovery])
         else
-          openstudio_ideal_air.setLatentHeatRecoveryEffectiveness(@@schema[:definitions][:IdealAirSystem][:properties][:latent_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
+          openstudio_ideal_air.setLatentHeatRecoveryEffectiveness(@@schema[:components][:schemas][:IdealAirSystem][:properties][:latent_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
         end
         if @hash[:demand_control_ventilation]
           if @hash[:demand_control_ventilation] == true

@@ -67,12 +67,12 @@ module Ladybug
         if @hash[:numeric_type]
           openstudio_schedule_type_limit.setNumericType(@hash[:numeric_type])
         else
-          openstudio_schedule_type_limit.setNumericType(@@schema[:definitions][:ScheduleTypeLimit][:properties][:numeric_type])
+          openstudio_schedule_type_limit.setNumericType(@@schema[:components][:schemas][:ScheduleTypeLimit][:properties][:numeric_type])
         end
         if @hash[:unit_type]
           openstudio_schedule_type_limit.setUnitType(@hash[:unit_type])
         else 
-          openstudio_schedule_type_limit.setUnitType(@@schema[:definitions][:ScheduleTypeLimit][:properties][:unit_type])
+          openstudio_schedule_type_limit.setUnitType(@@schema[:components][:schemas][:ScheduleTypeLimit][:properties][:unit_type])
         end
         
         openstudio_schedule_type_limit

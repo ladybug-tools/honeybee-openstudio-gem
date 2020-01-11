@@ -59,12 +59,12 @@ module Ladybug
         if @hash[:air_changes_per_hour]
           openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
         else
-          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:definitions][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
+          openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:components][:schemas][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
         end
         if @hash[:flow_per_zone]
           openstudio_ventilation.setOutdoorAirFlowRate(@hash[:flow_per_zone])
         else
-          openstudio_ventilation.setOutdoorAirFlowRate(@@schema[:definitions][:VentilationAbridged][:properties][:flow_per_zone][:default])
+          openstudio_ventilation.setOutdoorAirFlowRate(@@schema[:components][:schemas][:VentilationAbridged][:properties][:flow_per_zone][:default])
         end
         if @hash[:flow_per_person]
           openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
