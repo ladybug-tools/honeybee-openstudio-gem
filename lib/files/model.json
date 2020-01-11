@@ -1,0 +1,3635 @@
+{
+  "openapi": "3.0.2",
+  "servers": [],
+  "info": {
+    "description": "This is the documentation for Honeybee model schema.",
+    "version": "1.3.0",
+    "title": "Honeybee Model Schema",
+    "contact": {
+      "name": "Ladybug Tools",
+      "email": "info@ladybug.tools",
+      "url": "https://github.com/ladybug-tools/honeybee-core"
+    },
+    "x-logo": {
+      "url": "https://www.ladybug.tools/assets/img/honeybee-large.png",
+      "altText": "Honeybee logo"
+    },
+    "license": {
+      "name": "BSD",
+      "url": "https://github.com/ladybug-tools-in2/honeybee-schema/blob/master/LICENSE"
+    }
+  },
+  "externalDocs": {
+    "description": "See how to use these schema in action.",
+    "url": "https://api.pollination.cloud/"
+  },
+  "tags": [
+    {
+      "name": "adiabatic_model",
+      "x-displayName": "Adiabatic",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Adiabatic\" />\n"
+    },
+    {
+      "name": "aperture_model",
+      "x-displayName": "Aperture",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Aperture\" />\n"
+    },
+    {
+      "name": "apertureenergypropertiesabridged_model",
+      "x-displayName": "ApertureEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "aperturepropertiesabridged_model",
+      "x-displayName": "AperturePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AperturePropertiesAbridged\" />\n"
+    },
+    {
+      "name": "aperturesetabridged_model",
+      "x-displayName": "ApertureSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureSetAbridged\" />\n"
+    },
+    {
+      "name": "constructionsetabridged_model",
+      "x-displayName": "ConstructionSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ConstructionSetAbridged\" />\n"
+    },
+    {
+      "name": "door_model",
+      "x-displayName": "Door",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Door\" />\n"
+    },
+    {
+      "name": "doorenergypropertiesabridged_model",
+      "x-displayName": "DoorEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "doorpropertiesabridged_model",
+      "x-displayName": "DoorPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "doorsetabridged_model",
+      "x-displayName": "DoorSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorSetAbridged\" />\n"
+    },
+    {
+      "name": "electricequipmentabridged_model",
+      "x-displayName": "ElectricEquipmentAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ElectricEquipmentAbridged\" />\n"
+    },
+    {
+      "name": "energymaterial_model",
+      "x-displayName": "EnergyMaterial",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterial\" />\n"
+    },
+    {
+      "name": "energymaterialnomass_model",
+      "x-displayName": "EnergyMaterialNoMass",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterialNoMass\" />\n"
+    },
+    {
+      "name": "energywindowmaterialblind_model",
+      "x-displayName": "EnergyWindowMaterialBlind",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialBlind\" />\n"
+    },
+    {
+      "name": "energywindowmaterialgas_model",
+      "x-displayName": "EnergyWindowMaterialGas",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGas\" />\n"
+    },
+    {
+      "name": "energywindowmaterialgascustom_model",
+      "x-displayName": "EnergyWindowMaterialGasCustom",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGasCustom\" />\n"
+    },
+    {
+      "name": "energywindowmaterialgasmixture_model",
+      "x-displayName": "EnergyWindowMaterialGasMixture",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGasMixture\" />\n"
+    },
+    {
+      "name": "energywindowmaterialglazing_model",
+      "x-displayName": "EnergyWindowMaterialGlazing",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGlazing\" />\n"
+    },
+    {
+      "name": "energywindowmaterialshade_model",
+      "x-displayName": "EnergyWindowMaterialShade",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialShade\" />\n"
+    },
+    {
+      "name": "energywindowmaterialsimpleglazsys_model",
+      "x-displayName": "EnergyWindowMaterialSimpleGlazSys",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialSimpleGlazSys\" />\n"
+    },
+    {
+      "name": "face_model",
+      "x-displayName": "Face",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Face\" />\n"
+    },
+    {
+      "name": "face3d_model",
+      "x-displayName": "Face3D",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Face3D\" />\n"
+    },
+    {
+      "name": "faceenergypropertiesabridged_model",
+      "x-displayName": "FaceEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "facepropertiesabridged_model",
+      "x-displayName": "FacePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FacePropertiesAbridged\" />\n"
+    },
+    {
+      "name": "floorsetabridged_model",
+      "x-displayName": "FloorSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorSetAbridged\" />\n"
+    },
+    {
+      "name": "gasequipmentabridged_model",
+      "x-displayName": "GasEquipmentAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasEquipmentAbridged\" />\n"
+    },
+    {
+      "name": "ground_model",
+      "x-displayName": "Ground",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Ground\" />\n"
+    },
+    {
+      "name": "idealairsystem_model",
+      "x-displayName": "IdealAirSystem",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IdealAirSystem\" />\n"
+    },
+    {
+      "name": "infiltrationabridged_model",
+      "x-displayName": "InfiltrationAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/InfiltrationAbridged\" />\n"
+    },
+    {
+      "name": "lightingabridged_model",
+      "x-displayName": "LightingAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/LightingAbridged\" />\n"
+    },
+    {
+      "name": "model_model",
+      "x-displayName": "Model",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Model\" />\n"
+    },
+    {
+      "name": "modelenergyproperties_model",
+      "x-displayName": "ModelEnergyProperties",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModelEnergyProperties\" />\n"
+    },
+    {
+      "name": "modelproperties_model",
+      "x-displayName": "ModelProperties",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModelProperties\" />\n"
+    },
+    {
+      "name": "opaqueconstructionabridged_model",
+      "x-displayName": "OpaqueConstructionAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/OpaqueConstructionAbridged\" />\n"
+    },
+    {
+      "name": "outdoors_model",
+      "x-displayName": "Outdoors",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Outdoors\" />\n"
+    },
+    {
+      "name": "peopleabridged_model",
+      "x-displayName": "PeopleAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PeopleAbridged\" />\n"
+    },
+    {
+      "name": "plane_model",
+      "x-displayName": "Plane",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Plane\" />\n"
+    },
+    {
+      "name": "programtypeabridged_model",
+      "x-displayName": "ProgramTypeAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ProgramTypeAbridged\" />\n"
+    },
+    {
+      "name": "roofceilingsetabridged_model",
+      "x-displayName": "RoofCeilingSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoofCeilingSetAbridged\" />\n"
+    },
+    {
+      "name": "room_model",
+      "x-displayName": "Room",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Room\" />\n"
+    },
+    {
+      "name": "roomenergypropertiesabridged_model",
+      "x-displayName": "RoomEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoomEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "roompropertiesabridged_model",
+      "x-displayName": "RoomPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoomPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "scheduleday_model",
+      "x-displayName": "ScheduleDay",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleDay\" />\n"
+    },
+    {
+      "name": "schedulefixedintervalabridged_model",
+      "x-displayName": "ScheduleFixedIntervalAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleFixedIntervalAbridged\" />\n"
+    },
+    {
+      "name": "scheduleruleabridged_model",
+      "x-displayName": "ScheduleRuleAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleRuleAbridged\" />\n"
+    },
+    {
+      "name": "schedulerulesetabridged_model",
+      "x-displayName": "ScheduleRulesetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleRulesetAbridged\" />\n"
+    },
+    {
+      "name": "scheduletypelimit_model",
+      "x-displayName": "ScheduleTypeLimit",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleTypeLimit\" />\n"
+    },
+    {
+      "name": "setpointabridged_model",
+      "x-displayName": "SetpointAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SetpointAbridged\" />\n"
+    },
+    {
+      "name": "shade_model",
+      "x-displayName": "Shade",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Shade\" />\n"
+    },
+    {
+      "name": "shadeconstruction_model",
+      "x-displayName": "ShadeConstruction",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeConstruction\" />\n"
+    },
+    {
+      "name": "shadeenergypropertiesabridged_model",
+      "x-displayName": "ShadeEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "shadepropertiesabridged_model",
+      "x-displayName": "ShadePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadePropertiesAbridged\" />\n"
+    },
+    {
+      "name": "surface_model",
+      "x-displayName": "Surface",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Surface\" />\n"
+    },
+    {
+      "name": "ventilationabridged_model",
+      "x-displayName": "VentilationAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationAbridged\" />\n"
+    },
+    {
+      "name": "wallsetabridged_model",
+      "x-displayName": "WallSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallSetAbridged\" />\n"
+    },
+    {
+      "name": "windowconstructionabridged_model",
+      "x-displayName": "WindowConstructionAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionAbridged\" />\n"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Models",
+      "tags": [
+        "adiabatic_model",
+        "aperture_model",
+        "apertureenergypropertiesabridged_model",
+        "aperturepropertiesabridged_model",
+        "aperturesetabridged_model",
+        "constructionsetabridged_model",
+        "door_model",
+        "doorenergypropertiesabridged_model",
+        "doorpropertiesabridged_model",
+        "doorsetabridged_model",
+        "electricequipmentabridged_model",
+        "energymaterial_model",
+        "energymaterialnomass_model",
+        "energywindowmaterialblind_model",
+        "energywindowmaterialgas_model",
+        "energywindowmaterialgascustom_model",
+        "energywindowmaterialgasmixture_model",
+        "energywindowmaterialglazing_model",
+        "energywindowmaterialshade_model",
+        "energywindowmaterialsimpleglazsys_model",
+        "face3d_model",
+        "face_model",
+        "faceenergypropertiesabridged_model",
+        "facepropertiesabridged_model",
+        "floorsetabridged_model",
+        "gasequipmentabridged_model",
+        "ground_model",
+        "idealairsystem_model",
+        "infiltrationabridged_model",
+        "lightingabridged_model",
+        "model_model",
+        "modelenergyproperties_model",
+        "modelproperties_model",
+        "opaqueconstructionabridged_model",
+        "outdoors_model",
+        "peopleabridged_model",
+        "plane_model",
+        "programtypeabridged_model",
+        "roofceilingsetabridged_model",
+        "room_model",
+        "roomenergypropertiesabridged_model",
+        "roompropertiesabridged_model",
+        "scheduleday_model",
+        "schedulefixedintervalabridged_model",
+        "scheduleruleabridged_model",
+        "schedulerulesetabridged_model",
+        "scheduletypelimit_model",
+        "setpointabridged_model",
+        "shade_model",
+        "shadeconstruction_model",
+        "shadeenergypropertiesabridged_model",
+        "shadepropertiesabridged_model",
+        "surface_model",
+        "ventilationabridged_model",
+        "wallsetabridged_model",
+        "windowconstructionabridged_model"
+      ]
+    }
+  ],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Plane": {
+        "title": "Plane",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Plane",
+            "type": "string",
+            "pattern": "^Plane$"
+          },
+          "n": {
+            "title": "N",
+            "description": "Plane normal as 3 (x, y, z) values.",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "o": {
+            "title": "O",
+            "description": "Plane origin as 3 (x, y, z) values",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "x": {
+            "title": "X",
+            "description": "Plane x-axis as 3 (x, y, z) values",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "n",
+          "o"
+        ]
+      },
+      "Face3D": {
+        "title": "Face3D",
+        "description": "A single planar face in 3D space.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Face3D",
+            "type": "string",
+            "pattern": "^Face3D$"
+          },
+          "boundary": {
+            "title": "Boundary",
+            "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "holes": {
+            "title": "Holes",
+            "description": "Optional list of lists with one list for each hole in the face.Each hole should be a list of at least 3 points and each point a list of 3 (x, y, z) values. If None, it will be assumed that there are no holes in the face.",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "plane": {
+            "title": "Plane",
+            "description": "Optional Plane indicating the plane in which the face exists.If None, the plane will usually be derived from the boundary points.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plane"
+              }
+            ]
+          }
+        },
+        "required": [
+          "boundary"
+        ]
+      },
+      "Ground": {
+        "title": "Ground",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Ground",
+            "type": "string",
+            "pattern": "^Ground$"
+          }
+        }
+      },
+      "Outdoors": {
+        "title": "Outdoors",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Outdoors",
+            "type": "string",
+            "pattern": "^Outdoors$"
+          },
+          "sun_exposure": {
+            "title": "Sun Exposure",
+            "description": "A boolean noting whether the boundary is exposed to sun.",
+            "default": true,
+            "type": "boolean"
+          },
+          "wind_exposure": {
+            "title": "Wind Exposure",
+            "description": "A boolean noting whether the boundary is exposed to wind.",
+            "default": true,
+            "type": "boolean"
+          },
+          "view_factor": {
+            "title": "View Factor",
+            "description": "A number for the view factor to the ground. This can also be the word \"autocalculate\" to have the view factor automatically calculated.",
+            "default": "autocalculate",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          }
+        }
+      },
+      "Adiabatic": {
+        "title": "Adiabatic",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Adiabatic",
+            "type": "string",
+            "pattern": "^Adiabatic$"
+          }
+        }
+      },
+      "Surface": {
+        "title": "Surface",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Surface",
+            "type": "string",
+            "pattern": "^Surface$"
+          },
+          "boundary_condition_objects": {
+            "title": "Boundary Condition Objects",
+            "description": "A list of up to 3 object names that are adjacent to this one. The first object is always the one that is immediately adjacet and is of the same object type (Face, Aperture, Door). When this boundary condition is applied to a Face, the second object in the tuple will be the parent Room of the adjacent object. When the boundary condition is applied to a sub-face (Door or Aperture), the second object will be the parent Face of the adjacent sub-face and the third object will be the parent Room of the adjacent sub-face.",
+            "min_tems": 2,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "boundary_condition_objects"
+        ]
+      },
+      "ShadeEnergyPropertiesAbridged": {
+        "title": "ShadeEnergyPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ShadeEnergyPropertiesAbridged",
+            "type": "string",
+            "pattern": "^ShadeEnergyPropertiesAbridged$"
+          },
+          "transmittance_schedule": {
+            "title": "Transmittance Schedule",
+            "description": "Name of a ShadeConstruction to set the reflectance and specularity of the Shade. If None, the construction is set by theparent Room construction_set or the Model global_construction_set.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Name of a schedule to set the transmittance of the shade, which can vary throughout the simulation. If None, the shade will be completely opauqe.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "ShadePropertiesAbridged": {
+        "title": "ShadePropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ShadePropertiesAbridged",
+            "type": "string",
+            "pattern": "^ShadePropertiesAbridged$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/ShadeEnergyPropertiesAbridged"
+          }
+        }
+      },
+      "Shade": {
+        "title": "Shade",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Shade",
+            "type": "string",
+            "pattern": "^Shade$"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "Planar Face3D for the geometry.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadePropertiesAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "geometry",
+          "properties"
+        ]
+      },
+      "ApertureEnergyPropertiesAbridged": {
+        "title": "ApertureEnergyPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureEnergyPropertiesAbridged",
+            "type": "string",
+            "pattern": "^ApertureEnergyPropertiesAbridged$"
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Name of a WindowConstruction for the aperture. If None, the construction is set by the parent Room construction_set or the Model global_construction_set.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "AperturePropertiesAbridged": {
+        "title": "AperturePropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "AperturePropertiesAbridged",
+            "type": "string",
+            "pattern": "^AperturePropertiesAbridged$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/ApertureEnergyPropertiesAbridged"
+          }
+        }
+      },
+      "Aperture": {
+        "title": "Aperture",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Aperture",
+            "type": "string",
+            "pattern": "^Aperture$"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "Planar Face3D for the geometry.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "boundary_condition": {
+            "title": "Boundary Condition",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Outdoors"
+              },
+              {
+                "$ref": "#/components/schemas/Surface"
+              }
+            ]
+          },
+          "is_operable": {
+            "title": "Is Operable",
+            "description": "Boolean to note whether the Aperture can be opened for ventilation.",
+            "default": false,
+            "type": "boolean"
+          },
+          "indoor_shades": {
+            "title": "Indoor Shades",
+            "description": "Shades assigned to the interior side of this object (eg. window sill, light shelf).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "outdoor_shades": {
+            "title": "Outdoor Shades",
+            "description": "Shades assigned to the exterior side of this object (eg. mullions, louvers).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AperturePropertiesAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "geometry",
+          "boundary_condition",
+          "properties"
+        ]
+      },
+      "DoorEnergyPropertiesAbridged": {
+        "title": "DoorEnergyPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "DoorEnergyPropertiesAbridged",
+            "type": "string",
+            "pattern": "^DoorEnergyPropertiesAbridged$"
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Name of an OpaqueConstruction or WindowConstruction for the door. Note that the host door must have the is_glass property set to True to assign a WindowConstruction. If None, the construction is set by theparent Room construction_set or the Model global_construction_set.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "DoorPropertiesAbridged": {
+        "title": "DoorPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "DoorPropertiesAbridged",
+            "type": "string",
+            "pattern": "^DoorPropertiesAbridged$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/DoorEnergyPropertiesAbridged"
+          }
+        }
+      },
+      "Door": {
+        "title": "Door",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Door",
+            "type": "string",
+            "pattern": "^Door$"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "Planar Face3D for the geometry.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "boundary_condition": {
+            "title": "Boundary Condition",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Outdoors"
+              },
+              {
+                "$ref": "#/components/schemas/Surface"
+              }
+            ]
+          },
+          "is_glass": {
+            "title": "Is Glass",
+            "description": "Boolean to note whether this object is a glass door as opposed to an opaque door.",
+            "default": false,
+            "type": "boolean"
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorPropertiesAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "geometry",
+          "boundary_condition",
+          "properties"
+        ]
+      },
+      "FaceEnergyPropertiesAbridged": {
+        "title": "FaceEnergyPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "FaceEnergyPropertiesAbridged",
+            "type": "string",
+            "pattern": "^FaceEnergyPropertiesAbridged$"
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Name of an OpaqueConstruction for the Face. If None, the construction is set by the parent Room construction_set or the Model global_construction_set.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "FacePropertiesAbridged": {
+        "title": "FacePropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "FacePropertiesAbridged",
+            "type": "string",
+            "pattern": "^FacePropertiesAbridged$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/FaceEnergyPropertiesAbridged"
+          }
+        }
+      },
+      "Face": {
+        "title": "Face",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Face",
+            "type": "string",
+            "pattern": "^Face$"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "Planar Face3D for the geometry.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "face_type": {
+            "title": "Face Type",
+            "enum": [
+              "Wall",
+              "Floor",
+              "RoofCeiling",
+              "AirWall"
+            ],
+            "type": "string"
+          },
+          "boundary_condition": {
+            "title": "Boundary Condition",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Ground"
+              },
+              {
+                "$ref": "#/components/schemas/Outdoors"
+              },
+              {
+                "$ref": "#/components/schemas/Adiabatic"
+              },
+              {
+                "$ref": "#/components/schemas/Surface"
+              }
+            ]
+          },
+          "apertures": {
+            "title": "Apertures",
+            "description": "Apertures assigned to this Face. Should be coplanar with this Face and completely within the boundary of the Face to be valid.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Aperture"
+            }
+          },
+          "doors": {
+            "title": "Doors",
+            "description": "Doors assigned to this Face. Should be coplanar with this Face and completely within the boundary of the Face to be valid.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Door"
+            }
+          },
+          "indoor_shades": {
+            "title": "Indoor Shades",
+            "description": "Shades assigned to the interior side of this object.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "outdoor_shades": {
+            "title": "Outdoor Shades",
+            "description": "Shades assigned to the exterior side of this object (eg. balcony, overhang).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FacePropertiesAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "geometry",
+          "face_type",
+          "boundary_condition",
+          "properties"
+        ]
+      },
+      "IdealAirSystem": {
+        "title": "IdealAirSystem",
+        "description": "Provides a model for an ideal HVAC system.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "IdealAirSystem",
+            "type": "string",
+            "pattern": "^IdealAirSystem$"
+          },
+          "heating_limit": {
+            "title": "Heating Limit",
+            "default": "autosize",
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "cooling_limit": {
+            "title": "Cooling Limit",
+            "default": "autosize",
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "default": "DifferentialDryBulb",
+            "enum": [
+              "NoEconomizer",
+              "DifferentialDryBulb",
+              "DifferentialEnthalpy"
+            ],
+            "type": "string"
+          },
+          "demand_control_ventilation": {
+            "title": "Demand Control Ventilation",
+            "default": false,
+            "type": "boolean"
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          }
+        }
+      },
+      "PeopleAbridged": {
+        "title": "PeopleAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "PeopleAbridged",
+            "type": "string",
+            "pattern": "^PeopleAbridged$"
+          },
+          "people_per_area": {
+            "title": "People Per Area",
+            "description": "People per floor area expressed as [people/m2]",
+            "minimum": 0,
+            "type": "number"
+          },
+          "occupancy_schedule": {
+            "title": "Occupancy Schedule",
+            "description": "Name of a schedule for the occupancy over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the people_per_area to yield a complete occupancy profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "activity_schedule": {
+            "title": "Activity Schedule",
+            "description": "Name of a schedule for the activity of the occupants over the course of the year. The type of this schedule should be Power and the values of the schedule equal to the number of Watts given off by an individual person in the room.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "radiant_fraction": {
+            "title": "Radiant Fraction",
+            "description": "The radiant fraction of sensible heat released by people. The defaultvalue is 0.30.",
+            "default": 0.3,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "Number for the latent fraction of heat gain due to people or simply the word \"autocalculate\".",
+            "default": "autocalculate",
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "people_per_area",
+          "occupancy_schedule",
+          "activity_schedule"
+        ]
+      },
+      "LightingAbridged": {
+        "title": "LightingAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "LightingAbridged",
+            "type": "string",
+            "pattern": "^LightingAbridged$"
+          },
+          "watts_per_area": {
+            "title": "Watts Per Area",
+            "description": "Lighting per floor area as [W/m2].",
+            "minimum": 0,
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Name of the schedule for the use of lights over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the watts_per_area to yield a complete lighting profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "visible_fraction": {
+            "title": "Visible Fraction",
+            "description": "The fraction of heat from lights that goes into the zone as visible (short-wave) radiation. The default value is `0.25`.",
+            "default": 0.25,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "radiant_fraction": {
+            "title": "Radiant Fraction",
+            "description": "The fraction of heat from lights that is long-wave radiation. Default value is `0.32`.",
+            "default": 0.32,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "return_air_fraction": {
+            "title": "Return Air Fraction",
+            "description": "The fraction of the heat from lights that goes into the zone return air. Default value is `0`.",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "watts_per_area",
+          "schedule"
+        ]
+      },
+      "ElectricEquipmentAbridged": {
+        "title": "ElectricEquipmentAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "watts_per_area": {
+            "title": "Watts Per Area",
+            "description": "Equipment level per floor area as [W/m2].",
+            "minimum": 0,
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Name of the schedule for the use of equipment over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the watts_per_area to yield a complete equipment profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "radiant_fraction": {
+            "title": "Radiant Fraction",
+            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "default": 0,
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "lost_fraction": {
+            "title": "Lost Fraction",
+            "description": "Number for the amount of \u201clost\u201d heat being given off by equipment. The default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ElectricEquipmentAbridged",
+            "type": "string",
+            "pattern": "^ElectricEquipmentAbridged$"
+          }
+        },
+        "required": [
+          "name",
+          "watts_per_area",
+          "schedule"
+        ]
+      },
+      "GasEquipmentAbridged": {
+        "title": "GasEquipmentAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "watts_per_area": {
+            "title": "Watts Per Area",
+            "description": "Equipment level per floor area as [W/m2].",
+            "minimum": 0,
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Name of the schedule for the use of equipment over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the watts_per_area to yield a complete equipment profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "radiant_fraction": {
+            "title": "Radiant Fraction",
+            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "default": 0,
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "lost_fraction": {
+            "title": "Lost Fraction",
+            "description": "Number for the amount of \u201clost\u201d heat being given off by equipment. The default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "GasEquipmentAbridged",
+            "type": "string",
+            "pattern": "^GasEquipmentAbridged$"
+          }
+        },
+        "required": [
+          "name",
+          "watts_per_area",
+          "schedule"
+        ]
+      },
+      "InfiltrationAbridged": {
+        "title": "InfiltrationAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "InfiltrationAbridged",
+            "type": "string",
+            "pattern": "^InfiltrationAbridged$"
+          },
+          "flow_per_exterior_area": {
+            "title": "Flow Per Exterior Area",
+            "description": "Number for the infiltration per exterior surface area in m3/s-m2.",
+            "minimum": 0,
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Name of the schedule for the infiltration over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the flow_per_exterior_area to yield a complete infiltration profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "constant_coefficient": {
+            "title": "Constant Coefficient",
+            "default": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "temperature_coefficient": {
+            "title": "Temperature Coefficient",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "velocity_coefficient": {
+            "title": "Velocity Coefficient",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "flow_per_exterior_area",
+          "schedule"
+        ]
+      },
+      "VentilationAbridged": {
+        "title": "VentilationAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "VentilationAbridged",
+            "type": "string",
+            "pattern": "^VentilationAbridged$"
+          },
+          "flow_per_person": {
+            "title": "Flow Per Person",
+            "description": "Intensity of ventilation in[] m3/s per person]. Note that setting this value does not mean that ventilation is varied based on real-time occupancy but rather that the design level of ventilation is determined using this value and the People object of the Room.",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "flow_per_area": {
+            "title": "Flow Per Area",
+            "description": "Intensity of ventilation in [m3/s per m2 of floor area].",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "air_changes_per_hour": {
+            "title": "Air Changes Per Hour",
+            "description": "Intensity of ventilation in air changes per hour (ACH) for the entire Room.",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "flow_per_zone": {
+            "title": "Flow Per Zone",
+            "description": "Intensity of ventilation in m3/s for the entire Room.",
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Name of the schedule for the ventilation over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the total design flow rate (determined from the sum of the other 4 fields) to yield a complete ventilation profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SetpointAbridged": {
+        "title": "SetpointAbridged",
+        "description": "Used to specify information about the setpoint schedule.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "SetpointAbridged",
+            "type": "string",
+            "pattern": "^SetpointAbridged$"
+          },
+          "cooling_schedule": {
+            "title": "Cooling Schedule",
+            "description": "Name of the schedule for the cooling setpoint. The values in this schedule should be temperature in [C].",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "heating_schedule": {
+            "title": "Heating Schedule",
+            "description": "Name of the schedule for the heating setpoint. The values in this schedule should be temperature in [C].",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "humidification_schedule": {
+            "title": "Humidification Schedule",
+            "description": "Name of the schedule for the humidification setpoint. The values in this schedule should be in [%].",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "dehumidification_schedule": {
+            "title": "Dehumidification Schedule",
+            "description": "Name of the schedule for the dehumidification setpoint. The values in this schedule should be in [%].",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "cooling_schedule",
+          "heating_schedule"
+        ]
+      },
+      "RoomEnergyPropertiesAbridged": {
+        "title": "RoomEnergyPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RoomEnergyPropertiesAbridged",
+            "type": "string",
+            "pattern": "^RoomEnergyPropertiesAbridged$"
+          },
+          "construction_set": {
+            "title": "Construction Set",
+            "description": "Name of a ConstructionSet to specify all default constructions for the Faces, Apertures, and Doors of the Room. If None, the Room will use the Model global_construction_set.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "program_type": {
+            "title": "Program Type",
+            "description": "Name of a ProgramType to specify all default schedules and loads for the Room. If None, the Room will have no loads or setpoints.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "hvac": {
+            "$ref": "#/components/schemas/IdealAirSystem"
+          },
+          "people": {
+            "title": "People",
+            "description": "People object to describe the occupancy of the Room.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PeopleAbridged"
+              }
+            ]
+          },
+          "lighting": {
+            "title": "Lighting",
+            "description": "Lighting object to describe the lighting usage of the Room.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LightingAbridged"
+              }
+            ]
+          },
+          "electric_equipment": {
+            "title": "Electric Equipment",
+            "description": "ElectricEquipment object to describe the equipment usage.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ElectricEquipmentAbridged"
+              }
+            ]
+          },
+          "gas_equipment": {
+            "title": "Gas Equipment",
+            "description": "GasEquipment object to describe the equipment usage.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GasEquipmentAbridged"
+              }
+            ]
+          },
+          "infiltration": {
+            "title": "Infiltration",
+            "description": "Infiltration object to to describe the outdoor air leakage.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InfiltrationAbridged"
+              }
+            ]
+          },
+          "ventilation": {
+            "title": "Ventilation",
+            "description": "Ventilation object for the minimum outdoor air requirement.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationAbridged"
+              }
+            ]
+          },
+          "setpoint": {
+            "title": "Setpoint",
+            "description": "Setpoint object for the temperature setpoints of the Room.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SetpointAbridged"
+              }
+            ]
+          }
+        }
+      },
+      "RoomPropertiesAbridged": {
+        "title": "RoomPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RoomPropertiesAbridged",
+            "type": "string",
+            "pattern": "^RoomPropertiesAbridged$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/RoomEnergyPropertiesAbridged"
+          }
+        },
+        "required": [
+          "energy"
+        ]
+      },
+      "Room": {
+        "title": "Room",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Room",
+            "type": "string",
+            "pattern": "^Room$"
+          },
+          "faces": {
+            "title": "Faces",
+            "description": "Faces that together form the closed volume of a room.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Face"
+            },
+            "minItems": 4
+          },
+          "indoor_shades": {
+            "title": "Indoor Shades",
+            "description": "Shades assigned to the interior side of this object (eg. partitions, tables).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "outdoor_shades": {
+            "title": "Outdoor Shades",
+            "description": "Shades assigned to the exterior side of this object (eg. trees, landscaping).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoomPropertiesAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "faces",
+          "properties"
+        ]
+      },
+      "WallSetAbridged": {
+        "title": "WallSetAbridged",
+        "description": "A set of constructions for wall assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "WallSetAbridged",
+            "type": "string",
+            "pattern": "^WallSetAbridged$"
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "Name for an OpaqueConstruction for walls with a Surface or Adiabatic boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "exterior_construction": {
+            "title": "Exterior Construction",
+            "description": "Name for an OpaqueConstruction for walls with an Outdoors boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "ground_construction": {
+            "title": "Ground Construction",
+            "description": "Name for an OpaqueConstruction for walls with a Ground boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "FloorSetAbridged": {
+        "title": "FloorSetAbridged",
+        "description": "A set of constructions for floor assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "FloorSetAbridged",
+            "type": "string",
+            "pattern": "^FloorSetAbridged$"
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "Name for an OpaqueConstruction for floors with a Surface or Adiabatic boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "exterior_construction": {
+            "title": "Exterior Construction",
+            "description": "Name for an OpaqueConstruction for floors with an Outdoors boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "ground_construction": {
+            "title": "Ground Construction",
+            "description": "Name for an OpaqueConstruction for floors with a Ground boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "RoofCeilingSetAbridged": {
+        "title": "RoofCeilingSetAbridged",
+        "description": "A set of constructions for roof and ceiling assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RoofCeilingSetAbridged",
+            "type": "string",
+            "pattern": "^RoofCeilingSetAbridged$"
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "Name for an OpaqueConstruction for ceilings with a Surface or Adiabatic boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "exterior_construction": {
+            "title": "Exterior Construction",
+            "description": "Name for an OpaqueConstruction for roofs with an Outdoors boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "ground_construction": {
+            "title": "Ground Construction",
+            "description": "Name for an OpaqueConstruction for roofs with a Ground boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "ApertureSetAbridged": {
+        "title": "ApertureSetAbridged",
+        "description": "A set of constructions for aperture assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureSetAbridged",
+            "type": "string",
+            "pattern": "^ApertureSetAbridged$"
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "Name for a WindowConstruction for apertures with an Outdoors boundary condition, False is_operable property, and a Wall face type for their parent face.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "window_construction": {
+            "title": "Window Construction",
+            "description": "Name for a WindowConstruction for all apertures with a Surface boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "skylight_construction": {
+            "title": "Skylight Construction",
+            "description": "Name for a WindowConstruction for apertures with a Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "operable_construction": {
+            "title": "Operable Construction",
+            "description": "Name for a WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property..",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "DoorSetAbridged": {
+        "title": "DoorSetAbridged",
+        "description": "A set of constructions for door assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "DoorSetAbridged",
+            "type": "string",
+            "pattern": "^DoorSetAbridged$"
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "Name for an OpaqueConstruction for all opaque doors with a Surface boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "exterior_construction": {
+            "title": "Exterior Construction",
+            "description": "Name for an OpaqueConstruction for opaque doors with an Outdoors boundary condition and a Wall face type for their parent face.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "overhead_construction": {
+            "title": "Overhead Construction",
+            "description": "Name for an OpaqueConstruction for opaque doors with an Outdoors boundary condition and a RoofCeiling or Floor type for their parent face.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "exterior_glass_construction": {
+            "title": "Exterior Glass Construction",
+            "description": "Name for an WindowConstruction for all glass doors with an Outdoors boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "interior_glass_construction": {
+            "title": "Interior Glass Construction",
+            "description": "Name for an WindowConstruction for all glass doors with a Surface boundary condition.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "ConstructionSetAbridged": {
+        "title": "ConstructionSetAbridged",
+        "description": "A set of constructions for different surface types and boundary conditions.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ConstructionSetAbridged",
+            "type": "string",
+            "pattern": "^ConstructionSetAbridged$"
+          },
+          "wall_set": {
+            "title": "Wall Set",
+            "description": "A WallSet object for this ConstructionSet.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WallSetAbridged"
+              }
+            ]
+          },
+          "floor_set": {
+            "title": "Floor Set",
+            "description": "A FloorSet object for this ConstructionSet.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorSetAbridged"
+              }
+            ]
+          },
+          "roof_ceiling_set": {
+            "title": "Roof Ceiling Set",
+            "description": "A RoofCeilingSet object for this ConstructionSet.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoofCeilingSetAbridged"
+              }
+            ]
+          },
+          "aperture_set": {
+            "title": "Aperture Set",
+            "description": "A ApertureSet object for this ConstructionSet.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApertureSetAbridged"
+              }
+            ]
+          },
+          "door_set": {
+            "title": "Door Set",
+            "description": "A DoorSet object for this ConstructionSet.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorSetAbridged"
+              }
+            ]
+          },
+          "shade_construction": {
+            "title": "Shade Construction",
+            "description": "A ShadeConstruction to set the reflectance properties of all outdoor shades to which this ConstructionSet is assigned.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "OpaqueConstructionAbridged": {
+        "title": "OpaqueConstructionAbridged",
+        "description": "Construction for opaque objects (Face, Shade, Door).",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "OpaqueConstructionAbridged",
+            "type": "string",
+            "pattern": "^OpaqueConstructionAbridged$"
+          },
+          "layers": {
+            "title": "Layers",
+            "description": "List of strings for material names. The order of the materials is from exterior to interior.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "minItems": 1,
+            "maxItems": 10
+          }
+        },
+        "required": [
+          "name",
+          "layers"
+        ]
+      },
+      "WindowConstructionAbridged": {
+        "title": "WindowConstructionAbridged",
+        "description": "Construction for window objects (Aperture, Door).",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionAbridged",
+            "type": "string",
+            "pattern": "^WindowConstructionAbridged$"
+          },
+          "layers": {
+            "title": "Layers",
+            "description": "List of strings for material names. The order of the materials is from exterior to interior.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "minItems": 1,
+            "maxItems": 8
+          }
+        },
+        "required": [
+          "name",
+          "layers"
+        ]
+      },
+      "ShadeConstruction": {
+        "title": "ShadeConstruction",
+        "description": "Construction for Shade objects.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeConstruction",
+            "type": "string",
+            "pattern": "^ShadeConstruction$"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": " A number for the solar reflectance of the construction.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": " A number for the visible reflectance of the construction.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "is_specular": {
+            "title": "Is Specular",
+            "description": "Boolean to note whether the reflection off the shade is diffuse (False) or specular (True). Set to True if the construction is representing a glass facade or a mirror material.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EnergyMaterial": {
+        "title": "EnergyMaterial",
+        "description": "Opaque material representing a layer within an opaque construction.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterial",
+            "type": "string",
+            "pattern": "^EnergyMaterial$"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "default": "MediumRough",
+            "enum": [
+              "VeryRough",
+              "Rough",
+              "MediumRough",
+              "MediumSmooth",
+              "Smooth",
+              "VerySmooth"
+            ],
+            "type": "string"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the material layer in meters.",
+            "exclusiveMinimum": 0,
+            "maximum": 3,
+            "type": "number"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the material layer in W/(m-K).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "density": {
+            "title": "Density",
+            "description": "Density of the material layer in kg/m3.",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "specific_heat": {
+            "title": "Specific Heat",
+            "description": "Specific heat of the material layer in J/(kg-K).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "thermal_absorptance": {
+            "title": "Thermal Absorptance",
+            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "maximum": 0.99999,
+            "type": "number"
+          },
+          "solar_absorptance": {
+            "title": "Solar Absorptance",
+            "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "visible_absorptance": {
+            "title": "Visible Absorptance",
+            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "thickness",
+          "conductivity",
+          "density",
+          "specific_heat"
+        ]
+      },
+      "EnergyMaterialNoMass": {
+        "title": "EnergyMaterialNoMass",
+        "description": "No mass opaque material representing a layer within an opaque construction.\n\nUsed when only the thermal resistance (R value) of the material is known.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterialNoMass",
+            "type": "string",
+            "pattern": "^EnergyMaterialNoMass$"
+          },
+          "r_value": {
+            "title": "R Value",
+            "description": "The thermal resistance (R-value) of the material layer [m2-K/W].",
+            "minimum": 0.001,
+            "type": "number"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "default": "MediumRough",
+            "enum": [
+              "VeryRough",
+              "Rough",
+              "MediumRough",
+              "MediumSmooth",
+              "Smooth",
+              "VerySmooth"
+            ],
+            "type": "string"
+          },
+          "thermal_absorptance": {
+            "title": "Thermal Absorptance",
+            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "maximum": 0.99999,
+            "type": "number"
+          },
+          "solar_absorptance": {
+            "title": "Solar Absorptance",
+            "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "visible_absorptance": {
+            "title": "Visible Absorptance",
+            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "r_value"
+        ]
+      },
+      "EnergyWindowMaterialGas": {
+        "title": "EnergyWindowMaterialGas",
+        "description": "Create single layer of gas in a window construction.\n\nCan be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGas",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialGas$"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+            "default": 0.0125,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "gas_type": {
+            "title": "Gas Type",
+            "default": "Air",
+            "enum": [
+              "Air",
+              "Argon",
+              "Krypton",
+              "Xenon"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EnergyWindowMaterialGasCustom": {
+        "title": "EnergyWindowMaterialGasCustom",
+        "description": "Create single layer of custom gas.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGasCustom",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialGasCustom$"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+            "default": 0.0125,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "conductivity_coeff_a": {
+            "title": "Conductivity Coeff A",
+            "description": "The A coefficient for gas conductivity in W/(m-K).",
+            "type": "number"
+          },
+          "conductivity_coeff_b": {
+            "title": "Conductivity Coeff B",
+            "description": "The B coefficient for gas conductivity in W/(m-K2).",
+            "default": 0,
+            "type": "number"
+          },
+          "conductivity_coeff_c": {
+            "title": "Conductivity Coeff C",
+            "description": "The C coefficient for gas conductivity in W/(m-K3).",
+            "default": 0,
+            "type": "number"
+          },
+          "viscosity_coeff_a": {
+            "title": "Viscosity Coeff A",
+            "description": "The A coefficient for gas viscosity in kg/(m-s).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "viscosity_coeff_b": {
+            "title": "Viscosity Coeff B",
+            "description": "The B coefficient for gas viscosity in kg/(m-s-K).",
+            "default": 0,
+            "type": "number"
+          },
+          "viscosity_coeff_c": {
+            "title": "Viscosity Coeff C",
+            "description": "The C coefficient for gas viscosity in kg/(m-s-K2).",
+            "default": 0,
+            "type": "number"
+          },
+          "specific_heat_coeff_a": {
+            "title": "Specific Heat Coeff A",
+            "description": "The A coefficient for gas specific heat in J/(kg-K).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "specific_heat_coeff_b": {
+            "title": "Specific Heat Coeff B",
+            "description": "The B coefficient for gas specific heat in J/(kg-K2).",
+            "default": 0,
+            "type": "number"
+          },
+          "specific_heat_coeff_c": {
+            "title": "Specific Heat Coeff C",
+            "description": "The C coefficient for gas specific heat in J/(kg-K3).",
+            "default": 0,
+            "type": "number"
+          },
+          "specific_heat_ratio": {
+            "title": "Specific Heat Ratio",
+            "description": "The specific heat ratio for gas.",
+            "exclusiveMinimum": 1,
+            "type": "number"
+          },
+          "molecular_weight": {
+            "title": "Molecular Weight",
+            "description": "The molecular weight for gas in g/mol.",
+            "minimum": 20,
+            "maximum": 200,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "conductivity_coeff_a",
+          "viscosity_coeff_a",
+          "specific_heat_coeff_a",
+          "specific_heat_ratio",
+          "molecular_weight"
+        ]
+      },
+      "EnergyWindowMaterialGasMixture": {
+        "title": "EnergyWindowMaterialGasMixture",
+        "description": "Create a mixture of two to four different gases to fill the panes of multiple\npane windows.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGasMixture",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialGasMixture$"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The thickness of the gas mixture layer in meters.",
+            "default": 0.0125,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "gas_types": {
+            "title": "Gas Types",
+            "description": "List of gases in the gas mixture.",
+            "type": "array",
+            "items": {
+              "enum": [
+                "Air",
+                "Argon",
+                "Krypton",
+                "Xenon"
+              ],
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 4
+          },
+          "gas_fractions": {
+            "title": "Gas Fractions",
+            "description": "A list of fractional numbers describing the volumetric fractions of gas types in the mixture. This list must align with the gas_types list and must sum to 1.",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 4
+          }
+        },
+        "required": [
+          "name",
+          "gas_types",
+          "gas_fractions"
+        ]
+      },
+      "EnergyWindowMaterialSimpleGlazSys": {
+        "title": "EnergyWindowMaterialSimpleGlazSys",
+        "description": "Describe an entire glazing system rather than individual layers.\n\nUsed when only very limited information is available on the glazing layers or when\nspecific performance levels are being targeted.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialSimpleGlazSys",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialSimpleGlazSys$"
+          },
+          "u_factor": {
+            "title": "U Factor",
+            "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
+            "exclusiveMinimum": 0,
+            "maximum": 5.8,
+            "type": "number"
+          },
+          "shgc": {
+            "title": "Shgc",
+            "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number"
+          },
+          "vt": {
+            "title": "Vt",
+            "description": "The fraction of visible light falling on the window that makes it through the glass at normal incidence.",
+            "default": 0.54,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "u_factor",
+          "shgc"
+        ]
+      },
+      "EnergyWindowMaterialBlind": {
+        "title": "EnergyWindowMaterialBlind",
+        "description": "Window blind properties.\n\nWindow blind properties consist of flat, equally-spaced slats.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialBlind",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialBlind$"
+          },
+          "slat_orientation": {
+            "title": "Slat Orientation",
+            "default": "Horizontal",
+            "enum": [
+              "Horizontal",
+              "Vertical",
+              "Choices include Horizontal and Vertical. Horizontal means the slats are parallel to the X-axis of the window. Vertical means the slats are parallel to the Y-axis of the window."
+            ],
+            "type": "string"
+          },
+          "slat_width": {
+            "title": "Slat Width",
+            "description": "The width of slat measured from edge to edge in meters.",
+            "default": 0.025,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "slat_separation": {
+            "title": "Slat Separation",
+            "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
+            "default": 0.01875,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "slat_thickness": {
+            "title": "Slat Thickness",
+            "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
+            "default": 0.001,
+            "exclusiveMinimum": 0,
+            "maximum": 0.1,
+            "type": "number"
+          },
+          "slat_angle": {
+            "title": "Slat Angle",
+            "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
+            "default": 45,
+            "minimum": 0,
+            "maximum": 180,
+            "type": "number"
+          },
+          "slat_conductivity": {
+            "title": "Slat Conductivity",
+            "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
+            "default": 221,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "beam_solar_transmittance": {
+            "title": "Beam Solar Transmittance",
+            "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "beam_solar_reflectance": {
+            "title": "Beam Solar Reflectance",
+            "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "beam_solar_reflectance_back": {
+            "title": "Beam Solar Reflectance Back",
+            "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_solar_transmittance": {
+            "title": "Diffuse Solar Transmittance",
+            "description": "The slat transmittance for hemisperically diffuse solar radiation. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_solar_reflectance": {
+            "title": "Diffuse Solar Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_solar_reflectance_back": {
+            "title": "Diffuse Solar Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "beam_visible_transmittance": {
+            "title": "Beam Visible Transmittance",
+            "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "beam_visible_reflectance": {
+            "title": "Beam Visible Reflectance",
+            "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "beam_visible_reflectance_back": {
+            "title": "Beam Visible Reflectance Back",
+            "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_visible_transmittance": {
+            "title": "Diffuse Visible Transmittance",
+            "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_visible_reflectance": {
+            "title": "Diffuse Visible Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "diffuse_visible_reflectance_back": {
+            "title": "Diffuse Visible Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
+            "default": 0.05,
+            "minimum": 0.01,
+            "maximum": 1,
+            "type": "number"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EnergyWindowMaterialGlazing": {
+        "title": "EnergyWindowMaterialGlazing",
+        "description": "Describe a single glass pane corresponding to a layer in a window construction.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGlazing",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialGlazing$"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
+            "default": 0.003,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
+            "default": 0.85,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "solar_reflectance_back": {
+            "title": "Solar Reflectance Back",
+            "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
+            "type": "number"
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
+            "default": 0.9,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "visible_reflectance_back": {
+            "title": "Visible Reflectance Back",
+            "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "Long-wave transmittance at normal incidence.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "dirt_correction": {
+            "title": "Dirt Correction",
+            "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
+            "default": 1,
+            "type": "number"
+          },
+          "solar_diffusing": {
+            "title": "Solar Diffusing",
+            "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EnergyWindowMaterialShade": {
+        "title": "EnergyWindowMaterialShade",
+        "description": "This object specifies the properties of window shade materials.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialShade",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialShade$"
+          },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default value is 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The thickness of the shade material in meters. Default value is 0.005.",
+            "default": 0.005,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
+            "default": 0.1,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
+            "default": 0.05,
+            "minimum": 0.001,
+            "maximum": 1,
+            "type": "number"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "airflow_permeability": {
+            "title": "Airflow Permeability",
+            "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 0.8,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ProgramTypeAbridged": {
+        "title": "ProgramTypeAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus name.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ProgramTypeAbridged",
+            "type": "string",
+            "pattern": "^ProgramTypeAbridged$"
+          },
+          "people": {
+            "title": "People",
+            "description": "People to describe the occupancy of the program. If None, no occupancy will be assumed for the program.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PeopleAbridged"
+              }
+            ]
+          },
+          "lighting": {
+            "title": "Lighting",
+            "description": "Lighting to describe the lighting usage of the program. If None, no lighting will be assumed for the program.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LightingAbridged"
+              }
+            ]
+          },
+          "electrical_equipment": {
+            "title": "Electrical Equipment",
+            "description": "ElectricEquipment to describe the usage of electric equipment within the program. If None, no electric equipment will be assumed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ElectricEquipmentAbridged"
+              }
+            ]
+          },
+          "gas_equipment": {
+            "title": "Gas Equipment",
+            "description": "GasEquipment to describe the usage of gas equipment within the program. If None, no gas equipment will be assumed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GasEquipmentAbridged"
+              }
+            ]
+          },
+          "infiltration": {
+            "title": "Infiltration",
+            "description": "Infiltration to describe the outdoor air leakage of the program. If None, no infiltration will be assumed for the program.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InfiltrationAbridged"
+              }
+            ]
+          },
+          "ventilation": {
+            "title": "Ventilation",
+            "description": "Ventilation to describe the minimum outdoor air requirement of the program. If None, no ventilation requirement will be assumed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationAbridged"
+              }
+            ]
+          },
+          "setpoint": {
+            "title": "Setpoint",
+            "description": "Setpoint object to describe the temperature and humidity setpoints of the program.  If None, the ProgramType cannot be assigned to a Room that is conditioned.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SetpointAbridged"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ScheduleDay": {
+        "title": "ScheduleDay",
+        "description": "Used to describe the daily schedule for a single simulation day.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleDay",
+            "type": "string",
+            "pattern": "^ScheduleDay$"
+          },
+          "values": {
+            "title": "Values",
+            "description": "A list of floats or integers for the values of the schedule. The length of this list must match the length of the times list.",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "times": {
+            "title": "Times",
+            "description": "A list of lists with each sub-list possesing 2 values for [hour, minute]. The length of the master list must match the length of the values list. Each time in the master list represents the time of day that the corresponding value begins to take effect. For example [(0,0), (9,0), (17,0)] in combination with the values [0, 1, 0] denotes a schedule value of 0 from 0:00 to 9:00, a value of 1 from 9:00 to 17:00 and 0 from 17:00 to the end of the day. Note that this representation of times as the \"time of beginning\" is a different convention than EnergyPlus, which uses \"time until\".",
+            "default": [
+              0,
+              0
+            ],
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "interpolate": {
+            "title": "Interpolate",
+            "description": "Boolean to note whether values in between times should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corrsponding to them.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "values"
+        ]
+      },
+      "ScheduleRuleAbridged": {
+        "title": "ScheduleRuleAbridged",
+        "description": "Schedule rule including a ScheduleDay and when it should be applied..",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ScheduleRuleAbridged",
+            "type": "string",
+            "pattern": "^ScheduleRuleAbridged$"
+          },
+          "schedule_day": {
+            "title": "Schedule Day",
+            "description": "A ScheduleDay object associated with this rule.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "apply_sunday": {
+            "title": "Apply Sunday",
+            "description": "Boolean noting whether to apply schedule_day on Sundays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_monday": {
+            "title": "Apply Monday",
+            "description": "Boolean noting whether to apply schedule_day on Mondays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_tuesday": {
+            "title": "Apply Tuesday",
+            "description": "Boolean noting whether to apply schedule_day on Tuesdays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_wednesday": {
+            "title": "Apply Wednesday",
+            "description": "Boolean noting whether to apply schedule_day on Wednesdays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_thursday": {
+            "title": "Apply Thursday",
+            "description": "Boolean noting whether to apply schedule_day on Thursdays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_friday": {
+            "title": "Apply Friday",
+            "description": "Boolean noting whether to apply schedule_day on Fridays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_saturday": {
+            "title": "Apply Saturday",
+            "description": "Boolean noting whether to apply schedule_day on Saturdays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "apply_holiday": {
+            "title": "Apply Holiday",
+            "description": "Boolean noting whether to apply schedule_day on Holidays.",
+            "default": false,
+            "type": "boolean"
+          },
+          "start_date": {
+            "title": "Start Date",
+            "description": "A list of two integers for [month, day], representing the start date of the period over which the schedule_day will be applied.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
+            "default": [
+              1,
+              1
+            ],
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "end_date": {
+            "title": "End Date",
+            "description": "A list of two integers for [month, day], representing the end date of the period over which the schedule_day will be applied.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
+            "default": [
+              12,
+              31
+            ],
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "schedule_day"
+        ]
+      },
+      "ScheduleRulesetAbridged": {
+        "title": "ScheduleRulesetAbridged",
+        "description": "Used to define a schedule for a default day, further described by ScheduleRule.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleRulesetAbridged",
+            "type": "string",
+            "pattern": "^ScheduleRulesetAbridged$"
+          },
+          "day_schedules": {
+            "title": "Day Schedules",
+            "description": "A list of ScheduleDays that are referenced in the other keys of this ScheduleRulesetAbridged.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleDay"
+            }
+          },
+          "default_day_schedule": {
+            "title": "Default Day Schedule",
+            "description": "A name for the ScheduleDay that will be used for all days when no ScheduleRule is applied. This ScheduleDay must be in the day_schedules.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "schedule_rules": {
+            "title": "Schedule Rules",
+            "description": "A list of ScheduleRuleAbridged that note exceptions to the default_day_schedule. These rules should be ordered from highest to lowest priority.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleRuleAbridged"
+            }
+          },
+          "summer_designday_schedule": {
+            "title": "Summer Designday Schedule",
+            "description": "A name for the ScheduleDay that will be used for the summer design day. This ScheduleDay must be in the day_schedules.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "winter_designday_schedule": {
+            "title": "Winter Designday Schedule",
+            "description": "A name for the ScheduleDay that will be used for the winter design day. This ScheduleDay must be in the day_schedules.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "schedule_type_limit": {
+            "title": "Schedule Type Limit",
+            "description": "Name of a ScheduleTypeLimit that will be used to validate schedule values against upper/lower limits and assign units to the schedule values. If None, no validation will occur.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "day_schedules",
+          "default_day_schedule"
+        ]
+      },
+      "ScheduleFixedIntervalAbridged": {
+        "title": "ScheduleFixedIntervalAbridged",
+        "description": "Used to specify a start date and a list of values for a period of analysis.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleFixedIntervalAbridged",
+            "type": "string",
+            "pattern": "^ScheduleFixedIntervalAbridged$"
+          },
+          "values": {
+            "title": "Values",
+            "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 24,
+            "maxItems": 527040
+          },
+          "schedule_type_limit": {
+            "title": "Schedule Type Limit",
+            "description": "Name of a ScheduleTypeLimit that will be used to validate schedule values against upper/lower limits and assign units to the schedule values. If None, no validation will occur.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "timestep": {
+            "title": "Timestep",
+            "description": "An integer for the number of steps per hour that the input values correspond to.  For example, if each value represents 30 minutes, the timestep is 2. For 15 minutes, it is 4.",
+            "default": 1,
+            "type": "integer"
+          },
+          "start_date": {
+            "title": "Start Date",
+            "description": "A list of two integers for [month, day], representing the start date when the schedule values begin to take effect.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
+            "default": [
+              1,
+              1
+            ],
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 2,
+            "maxItems": 3
+          },
+          "placeholder_value": {
+            "title": "Placeholder Value",
+            "description": " A value that will be used for all times not covered by the input values. Typically, your simulation should not need to use this value if the input values completely cover the simulation period.",
+            "default": 0,
+            "type": "number"
+          },
+          "interpolate": {
+            "title": "Interpolate",
+            "description": "Boolean to note whether values in between intervals should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corrsponding to them.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "values"
+        ]
+      },
+      "ScheduleTypeLimit": {
+        "title": "ScheduleTypeLimit",
+        "description": "Specifies the data types and limits for values contained in schedules.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleTypeLimit",
+            "type": "string",
+            "pattern": "^ScheduleTypeLimit$"
+          },
+          "lower_limit": {
+            "title": "Lower Limit",
+            "description": "Lower limit for the schedule type is entered.",
+            "type": "number"
+          },
+          "upper_limit": {
+            "title": "Upper Limit",
+            "description": "Upper limit for the schedule type is entered.",
+            "type": "number"
+          },
+          "numeric_type": {
+            "title": "Numeric Type",
+            "default": "Continuous",
+            "enum": [
+              "Continuous",
+              "Discrete"
+            ],
+            "type": "string"
+          },
+          "unit_type": {
+            "title": "Unit Type",
+            "default": "Dimensionless",
+            "enum": [
+              "Dimensionless",
+              "Temperature",
+              "DeltaTemperature",
+              "PrecipitationRate",
+              "Angle",
+              "ConvectionCoefficient",
+              "ActivityLevel",
+              "Velocity",
+              "Capacity",
+              "Power",
+              "Availability",
+              "Percent",
+              "Control",
+              "Mode"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ModelEnergyProperties": {
+        "title": "ModelEnergyProperties",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ModelEnergyProperties",
+            "type": "string",
+            "pattern": "^ModelEnergyProperties$"
+          },
+          "terrain_type": {
+            "title": "Terrain Type",
+            "default": "City",
+            "enum": [
+              "Ocean",
+              "Country",
+              "Suburbs",
+              "Urban",
+              "City"
+            ],
+            "type": "string"
+          },
+          "construction_sets": {
+            "title": "Construction Sets",
+            "description": "List of all ConstructionSets in the Model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConstructionSetAbridged"
+            }
+          },
+          "global_construction_set": {
+            "title": "Global Construction Set",
+            "description": "Name for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "constructions": {
+            "title": "Constructions",
+            "description": "A list of all unique constructions in the model. This includes constructions across all Faces, Apertures, Doors, Shades, Room ConstructionSets, and the global_construction_set.",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/OpaqueConstructionAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/WindowConstructionAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/ShadeConstruction"
+                }
+              ]
+            }
+          },
+          "materials": {
+            "title": "Materials",
+            "description": "A list of all unique materials in the model. This includes materials needed to make the Model constructions.",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EnergyMaterial"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyMaterialNoMass"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGas"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGasCustom"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGasMixture"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialSimpleGlazSys"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialShade"
+                }
+              ]
+            }
+          },
+          "program_types": {
+            "title": "Program Types",
+            "description": "List of all ProgramTypes in the Model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProgramTypeAbridged"
+            }
+          },
+          "schedules": {
+            "title": "Schedules",
+            "description": "A list of all unique schedules in the model. This includes schedules across all ProgramTypes, Rooms, and Shades.",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ScheduleRulesetAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/ScheduleFixedIntervalAbridged"
+                }
+              ]
+            }
+          },
+          "schedule_type_limits": {
+            "title": "Schedule Type Limits",
+            "description": "A list of all unique ScheduleTypeLimits in the model. This all ScheduleTypeLimits needed to make the Model schedules.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleTypeLimit"
+            }
+          }
+        },
+        "required": [
+          "constructions",
+          "materials"
+        ]
+      },
+      "ModelProperties": {
+        "title": "ModelProperties",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ModelProperties",
+            "type": "string",
+            "pattern": "^ModelProperties$"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/ModelEnergyProperties"
+          }
+        },
+        "required": [
+          "energy"
+        ]
+      },
+      "Model": {
+        "title": "Model",
+        "description": "Base class for all objects requiring a valid names for all engines.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object used in all simulation engines. Must not contain spaces and use only letters, digits and underscores/dashes. It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Model",
+            "type": "string",
+            "pattern": "^Model$"
+          },
+          "rooms": {
+            "title": "Rooms",
+            "description": "A list of Rooms in the model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Room"
+            }
+          },
+          "orphaned_faces": {
+            "title": "Orphaned Faces",
+            "description": "A list of Faces in the model that lack a parent Room. Note that orphaned Faces are not acceptable for Models that are to be exported for energy simulation.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Face"
+            }
+          },
+          "orphaned_shades": {
+            "title": "Orphaned Shades",
+            "description": "A list of Shades in the model that lack a parent.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "orphaned_apertures": {
+            "title": "Orphaned Apertures",
+            "description": "A list of Apertures in the model that lack a parent Face. Note that orphaned Apertures are not acceptable for Models that are to be exported for energy simulation.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Aperture"
+            }
+          },
+          "orphaned_doors": {
+            "title": "Orphaned Doors",
+            "description": "A list of Doors in the model that lack a parent Face. Note that orphaned Doors are not acceptable for Models that are to be exported for energy simulation.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Door"
+            }
+          },
+          "north_angle": {
+            "title": "North Angle",
+            "description": "The clockwise north direction in degrees.",
+            "default": 0,
+            "exclusiveMaximum": 360,
+            "minimum": 0,
+            "type": "number"
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ModelProperties"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "properties"
+        ]
+      }
+    }
+  }
+}

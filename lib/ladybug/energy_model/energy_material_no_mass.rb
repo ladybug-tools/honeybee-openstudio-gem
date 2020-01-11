@@ -44,11 +44,11 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:type][:enum]
-        result[:roughness] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:roughness][:default]
-        result[:thermal_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default]
-        result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
-        result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
+        result[:type] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:type][:enum]
+        result[:roughness] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:roughness][:default]
+        result[:thermal_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default]
+        result[:solar_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
+        result[:visible_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
         result
 
       end
@@ -82,22 +82,22 @@ module Ladybug
         if @hash[:roughness]
           openstudio_nomass_material.setRoughness(@hash[:roughness])
         else
-          openstudio_nomass_material.setRoughness(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:roughness][:default])
+          openstudio_nomass_material.setRoughness(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:roughness][:default])
         end
         if @hash[:thermal_absorptance]
           openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
         else
-          openstudio_nomass_material.setThermalAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default].to_f)
+          openstudio_nomass_material.setThermalAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default].to_f)
         end
         if @hash[:solar_absorptance]
           openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
         else
-          openstudio_nomass_material.setSolarAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default].to_f)
+          openstudio_nomass_material.setSolarAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default].to_f)
         end
         if @hash[:visible_absorptance]
           openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
         else
-          openstudio_nomass_material.setVisibleAbsorptance(@@schema[:definitions][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default].to_f)
+          openstudio_nomass_material.setVisibleAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default].to_f)
         end
         openstudio_nomass_material
       end

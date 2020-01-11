@@ -59,17 +59,17 @@ module Ladybug
         if @hash[:visible_fraction]
           openstudio_lights_definition.setFractionVisible(@hash[:visible_fraction])
         else
-          openstudio_lights_definition.setFractionVisible(@@schema[:definitions][:LightingAbridged][:properties][:visible_fraction][:default])
+          openstudio_lights_definition.setFractionVisible(@@schema[:components][:schemas][:LightingAbridged][:properties][:visible_fraction][:default])
         end
         if @hash[:radiant_fraction]
           openstudio_lights_definition.setFractionRadiant(@hash[:radiant_fraction])
         else
-          openstudio_lights_definition.setFractionRadiant(@@schema[:definitions][:LightingAbridged][:properties][:radiant_fraction][:default])
+          openstudio_lights_definition.setFractionRadiant(@@schema[:components][:schemas][:LightingAbridged][:properties][:radiant_fraction][:default])
         end
         if @hash[:return_air_fraction]
           openstudio_lights_definition.setReturnAirFraction(@hash[:return_air_fraction])
         else 
-          openstudio_lights_definition.setReturnAirFraction(@@schema[:definitions][:LightingAbridged][:properties][:return_air_fraction][:default])
+          openstudio_lights_definition.setReturnAirFraction(@@schema[:components][:schemas][:LightingAbridged][:properties][:return_air_fraction][:default])
         end
           
         openstudio_lights = OpenStudio::Model::Lights.new(openstudio_lights_definition)

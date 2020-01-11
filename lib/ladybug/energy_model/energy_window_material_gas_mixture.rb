@@ -44,7 +44,7 @@ module Ladybug
 
       def defaults
         result = {}
-        result[:type] = @@schema[:definitions][:EnergyWindowMaterialGasMixture][:properties][:type][:enum]
+        result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:type][:enum]
         result
       end
 
@@ -55,30 +55,24 @@ module Ladybug
       end
 
       def create_openstudio_object(openstudio_model)
-        openstudio_window_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
-        openstudio_window_gas_mixture.setName(@hash[:name])
-        openstudio_window_gas_mixture.setThickness(@hash[:thickness])
-        openstudio_window_gas_mixture.setGas1Type(@hash[:gas_type_fraction][0][:gas_type])
-        openstudio_window_gas_mixture.setGas1Fraction(@hash[:gas_type_fraction][0][:gas_fraction])
-        if @hash[:gas_type_fraction][1]
-          openstudio_window_gas_mixture.setGas2Type(@hash[:gas_type_fraction][1][:gas_type])
-          openstudio_window_gas_mixture.setGas2Fraction(@hash[:gas_type_fraction][1][:gas_fraction])
+        # create the gas mixture
+        os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
+        os_gas_mixture.setName(@hash[:name])
+
+        # set the thickness
+        if @hash[:thickness]
+          os_gas_mixture.setThickness(@hash[:thickness])
         else
-          return openstudio_window_gas_mixture
+          os_gas_mixture.setThickness(
+            @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:thickness][:default])
         end
-        if @hash[:gas_type_fraction][2]
-          openstudio_window_gas_mixture.setGas3Type(@hash[:gas_type_fraction][2][:gas_type])
-          openstudio_window_gas_mixture.setGas3Fraction(@hash[:gas_type_fraction][2][:gas_fraction])
-        else
-          return openstudio_window_gas_mixture
+        
+        # set the gas types and ratios
+        @hash[:gas_types].each_index do |i|
+          os_gas_mixture.setGas(i, @hash[:gas_types][i], @hash[:gas_fractions][i])
         end
-        if @hash[:gas_type_fraction][3]
-          openstudio_window_gas_mixture.setGas4Type(@hash[:gas_type_fraction][3][:gas_type])
-          openstudio_window_gas_mixture.setGas4Fraction(@hash[:gas_type_fraction][3][:gas_fraction])
-        else
-          return openstudio_window_gas_mixture
-        end
-        openstudio_window_gas_mixture
+
+        os_gas_mixture
       end
     end # EnergyWindowMaterialGasMixture
   end # EnergyModel

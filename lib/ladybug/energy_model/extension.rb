@@ -74,7 +74,7 @@ module Ladybug
 
       # return path to the model schema file
       def schema_file
-        File.join(files_dir, 'model_schema.json')
+        File.join(files_dir, 'model.json')
       end
 
       # return the model schema

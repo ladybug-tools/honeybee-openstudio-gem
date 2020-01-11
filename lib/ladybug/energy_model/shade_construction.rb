@@ -64,24 +64,24 @@ module Ladybug
           if @hash[:solar_reflectance]
             openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
           else
-            openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
+            openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
           end
           if @hash[:visible_reflectance]
             openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance].to_f)
           else
-            openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
+            openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
           end
         else
           openstudio_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
           if @hash[:solar_reflectance]
             openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
           else 
-            openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:visible_reflectance][:default]))
+            openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@@schema[:components][:schemas][:ShadeConstruction][:properties][:visible_reflectance][:default]))
           end
           if @hash[:visible_reflectance]
             openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@hash[:visible_reflectance]))
           else 
-            openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:definitions][:ShadeConstruction][:properties][:solar_reflectance][:default]))
+            openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default]))
           end
           openstudio_material.setSpecificHeat(100) #Bug in OpenStudio default Specific Heat is 0.1.
         end

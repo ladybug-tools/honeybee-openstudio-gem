@@ -45,10 +45,10 @@ module Ladybug
       def defaults
         result = {}
         result[:type] = 'EnergyMaterial'
-        result[:roughness] = @@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default]
-        result[:thermal_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:thermal_absorptance][:default]
-        result[:solar_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:solar_absorptance][:default]
-        result[:visible_absorptance] = @@schema[:definitions][:EnergyMaterial][:properties][:visible_absorptance][:default]
+        result[:roughness] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:roughness][:default]
+        result[:thermal_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:thermal_absorptance][:default]
+        result[:solar_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:solar_absorptance][:default]
+        result[:visible_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:visible_absorptance][:default]
         result
       end
 
@@ -104,7 +104,7 @@ module Ladybug
         if @hash[:roughness]
           openstudio_opaque_material.setRoughness(@hash[:roughness])
         else
-          openstudio_opaque_material.setRoughness(@@schema[:definitions][:EnergyMaterial][:properties][:roughness][:default])
+          openstudio_opaque_material.setRoughness(@@schema[:components][:schemas][:EnergyMaterial][:properties][:roughness][:default])
         end
         openstudio_opaque_material.setThickness(@hash[:thickness])
         openstudio_opaque_material.setConductivity(@hash[:conductivity])
@@ -117,17 +117,17 @@ module Ladybug
         if @hash[:thermal_absorptance]
           openstudio_opaque_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
         else
-          openstudio_opaque_material.setThermalAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:thermal_absorptance][:default].to_f)
+          openstudio_opaque_material.setThermalAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:thermal_absorptance][:default].to_f)
         end
         if @hash[:solar_absorptance]
           openstudio_opaque_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
         else
-          openstudio_opaque_material.setSolarAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:solar_absorptance][:default].to_f)
+          openstudio_opaque_material.setSolarAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:solar_absorptance][:default].to_f)
         end
         if @hash[:visible_absorptance]
           openstudio_opaque_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
         else
-          openstudio_opaque_material.setVisibleAbsorptance(@@schema[:definitions][:EnergyMaterial][:properties][:visible_absorptance][:default].to_f)
+          openstudio_opaque_material.setVisibleAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:visible_absorptance][:default].to_f)
         end
         openstudio_opaque_material
       end
