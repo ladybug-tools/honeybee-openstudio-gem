@@ -103,6 +103,8 @@ module Ladybug
           openstudio_surface = ladybug_face.to_openstudio(openstudio_model)
           openstudio_surface.setSpace(openstudio_space)
 
+          # TODO: process all air walls between Roooms
+
           # assign face-level shades if they exist
           if face[:outdoor_shades]
             openstudio_shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
