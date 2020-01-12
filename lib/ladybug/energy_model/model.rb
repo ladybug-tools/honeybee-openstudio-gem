@@ -113,7 +113,21 @@ module Ladybug
                               OpenStudio::Model::Model.new
                             end
 
+        # create all openstudio objects in the model
         create_openstudio_objects
+
+        # assign the north
+        if @hash[:north_angle]
+          @openstudio_model.getBuilding.setNorthAxis(@hash[:north_angle])
+        end
+
+        # assign the terrain
+        os_site = @openstudio_model.getSite
+        os_site.setTerrain(
+          @@schema[:components][:schemas][:ModelEnergyProperties][:properties][:terrain_type][:default])
+        if @hash[:properties][:energy][:terrain_type]
+          os_site.setTerrain(@hash[:properties][:energy][:terrain_type])
+        end
 
         @openstudio_model
       end
@@ -122,6 +136,7 @@ module Ladybug
 
       # create openstudio objects in the openstudio model
       def create_openstudio_objects
+        # create all of the non-geometric model elements
         create_materials
         create_constructions
         create_construction_set
@@ -129,6 +144,8 @@ module Ladybug
         create_schedule_type_limits
         create_schedules
         create_space_types
+
+        # create all of the model geometry
         create_rooms
         create_orphaned_shades
         create_orphaned_faces
@@ -136,7 +153,6 @@ module Ladybug
         create_orphaned_doors
       end
 
-      #add if statement in case rooms are empty 
       def create_materials
         @hash[:properties][:energy][:materials].each do |material|
           material_type = material[:type]
@@ -243,42 +259,39 @@ module Ladybug
         end
       end 
 
-
-
       def create_rooms
         if @hash[:rooms]
           $room_array_setpoint = [] 
-          #global hash
           @hash[:rooms].each do |room|
-          room_object = Room.new(room)
-          openstudio_room = room_object.to_openstudio(@openstudio_model)
-          
-          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
-            $room_array_setpoint << room
-          end
-        end
-        $room_array_setpoint.each do |single_room|
-          room_name = single_room[:name]
-          room_get = @openstudio_model.getSpaceByName(room_name)
-
-          unless room_get.empty?
-            room_object_get = room_get.get
-            program_type_name = single_room[:properties][:energy][:program_type]
-            thermal_zone = room_object_get.thermalZone()
-            thermal_zone_object = thermal_zone.get
-            program_type_hash = $programtype_array.select{|k| k[:name] == program_type_name.to_s}
-            thermostat_object = SetpointThermostat.new(program_type_hash[0][:setpoint])
-            openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
-            thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-            if program_type_hash[0][:setpoint][:humidification_schedule] or program_type_hash[0][:setpoint][:dehumidification_schedule]
-              humidistat_object = ZoneControlHumidistat.new(program_type_hash[0][:setpoint])
-              openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-              thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+            room_object = Room.new(room)
+            openstudio_room = room_object.to_openstudio(@openstudio_model)
+            
+            if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
+              $room_array_setpoint << room
             end
+          end
 
+          # for rooms with setpoint objects definied in the ProgramType, make a new thermostat
+          $room_array_setpoint.each do |single_room|
+            room_name = single_room[:name]
+            room_get = @openstudio_model.getSpaceByName(room_name)
+            unless room_get.empty?
+              room_object_get = room_get.get
+              program_type_name = single_room[:properties][:energy][:program_type]
+              thermal_zone = room_object_get.thermalZone()
+              thermal_zone_object = thermal_zone.get
+              program_type_hash = $programtype_array.select{|k| k[:name] == program_type_name.to_s}
+              thermostat_object = SetpointThermostat.new(program_type_hash[0][:setpoint])
+              openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+              thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+              if program_type_hash[0][:setpoint][:humidification_schedule] or program_type_hash[0][:setpoint][:dehumidification_schedule]
+                humidistat_object = ZoneControlHumidistat.new(program_type_hash[0][:setpoint])
+                openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+              end
+            end
           end
         end
-      end
       end
            
       
@@ -294,7 +307,6 @@ module Ladybug
         end
       end
 
-      #TODO: create runlog for errors. 
       def create_orphaned_faces
         if @hash[:orphaned_faces]
           raise "Orphaned Faces are not translatable to OpenStudio."
@@ -313,12 +325,7 @@ module Ladybug
         end
       end
 
-      # for now make parent a space, check if should be a zone?
-
-        # add if statement and to_openstudio object
-        # if air_wall
-        # DLM: todo
-        # end
+      #TODO: create runlog for errors. 
       
     end # Model
   end # EnergyModel
