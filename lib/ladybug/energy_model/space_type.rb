@@ -104,9 +104,9 @@ module Ladybug
          openstudio_space_type.setDesignSpecificationOutdoorAir(openstudio_ventilation)
         end
 
-        #Adding setpoints from space types to global hash.
+        # add setpoints from to a global hash that will be used to assign them to rooms
         if @hash[:setpoint]
-          $programtype_array << @hash
+          $programtype_setpoint_hash[@hash[:name]] = @hash[:setpoint]
         end
 
         openstudio_space_type
