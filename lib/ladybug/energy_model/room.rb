@@ -32,7 +32,13 @@
 require 'ladybug/energy_model/model_object'
 require 'ladybug/energy_model/face'
 require 'ladybug/energy_model/people_abridged'
-require 'ladybug/energy_model/ideal_air_system'
+require 'ladybug/energy_model/lighting_abridged'
+require 'ladybug/energy_model/electric_equipment_abridged'
+require 'ladybug/energy_model/gas_equipment_abridged'
+require 'ladybug/energy_model/infiltration_abridged'
+require 'ladybug/energy_model/ventilation_abridged'
+require 'ladybug/energy_model/setpoint_thermostat'
+require 'ladybug/energy_model/setpoint_humidistat'
 require 'ladybug/energy_model/shade'
 
 require 'openstudio'
@@ -86,15 +92,9 @@ module Ladybug
           end
         end
 
-        # assign the hvac system
-        if @hash[:properties][:energy][:hvac]
-          system_type = @hash[:properties][:energy][:hvac][:type]
-          case system_type
-          when 'IdealAirSystem'
-            ideal_air_system = IdealAirSystem.new(@hash[:properties][:energy][:hvac])
-            openstudio_ideal_air_system = ideal_air_system.to_openstudio(openstudio_model)
-            openstudio_ideal_air_system.addToThermalZone(openstudio_thermal_zone)
-          end
+        # assign the multiplier
+        if @hash[:multiplier] and @hash[:multiplier] != 1
+          openstudio_thermal_zone.setMultiplier(@hash[:multiplier])
         end
         
         # assign all of the faces to the room

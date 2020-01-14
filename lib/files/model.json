@@ -160,9 +160,9 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Ground\" />\n"
     },
     {
-      "name": "idealairsystem_model",
-      "x-displayName": "IdealAirSystem",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IdealAirSystem\" />\n"
+      "name": "idealairsystemabridged_model",
+      "x-displayName": "IdealAirSystemAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IdealAirSystemAbridged\" />\n"
     },
     {
       "name": "infiltrationabridged_model",
@@ -336,7 +336,7 @@
         "floorsetabridged_model",
         "gasequipmentabridged_model",
         "ground_model",
-        "idealairsystem_model",
+        "idealairsystemabridged_model",
         "infiltrationabridged_model",
         "lightingabridged_model",
         "model_model",
@@ -1007,74 +1007,6 @@
           "properties"
         ]
       },
-      "IdealAirSystem": {
-        "title": "IdealAirSystem",
-        "description": "Provides a model for an ideal HVAC system.",
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "default": "IdealAirSystem",
-            "type": "string",
-            "pattern": "^IdealAirSystem$"
-          },
-          "heating_limit": {
-            "title": "Heating Limit",
-            "default": "autosize",
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": 0
-              },
-              {
-                "type": "string"
-              }
-            ]
-          },
-          "cooling_limit": {
-            "title": "Cooling Limit",
-            "default": "autosize",
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": 0
-              },
-              {
-                "type": "string"
-              }
-            ]
-          },
-          "economizer_type": {
-            "title": "Economizer Type",
-            "default": "DifferentialDryBulb",
-            "enum": [
-              "NoEconomizer",
-              "DifferentialDryBulb",
-              "DifferentialEnthalpy"
-            ],
-            "type": "string"
-          },
-          "demand_control_ventilation": {
-            "title": "Demand Control Ventilation",
-            "default": false,
-            "type": "boolean"
-          },
-          "sensible_heat_recovery": {
-            "title": "Sensible Heat Recovery",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number"
-          },
-          "latent_heat_recovery": {
-            "title": "Latent Heat Recovery",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number"
-          }
-        }
-      },
       "PeopleAbridged": {
         "title": "PeopleAbridged",
         "description": "Base class for all objects requiring a valid EnergyPlus name.",
@@ -1536,7 +1468,11 @@
             "type": "string"
           },
           "hvac": {
-            "$ref": "#/components/schemas/IdealAirSystem"
+            "title": "Hvac",
+            "description": "An optional name of a HVAC system (such as an IdealAirSystem) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "people": {
             "title": "People",
@@ -2954,6 +2890,120 @@
           "name"
         ]
       },
+      "IdealAirSystemAbridged": {
+        "title": "IdealAirSystemAbridged",
+        "description": "Provides a model for an ideal HVAC system.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "IdealAirSystemAbridged",
+            "type": "string",
+            "pattern": "^IdealAirSystemAbridged$"
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
+            "default": "DifferentialDryBulb",
+            "enum": [
+              "NoEconomizer",
+              "DifferentialDryBulb",
+              "DifferentialEnthalpy"
+            ],
+            "type": "string"
+          },
+          "demand_control_ventilation": {
+            "title": "Demand Control Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the zone.",
+            "default": false,
+            "type": "boolean"
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "heating_air_temperature": {
+            "title": "Heating Air Temperature",
+            "description": "A number for the maximum heating supply air temperature [C].",
+            "default": 50,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 100,
+            "type": "number"
+          },
+          "cooling_air_temperature": {
+            "title": "Cooling Air Temperature",
+            "description": "A number for the minimum cooling supply air temperature [C].",
+            "default": 13,
+            "exclusiveMinimum": -100,
+            "exclusiveMaximum": 50,
+            "type": "number"
+          },
+          "heating_limit": {
+            "title": "Heating Limit",
+            "description": "A number for the maximum heating capacity in Watts. This can also be the text \"autosize\" to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be the text \"NoLimit\" to indicate no upper limit to the heating capacity. Note that setting this to None will trigger the default (\"autosize\").",
+            "default": "autosize",
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "cooling_limit": {
+            "title": "Cooling Limit",
+            "description": "A number for the maximum cooling capacity in Watts. This can also be the text \"autosize\" to indicate that the capacity should be determined during the sizing calculation. This can also be the text \"NoLimit\" to indicate no upper limit to the cooling capacity. Note that setting this to None will trigger the default (\"autosize\").",
+            "default": "autosize",
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "heating_availability": {
+            "title": "Heating Availability",
+            "description": "An optional name of a schedule to set the availability of heating over the course of the simulation.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "cooling_availability": {
+            "title": "Cooling Availability",
+            "description": "An optional name of a schedule to set the availability of cooling over the course of the simulation.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "ProgramTypeAbridged": {
         "title": "ProgramTypeAbridged",
         "description": "Base class for all objects requiring a valid EnergyPlus name.",
@@ -3419,6 +3469,13 @@
             ],
             "type": "string"
           },
+          "global_construction_set": {
+            "title": "Global Construction Set",
+            "description": "Name for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
           "construction_sets": {
             "title": "Construction Sets",
             "description": "List of all ConstructionSets in the Model.",
@@ -3426,13 +3483,6 @@
             "items": {
               "$ref": "#/components/schemas/ConstructionSetAbridged"
             }
-          },
-          "global_construction_set": {
-            "title": "Global Construction Set",
-            "description": "Name for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
           },
           "constructions": {
             "title": "Constructions",
@@ -3488,9 +3538,17 @@
               ]
             }
           },
+          "hvacs": {
+            "title": "Hvacs",
+            "description": "List of all ProgramTypes in the Model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdealAirSystemAbridged"
+            }
+          },
           "program_types": {
             "title": "Program Types",
-            "description": "List of all ProgramTypes in the Model.",
+            "description": "List of all HVAC systems in the Model.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProgramTypeAbridged"
@@ -3498,7 +3556,7 @@
           },
           "schedules": {
             "title": "Schedules",
-            "description": "A list of all unique schedules in the model. This includes schedules across all ProgramTypes, Rooms, and Shades.",
+            "description": "A list of all unique schedules in the model. This includes schedules across all HVAC systems, ProgramTypes, Rooms, and Shades.",
             "type": "array",
             "items": {
               "anyOf": [

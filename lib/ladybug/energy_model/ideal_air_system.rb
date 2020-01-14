@@ -34,12 +34,12 @@ require 'ladybug/energy_model/model_object'
 
 module Ladybug
   module EnergyModel
-    class IdealAirSystem < ModelObject
+    class IdealAirSystemAbridged < ModelObject
       attr_reader :errors, :warnings
   
       def initialize(hash = {})
         super(hash)
-        raise "Incorrect model type '#{@type}'" unless @type == 'IdealAirSystem'
+        raise "Incorrect model type '#{@type}'" unless @type == 'IdealAirSystemAbridged'
       end
     
       def defaults
@@ -47,56 +47,108 @@ module Ladybug
         result
       end
 
-      def create_openstudio_object(openstudio_model)       
-        openstudio_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
-        if @hash[:heating_limit] && @hash[:heating_limit] != 'NoLimit'
-          openstudio_ideal_air.setHeatingLimit('LimitCapacity')
-          if @hash[:heating_limit] == 'autosize'
-            openstudio_ideal_air.autosizeMaximumSensibleHeatingCapacity()
-          else
-            openstudio_ideal_air.setMaximumSensibleHeatingCapacity(@hash[:heating_limit])
-          end
-        else
-          openstudio_ideal_air.setHeatingLimit('NoLimit')
-        end
-        if @hash[:cooling_limit] && @hash[:cooling_limit] != 'NoLimit'
-          openstudio_ideal_air.setCoolingLimit('LimitFlowRateAndCapacity')
-          if @hash[:cooling_limit] == 'autosize' 
-            openstudio_ideal_air.autosizeMaximumTotalCoolingCapacity()
-            openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
-          else
-            openstudio_ideal_air.setMaximumTotalCoolingCapacity(@hash[:cooling_limit])
-            openstudio_ideal_air.autosizeMaximumCoolingAirFlowRate()
-          end
-        else 
-          openstudio_ideal_air.setCoolingLimit('NoLimit')
-        end
+      def create_openstudio_object(openstudio_model)
+        # create the ideal air system and set the name
+        os_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
+        os_ideal_air.setName(@hash[:name])
+
+        # default properties from the openapi schema
+        default_props = @@schema[:components][:schemas][:IdealAirSystemAbridged][:properties]
+        
+        # assign the economizer type
         if @hash[:economizer_type]
-          openstudio_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
+          os_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
         else
-          openstudio_ideal_air.setOutdoorAirEconomizerType(@@schema[:components][:schemas][:IdealAirSystem][:properties][:economizer_type][:default])
-        end
-        if @hash[:sensible_heat_recovery]
-          openstudio_ideal_air.setSensibleHeatRecoveryEffectiveness(@hash[:sensible_heat_recovery])
-        else
-          openstudio_ideal_air.setSensibleHeatRecoveryEffectiveness(@@schema[:components][:schemas][:IdealAirSystem][:properties][:sensible_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
-        end
-        if @hash[:latent_heat_recovery]
-          openstudio_ideal_air.setLatentHeatRecoveryEffectiveness(@hash[:latent_heat_recovery])
-        else
-          openstudio_ideal_air.setLatentHeatRecoveryEffectiveness(@@schema[:components][:schemas][:IdealAirSystem][:properties][:latent_heat_recovery][:default]) #TODO : Openstudio defaults are different from schema
-        end
-        if @hash[:demand_control_ventilation]
-          if @hash[:demand_control_ventilation] == true
-            openstudio_ideal_air.setDemandControlledVentilationType('OccupancySchedule') 
-          else 
-            openstudio_ideal_air.setDemandControlledVentilationType('None')
-          end
-        else 
-          openstudio_ideal_air.setDemandControlledVentilationType('None')
+          os_ideal_air.setOutdoorAirEconomizerType(
+            default_props[:economizer_type][:default])
         end
 
-        openstudio_ideal_air
+        # set the sensible heat recovery
+        if @hash[:sensible_heat_recovery] != 0
+          os_ideal_air.setSensibleHeatRecoveryEffectiveness(@hash[:sensible_heat_recovery])
+          os_ideal_air.setHeatRecoveryType('Sensible')
+        else
+          os_ideal_air.setSensibleHeatRecoveryEffectiveness(
+            default_props[:sensible_heat_recovery][:default])
+        end
+
+        # set the latent heat recovery
+        if @hash[:latent_heat_recovery] != 0
+          os_ideal_air.setLatentHeatRecoveryEffectiveness(@hash[:latent_heat_recovery])
+          os_ideal_air.setHeatRecoveryType('Enthalpy')
+        else
+          os_ideal_air.setLatentHeatRecoveryEffectiveness(
+            default_props[:latent_heat_recovery][:default])
+        end
+
+        # assign the demand controlled ventilation
+        if @hash[:demand_controlled_ventilation]
+            os_ideal_air.setDemandControlledVentilationType('OccupancySchedule')
+        else 
+          os_ideal_air.setDemandControlledVentilationType('None')
+        end
+        
+        # set the maximum heating supply air temperature
+        if @hash[:heating_air_temperature]
+          os_ideal_air.setMaximumHeatingSupplyAirTemperature(@hash[:heating_air_temperature])
+        else
+          os_ideal_air.setMaximumHeatingSupplyAirTemperature(
+            default_props[:heating_air_temperature][:default])
+        end
+
+        # set the maximum cooling supply air temperature
+        if @hash[:cooling_air_temperature]
+          os_ideal_air.setMinimumCoolingSupplyAirTemperature(@hash[:cooling_air_temperature])
+        else
+          os_ideal_air.setMinimumCoolingSupplyAirTemperature(
+            default_props[:cooling_air_temperature][:default])
+        end
+
+        # assign limits to the system's heating capacity
+        if @hash[:heating_limit] == 'NoLimit'
+          os_ideal_air.setHeatingLimit('NoLimit')
+        else
+          os_ideal_air.setHeatingLimit('LimitCapacity')
+          if @hash[:heating_limit].is_a? Numeric
+            os_ideal_air.setMaximumSensibleHeatingCapacity(@hash[:heating_limit])
+          else
+            os_ideal_air.autosizeMaximumSensibleHeatingCapacity()
+          end
+        end
+
+        # assign limits to the system's cooling capacity
+        if @hash[:cooling_limit] == 'NoLimit'
+          os_ideal_air.setCoolingLimit('NoLimit')
+        else
+          os_ideal_air.setCoolingLimit('LimitFlowRateAndCapacity')
+          if @hash[:cooling_limit].is_a? Numeric
+            os_ideal_air.setMaximumTotalCoolingCapacity(@hash[:cooling_limit])
+            os_ideal_air.autosizeMaximumCoolingAirFlowRate()
+          else
+            os_ideal_air.autosizeMaximumTotalCoolingCapacity()
+            os_ideal_air.autosizeMaximumCoolingAirFlowRate()
+          end
+        end
+
+        # assign heating availability shcedules
+        if @hash[:heating_availability]
+          schedule = openstudio_model.getScheduleByName(@hash[:heating_availability])
+          unless schedule.empty?
+            os_schedule = schedule.get
+            os_ideal_air.setHeatingAvailabilitySchedule(os_schedule)
+          end
+        end
+
+        # assign cooling availability shcedules
+        if @hash[:cooling_availability]
+          schedule = openstudio_model.getScheduleByName(@hash[:cooling_availability])
+          unless schedule.empty?
+            os_schedule = schedule.get
+            os_ideal_air.setCoolingAvailabilitySchedule(os_schedule)
+          end
+        end
+
+        os_ideal_air
       end
 
     end #IdealAirSystem

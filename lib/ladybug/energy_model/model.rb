@@ -56,6 +56,7 @@ require 'ladybug/energy_model/schedule_ruleset_abridged'
 require 'ladybug/energy_model/space_type'
 require 'ladybug/energy_model/setpoint_thermostat'
 require 'ladybug/energy_model/setpoint_humidistat'
+require 'ladybug/energy_model/ideal_air_system'
 require 'openstudio'
 
 module Ladybug
@@ -151,6 +152,9 @@ module Ladybug
         create_orphaned_faces
         create_orphaned_apertures
         create_orphaned_doors
+
+        # create the hvac systems
+        create_hvacs
       end
 
       def create_materials
@@ -251,43 +255,35 @@ module Ladybug
 
       def create_space_types
         if @hash[:properties][:energy][:program_types]
-          $programtype_array = []
+          $programtype_setpoint_hash = Hash.new
           @hash[:properties][:energy][:program_types].each do |space_type|
             space_type_object = SpaceType.new(space_type)
             space_type_object.to_openstudio(@openstudio_model)
           end
         end
-      end 
+      end
 
       def create_rooms
         if @hash[:rooms]
-          $room_array_setpoint = [] 
           @hash[:rooms].each do |room|
             room_object = Room.new(room)
             openstudio_room = room_object.to_openstudio(@openstudio_model)
             
+            # for rooms with setpoint objects definied in the ProgramType, make a new thermostat
             if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
-              $room_array_setpoint << room
-            end
-          end
-
-          # for rooms with setpoint objects definied in the ProgramType, make a new thermostat
-          $room_array_setpoint.each do |single_room|
-            room_name = single_room[:name]
-            room_get = @openstudio_model.getSpaceByName(room_name)
-            unless room_get.empty?
-              room_object_get = room_get.get
-              program_type_name = single_room[:properties][:energy][:program_type]
-              thermal_zone = room_object_get.thermalZone()
-              thermal_zone_object = thermal_zone.get
-              program_type_hash = $programtype_array.select{|k| k[:name] == program_type_name.to_s}
-              thermostat_object = SetpointThermostat.new(program_type_hash[0][:setpoint])
-              openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
-              thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-              if program_type_hash[0][:setpoint][:humidification_schedule] or program_type_hash[0][:setpoint][:dehumidification_schedule]
-                humidistat_object = ZoneControlHumidistat.new(program_type_hash[0][:setpoint])
-                openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-                thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+              thermal_zone = openstudio_room.thermalZone()
+              unless thermal_zone.empty?
+                thermal_zone_object = thermal_zone.get
+                program_type_name = room[:properties][:energy][:program_type]
+                setpoint_hash = $programtype_setpoint_hash[program_type_name]
+                thermostat_object = SetpointThermostat.new(setpoint_hash)
+                openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+                thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+                if setpoint_hash[:humidification_schedule] or setpoint_hash[:dehumidification_schedule]
+                  humidistat_object = ZoneControlHumidistat.new(setpoint_hash)
+                  openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                  thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+                end
               end
             end
           end
@@ -324,6 +320,41 @@ module Ladybug
           raise "Orphaned Doors are not translatable to OpenStudio."
         end
       end
+
+      def create_hvacs
+        if @hash[:properties][:energy][:hvacs]
+          # gather all of the hashes of the HVACs
+          hvac_hashes = Hash.new
+          @hash[:properties][:energy][:hvacs].each do |hvac|
+            hvac_hashes[hvac[:name]] = hvac
+            hvac_hashes[hvac[:name]]['rooms'] = []
+          end
+          # loop through the rooms and trach which are assigned to each HVAC
+          if @hash[:rooms]
+            @hash[:rooms].each do |room|
+              if room[:properties][:energy][:hvac]
+                hvac_hashes[room[:properties][:energy][:hvac]]['rooms'] << room[:name]
+              end
+            end
+          end
+
+          hvac_hashes.each_value do |hvac|
+            system_type = hvac[:type]
+            case system_type
+            when 'IdealAirSystemAbridged'
+              ideal_air_system = IdealAirSystemAbridged.new(hvac)
+              os_ideal_air_system = ideal_air_system.to_openstudio(@openstudio_model)
+              hvac['rooms'].each do |room_name|
+                zone_get = @openstudio_model.getThermalZoneByName(room_name)
+                unless zone_get.empty?
+                  os_thermal_zone = zone_get.get
+                  os_ideal_air_system.addToThermalZone(os_thermal_zone)
+                end
+              end
+            end
+          end
+        end
+      end 
 
       #TODO: create runlog for errors. 
       
