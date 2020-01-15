@@ -29,40 +29,49 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+module FromHoneybee
+  class EnergyWindowMaterialGasMixture < ModelObject
+    attr_reader :erros, :warnings
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+    def initialize(hash = {})
+      super(hash)
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+    def defaults
+      result = {}
+      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:type][:enum]
+      result
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+    def find_existing_openstudio_object(openstudio_model)
+      object = openstudio_model.getGasMixtureByName(@hash[:name])
+      return object.get if object.is_initialized
+      nil
+    end
 
+    def create_openstudio_object(openstudio_model)
+      # create the gas mixture
+      os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
+      os_gas_mixture.setName(@hash[:name])
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+      # set the thickness
+      if @hash[:thickness]
+        os_gas_mixture.setThickness(@hash[:thickness])
+      else
+        os_gas_mixture.setThickness(
+          @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:thickness][:default])
+      end
+      
+      # set the gas types and ratios
+      @hash[:gas_types].each_index do |i|
+        os_gas_mixture.setGas(i, @hash[:gas_types][i], @hash[:gas_fractions][i])
+      end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
-
+      os_gas_mixture
+    end
+  end # EnergyWindowMaterialGasMixture
+end # FromHoneybee

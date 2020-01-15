@@ -29,40 +29,39 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+module FromHoneybee
+  class SetpointThermostat < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+    def initialize(hash = {})
+      super(hash)
+      raise "Incorrect model type '#{@type}'" unless @type == 'SetpointAbridged'
+    end
+  
+    def defaults
+      result = {}
+      result
+    end
+  
+    def create_openstudio_object(openstudio_model)
+      openstudio_setpoint_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+      heating_schedule = openstudio_model.getScheduleByName(@hash[:heating_schedule])
+      unless heating_schedule.empty?
+        heating_schedule_object = heating_schedule.get
+      end
+      openstudio_setpoint_thermostat.setHeatingSetpointTemperatureSchedule(heating_schedule_object)
+      cooling_schedule = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
+      unless cooling_schedule.empty?
+        cooling_schedule_object = cooling_schedule.get
+      end
+      openstudio_setpoint_thermostat.setCoolingSetpointTemperatureSchedule(cooling_schedule_object)
+              
+      openstudio_setpoint_thermostat
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-
-
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
-
+  end #SetpointThermostat
+end #FromHoneybee

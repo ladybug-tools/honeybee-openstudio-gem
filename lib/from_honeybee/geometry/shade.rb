@@ -29,40 +29,61 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+module FromHoneybee
+  class Shade < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+    def initialize(hash)
+      super(hash)
+      raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+    def defaults
+      result = {}
+      result
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+    def find_existing_openstudio_object(openstudio_model)
+      object = openstudio_model.getSurfaceByName(@hash[:name])
+      return object.get if object.is_initialized
+      nil
+    end
 
+    def create_openstudio_object(openstudio_model)
+      # create the openstudio shading surface
+      openstudio_vertices = OpenStudio::Point3dVector.new
+      @hash[:geometry][:boundary].each do |vertex|
+        openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+      end
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+      openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
+      openstudio_shading_surface.setName(@hash[:name])
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
+      # assign the construction if it exists
+      if @hash[:properties][:energy][:construction]
+        construction_name = @hash[:properties][:energy][:construction]
+        construction = openstudio_model.getConstructionByName(construction_name)
+        unless construction.empty?
+          openstudio_construction = construction.get
+          openstudio_shading_surface.setConstruction(openstudio_construction)
+        end
+      end
 
+      # assign the transmittance schedule if it exists
+      if @hash[:properties][:energy][:transmittance_schedule]
+        schedule_name = @hash[:properties][:energy][:transmittance_schedule]
+        schedule = openstudio_model.getScheduleByName(schedule_name)
+        unless schedule.empty?
+          openstudio_schedule = schedule.get
+          openstudio_shading_surface.setTransmittanceSchedule(openstudio_schedule)
+        end
+      end
+  
+      openstudio_shading_surface
+    end
+  end #Shade
+end #FromHoneybee

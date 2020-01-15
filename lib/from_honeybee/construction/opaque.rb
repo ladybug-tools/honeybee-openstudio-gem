@@ -29,40 +29,47 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+module FromHoneybee
+  class OpaqueConstructionAbridged < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+    def initialize(hash = {})
+      super(hash)
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+    def defaults
+      result = {}
+      result
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+    def find_existing_openstudio_object(openstudio_model)
+      object = openstudio_model.getConstructionByName(@hash[:name])
+      return object.get if object.is_initialized
+      nil
+    end
 
+    def create_openstudio_object(openstudio_model)
+      openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
+      openstudio_construction.setName(@hash[:name])
+      openstudio_materials = OpenStudio::Model::MaterialVector.new
+      
+      @hash[:layers].each do |layer|
+        material_name = layer
+        material = openstudio_model.getMaterialByName(material_name)
+        unless material.empty?
+          openstudio_material = material.get
+          openstudio_materials << openstudio_material
+        end
+      end
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+      openstudio_construction.setLayers(openstudio_materials)
+      openstudio_construction
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
-
+  end #OpaqueConstructionAbridged
+end #FromHoneybee
+  

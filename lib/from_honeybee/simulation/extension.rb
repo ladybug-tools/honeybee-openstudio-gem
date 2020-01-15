@@ -29,40 +29,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'openstudio/extension'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
-
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
-
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+require 'from_honeybee/extension'
 
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+module FromHoneybee
+  class ExtensionSimulationParameter < FromHoneybee::Extension
+    @@schema = nil
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
+    def schema_file
+      File.join(files_dir, 'simulation-parameter.json')
+    end
+
   end
 end
-

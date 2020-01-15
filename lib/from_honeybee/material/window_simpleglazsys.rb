@@ -29,40 +29,43 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+module FromHoneybee
+  class EnergyWindowMaterialSimpleGlazSys < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+    def initialize(hash = {})
+      super(hash)
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+    def defaults
+      result = {}
+      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
+      result
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+    def find_existing_openstudio_object(openstudio_model)
+      object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+      return object.get if object.is_initialized
+      nil
+    end
+
+    def create_openstudio_object(openstudio_model)
+      openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
+      openstudio_simple_glazing.setName(@hash[:name])
+      openstudio_simple_glazing.setUFactor(@hash[:u_factor])
+      openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
+      if @hash[:vt]
+        openstudio_simple_glazing.setVisibleTransmittance(@hash[:vt])
+      else
+        openstudio_simple_glazing.setVisibleTransmittance(@@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
+      end
+      openstudio_simple_glazing
+    end
 
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
-
+  end # EnergyWindowMaterialSimpleGlazSys
+end # FromHoneybee
