@@ -29,40 +29,43 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+module FromHoneybee
+  class SetpointHumidistat < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+    def initialize(hash = {})
+      super(hash)
+      raise "Incorrect model type '#{@type}'" unless @type == 'SetpointAbridged'
+    end
+  
+    def defaults
+      result = {}
+      result
+    end
+      
+    def create_openstudio_object(openstudio_model)
+      openstudio_setpoint_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
+      
+      if @hash[:humidification_schedule]
+        humidification_schedule = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
+        unless humidification_schedule.empty?
+          humidification_schedule_object = humidification_schedule.get
+        end
+        openstudio_setpoint_humidistat.setHumidifyingRelativeHumiditySetpointSchedule(humidification_schedule_object)
+      end
+        
+      if @hash[:dehumidification_schedule]
+        dehumidification_schedule = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
+        unless dehumidification_schedule.empty?
+          dehumidification_schedule_object = dehumidification_schedule.get
+        end
+      end
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+      openstudio_setpoint_humidistat
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-
-
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
-
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
-
+  end #SetpointHumidistat
+end #FromHoneybee

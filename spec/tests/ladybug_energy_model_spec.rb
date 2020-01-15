@@ -31,26 +31,26 @@
 
 require_relative '../spec_helper'
 
-RSpec.describe Ladybug::EnergyModel do
+RSpec.describe FromHoneybee do
  
   it 'has a version number' do
-    expect(Ladybug::EnergyModel::VERSION).not_to be nil
+    expect(FromHoneybee::VERSION).not_to be nil
   end
 
   it 'has a measures directory' do
-    extension = Ladybug::EnergyModel::Extension.new
+    extension = FromHoneybee::Extension.new
     expect(File.exist?(extension.measures_dir)).to be true
   end
 
   it 'has a files directory' do
-    extension = Ladybug::EnergyModel::Extension.new
+    extension = FromHoneybee::Extension.new
     expect(File.exist?(extension.files_dir)).to be true
   end
 
 
   it 'can load and validate single zone model' do
     file = File.join(File.dirname(__FILE__), '../files/model_single_zone_tiny_house.json')
-    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+    model = FromHoneybee::Model.read_from_disk(file)
     
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -91,7 +91,7 @@ RSpec.describe Ladybug::EnergyModel do
 
   it 'can load and validate shoebox model' do
     file = File.join(File.dirname(__FILE__), '../files/model_shoe_box.json')
-    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+    model = FromHoneybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)
@@ -132,7 +132,7 @@ RSpec.describe Ladybug::EnergyModel do
 
   it 'can load and validate mutizone model' do
     file = File.join(File.dirname(__FILE__), '../files/model_multi_zone_single_family_house.json')
-    model = Ladybug::EnergyModel::Model.read_from_disk(file)
+    model = FromHoneybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = model.to_openstudio_model(openstudio_model)

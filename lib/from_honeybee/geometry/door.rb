@@ -29,40 +29,63 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'from_honeybee/model_object'
 
-RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
+require 'openstudio'
 
-  it 'has a measures directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
+module FromHoneybee
+  class Door < ModelObject
+    attr_reader :errors, :warnings
 
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
+    def initialize(hash)
+      super(hash)
+      raise "Incorrect model type '#{@type}'" unless @type == 'Door'
+    end
 
-  it 'can load and validate simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simple_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+    def defaults
+      result = {}
+      result
+    end
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
+    def find_existing_openstudio_object(openstudio_model)
+      object = openstudio_model.getSubSurfaceByName(@hash[:name])
+      return object.get if object.is_initialized
+      nil
+    end
 
+    def create_openstudio_object(openstudio_model)
+      # create the OpenStudio door object
+      openstudio_vertices = OpenStudio::Point3dVector.new
+      @hash[:geometry][:boundary].each do |vertex|
+        openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+      end
 
-  it 'can load and validate detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/detailed_simulation_par.json')
-    model = FromHoneybee::SimulationParameter.read_from_disk(file)
+      openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+      openstudio_subsurface.setName(@hash[:name])
 
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-  end
-end
+      # assign the construction if it exists
+      if @hash[:properties][:energy][:construction]
+        construction_name = @hash[:properties][:energy][:construction]
+        construction = openstudio_model.getConstructionByName(construction_name)
+        unless construction.empty?
+          openstudio_construction = construction.get
+          openstudio_subsurface.setConstruction(openstudio_construction)
+        end
+      end
 
+      # assign the bondary condition object if it's a Surface
+      if @hash[:boundary_condition][:type] == 'Surface'
+        openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
+      end
+
+      # assign the is_glass property
+      if @hash[:is_glass] == false
+        openstudio_subsurface.setSubSurfaceType('Door')
+      else
+        openstudio_subsurface.setSubSurfaceType('GlassDoor')
+      end
+
+      openstudio_subsurface
+    end
+  end # Door
+end # FromHoneybee

@@ -30,7 +30,7 @@
 # *******************************************************************************
 
 require 'bundler/setup'
-require 'ladybug/energy_model'
+require 'from_honeybee'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

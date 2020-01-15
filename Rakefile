@@ -8,13 +8,13 @@ RuboCop::RakeTask.new
 
 # Load in the rake tasks from the base openstudio-extension gem
 require 'openstudio/extension/rake_task'
-require 'ladybug/energy_model/extension'
-#require 'ladybug/energy_model/extension_simulation_parameter'
+require 'from_honeybee/extension'
+#require 'from_honeybee/simulation/extension'
 
 os_extension = OpenStudio::Extension::RakeTask.new
-os_extension.set_extension_class(Ladybug::EnergyModel::Extension)
+os_extension.set_extension_class(FromHoneybee::Extension)
 
 #TODO: Does this need to be implemented?
-#os_extension.set_extension_class(Ladybug::EnergyModel::ExtensionSimulationParameter)
+#os_extension.set_extension_class(FromHoneybee::ExtensionSimulationParameter)
 
 task default: :spec
