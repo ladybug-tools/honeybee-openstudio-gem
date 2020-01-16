@@ -62,7 +62,7 @@ module FromHoneybee
       nil
     end
   
-    def create_openstudio_object(openstudio_model)    
+    def to_openstudio(openstudio_model)    
       openstudio_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
       openstudio_space_type.setName(@hash[:name])
 

@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_nomass_mat = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
       os_nomass_mat.setName(@hash[:name])
       os_nomass_mat.setThermalResistance(@hash[:r_value])

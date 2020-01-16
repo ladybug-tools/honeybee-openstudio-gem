@@ -45,7 +45,7 @@ module FromHoneybee
       @@schema[:components][:schemas][:IdealAirSystemAbridged][:properties]
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the ideal air system and set the name
       os_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
       os_ideal_air.setName(@hash[:name])

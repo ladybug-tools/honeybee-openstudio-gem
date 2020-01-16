@@ -52,7 +52,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the openstudio subsurface
       openstudio_vertices = OpenStudio::Point3dVector.new
       @hash[:geometry][:boundary].each do |vertex|

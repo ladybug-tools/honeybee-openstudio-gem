@@ -54,7 +54,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the constructionset object
       os_constr_set = OpenStudio::Model::DefaultConstructionSet.new(openstudio_model)
       os_constr_set.setName(@hash[:name])

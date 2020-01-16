@@ -53,7 +53,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
       os_sch_ruleset.setName(@hash[:name])
 

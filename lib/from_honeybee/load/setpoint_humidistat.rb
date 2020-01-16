@@ -45,7 +45,7 @@ module FromHoneybee
       @@schema[:components][:schemas][:SetpointAbridged][:properties]
     end
       
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
 
       if @hash[:humidification_schedule]

@@ -64,7 +64,7 @@ module FromHoneybee
       nil 
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
       os_space.setName(@hash[:name])

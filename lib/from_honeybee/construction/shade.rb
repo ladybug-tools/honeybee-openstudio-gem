@@ -51,8 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
-
+    def to_openstudio(openstudio_model)
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
       os_construction.setName(@hash[:name])
       os_materials = OpenStudio::Model::MaterialVector.new

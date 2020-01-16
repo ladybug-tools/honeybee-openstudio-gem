@@ -97,39 +97,14 @@ module FromHoneybee
       end
     end
 
-    # convert ModelObject to an openstudio object
-    def to_openstudio(openstudio_model)
-      # return the object if we already have it
-      if @openstudio_object
-        if @openstudio_object.model == openstudio_model
-          return @openstudio_object
-        end
-      end
-
-      # TODO: uncomment this once valiation checks are optional
-      #@errors = validation_errors
-      @warnings = []
-      @openstudio_object = nil
-
-      # see if an equivalent object is already in the openstudio model
-      @openstudio_object = find_existing_openstudio_object(openstudio_model)
-      return @openstudio_object if @openstudio_object
-
-      # create and return the object
-      @openstudio_object = create_openstudio_object(openstudio_model)
-
-      @openstudio_object
-    end
-
     # find an equivalent existing object in the openstudio model, return nil if not found
-    def find_existing_openstudio_object(_openstudio_model)
-      # TODO: uncomment this once create_openstudio_object has been renamed to to_openstudio
-      # raise 'find_existing_openstudio_object is not yet implemented for this ModelObject.'
+    def find_existing_openstudio_object(openstudio_model)
+      raise 'find_existing_openstudio_object is not yet implemented for this ModelObject.'
     end
 
-    # create a new object in the openstudio model, return new object
-    def create_openstudio_object(_openstudio_model)
-      raise 'create_openstudio_object is not yet implemented for this ModelObject.'
+    # create a new object in the openstudio model and return it
+    def to_openstudio(openstudio_model)
+      raise 'to_openstudio is not yet implemented for this ModelObject.'
     end
   end # ModelObject
 end # FromHoneybee

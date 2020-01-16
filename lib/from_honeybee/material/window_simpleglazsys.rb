@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
       os_simple_glazing.setName(@hash[:name])
       os_simple_glazing.setUFactor(@hash[:u_factor])

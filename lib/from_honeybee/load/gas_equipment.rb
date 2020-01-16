@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
   
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_gas_equip_def = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
       os_gas_equip = OpenStudio::Model::GasEquipment.new(os_gas_equip_def)
       os_gas_equip_def.setName(@hash[:name])

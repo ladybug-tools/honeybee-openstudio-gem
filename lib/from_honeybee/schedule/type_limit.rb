@@ -53,7 +53,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
       os_type_limit.setName(@hash[:name])
 
