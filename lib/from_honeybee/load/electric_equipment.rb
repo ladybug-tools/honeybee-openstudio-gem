@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
   
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
       os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
       os_electric_equip_def.setName(@hash[:name])

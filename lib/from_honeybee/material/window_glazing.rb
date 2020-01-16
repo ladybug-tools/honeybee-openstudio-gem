@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
       os_glazing.setName(@hash[:name])
       

@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
       os_window_gas.setName(@hash[:name])
 

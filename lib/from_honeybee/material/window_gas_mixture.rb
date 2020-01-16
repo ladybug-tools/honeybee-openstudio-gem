@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the gas mixture
       os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
       os_gas_mixture.setName(@hash[:name])

@@ -52,7 +52,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
       os_gas_custom.setName(@hash[:name])
       os_gas_custom.setGasType('Custom')

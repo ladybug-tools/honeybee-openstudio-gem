@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
       openstudio_construction.setName(@hash[:name])
       

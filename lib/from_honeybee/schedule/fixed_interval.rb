@@ -52,7 +52,7 @@ module FromHoneybee
       nil
     end
   
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       # create the new schedule
       os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
       os_fi_schedule.setName(@hash[:name])

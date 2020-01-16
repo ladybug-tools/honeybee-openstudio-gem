@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
 
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
       os_opaque_mat.setName(@hash[:name])
       os_opaque_mat.setThickness(@hash[:thickness])

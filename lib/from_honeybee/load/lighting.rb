@@ -51,7 +51,7 @@ module FromHoneybee
       nil
     end
   
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_lights_def = OpenStudio::Model::LightsDefinition.new(openstudio_model)
       os_lights = OpenStudio::Model::Lights.new(os_lights_def)
       os_lights_def.setName(@hash[:name])

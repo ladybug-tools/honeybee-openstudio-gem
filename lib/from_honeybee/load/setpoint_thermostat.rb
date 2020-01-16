@@ -45,7 +45,7 @@ module FromHoneybee
       @@schema[:components][:schemas][:SetpointAbridged][:properties]
     end
   
-    def create_openstudio_object(openstudio_model)
+    def to_openstudio(openstudio_model)
       os_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
 
       heat_sch = openstudio_model.getScheduleByName(@hash[:heating_schedule])
