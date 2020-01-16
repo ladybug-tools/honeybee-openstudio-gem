@@ -42,9 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:type][:enum]
-      result
+      @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -62,8 +60,7 @@ module FromHoneybee
       if @hash[:thickness]
         os_gas_mixture.setThickness(@hash[:thickness])
       else
-        os_gas_mixture.setThickness(
-          @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties][:thickness][:default])
+        os_gas_mixture.setThickness(defaults[:thickness][:default])
       end
       
       # set the gas types and ratios

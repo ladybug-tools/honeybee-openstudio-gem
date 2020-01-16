@@ -42,24 +42,20 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:IdealAirSystemAbridged][:properties]
     end
 
     def create_openstudio_object(openstudio_model)
       # create the ideal air system and set the name
       os_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
       os_ideal_air.setName(@hash[:name])
-
-      # default properties from the openapi schema
-      default_props = @@schema[:components][:schemas][:IdealAirSystemAbridged][:properties]
       
       # assign the economizer type
       if @hash[:economizer_type]
         os_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
       else
         os_ideal_air.setOutdoorAirEconomizerType(
-          default_props[:economizer_type][:default])
+          defaults[:economizer_type][:default])
       end
 
       # set the sensible heat recovery
@@ -68,7 +64,7 @@ module FromHoneybee
         os_ideal_air.setHeatRecoveryType('Sensible')
       else
         os_ideal_air.setSensibleHeatRecoveryEffectiveness(
-          default_props[:sensible_heat_recovery][:default])
+          defaults[:sensible_heat_recovery][:default])
       end
 
       # set the latent heat recovery
@@ -77,7 +73,7 @@ module FromHoneybee
         os_ideal_air.setHeatRecoveryType('Enthalpy')
       else
         os_ideal_air.setLatentHeatRecoveryEffectiveness(
-          default_props[:latent_heat_recovery][:default])
+          defaults[:latent_heat_recovery][:default])
       end
 
       # assign the demand controlled ventilation
@@ -92,7 +88,7 @@ module FromHoneybee
         os_ideal_air.setMaximumHeatingSupplyAirTemperature(@hash[:heating_air_temperature])
       else
         os_ideal_air.setMaximumHeatingSupplyAirTemperature(
-          default_props[:heating_air_temperature][:default])
+          defaults[:heating_air_temperature][:default])
       end
 
       # set the maximum cooling supply air temperature
@@ -100,7 +96,7 @@ module FromHoneybee
         os_ideal_air.setMinimumCoolingSupplyAirTemperature(@hash[:cooling_air_temperature])
       else
         os_ideal_air.setMinimumCoolingSupplyAirTemperature(
-          default_props[:cooling_air_temperature][:default])
+          defaults[:cooling_air_temperature][:default])
       end
 
       # assign limits to the system's heating capacity
@@ -129,7 +125,7 @@ module FromHoneybee
         end
       end
 
-      # assign heating availability shcedules
+      # assign heating availability schedules
       if @hash[:heating_availability]
         schedule = openstudio_model.getScheduleByName(@hash[:heating_availability])
         unless schedule.empty?
@@ -138,7 +134,7 @@ module FromHoneybee
         end
       end
 
-      # assign cooling availability shcedules
+      # assign cooling availability schedules
       if @hash[:cooling_availability]
         schedule = openstudio_model.getScheduleByName(@hash[:cooling_availability])
         unless schedule.empty?

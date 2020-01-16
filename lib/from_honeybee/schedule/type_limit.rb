@@ -44,8 +44,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ScheduleTypeLimit][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -55,26 +54,30 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_schedule_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
-      openstudio_schedule_type_limit.setName(@hash[:name])
+      os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
+      os_type_limit.setName(@hash[:name])
+
       if @hash[:lower_limit]
-        openstudio_schedule_type_limit.setLowerLimitValue(@hash[:lower_limit])
+        os_type_limit.setLowerLimitValue(@hash[:lower_limit])
       end
+
       if @hash[:upper_limit]
-        openstudio_schedule_type_limit.setUpperLimitValue(@hash[:upper_limit])
+        os_type_limit.setUpperLimitValue(@hash[:upper_limit])
       end
+
       if @hash[:numeric_type]
-        openstudio_schedule_type_limit.setNumericType(@hash[:numeric_type])
+        os_type_limit.setNumericType(@hash[:numeric_type])
       else
-        openstudio_schedule_type_limit.setNumericType(@@schema[:components][:schemas][:ScheduleTypeLimit][:properties][:numeric_type])
+        os_type_limit.setNumericType(defaults[:numeric_type])
       end
+
       if @hash[:unit_type]
-        openstudio_schedule_type_limit.setUnitType(@hash[:unit_type])
+        os_type_limit.setUnitType(@hash[:unit_type])
       else 
-        openstudio_schedule_type_limit.setUnitType(@@schema[:components][:schemas][:ScheduleTypeLimit][:properties][:unit_type])
+        os_type_limit.setUnitType(defaults[:unit_type])
       end
       
-      openstudio_schedule_type_limit
+      os_type_limit
     end
 
   end # ScheduleTypeLimit

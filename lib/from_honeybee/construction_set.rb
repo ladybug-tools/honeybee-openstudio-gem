@@ -45,8 +45,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ConstructionSetAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -55,129 +54,106 @@ module FromHoneybee
       nil
     end
 
-
     def create_openstudio_object(openstudio_model)
       # create the constructionset object
-      openstudio_construction_set = OpenStudio::Model::DefaultConstructionSet.new(openstudio_model)
-      openstudio_construction_set.setName(@hash[:name])
+      os_constr_set = OpenStudio::Model::DefaultConstructionSet.new(openstudio_model)
+      os_constr_set.setName(@hash[:name])
 
-      interior_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
-      exterior_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
-      ground_surface_construction = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
-      interior_subsurface_construction = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
-      exterior_subsurface_construction = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
+      int_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
+      ext_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
+      grnd_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
+      int_subsurf_const = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
+      ext_subsurf_const = OpenStudio::Model::DefaultSubSurfaceConstructions.new(openstudio_model)
 
-      openstudio_construction_set.setDefaultInteriorSurfaceConstructions(interior_surface_construction)
-      openstudio_construction_set.setDefaultExteriorSurfaceConstructions(exterior_surface_construction)
-      openstudio_construction_set.setDefaultGroundContactSurfaceConstructions(ground_surface_construction)
-      openstudio_construction_set.setDefaultInteriorSubSurfaceConstructions(interior_subsurface_construction)
-      openstudio_construction_set.setDefaultExteriorSubSurfaceConstructions(exterior_subsurface_construction)
+      os_constr_set.setDefaultInteriorSurfaceConstructions(int_surf_const)
+      os_constr_set.setDefaultExteriorSurfaceConstructions(ext_surf_const)
+      os_constr_set.setDefaultGroundContactSurfaceConstructions(grnd_surf_const)
+      os_constr_set.setDefaultInteriorSubSurfaceConstructions(int_subsurf_const)
+      os_constr_set.setDefaultExteriorSubSurfaceConstructions(ext_subsurf_const)
       
       # assign any constructions in the wall set
       if @hash[:wall_set]
         if @hash[:wall_set][:interior_construction]
-          interior_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:interior_construction])
-          unless interior_wall_object.empty?
-            interior_wall = interior_wall_object.get
-            interior_surface_construction.setWallConstruction(interior_wall)
-            openstudio_construction_set.setAdiabaticSurfaceConstruction(interior_wall)
+          int_wall_ref = openstudio_model.getConstructionByName(@hash[:wall_set][:interior_construction])
+          unless int_wall_ref.empty?
+            interior_wall = int_wall_ref.get
+            int_surf_const.setWallConstruction(interior_wall)
+            os_constr_set.setAdiabaticSurfaceConstruction(interior_wall)
           end
         end
         if @hash[:wall_set][:exterior_construction]
-          exterior_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:exterior_construction])
-          unless exterior_wall_object.empty?
-            exterior_wall = exterior_wall_object.get
-            exterior_surface_construction.setWallConstruction(exterior_wall)
-          end
+          assign_constr_to_set(openstudio_model, ext_surf_const, 'Wall',
+            @hash[:wall_set][:exterior_construction])
         end
         if @hash[:wall_set][:ground_construction]
-          ground_wall_object = openstudio_model.getConstructionByName(@hash[:wall_set][:ground_construction])
-          unless ground_wall_object.empty?
-            ground_wall = ground_wall_object.get
-            ground_surface_construction.setWallConstruction(ground_wall)
-          end
+          assign_constr_to_set(openstudio_model, grnd_surf_const, 'Wall',
+            @hash[:wall_set][:ground_construction])
         end
       end
 
       # assign any constructions in the floor set
       if @hash[:floor_set]
         if @hash[:floor_set][:interior_construction]
-          interior_floor_object = openstudio_model.getConstructionByName(@hash[:floor_set][:interior_construction])
-          unless interior_floor_object.empty?
-            interior_floor = interior_floor_object.get
-            interior_surface_construction.setFloorConstruction(interior_floor)
-          end
+          assign_constr_to_set(openstudio_model, int_surf_const, 'Floor',
+            @hash[:floor_set][:interior_construction])
         end
         if @hash[:floor_set][:exterior_construction]
-          exterior_floor_object = openstudio_model.getConstructionByName(@hash[:floor_set][:exterior_construction])
-          unless exterior_floor_object.empty?
-            exterior_floor = exterior_floor_object.get
-            exterior_surface_construction.setFloorConstruction(exterior_floor)
-          end
+          assign_constr_to_set(openstudio_model, ext_surf_const, 'Floor',
+            @hash[:floor_set][:exterior_construction])
         end
-        if @hash[:floor_set][:ground_construction]
-          ground_floor_object = openstudio_model.getConstructionByName(@hash[:floor_set][:ground_construction])
-          unless ground_floor_object.empty?
-            ground_floor = ground_floor_object.get
-            ground_surface_construction.setFloorConstruction(ground_floor)
-          end
-        end
+        assign_constr_to_set(openstudio_model, grnd_surf_const, 'Floor',
+            @hash[:floor_set][:ground_construction])
       end
 
       # assign any constructions in the roof ceiling set
       if @hash[:roof_ceiling_set]
         if @hash[:roof_ceiling_set][:interior_construction]
-          interior_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:interior_construction])
-          unless interior_ceiling_object.empty?
-            interior_ceiling = interior_ceiling_object.get
-            interior_surface_construction.setRoofCeilingConstruction(interior_ceiling)
-          end
+          assign_constr_to_set(openstudio_model, int_surf_const, 'Roof',
+            @hash[:roof_ceiling_set][:interior_construction])
         end
         if @hash[:roof_ceiling_set][:exterior_construction]
-          exterior_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:exterior_construction])
-          unless exterior_ceiling_object.empty?
-            exterior_ceiling = exterior_ceiling_object.get
-            exterior_surface_construction.setRoofCeilingConstruction(exterior_ceiling)
-          end
+          assign_constr_to_set(openstudio_model, ext_surf_const, 'Roof',
+            @hash[:roof_ceiling_set][:exterior_construction])
         end
         if @hash[:roof_ceiling_set][:ground_construction]
-          ground_ceiling_object = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:ground_construction])
-          unless ground_ceiling_object.empty?
-            ground_ceiling = ground_ceiling_object.get
-            ground_surface_construction.setRoofCeilingConstruction(ground_ceiling)
-          end
+          assign_constr_to_set(openstudio_model, grnd_surf_const, 'Roof',
+            @hash[:roof_ceiling_set][:ground_construction])
         end
       end
 
       # assign any constructions in the aperture set
       if @hash[:aperture_set]
         if @hash[:aperture_set][:interior_construction]
-          interior_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:interior_construction])
-          unless interior_aperture_object.empty?
-            interior_aperture = interior_aperture_object.get
-            interior_subsurface_construction.setFixedWindowConstruction(interior_aperture)
-            interior_subsurface_construction.setOperableWindowConstruction(interior_aperture)
+          int_ap_ref = openstudio_model.getConstructionByName(
+            @hash[:aperture_set][:interior_construction])
+          unless int_ap_ref.empty?
+            interior_aperture = int_ap_ref.get
+            int_subsurf_const.setFixedWindowConstruction(interior_aperture)
+            int_subsurf_const.setOperableWindowConstruction(interior_aperture)
           end
         end
         if @hash[:aperture_set][:window_construction]
-          window_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:window_construction])
-          unless window_aperture_object.empty?
-            window_aperture = window_aperture_object.get
-            exterior_subsurface_construction.setFixedWindowConstruction(window_aperture)
+          window_ref = openstudio_model.getConstructionByName(
+            @hash[:aperture_set][:window_construction])
+          unless window_ref.empty?
+            window_aperture = window_ref.get
+            ext_subsurf_const.setFixedWindowConstruction(window_aperture)
           end
         end
         if @hash[:aperture_set][:skylight_construction]
-          skylight_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:skylight_construction])
-          unless skylight_aperture_object.empty?
-            skylight_aperture = skylight_aperture_object.get
-            exterior_subsurface_construction.setSkylightConstruction(skylight_aperture)
+          skylight_ref = openstudio_model.getConstructionByName(
+            @hash[:aperture_set][:skylight_construction])
+          unless skylight_ref.empty?
+            skylight_aperture = skylight_ref.get
+            ext_subsurf_const.setSkylightConstruction(skylight_aperture)
           end
         end
         if @hash[:aperture_set][:operable_construction]
-          operable_aperture_object = openstudio_model.getConstructionByName(@hash[:aperture_set][:operable_construction])
-          unless operable_aperture_object.empty?
-            operable_aperture = operable_aperture_object.get
-            exterior_subsurface_construction.setOperableWindowConstruction(operable_aperture)
+          operable_ref = openstudio_model.getConstructionByName(
+            @hash[:aperture_set][:operable_construction])
+          unless operable_ref.empty?
+            operable_aperture = operable_ref.get
+            ext_subsurf_const.setOperableWindowConstruction(operable_aperture)
           end
         end
       end    
@@ -185,54 +161,74 @@ module FromHoneybee
       # assign any constructions in the door set
       if @hash[:door_set]
         if @hash[:door_set][:interior_construction]
-          interior_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:interior_construction])
-          unless interior_door_object.empty?
-            interior_door = interior_door_object.get
-            interior_subsurface_construction.setDoorConstruction(interior_door)
+          int_door_ref = openstudio_model.getConstructionByName(
+            @hash[:door_set][:interior_construction])
+          unless int_door_ref.empty?
+            interior_door = int_door_ref.get
+            int_subsurf_const.setDoorConstruction(interior_door)
           end
         end
         if @hash[:door_set][:exterior_construction]
-          exterior_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:exterior_construction])
-          unless exterior_door_object.empty?
-            exterior_door = exterior_door_object.get
-            exterior_subsurface_construction.setDoorConstruction(exterior_door)
+          ext_door_ref = openstudio_model.getConstructionByName(
+            @hash[:door_set][:exterior_construction])
+          unless ext_door_ref.empty?
+            exterior_door = ext_door_ref.get
+            ext_subsurf_const.setDoorConstruction(exterior_door)
           end
         end
         if @hash[:door_set][:overhead_construction]
-          overhead_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:overhead_construction])
-          unless overhead_door_object.empty?
-            overhead_door = overhead_door_object.get
-            exterior_subsurface_construction.setOverheadDoorConstruction(overhead_door)
+          overhead_door_ref = openstudio_model.getConstructionByName(
+            @hash[:door_set][:overhead_construction])
+          unless overhead_door_ref.empty?
+            overhead_door = overhead_door_ref.get
+            ext_subsurf_const.setOverheadDoorConstruction(overhead_door)
           end
         end
         if @hash[:door_set][:exterior_glass_construction]
-          exterior_glass_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:exterior_glass_construction])
-          unless exterior_glass_door_object.empty?
-            exterior_glass_door = exterior_glass_door_object.get
-            exterior_subsurface_construction.setGlassDoorConstruction(exterior_glass_door)
+          ext_glz_door_ref = openstudio_model.getConstructionByName(
+            @hash[:door_set][:exterior_glass_construction])
+          unless ext_glz_door_ref.empty?
+            exterior_glass_door = ext_glz_door_ref.get
+            ext_subsurf_const.setGlassDoorConstruction(exterior_glass_door)
           end
         end
         if @hash[:door_set][:interior_glass_construction]
-          interior_glass_door_object = openstudio_model.getConstructionByName(@hash[:door_set][:interior_glass_construction])
-          unless interior_glass_door_object.empty?
-            interior_glass_door = interior_glass_door_object.get
-            interior_subsurface_construction.setGlassDoorConstruction(interior_glass_door)
+          int_glz_door_ref = openstudio_model.getConstructionByName(
+            @hash[:door_set][:interior_glass_construction])
+          unless int_glz_door_ref.empty?
+            interior_glass_door = int_glz_door_ref.get
+            int_subsurf_const.setGlassDoorConstruction(interior_glass_door)
           end
         end
       end
       
       if @hash[:shade_construction]
-        shade_construction = nil
         if @hash[:shade_construction]
-          shade_construction_object = openstudio_model.getConstructionByName(@hash[:shade_construction])
-          unless shade_construction_object.empty?
-            shade_construction = shade_construction_object.get
-            openstudio_construction_set.setSpaceShadingConstruction(shade_construction)
+          shade_ref = openstudio_model.getConstructionByName(@hash[:shade_construction])
+          unless shade_ref.empty?
+            shade_construction = shade_ref.get
+            os_constr_set.setSpaceShadingConstruction(shade_construction)
           end
         end
       end
 
-      openstudio_construction_set
+      os_constr_set
     end
+
+    def assign_constr_to_set(openstudio_model, constr_subset, face_type, constr_name)
+      # assign a construction to a subset of a construction set
+      constr_reference = openstudio_model.getConstructionByName(constr_name)
+      unless constr_reference.empty?
+        os_construction = constr_reference.get
+        if face_type == 'Wall'
+          constr_subset.setWallConstruction(os_construction)
+        elsif face_type == 'Floor'
+          constr_subset.setFloorConstruction(os_construction)
+        else
+          constr_subset.setRoofCeilingConstruction(os_construction)
+        end
+      end
+    end
+
   end #ConstructionSetAbridged
 end #FromHoneybee

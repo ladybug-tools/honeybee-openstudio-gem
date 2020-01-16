@@ -43,7 +43,7 @@ require 'from_honeybee/load/setpoint_humidistat'
 require 'openstudio'
 
 module FromHoneybee
-  class ProgramType < ModelObject
+  class ProgramTypeAbridged < ModelObject
     attr_reader :errors, :warnings
 
     def initialize(hash = {})
@@ -53,8 +53,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ProgramTypeAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -111,7 +110,7 @@ module FromHoneybee
       openstudio_space_type
     end
 
-  end #ProgramType 
+  end #ProgramTypeAbridged 
 end #FromHoneybee
 
 

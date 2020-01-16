@@ -47,8 +47,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:FaceEnergyPropertiesAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -98,13 +97,12 @@ module FromHoneybee
           openstudio_surface.setViewFactortoGround(@hash[:boundary_condition][:view_factor])
         end
       when 'Surface'
-        if @hash[:boundary_condition][:boundary_condition_objects][0]
-          # get adjacent surface by name from openstudio model
-          surface_object = openstudio_model.getSurfaceByName(@hash[:boundary_condition][:boundary_condition_objects][0])
-          unless surface_object.empty?
-            surface = surface_object.get
-            openstudio_surface.setAdjacentSurface(surface)
-          end
+        # get adjacent surface by name from openstudio model
+        adj_srf_name = @hash[:boundary_condition][:boundary_condition_objects][0]
+        surface_object = openstudio_model.getSurfaceByName(adj_srf_name)
+        unless surface_object.empty?
+          surface = surface_object.get
+          openstudio_surface.setAdjacentSurface(surface)
         end
       end
       unless @hash[:boundary_condition][:type] == 'Surface'

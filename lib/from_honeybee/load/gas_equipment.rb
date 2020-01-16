@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:GasEquipmentAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,35 +52,38 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)
-      openstudio_gas_equipment_definition = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
-      openstudio_gas_equipment_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
-      if @hash[:gas_equipment][:radiant_fraction]
-        openstudio_gas_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
-      else 
-        openstudio_gas_equipment_definition.setFractionRadiant(@@schema[:components][:schemas][:GasEquipmentAbridged][:properties][:radiant_fraction][:default])
-      end
-      if @hash[:gas_equipment][:latent_fraction]
-        openstudio_gas_equipment_definition.setFractionLatent(@hash[:gas_equipment][:latent_fraction])
-      else
-        openstudio_gas_equipment_definition.setFractionLatent(@@schema[:components][:schemas][:GasEquipmentAbridged][:properties][:latent_fraction][:default])
-      end
-      if @hash[:gas_equipment][:lost_fraction]
-        openstudio_gas_equipment_definition.setFractionLost(@hash[:gas_equipment][:lost_fraction])
-      else 
-        openstudio_gas_equipment_definition.setFractionLost(@@schema[:components][:schemas][:GasEquipmentAbridged][:properties][:lost_fraction][:default])
-      end
+      os_gas_equip_def = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
+      os_gas_equip = OpenStudio::Model::GasEquipment.new(os_gas_equip_def)
+      os_gas_equip_def.setName(@hash[:name])
+      os_gas_equip.setName(@hash[:name])
 
-      openstudio_gas_equipment = OpenStudio::Model::GasEquipment.new(openstudio_model)
-      openstudio_gas_equipment.setName(@hash[:name])
-      openstudio_gas_equipment.setGasEquipmentDefinition(openstudio_gas_equipment_definition)
+      os_gas_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
-      gas_equipment_schedule = openstudio_model.getScheduleByName(@hash[:gas_equipment][:schedule])
+      gas_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless gas_equipment_schedule.empty?
         gas_equipment_schedule_object = gas_equipment_schedule.get
+        os_gas_equip.setSchedule(gas_equipment_schedule_object)
       end
-      openstudio_gas_equipment.setSchedule(gas_equipment_schedule_object)
 
-      openstudio_gas_equipment
+      if @hash[:radiant_fraction]
+        os_gas_equip_def.setFractionRadiant(@hash[:radiant_fraction])
+      else 
+        os_gas_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
+      end
+      
+      if @hash[:latent_fraction]
+        os_gas_equip_def.setFractionLatent(@hash[:latent_fraction])
+      else
+        os_gas_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
+      end
+      
+      if @hash[:lost_fraction]
+        os_gas_equip_def.setFractionLost(@hash[:lost_fraction])
+      else 
+        os_gas_equip_def.setFractionLost(defaults[:lost_fraction][:default])
+      end
+
+      os_gas_equip
     end
 
   end #GasEquipmentAbridged

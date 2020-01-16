@@ -43,8 +43,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ApertureEnergyPropertiesAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -60,8 +59,8 @@ module FromHoneybee
         openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
 
-      openstudio_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
-      openstudio_subsurface.setName(@hash[:name])
+      os_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+      os_subsurface.setName(@hash[:name])
 
       # assign the construction if it exists
       if @hash[:properties][:energy][:construction]
@@ -69,23 +68,29 @@ module FromHoneybee
         construction = openstudio_model.getConstructionByName(construction_name)
         unless construction.empty?
           openstudio_construction = construction.get
-          openstudio_subsurface.setConstruction(openstudio_construction)
+          os_subsurface.setConstruction(openstudio_construction)
         end
       end
       
       # assign the bondary condition object if it's a Surface
       if @hash[:boundary_condition][:type] == 'Surface'
-        openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
+        # get adjacent sub surface by name from openstudio model
+        adj_srf_name = @hash[:boundary_condition][:boundary_condition_objects][0]
+        sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_name)
+        unless sub_srf_ref.empty?
+          sub_srf = sub_srf_ref.get
+          os_subsurface.setAdjacentSubSurface(sub_srf)
+        end
       end
 
       # assign the operable property
       if @hash[:is_operable] == false
-        openstudio_subsurface.setSubSurfaceType('FixedWindow')
+        os_subsurface.setSubSurfaceType('FixedWindow')
       else 
-        openstudio_subsurface.setSubSurfaceType('OperableWindow')
+        os_subsurface.setSubSurfaceType('OperableWindow')
       end
       
-      openstudio_subsurface
+      os_subsurface
     end
   end # Aperture
 end # FromHoneybee

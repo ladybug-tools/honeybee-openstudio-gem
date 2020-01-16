@@ -42,30 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:type][:enum]
-      result[:roughness] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:roughness][:default]
-      result[:thermal_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default]
-      result[:solar_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default]
-      result[:visible_absorptance] = @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default]
-      result
-
-    end
-
-    def name
-      @hash[:name]
-    end
-
-    def name=(new_name)
-      @hash[:name] = new_name
-    end
-
-    def r_value
-      @hash[:r_value]
-    end
-
-    def r_value=(new_r_value)
-      @hash[:r_value] = new_r_value
+      @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -75,30 +52,35 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_nomass_material = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
-      openstudio_nomass_material.setName(@hash[:name])
-      openstudio_nomass_material.setThermalResistance(@hash[:r_value])
+      os_nomass_mat = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
+      os_nomass_mat.setName(@hash[:name])
+      os_nomass_mat.setThermalResistance(@hash[:r_value])
+      
       if @hash[:roughness]
-        openstudio_nomass_material.setRoughness(@hash[:roughness])
+        os_nomass_mat.setRoughness(@hash[:roughness])
       else
-        openstudio_nomass_material.setRoughness(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:roughness][:default])
+        os_nomass_mat.setRoughness(defaults[:roughness][:default])
       end
+
       if @hash[:thermal_absorptance]
-        openstudio_nomass_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
+        os_nomass_mat.setThermalAbsorptance(@hash[:thermal_absorptance])
       else
-        openstudio_nomass_material.setThermalAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:thermal_absorptance][:default].to_f)
+        os_nomass_mat.setThermalAbsorptance(defaults[:thermal_absorptance][:default])
       end
+
       if @hash[:solar_absorptance]
-        openstudio_nomass_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
+        os_nomass_mat.setSolarAbsorptance(@hash[:solar_absorptance])
       else
-        openstudio_nomass_material.setSolarAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:solar_absorptance][:default].to_f)
+        os_nomass_mat.setSolarAbsorptance(defaults[:solar_absorptance][:default])
       end
+
       if @hash[:visible_absorptance]
-        openstudio_nomass_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
+        os_nomass_mat.setVisibleAbsorptance(@hash[:visible_absorptance])
       else
-        openstudio_nomass_material.setVisibleAbsorptance(@@schema[:components][:schemas][:EnergyMaterialNoMass][:properties][:visible_absorptance][:default].to_f)
+        os_nomass_mat.setVisibleAbsorptance(defaults[:visible_absorptance][:default])
       end
-      openstudio_nomass_material
+
+      os_nomass_mat
     end
   end # EnergyMaterialNoMass
 end # FromHoneybee

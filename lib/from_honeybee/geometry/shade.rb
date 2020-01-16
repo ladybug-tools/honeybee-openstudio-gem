@@ -43,8 +43,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ShadeEnergyPropertiesAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)

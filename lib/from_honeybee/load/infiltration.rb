@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:InfiltrationAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,31 +52,36 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)       
-      openstudio_infiltration = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
-      openstudio_infiltration.setName(@hash[:name])
-      openstudio_infiltration.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])
-      if @hash[:constant_coefficient]
-        openstudio_infiltration.setConstantTermCoefficient(@hash[:constant_coefficient])
-      else 
-        openstudio_infiltration.setConstantTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:constant_coefficient][:default])
-      end
-      if @hash[:temperature_coefficient]
-        openstudio_infiltration.setTemperatureTermCoefficient(@hash[:temperature_coefficient])
-      else
-        openstudio_infiltration.setTemperatureTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:temperature_coefficient][:default])
-      end
-      if @hash[:velocity_coefficient]
-        openstudio_infiltration.setVelocityTermCoefficient(@hash[:velocity_coefficient])
-      else 
-        openstudio_infiltration.setVelocityTermCoefficient(@@schema[:components][:schemas][:InfiltrationAbridged][:properties][:velocity_coefficient][:default])
-      end
+      os_infilt = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
+      os_infilt.setName(@hash[:name])
+
+      os_infilt.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])
+
       infiltration_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless infiltration_schedule.empty?
         infiltration_schedule_object = infiltration_schedule.get
+        os_infilt.setSchedule(infiltration_schedule_object)
       end
-      openstudio_infiltration.setSchedule(infiltration_schedule_object)
 
-      openstudio_infiltration
+      if @hash[:constant_coefficient]
+        os_infilt.setConstantTermCoefficient(@hash[:constant_coefficient])
+      else 
+        os_infilt.setConstantTermCoefficient(defaults[:constant_coefficient][:default])
+      end
+      
+      if @hash[:temperature_coefficient]
+        os_infilt.setTemperatureTermCoefficient(@hash[:temperature_coefficient])
+      else
+        os_infilt.setTemperatureTermCoefficient(defaults[:temperature_coefficient][:default])
+      end
+      
+      if @hash[:velocity_coefficient]
+        os_infilt.setVelocityTermCoefficient(@hash[:velocity_coefficient])
+      else 
+        os_infilt.setVelocityTermCoefficient(defaults[:velocity_coefficient][:default])
+      end
+
+      os_infilt
     end
     
   end #InfiltrationAbridged

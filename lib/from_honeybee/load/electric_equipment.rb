@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,35 +52,38 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)
-      openstudio_electric_equipment_definition = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
-      openstudio_electric_equipment_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
-      if @hash[:radiant_fraction]
-        openstudio_electric_equipment_definition.setFractionRadiant(@hash[:radiant_fraction])
-      else 
-        openstudio_electric_equipment_definition.setFractionRadiant(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:radiant_fraction][:default])
-      end
-      if @hash[:latent_fraction]
-        openstudio_electric_equipment_definition.setFractionLatent(@hash[:latent_fraction])
-      else
-        openstudio_electric_equipment_definition.setFractionLatent(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:latent_fraction][:default])
-      end
-      if @hash[:lost_fraction]
-        openstudio_electric_equipment_definition.setFractionLost(@hash[:lost_fraction])
-      else 
-        openstudio_electric_equipment_definition.setFractionLost(@@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties][:lost_fraction][:default])
-      end
+      os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
+      os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
+      os_electric_equip_def.setName(@hash[:name])
+      os_electric_equip.setName(@hash[:name])
 
-      openstudio_electric_equipment = OpenStudio::Model::ElectricEquipment.new(openstudio_electric_equipment_definition)
-      openstudio_electric_equipment.setName(@hash[:name])
-      openstudio_electric_equipment.setElectricEquipmentDefinition(openstudio_electric_equipment_definition)
+      os_electric_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
       electric_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless electric_equipment_schedule.empty?
         electric_equipment_schedule_object = electric_equipment_schedule.get
+        os_electric_equip.setSchedule(electric_equipment_schedule_object)
       end
-      openstudio_electric_equipment.setSchedule(electric_equipment_schedule_object)
 
-      openstudio_electric_equipment
+      if @hash[:radiant_fraction]
+        os_electric_equip_def.setFractionRadiant(@hash[:radiant_fraction])
+      else 
+        os_electric_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
+      end
+
+      if @hash[:latent_fraction]
+        os_electric_equip_def.setFractionLatent(@hash[:latent_fraction])
+      else
+        os_electric_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
+      end
+
+      if @hash[:lost_fraction]
+        os_electric_equip_def.setFractionLost(@hash[:lost_fraction])
+      else 
+        os_electric_equip_def.setFractionLost(defaults[:lost_fraction][:default])
+      end
+
+      os_electric_equip
     end
 
   end #ElectricEquipmentAbridged

@@ -80,6 +80,10 @@ module FromHoneybee
       end
     end
 
+    def defaults
+      @@schema[:components][:schemas]
+    end
+
     # convert to openstudio model, clears errors and warnings
     def to_openstudio_model(openstudio_model = nil)
       @errors = []
@@ -97,20 +101,21 @@ module FromHoneybee
     end
 
     def create_openstudio_objects
+      # get the defaults for each sub-object
+      simct_defaults = defaults[:SimulationControl][:properties]
+      shdw_defaults = defaults[:ShadowCalculation][:properties]
+      siz_defaults = defaults[:SizingParameter][:properties]
+      out_defaults = defaults[:SimulationOutput][:properties]
+      runper_defaults = defaults[:RunPeriod][:properties]
+
       # set defaults for the Model's SimulationControl object
       os_sim_control = @openstudio_model.getSimulationControl
-      os_sim_control.setDoZoneSizingCalculation(
-        @@schema[:components][:schemas][:SimulationControl][:properties][:do_zone_sizing][:default])
-      os_sim_control.setDoSystemSizingCalculation(
-        @@schema[:components][:schemas][:SimulationControl][:properties][:do_system_sizing][:default])
-      os_sim_control.setDoPlantSizingCalculation(
-        @@schema[:components][:schemas][:SimulationControl][:properties][:do_plant_sizing][:default])
-      os_sim_control.setRunSimulationforWeatherFileRunPeriods(
-        @@schema[:components][:schemas][:SimulationControl][:properties][:run_for_run_periods][:default])
-      os_sim_control.setRunSimulationforSizingPeriods(
-        @@schema[:components][:schemas][:SimulationControl][:properties][:run_for_sizing_periods][:default])
-      os_sim_control.setSolarDistribution(
-        @@schema[:components][:schemas][:ShadowCalculation][:properties][:solar_distribution][:default])
+      os_sim_control.setDoZoneSizingCalculation(simct_defaults[:do_zone_sizing][:default])
+      os_sim_control.setDoSystemSizingCalculation(simct_defaults[:do_system_sizing][:default])
+      os_sim_control.setDoPlantSizingCalculation(simct_defaults[:do_plant_sizing][:default])
+      os_sim_control.setRunSimulationforWeatherFileRunPeriods(simct_defaults[:run_for_run_periods][:default])
+      os_sim_control.setRunSimulationforSizingPeriods(simct_defaults[:run_for_sizing_periods][:default])
+      os_sim_control.setSolarDistribution(shdw_defaults[:solar_distribution][:default])
 
       # override any SimulationControl defaults with lodaded JSON
       if @hash[:simulation_control]
@@ -133,12 +138,9 @@ module FromHoneybee
 
       # set defaults for the Model's ShadowCalculation object
       os_shadow_calc = @openstudio_model.getShadowCalculation
-      os_shadow_calc.setCalculationFrequency(
-        @@schema[:components][:schemas][:ShadowCalculation][:properties][:calculation_frequency][:default])
-      os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(
-        @@schema[:components][:schemas][:ShadowCalculation][:properties][:maximum_figures][:default])
-      os_shadow_calc.setCalculationMethod(
-        @@schema[:components][:schemas][:ShadowCalculation][:properties][:calculation_method][:default])
+      os_shadow_calc.setCalculationFrequency(shdw_defaults[:calculation_frequency][:default])
+      os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(shdw_defaults[:maximum_figures][:default])
+      os_shadow_calc.setCalculationMethod(shdw_defaults[:calculation_method][:default])
 
       # override any ShadowCalculation defaults with lodaded JSON
       if @hash[:shadow_calculation]
@@ -158,10 +160,8 @@ module FromHoneybee
       
       # set defaults for the Model's SizingParameter object
       os_sizing_par = @openstudio_model.getSizingParameters
-      os_sizing_par.setHeatingSizingFactor(
-        @@schema[:components][:schemas][:SizingParameter][:properties][:heating_factor][:default])
-      os_sizing_par.setCoolingSizingFactor(
-        @@schema[:components][:schemas][:SizingParameter][:properties][:cooling_factor][:default])
+      os_sizing_par.setHeatingSizingFactor(siz_defaults[:heating_factor][:default])
+      os_sizing_par.setCoolingSizingFactor(siz_defaults[:cooling_factor][:default])
 
       # override any SizingParameter defaults with lodaded JSON
       if @hash[:sizing_parameter]
@@ -219,8 +219,7 @@ module FromHoneybee
             if @hash[:output][:reporting_frequency]
               os_output.setReportingFrequency(@hash[:output][:reporting_frequency])
             else
-              os_output.setReportingFrequency(
-                @@schema[:components][:schemas][:SimulationOutput][:properties][:reporting_frequency][:default])
+              os_output.setReportingFrequency(out_defaults[:reporting_frequency][:default])
             end
           end
         end
@@ -228,8 +227,7 @@ module FromHoneybee
 
       # set defaults for the year description
       year_description = @openstudio_model.getYearDescription
-      year_description.setDayofWeekforStartDay(
-        @@schema[:components][:schemas][:RunPeriod][:properties][:start_day_of_week][:default])
+      year_description.setDayofWeekforStartDay(runper_defaults[:start_day_of_week][:default])
 
       # set up the simulation RunPeriod
       if @hash[:run_period]
@@ -269,7 +267,7 @@ module FromHoneybee
       if @hash[:timestep]
         os_timestep.setNumberOfTimestepsPerHour(@hash[:timestep])
       else
-        os_timestep.setNumberOfTimestepsPerHour(@@schema[:properties][:timestep][:default])
+        os_timestep.setNumberOfTimestepsPerHour(defaults[:timestep][:default])
       end
     end
 

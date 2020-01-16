@@ -43,8 +43,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -54,50 +53,59 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_window_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
-      openstudio_window_gas_custom.setName(@hash[:name])
+      os_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
+      os_gas_custom.setName(@hash[:name])
+      os_gas_custom.setGasType('Custom')
+      os_gas_custom.setConductivityCoefficientA(@hash[:conductivity_coeff_a])
+      os_gas_custom.setViscosityCoefficientA(@hash[:viscosity_coeff_a])
+      os_gas_custom.setSpecificHeatCoefficientA(@hash[:specific_heat_coeff_a])
+      os_gas_custom.setSpecificHeatRatio(@hash[:specific_heat_ratio])
+      os_gas_custom.setMolecularWeight(@hash[:molecular_weight])
+
       if @hash[:thickness]
-        openstudio_window_gas_custom.setThickness(@hash[:thickness])
+        os_gas_custom.setThickness(@hash[:thickness])
       else
-        openstudio_window_gas_custom.setThickness(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:thickness][:default])
+        os_gas_custom.setThickness(defaults[:thickness][:default])
       end
-      openstudio_window_gas_custom.setGasType('Custom')
-      openstudio_window_gas_custom.setConductivityCoefficientA(@hash[:conductivity_coeff_a].to_f)
+
       if @hash[:conductivity_coeff_b]
-        openstudio_window_gas_custom.setConductivityCoefficientB(@hash[:conductivity_coeff_b].to_f)
+        os_gas_custom.setConductivityCoefficientB(@hash[:conductivity_coeff_b])
       else
-        openstudio_window_gas_custom.setConductivityCoefficientB(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:conductivity_coeff_b][:default].to_f)
+        os_gas_custom.setConductivityCoefficientB(defaults[:conductivity_coeff_b][:default])
       end
+      
       if @hash[:conductivity_coeff_c]
-        openstudio_window_gas_custom.setConductivityCoefficientC(@hash[:conductivity_coeff_c].to_f)
+        os_gas_custom.setConductivityCoefficientC(@hash[:conductivity_coeff_c])
       else
-        openstudio_window_gas_custom.setConductivityCoefficientC(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:conductivity_coeff_c][:default].to_f)
+        os_gas_custom.setConductivityCoefficientC(defaults[:conductivity_coeff_c][:default])
       end
-      openstudio_window_gas_custom.setViscosityCoefficientA(@hash[:viscosity_coeff_a].to_f)
+      
+      
       if @hash[:viscosity_coeff_b]
-        openstudio_window_gas_custom.setViscosityCoefficientB(@hash[:viscosity_coeff_b].to_f)
+        os_gas_custom.setViscosityCoefficientB(@hash[:viscosity_coeff_b])
       else
-        openstudio_window_gas_custom.setViscosityCoefficientB(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:viscosity_coeff_b][:default].to_f)
+        os_gas_custom.setViscosityCoefficientB(defaults[:viscosity_coeff_b][:default])
       end
+      
       if @hash[:viscosity_coeff_c]
-        openstudio_window_gas_custom.setViscosityCoefficientC(@hash[:viscosity_coeff_c].to_f)
+        os_gas_custom.setViscosityCoefficientC(@hash[:viscosity_coeff_c])
       else
-        openstudio_window_gas_custom.setViscosityCoefficientC(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:viscosity_coeff_c][:default].to_f)
+        os_gas_custom.setViscosityCoefficientC(defaults[:viscosity_coeff_c][:default])
       end
-      openstudio_window_gas_custom.setSpecificHeatCoefficientA(@hash[:specific_heat_coeff_a].to_f)
+
       if @hash[:specific_heat_coeff_b]
-        openstudio_window_gas_custom.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_b].to_f)
+        os_gas_custom.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_b])
       else
-        openstudio_window_gas_custom.setSpecificHeatCoefficientB(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:specific_heat_coeff_b][:default].to_f)
+        os_gas_custom.setSpecificHeatCoefficientB(defaults[:specific_heat_coeff_b][:default])
       end
+
       if @hash[:specific_heat_coeff_c]
-        openstudio_window_gas_custom.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_c].to_f)
+        os_gas_custom.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_c])
       else
-        openstudio_window_gas_custom.setConductivityCoefficientC(@@schema[:components][:schemas][:EnergyWindowMaterialGasCustom][:properties][:specific_heat_coeff_c][:default].to_f)
+        os_gas_custom.setConductivityCoefficientC(defaults[:specific_heat_coeff_c][:default])
       end
-      openstudio_window_gas_custom.setSpecificHeatRatio(@hash[:specific_heat_ratio].to_f)
-      openstudio_window_gas_custom.setMolecularWeight(@hash[:molecular_weight].to_f)
-      openstudio_window_gas_custom
+
+      os_gas_custom
     end
   end # EnergyWindowMaterialGasCustom
 end # FromHoneybee

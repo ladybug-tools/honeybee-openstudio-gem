@@ -42,53 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = 'EnergyMaterial'
-      result[:roughness] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:roughness][:default]
-      result[:thermal_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:thermal_absorptance][:default]
-      result[:solar_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:solar_absorptance][:default]
-      result[:visible_absorptance] = @@schema[:components][:schemas][:EnergyMaterial][:properties][:visible_absorptance][:default]
-      result
-    end
-
-    def name
-      @hash[:name]
-    end
-
-    def name=(new_name)
-      @hash[:name] = new_name
-    end
-
-    def thickness
-      @hash[:thickness]
-    end
-
-    def thickness=(new_thickness)
-      @hash[:thickness] = new_thickness
-    end
-
-    def conductivity
-      @hash[:conductivity]
-    end
-
-    def conductivity=(new_conductivity)
-      @hash[:conductivity] = new_conductivity
-    end
-
-    def density
-      @hash[:density]
-    end
-
-    def density=(new_density)
-      @hash[:density] = new_density
-    end
-
-    def specific_heat
-      @hash[:specific_heat]
-    end
-
-    def specific_heat=(new_specific_heat)
-      @hash[:specific_heat] = new_specific_heat
+      @@schema[:components][:schemas][:EnergyMaterial][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -98,37 +52,38 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_opaque_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
-      openstudio_opaque_material.setName(@hash[:name])
+      os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
+      os_opaque_mat.setName(@hash[:name])
+      os_opaque_mat.setThickness(@hash[:thickness])
+      os_opaque_mat.setConductivity(@hash[:conductivity])
+      os_opaque_mat.setDensity(@hash[:density])
+      os_opaque_mat.setSpecificHeat(@hash[:specific_heat])
+
       if @hash[:roughness]
-        openstudio_opaque_material.setRoughness(@hash[:roughness])
+        os_opaque_mat.setRoughness(@hash[:roughness])
       else
-        openstudio_opaque_material.setRoughness(@@schema[:components][:schemas][:EnergyMaterial][:properties][:roughness][:default])
+        os_opaque_mat.setRoughness(defaults[:roughness][:default])
       end
-      openstudio_opaque_material.setThickness(@hash[:thickness])
-      openstudio_opaque_material.setConductivity(@hash[:conductivity])
-      openstudio_opaque_material.setDensity(@hash[:density])
-      if @hash[:specific_heat]
-        openstudio_opaque_material.setSpecificHeat(@hash[:specific_heat])
-      else
-        openstudio_opaque_material.setSpecificHeat(100) #bug in OpenStudio default Specific Heat is 0.1.
-      end
+
       if @hash[:thermal_absorptance]
-        openstudio_opaque_material.setThermalAbsorptance(@hash[:thermal_absorptance].to_f)
+        os_opaque_mat.setThermalAbsorptance(@hash[:thermal_absorptance])
       else
-        openstudio_opaque_material.setThermalAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:thermal_absorptance][:default].to_f)
+        os_opaque_mat.setThermalAbsorptance(defaults[:thermal_absorptance][:default])
       end
+
       if @hash[:solar_absorptance]
-        openstudio_opaque_material.setSolarAbsorptance(@hash[:solar_absorptance].to_f)
+        os_opaque_mat.setSolarAbsorptance(@hash[:solar_absorptance])
       else
-        openstudio_opaque_material.setSolarAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:solar_absorptance][:default].to_f)
+        os_opaque_mat.setSolarAbsorptance(defaults[:solar_absorptance][:default])
       end
+
       if @hash[:visible_absorptance]
-        openstudio_opaque_material.setVisibleAbsorptance(@hash[:visible_absorptance].to_f)
+        os_opaque_mat.setVisibleAbsorptance(@hash[:visible_absorptance])
       else
-        openstudio_opaque_material.setVisibleAbsorptance(@@schema[:components][:schemas][:EnergyMaterial][:properties][:visible_absorptance][:default].to_f)
+        os_opaque_mat.setVisibleAbsorptance(defaults[:visible_absorptance][:default])
       end
-      openstudio_opaque_material
+
+      os_opaque_mat
     end
   end # EnergyEnergyMaterial
 end # FromHoneybee

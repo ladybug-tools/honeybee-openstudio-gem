@@ -117,6 +117,10 @@ module FromHoneybee
         JSON::Validator.fully_validate(@@schema, @hash)
       end
     end
+
+    def defaults
+      @@schema[:components][:schemas][:ModelEnergyProperties][:properties]
+    end
     
     # convert to openstudio model, clears errors and warnings
     def to_openstudio_model(openstudio_model = nil)
@@ -139,8 +143,7 @@ module FromHoneybee
 
       # assign the terrain
       os_site = @openstudio_model.getSite
-      os_site.setTerrain(
-        @@schema[:components][:schemas][:ModelEnergyProperties][:properties][:terrain_type][:default])
+      os_site.setTerrain(defaults[:terrain_type][:default])
       if @hash[:properties][:energy][:terrain_type]
         os_site.setTerrain(@hash[:properties][:energy][:terrain_type])
       end
@@ -180,6 +183,7 @@ module FromHoneybee
       puts 'Translating HVAC Systems'
       create_hvacs
       puts 'Done with translation!'
+      puts 'Writing out OSM and IDF files'
     end
 
     def create_materials
@@ -282,7 +286,7 @@ module FromHoneybee
       if @hash[:properties][:energy][:program_types]
         $programtype_setpoint_hash = Hash.new
         @hash[:properties][:energy][:program_types].each do |space_type|
-          space_type_object = ProgramType.new(space_type)
+          space_type_object = ProgramTypeAbridged.new(space_type)
           space_type_object.to_openstudio(@openstudio_model)
         end
       end

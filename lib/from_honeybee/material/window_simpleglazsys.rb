@@ -42,9 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:type][:enum]
-      result
+      @@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -54,16 +52,18 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-      openstudio_simple_glazing.setName(@hash[:name])
-      openstudio_simple_glazing.setUFactor(@hash[:u_factor])
-      openstudio_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
+      os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
+      os_simple_glazing.setName(@hash[:name])
+      os_simple_glazing.setUFactor(@hash[:u_factor])
+      os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
+
       if @hash[:vt]
-        openstudio_simple_glazing.setVisibleTransmittance(@hash[:vt])
+        os_simple_glazing.setVisibleTransmittance(@hash[:vt])
       else
-        openstudio_simple_glazing.setVisibleTransmittance(@@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties][:vt][:default])
+        os_simple_glazing.setVisibleTransmittance(defaults[:vt][:default])
       end
-      openstudio_simple_glazing
+
+      os_simple_glazing
     end
 
 

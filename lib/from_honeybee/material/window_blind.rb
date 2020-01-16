@@ -41,12 +41,8 @@ module FromHoneybee
       super(hash)
     end
 
-    def name
-      @hash[:name]
-    end
-
-    def name=(new_name)
-      @hash[:name] = new_name
+    def defaults
+      @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -62,134 +58,148 @@ module FromHoneybee
       if @hash[:slat_width]
         os_blind.setSlatWidth(@hash[:slat_width])
       else
-        os_blind.setSlatWidth(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:slat_width][:default])
+        os_blind.setSlatWidth(defaults[:slat_width][:default])
       end
+      
       if @hash[:slat_separation]
         os_blind.setSlatSeparation(@hash[:slat_separation])
       else
-        os_blind.setSlatSeparation(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:slat_separation][:default])
+        os_blind.setSlatSeparation(defaults[:slat_separation][:default])
       end
+      
       if @hash[:slat_thickness]
         os_blind.setSlatThickness(@hash[:slat_thickness])
       else
-        os_blind.setSlatThickness(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:slat_thickness][:default])
+        os_blind.setSlatThickness(defaults[:slat_thickness][:default])
       end
+      
       if @hash[:slat_angle]
         os_blind.setSlatAngle(@hash[:slat_angle])
       else
-        os_blind.setSlatAngle(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:slat_angle][:default])
+        os_blind.setSlatAngle(defaults[:slat_angle][:default])
       end
+      
       if @hash[:slat_conductivity]
         os_blind.setSlatConductivity(@hash[:slat_conductivity])
       else
-        os_blind.setSlatConductivity(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:slat_conductivity][:default])
+        os_blind.setSlatConductivity(defaults[:slat_conductivity][:default])
       end
+      
       if @hash[:beam_solar_transmittance]
         os_blind.setSlatBeamSolarTransmittance(@hash[:beam_solar_transmittance])
       else
-        os_blind.setSlatBeamSolarTransmittance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:beam_solar_transmittance][:default])
+        os_blind.setSlatBeamSolarTransmittance(defaults[:beam_solar_transmittance][:default])
       end
+      
       if @hash[:beam_solar_reflectance]
         os_blind.setFrontSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance])
       else
         os_blind.setFrontSideSlatBeamSolarReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance][:default])
+          defaults[:beam_solar_reflectance][:default])
       end
+      
       if @hash[:beam_solar_reflectance_back]
         os_blind.setBackSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance_back])
       else
         os_blind.setBackSideSlatBeamSolarReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:beam_solar_reflectance_back][:default])
+          defaults[:beam_solar_reflectance_back][:default])
       end
+      
       if @hash[:diffuse_solar_transmittance]
         os_blind.setSlatDiffuseSolarTransmittance(@hash[:diffuse_solar_transmittance])
       else
         os_blind.setSlatDiffuseSolarTransmittance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_transmittance][:default])
+          defaults[:diffuse_solar_transmittance][:default])
       end
+      
       if @hash[:diffuse_solar_reflectance]
         os_blind.setFrontSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance])
       else
         os_blind.setFrontSideSlatDiffuseSolarReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_reflectance][:default])
+          defaults[:diffuse_solar_reflectance][:default])
       end
+      
       if @hash[:diffuse_solar_reflectance_back]
         os_blind.setBackSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance_back])
       else
         os_blind.setBackSideSlatDiffuseSolarReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_solar_reflectance_back][:default])
+          defaults[:diffuse_solar_reflectance_back][:default])
       end
+      
       if @hash[:diffuse_visible_transmittance]
         os_blind.setSlatDiffuseVisibleTransmittance(@hash[:diffuse_visible_transmittance])
       else
         os_blind.setSlatDiffuseVisibleTransmittance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_transmittance][:default])
+          defaults[:diffuse_visible_transmittance][:default])
       end
+      
       if @hash[:diffuse_visible_reflectance]
         os_blind.setFrontSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance])
       else
         os_blind.setFrontSideSlatDiffuseVisibleReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_reflectance][:default])
+          defaults[:diffuse_visible_reflectance][:default])
       end
+      
       if @hash[:diffuse_visible_reflectance_back]
         os_blind.setBackSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance_back])
       else
         os_blind.setBackSideSlatDiffuseVisibleReflectance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:diffuse_visible_reflectance_back][:default])
+          defaults[:diffuse_visible_reflectance_back][:default])
       end
+      
       if @hash[:infrared_transmittance]
         os_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_transmittance])
       else
         os_blind.setSlatInfraredHemisphericalTransmittance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:infrared_transmittance][:default])
+          defaults[:infrared_transmittance][:default])
       end
+      
       if @hash[:emissivity]
         os_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity])
       else
         os_blind.setFrontSideSlatInfraredHemisphericalEmissivity(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:emissivity][:default])
+          defaults[:emissivity][:default])
       end
+      
       if @hash[:emissivity_back]
         os_blind.setBackSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity_back])
       else
         os_blind.setBackSideSlatInfraredHemisphericalEmissivity(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:back_emissivity][:default])
+          defaults[:back_emissivity][:default])
       end
+      
       if @hash[:distance_to_glass]
         os_blind.setBlindtoGlassDistance(@hash[:distance_to_glass])
       else
-        os_blind.setBlindtoGlassDistance(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:distance_to_glass][:default])
+        os_blind.setBlindtoGlassDistance(defaults[:distance_to_glass][:default])
       end
+      
       if @hash[:top_opening_multiplier]
         os_blind.setBlindTopOpeningMultiplier(@hash[:top_opening_multiplier])
       else
         os_blind.setBlindTopOpeningMultiplier(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:top_opening_multiplier][:default])
+          defaults[:top_opening_multiplier][:default])
       end
+      
       if @hash[:bottom_opening_multiplier]
         os_blind.setBlindBottomOpeningMultiplier(@hash[:bottom_opening_multiplier])
       else
         os_blind.setBlindBottomOpeningMultiplier(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:bottom_opening_multiplier][:default])
+          defaults[:bottom_opening_multiplier][:default])
       end
+      
       if @hash[:left_opening_multiplier]
         os_blind.setBlindLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
       else
         os_blind.setBlindLeftSideOpeningMultiplier(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:left_opening_multiplier][:default])
+          defaults[:left_opening_multiplier][:default])
       end
+      
       if @hash[:right_opening_multiplier]
         os_blind.setBlindRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
       else
         os_blind.setBlindRightSideOpeningMultiplier(
-          @@schema[:components][:schemas][:EnergyWindowMaterialBlind][:properties][:right_opening_multiplier][:default])
+          defaults[:right_opening_multiplier][:default])
       end
 
       os_blind
