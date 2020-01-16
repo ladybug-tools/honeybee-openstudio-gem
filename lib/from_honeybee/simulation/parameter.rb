@@ -31,6 +31,7 @@
 
 require 'from_honeybee/model_object'
 require 'from_honeybee/simulation/extension'
+require 'from_honeybee/simulation/designday'
 
 require 'openstudio'
 
@@ -89,6 +90,7 @@ module FromHoneybee
       @errors = []
       @warnings = []
 
+      puts 'Starting SimulationParameter translation from Honeybee to OpenStudio'
       @openstudio_model = if openstudio_model
                             openstudio_model
                           else
@@ -96,6 +98,7 @@ module FromHoneybee
                           end
 
       create_openstudio_objects
+      puts 'Done with SimulationParameter translation!'
 
       @openstudio_model
     end
@@ -174,39 +177,8 @@ module FromHoneybee
         # set any design days
         if @hash[:sizing_parameter][:design_days]
           @hash[:sizing_parameter][:design_days].each do |des_day|
-            os_des_day = OpenStudio::Model::DesignDay.new(@openstudio_model)
-            os_des_day.setName(des_day[:name])
-            os_des_day.setDayType(des_day[:day_type])
-            os_des_day.setMaximumDryBulbTemperature(des_day[:dry_bulb_condition][:dry_bulb_max])
-            os_des_day.setDailyDryBulbTemperatureRange(des_day[:dry_bulb_condition][:dry_bulb_range])
-            os_des_day.setHumidityIndicatingType(des_day[:humidity_condition][:humidity_type])
-            os_des_day.setHumidityIndicatingConditionsAtMaximumDryBulb(des_day[:humidity_condition][:humidity_value])
-            if des_day[:humidity_condition][:barometric_pressure]
-              os_des_day.setBarometricPressure(des_day[:humidity_condition][:barometric_pressure])
-            end
-            if des_day[:humidity_condition][:rain]
-              os_des_day.setRainIndicator(des_day[:humidity_condition][:rain])
-            end
-            if des_day[:humidity_condition][:snow_on_ground]
-              os_des_day.setSnowIndicator(des_day[:humidity_condition][:snow_on_ground])
-            end
-            os_des_day.setWindSpeed(des_day[:wind_condition][:wind_speed])
-            if des_day[:wind_condition][:wind_direction]
-              os_des_day.setWindDirection(des_day[:wind_condition][:wind_direction])
-            end
-            os_des_day.setMonth(des_day[:sky_condition][:date][0])
-            os_des_day.setDayOfMonth(des_day[:sky_condition][:date][1])
-            os_des_day.setSolarModelIndicator(des_day[:sky_condition][:type])
-            if des_day[:sky_condition][:daylight_savings]
-              os_des_day.setDaylightSavingTimeIndicator(des_day[:sky_condition][:daylight_savings])
-            end
-            if des_day[:sky_condition][:type] == "ASHRAEClearSky"
-              os_des_day.setSkyClearness(des_day[:sky_condition][:clearness])
-            end
-            if des_day[:sky_condition][:type] == "ASHRAETau"
-              os_des_day.setAshraeTaub(des_day[:sky_condition][:tau_b])
-              os_des_day.setAshraeTaud(des_day[:sky_condition][:tau_d])
-            end
+            des_day_object = DesignDay.new(des_day)
+            os_des_day = des_day_object.to_openstudio(@openstudio_model)
           end
         end
       end

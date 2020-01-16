@@ -156,7 +156,7 @@ module FromHoneybee
     # create openstudio objects in the openstudio model
     def create_openstudio_objects
       # create all of the non-geometric model elements
-      puts 'Start of Model translation from Honeybee to OpenStudio'
+      puts 'Starting Model translation from Honeybee to OpenStudio'
       puts 'Translating Materials'
       create_materials
       puts 'Translating Constructions'
@@ -182,8 +182,7 @@ module FromHoneybee
       # create the hvac systems
       puts 'Translating HVAC Systems'
       create_hvacs
-      puts 'Done with translation!'
-      puts 'Writing out OSM and IDF files'
+      puts 'Done with Model translation!'
     end
 
     def create_materials
