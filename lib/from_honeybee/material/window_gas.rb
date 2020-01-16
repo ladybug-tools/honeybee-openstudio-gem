@@ -42,19 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:type][:enum]
-      result[:gastype] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:gas_type][:default]
-      result[:thickness] = @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties][:thickness][:default]
-      result
-    end
-
-    def name
-      @hash[:name]
-    end
-
-    def name=(new_name)
-      @hash[:name] = new_name
+      @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -64,15 +52,22 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
-      openstudio_window_gas.setName(@hash[:name])
+      os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
+      os_window_gas.setName(@hash[:name])
+
       if @hash[:thickness]
-        openstudio_window_gas.setThickness(@hash[:thickness])
+        os_window_gas.setThickness(@hash[:thickness])
       else
-        openstudio_window_gas.setThickness(@@schema[:EnergyWindowMaterialGas][:thickness][:default])
+        os_window_gas.setThickness(defaults[:thickness][:default])
       end
-      openstudio_window_gas.setGasType(@hash[:gas_type])
-      openstudio_window_gas
+
+      if @hash[:thickness]
+        os_window_gas.setGasType(@hash[:gas_type])
+      else
+        os_window_gas.setGasType(defaults[:gas_type][:default])
+      end
+      
+      os_window_gas
     end
   end # EnergyWindowMaterialGas
 end # FromHoneybee

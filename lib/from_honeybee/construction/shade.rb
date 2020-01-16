@@ -42,8 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ShadeConstruction][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -54,40 +53,45 @@ module FromHoneybee
 
     def create_openstudio_object(openstudio_model)
 
-      openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      openstudio_construction.setName(@hash[:name])
-      openstudio_materials = OpenStudio::Model::MaterialVector.new
+      os_construction = OpenStudio::Model::Construction.new(openstudio_model)
+      os_construction.setName(@hash[:name])
+      os_materials = OpenStudio::Model::MaterialVector.new
 
       if @hash[:is_specular] == true
-        openstudio_material = OpenStudio::Model::StandardGlazing.new(openstudio_model)
+        os_material = OpenStudio::Model::StandardGlazing.new(openstudio_model)
+        
         if @hash[:solar_reflectance]
-          openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
+          os_material.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
         else
-          openstudio_material.setFrontSideSolarReflectanceatNormalIncidence(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
+          os_material.setFrontSideSolarReflectanceatNormalIncidence(defaults[:solar_reflectance][:default])
         end
+        
         if @hash[:visible_reflectance]
-          openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance].to_f)
+          os_material.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
         else
-          openstudio_material.setFrontSideVisibleReflectanceatNormalIncidence(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default].to_f)
+          os_material.setFrontSideVisibleReflectanceatNormalIncidence(defaults[:solar_reflectance][:default])
         end
       else
-        openstudio_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
+        os_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
+        
         if @hash[:solar_reflectance]
-          openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
+          os_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
         else 
-          openstudio_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@@schema[:components][:schemas][:ShadeConstruction][:properties][:visible_reflectance][:default]))
+          os_material.setSolarReflectance(OpenStudio::OptionalDouble.new(defaults[:visible_reflectance][:default]))
         end
+        
         if @hash[:visible_reflectance]
-          openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@hash[:visible_reflectance]))
+          os_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@hash[:visible_reflectance]))
         else 
-          openstudio_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@@schema[:components][:schemas][:ShadeConstruction][:properties][:solar_reflectance][:default]))
+          os_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(defaults[:solar_reflectance][:default]))
         end
-        openstudio_material.setSpecificHeat(100) #Bug in OpenStudio default Specific Heat is 0.1.
+        
+        os_material.setSpecificHeat(100)  # bug in OpenStudio default Specific Heat is 0.1.
       end
       
-      openstudio_materials << openstudio_material
-      openstudio_construction.setLayers(openstudio_materials)
-      openstudio_construction
+      os_materials << os_material
+      os_construction.setLayers(os_materials)
+      os_construction
     
     end
 

@@ -1,5 +1,5 @@
 /* @preserve
- * Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable Energy, LLC, Ladybug Tools LLC
+ * Honeybee Energy Model Measure, Copyright (c) 2020, Alliance for Sustainable Energy, LLC, Ladybug Tools LLC
 and other contributors. All rights reserved.
  * Use of this source code is governed by the BSD license.
 */

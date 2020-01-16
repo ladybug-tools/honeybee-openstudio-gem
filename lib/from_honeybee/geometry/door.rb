@@ -43,8 +43,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:DoorEnergyPropertiesAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -75,7 +74,13 @@ module FromHoneybee
 
       # assign the bondary condition object if it's a Surface
       if @hash[:boundary_condition][:type] == 'Surface'
-        openstudio_subsurface.setAdjacentSurface(@hash[:boundary_condition][:boundary_condition_objects][0])
+        # get adjacent sub surface by name from openstudio model
+        adj_srf_name = @hash[:boundary_condition][:boundary_condition_objects][0]
+        sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_name)
+        unless sub_srf_ref.empty?
+          sub_srf = sub_srf_ref.get
+          os_subsurface.setAdjacentSubSurface(sub_srf)
+        end
       end
 
       # assign the is_glass property

@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:PeopleAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,37 +52,41 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)
-      openstudio_people_definition = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
-      openstudio_people_definition.setPeopleperSpaceFloorArea(@hash[:people_per_area])
-      if @hash[:radiant_fraction]
-        openstudio_people_definition.setFractionRadiant(@hash[:radiant_fraction])
-      else
-        openstudio_people_definition.setFractionRadiant(@@schema[:components][:schemas][:PeopleAbridged][:radiant_fraction][:default])
+      os_people_def = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
+      os_people = OpenStudio::Model::People.new(os_people_def)
+      os_people_def.setName(@hash[:name])
+      os_people.setName(@hash[:name])
+
+      os_people_def.setPeopleperSpaceFloorArea(@hash[:people_per_area])
+
+      activity_sch = openstudio_model.getScheduleByName(@hash[:activity_schedule])
+      unless activity_sch.empty?
+        activity_sch_object = activity_sch.get
+        os_people.setActivityLevelSchedule(activity_sch_object)
       end
+
+      occupancy_sch = openstudio_model.getScheduleByName(@hash[:occupancy_schedule])
+      unless occupancy_sch.empty?
+        occupancy_sch_object = occupancy_sch.get
+        os_people.setNumberofPeopleSchedule(occupancy_sch_object)
+      end
+
+      if @hash[:radiant_fraction]
+        os_people_def.setFractionRadiant(@hash[:radiant_fraction])
+      else
+        os_people_def.setFractionRadiant(defaults[:radiant_fraction][:default])
+      end
+
       if @hash[:latent_fraction]
         if @hash[:latent_fraction] == 'autocalculate'
-          openstudio_people_definition.autocalculateSensibleHeatFraction()
-        elsif
-          sensible_fraction = 1 - (@hash[:latent_fraction]).to_f
-          openstudio_people_definition.setSensibleHeatFraction(sensible_fraction)
+          os_people_def.autocalculateSensibleHeatFraction()
+        else
+          sensible_fraction = 1 - (@hash[:latent_fraction])
+          os_people_def.setSensibleHeatFraction(sensible_fraction)
         end
       end
-      openstudio_people = OpenStudio::Model::People.new(openstudio_people_definition)
-      openstudio_people.setPeopleDefinition(openstudio_people_definition)
-      openstudio_people.setName(@hash[:name])
-      people_activity_schedule = openstudio_model.getScheduleByName(@hash[:activity_schedule])
-      unless people_activity_schedule.empty?
-        people_activity_schedule_object = people_activity_schedule.get
-      end
-      openstudio_people.setActivityLevelSchedule(people_activity_schedule_object)
 
-      people_occupancy_schedule = openstudio_model.getScheduleByName(@hash[:occupancy_schedule])
-      unless people_occupancy_schedule.empty?
-        people_occupancy_schedule_object = people_occupancy_schedule.get
-      end
-      openstudio_people.setNumberofPeopleSchedule(people_occupancy_schedule_object)
-
-      openstudio_people
+      os_people
     end
 
   end #PeopleAbridged

@@ -42,21 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result[:type] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:type][:enum]
-      result[:thickness] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:thickness][:default]
-      result[:solar_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default]
-      result[:solar_reflectance] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default]
-      result[:solar_reflectance_back] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:solar_reflectance_back][:default]
-      result[:visible_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default]
-      result[:visible_reflectance] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default]
-      result[:visible_reflectance_back] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:visible_reflectance_back][:default]
-      result[:infrared_transmittance] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default]
-      result[:emissivity] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:emissivity][:default]
-      result[:emissivity_back] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:emissivity_back][:default]
-      result[:conductivity] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:conductivity][:default]
-      result[:dirt_correction] = @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default]
-      result
+      @@schema[:components][:schemas][:EnergyWindowMaterialGlazing][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -66,77 +52,101 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_standard_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
-      openstudio_standard_glazing.setName(@hash[:name])
+      os_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
+      os_glazing.setName(@hash[:name])
+      
       if @hash[:thickness]
-        openstudio_standard_glazing.setThickness(@hash[:thickness])
+        os_glazing.setThickness(@hash[:thickness])
       else
-        openstudio_standard_glazing.setThickness(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:thickness][:default])
+        os_glazing.setThickness(defaults[:thickness][:default])
       end
+      
       if @hash[:solar_transmittance]
-        openstudio_standard_glazing.setSolarTransmittanceatNormalIncidence(@hash[:solar_transmittance])
+        os_glazing.setSolarTransmittanceatNormalIncidence(@hash[:solar_transmittance])
       else
-        openstudio_standard_glazing.setSolarTransmittanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:solar_transmittance][:default])
+        os_glazing.setSolarTransmittanceatNormalIncidence(
+          defaults[:solar_transmittance][:default])
       end
+      
       if @hash[:solar_reflectance]
-        openstudio_standard_glazing.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
+        os_glazing.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
       else
-        openstudio_standard_glazing.setFrontSideSolarReflectanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:solar_reflectance][:default])
+        os_glazing.setFrontSideSolarReflectanceatNormalIncidence(
+          defaults[:solar_reflectance][:default])
       end
+      
       if @hash[:solar_reflectance_back]
-        openstudio_standard_glazing.setBackSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance_back])
+        os_glazing.setBackSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance_back])
       else
-        openstudio_standard_glazing.setBackSideSolarReflectanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:solar_reflectance_back][:default])
+        os_glazing.setBackSideSolarReflectanceatNormalIncidence(
+          defaults[:solar_reflectance_back][:default])
       end
+      
       if @hash[:visible_transmittance]
-        openstudio_standard_glazing.setVisibleTransmittanceatNormalIncidence(@hash[:visible_transmittance])
+        os_glazing.setVisibleTransmittanceatNormalIncidence(@hash[:visible_transmittance])
       else
-        openstudio_standard_glazing.setVisibleTransmittanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:visible_transmittance][:default])
+        os_glazing.setVisibleTransmittanceatNormalIncidence(
+          defaults[:visible_transmittance][:default])
       end
+      
       if @hash[:visible_reflectance]
-        openstudio_standard_glazing.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
+        os_glazing.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
       else
-        openstudio_standard_glazing.setFrontSideVisibleReflectanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:visible_reflectance][:default])
+        os_glazing.setFrontSideVisibleReflectanceatNormalIncidence(
+          defaults[:visible_reflectance][:default])
       end
+      
       if @hash[:visible_reflectance_back]
-        openstudio_standard_glazing.setBackSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance_back])
+        os_glazing.setBackSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance_back])
       else
-        openstudio_standard_glazing.setBackSideVisibleReflectanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:visible_reflectance_back][:default])
+        os_glazing.setBackSideVisibleReflectanceatNormalIncidence(
+          defaults[:visible_reflectance_back][:default])
       end
+      
       if @hash[:infrared_transmittance]
-        openstudio_standard_glazing.setInfraredTransmittanceatNormalIncidence(@hash[:infrared_transmittance])
+        os_glazing.setInfraredTransmittanceatNormalIncidence(@hash[:infrared_transmittance])
       else
-        openstudio_standard_glazing.setInfraredTransmittanceatNormalIncidence(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:infrared_transmittance][:default])
+        os_glazing.setInfraredTransmittanceatNormalIncidence(
+          defaults[:infrared_transmittance][:default])
       end
+      
       if @hash[:emissivity]
-        openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:emissivity])
+        os_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:emissivity])
       else
-        openstudio_standard_glazing.setFrontSideInfraredHemisphericalEmissivity(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:emissivity][:default])
+        os_glazing.setFrontSideInfraredHemisphericalEmissivity(
+          defaults[:emissivity][:default])
       end
+      
       if @hash[:emissivity_back]
-        openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:emissivity_back])
+        os_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:emissivity_back])
       else
-        openstudio_standard_glazing.setBackSideInfraredHemisphericalEmissivity(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:emissivity_back][:default])
+        os_glazing.setBackSideInfraredHemisphericalEmissivity(
+          defaults[:emissivity_back][:default])
       end
+      
       if @hash[:conductivity]
-        openstudio_standard_glazing.setThermalConductivity(@hash[:conductivity])
+        os_glazing.setThermalConductivity(@hash[:conductivity])
       else
-        openstudio_standard_glazing.setThermalConductivity(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:conductivity_glass][:default])
+        os_glazing.setThermalConductivity(
+          defaults[:conductivity_glass][:default])
       end
+      
       if @hash[:dirt_correction]
-        openstudio_standard_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@hash[:dirt_correction])
+        os_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@hash[:dirt_correction])
       else
-        openstudio_standard_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@@schema[:components][:schemas][EnergyWindowMaterialGlazing][:properties][:dirt_correction][:default])
+        os_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(
+          defaults[:dirt_correction][:default])
       end
+      
       if @hash[:solar_diffusing] == false
-        openstudio_standard_glazing.setSolarDiffusing(false)
+        os_glazing.setSolarDiffusing(false)
       elsif @hash[:solar_diffusing] == true
-        openstudio_standard_glazing.setSolarDiffusing(true)
+        os_glazing.setSolarDiffusing(true)
       else
-        raise "Unknown value for Solar Diffusing '#{@hash[:solar_diffusing]}'"
+        os_glazing.setSolarDiffusing(defaults[:solar_diffusing][:default])
       end
 
-      openstudio_standard_glazing
+      os_glazing
     end
   end # EnergyWindowMaterialGlazing
 end # FromHoneybee

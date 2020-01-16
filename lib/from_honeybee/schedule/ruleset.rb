@@ -44,8 +44,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ScheduleRulesetAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -55,8 +54,8 @@ module FromHoneybee
     end
 
     def create_openstudio_object(openstudio_model)
-      openstudio_schedule_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
-      openstudio_schedule_ruleset.setName(@hash[:name])
+      os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
+      os_sch_ruleset.setName(@hash[:name])
 
       @hash[:day_schedules].each do |day_schedule|
         day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
@@ -75,7 +74,7 @@ module FromHoneybee
         summer_design_day = openstudio_model.getScheduleDayByName(@hash[:summer_designday_schedule])
         unless summer_design_day.empty?
           summer_design_day_object = summer_design_day.get
-          openstudio_schedule_ruleset.setSummerDesignDaySchedule(summer_design_day_object)
+          os_sch_ruleset.setSummerDesignDaySchedule(summer_design_day_object)
         end
       end
 
@@ -83,7 +82,7 @@ module FromHoneybee
         winter_design_day = openstudio_model.getScheduleDayByName(@hash[:winter_designday_schedule])
         unless winter_design_day.empty?
           winter_design_day_object = winter_design_day.get
-          openstudio_schedule_ruleset.setWinterDesignDaySchedule(winter_design_day_object)
+          os_sch_ruleset.setWinterDesignDaySchedule(winter_design_day_object)
         end
       end       
     
@@ -93,7 +92,7 @@ module FromHoneybee
         values = default_day_schedule_object.values
         times = default_day_schedule_object.times
         values.each_index do |i|
-          openstudio_schedule_ruleset.defaultDaySchedule.addValue(times[i], values[i])
+          os_sch_ruleset.defaultDaySchedule.addValue(times[i], values[i])
         end
       end
       
@@ -101,13 +100,13 @@ module FromHoneybee
         schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
         unless schedule_type_limit.empty?
           schedule_type_limit_object = schedule_type_limit.get
-          openstudio_schedule_ruleset.setScheduleTypeLimits(schedule_type_limit_object)
+          os_sch_ruleset.setScheduleTypeLimits(schedule_type_limit_object)
         end
       end
 
       if @hash[:schedule_rules]
         @hash[:schedule_rules].each do |rule|          
-          openstudio_schedule_rule = OpenStudio::Model::ScheduleRule.new(openstudio_schedule_ruleset)
+          openstudio_schedule_rule = OpenStudio::Model::ScheduleRule.new(os_sch_ruleset)
           openstudio_schedule_rule.setApplySunday(rule[:apply_sunday])
           openstudio_schedule_rule.setApplyMonday(rule[:apply_monday])
           openstudio_schedule_rule.setApplyTuesday(rule[:apply_tuesday])
@@ -135,11 +134,11 @@ module FromHoneybee
 
           #set schedule rule index
           index = @hash[:schedule_rules].find_index(rule)
-          openstudio_schedule_ruleset.setScheduleRuleIndex(openstudio_schedule_rule, index)
+          os_sch_ruleset.setScheduleRuleIndex(openstudio_schedule_rule, index)
         end
       end
 
-      openstudio_schedule_ruleset
+      os_sch_ruleset
     end
 
   end #ScheduleRulesetAbridged

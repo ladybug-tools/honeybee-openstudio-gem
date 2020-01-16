@@ -42,25 +42,25 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:SetpointAbridged][:properties]
     end
   
     def create_openstudio_object(openstudio_model)
-      openstudio_setpoint_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
+      os_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
 
-      heating_schedule = openstudio_model.getScheduleByName(@hash[:heating_schedule])
-      unless heating_schedule.empty?
-        heating_schedule_object = heating_schedule.get
+      heat_sch = openstudio_model.getScheduleByName(@hash[:heating_schedule])
+      unless heat_sch.empty?
+        heat_sch_object = heat_sch.get
+        os_thermostat.setHeatingSetpointTemperatureSchedule(heat_sch_object)
       end
-      openstudio_setpoint_thermostat.setHeatingSetpointTemperatureSchedule(heating_schedule_object)
-      cooling_schedule = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
-      unless cooling_schedule.empty?
-        cooling_schedule_object = cooling_schedule.get
+      
+      cool_sch = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
+      unless cool_sch.empty?
+        cool_sch_object = cool_sch.get
+        os_thermostat.setCoolingSetpointTemperatureSchedule(cool_sch_object)
       end
-      openstudio_setpoint_thermostat.setCoolingSetpointTemperatureSchedule(cooling_schedule_object)
-              
-      openstudio_setpoint_thermostat
+
+      os_thermostat
     end
 
   end #SetpointThermostat

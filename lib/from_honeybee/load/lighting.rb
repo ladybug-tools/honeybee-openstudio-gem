@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:LightingAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,35 +52,36 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)
-      openstudio_lights_definition = OpenStudio::Model::LightsDefinition.new(openstudio_model)
-      openstudio_lights_definition.setWattsperSpaceFloorArea(@hash[:watts_per_area])
-      if @hash[:visible_fraction]
-        openstudio_lights_definition.setFractionVisible(@hash[:visible_fraction])
-      else
-        openstudio_lights_definition.setFractionVisible(@@schema[:components][:schemas][:LightingAbridged][:properties][:visible_fraction][:default])
-      end
-      if @hash[:radiant_fraction]
-        openstudio_lights_definition.setFractionRadiant(@hash[:radiant_fraction])
-      else
-        openstudio_lights_definition.setFractionRadiant(@@schema[:components][:schemas][:LightingAbridged][:properties][:radiant_fraction][:default])
-      end
-      if @hash[:return_air_fraction]
-        openstudio_lights_definition.setReturnAirFraction(@hash[:return_air_fraction])
-      else 
-        openstudio_lights_definition.setReturnAirFraction(@@schema[:components][:schemas][:LightingAbridged][:properties][:return_air_fraction][:default])
-      end
-        
-      openstudio_lights = OpenStudio::Model::Lights.new(openstudio_lights_definition)
-      openstudio_lights.setName(@hash[:name])
-      openstudio_lights.setLightsDefinition(openstudio_lights_definition)
+      os_lights_def = OpenStudio::Model::LightsDefinition.new(openstudio_model)
+      os_lights = OpenStudio::Model::Lights.new(os_lights_def)
+      os_lights_def.setName(@hash[:name])
+      os_lights.setName(@hash[:name])
+
+      os_lights_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
       lighting_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless lighting_schedule.empty?
         lighting_schedule_object = lighting_schedule.get
-      end         
-      openstudio_lights.setSchedule(lighting_schedule_object)
-      
-      openstudio_lights
+        os_lights.setSchedule(lighting_schedule_object)
+      end
+
+      if @hash[:visible_fraction]
+        os_lights_def.setFractionVisible(@hash[:visible_fraction])
+      else
+        os_lights_def.setFractionVisible(defaults[:visible_fraction][:default])
+      end
+      if @hash[:radiant_fraction]
+        os_lights_def.setFractionRadiant(@hash[:radiant_fraction])
+      else
+        os_lights_def.setFractionRadiant(defaults[:radiant_fraction][:default])
+      end
+      if @hash[:return_air_fraction]
+        os_lights_def.setReturnAirFraction(@hash[:return_air_fraction])
+      else 
+        os_lights_def.setReturnAirFraction(defaults[:return_air_fraction][:default])
+      end
+
+      os_lights
     end
 
   end #LightingAbridged

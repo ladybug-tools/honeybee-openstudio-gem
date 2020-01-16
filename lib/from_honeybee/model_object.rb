@@ -33,6 +33,9 @@ require 'openstudio'
 
 module FromHoneybee
   class ModelObject
+    # Base class from which all other ojbects in this module inherit.
+    # Attributes and methods of this class should be overwritten in each inheriting object.
+
     attr_reader :errors, :warnings
 
     def method_missing(sym, *args)
@@ -67,7 +70,6 @@ module FromHoneybee
       @@extension ||= Extension.new
       @@schema ||= @@extension.schema
 
-      hash = defaults.merge(hash)
       @hash = hash
       @type = @hash[:type]
       raise 'Unknown type' if @type.nil?
@@ -75,6 +77,7 @@ module FromHoneybee
       @openstudio_object = nil
     end
 
+    # hash containing the object defaults taken from the open API schema
     def defaults
       raise 'defaults not implemented for ModelObject, override in your class'
     end
@@ -88,8 +91,8 @@ module FromHoneybee
     def validation_errors
       if Gem.loaded_specs.has_key?("json-schema")
         require 'json-schema'
-    #  # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
-    #  # does not correspond to a definition in the schema
+        # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type 
+        # does not correspond to a definition in the schema
         JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
       end
     end
@@ -120,12 +123,13 @@ module FromHoneybee
 
     # find an equivalent existing object in the openstudio model, return nil if not found
     def find_existing_openstudio_object(_openstudio_model)
-      
+      # TODO: uncomment this once create_openstudio_object has been renamed to to_openstudio
+      # raise 'find_existing_openstudio_object is not yet implemented for this ModelObject.'
     end
 
     # create a new object in the openstudio model, return new object
     def create_openstudio_object(_openstudio_model)
-      raise 'create_openstudio_object not implemented for ModelObject, override in your class'
+      raise 'create_openstudio_object is not yet implemented for this ModelObject.'
     end
   end # ModelObject
 end # FromHoneybee

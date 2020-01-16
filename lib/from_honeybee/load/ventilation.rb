@@ -42,8 +42,7 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:VentilationAbridged][:properties]
     end
   
     def find_existing_openstudio_object(openstudio_model)
@@ -53,33 +52,38 @@ module FromHoneybee
     end
   
     def create_openstudio_object(openstudio_model)       
-      openstudio_ventilation = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
-      openstudio_ventilation.setName(@hash[:name])
+      os_vent = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
+      os_vent.setName(@hash[:name])
+
       if @hash[:air_changes_per_hour]
-        openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
+        os_vent.setOutdoorAirFlowAirChangesperHour(@hash[:air_changes_per_hour])
       else
-        openstudio_ventilation.setOutdoorAirFlowAirChangesperHour(@@schema[:components][:schemas][:VentilationAbridged][:properties][:air_changes_per_hour][:default])
-      end
-      if @hash[:flow_per_zone]
-        openstudio_ventilation.setOutdoorAirFlowRate(@hash[:flow_per_zone])
-      else
-        openstudio_ventilation.setOutdoorAirFlowRate(@@schema[:components][:schemas][:VentilationAbridged][:properties][:flow_per_zone][:default])
-      end
-      if @hash[:flow_per_person]
-        openstudio_ventilation.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
-      end
-      if @hash[:flow_per_area]
-        openstudio_ventilation.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
-      end
-      if @hash[:schedule]
-        ventilation_scheule = openstudio_model.getScheduleByName(@hash[:schedule])
-        unless ventilation_schedule.empty?
-          ventilation_schedule_object = ventilation_schedule.get
-        end
-        openstudio_ventilation.setOutdoorAirFlowRateFractionSchedule(ventilation_schedule_object)
+        os_vent.setOutdoorAirFlowAirChangesperHour(defaults[:air_changes_per_hour][:default])
       end
 
-      openstudio_ventilation
+      if @hash[:flow_per_zone]
+        os_vent.setOutdoorAirFlowRate(@hash[:flow_per_zone])
+      else
+        os_vent.setOutdoorAirFlowRate(defaults[:flow_per_zone][:default])
+      end
+
+      if @hash[:flow_per_person]
+        os_vent.setOutdoorAirFlowperPerson(@hash[:flow_per_person])
+      end
+
+      if @hash[:flow_per_area]
+        os_vent.setOutdoorAirFlowperFloorArea(@hash[:flow_per_area])
+      end
+
+      if @hash[:schedule]
+        vent_sch = openstudio_model.getScheduleByName(@hash[:schedule])
+        unless vent_sch.empty?
+          vent_sch_object = vent_sch.get
+          os_vent.setOutdoorAirFlowRateFractionSchedule(vent_sch_object)
+        end
+      end
+
+      os_vent
     end
 
   end #VentilationAbridged

@@ -43,8 +43,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -63,20 +62,17 @@ module FromHoneybee
         os_fi_schedule.setStartMonth(@hash[:start_date][0])
         os_fi_schedule.setStartDay(@hash[:start_date][1])
       else
-        os_fi_schedule.setStartMonth(
-          @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:start_date][:default][0])
-        os_fi_schedule.setStartDay(
-          @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:start_date][:default][1])
+        os_fi_schedule.setStartMonth(defaults[:start_date][:default][0])
+        os_fi_schedule.setStartDay(defaults[:start_date][:default][1])
       end
 
       # assign the interpolate value
       unless @hash[:interpolate].nil?
         os_fi_schedule.setInterpolatetoTimestep(@hash[:interpolate])
       else
-        os_fi_schedule.setInterpolatetoTimestep(
-          @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:interpolate][:default])
+        os_fi_schedule.setInterpolatetoTimestep(defaults[:interpolate][:default])
       end
-      
+
       # assign the schedule type limit
       if @hash[:schedule_type_limit]
         schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
@@ -85,14 +81,14 @@ module FromHoneybee
           os_fi_schedule.setScheduleTypeLimits(schedule_type_limit_object)
         end
       end
-      
+
       # assign the timestep
       if @hash[:timestep]
         timestep = @hash[:timestep]
         interval_length = 60/timestep
         os_fi_schedule.setIntervalLength(interval_length)
       else
-        timestep = @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties][:timestep][:default]
+        timestep = defaults[:timestep][:default]
         interval_length = 60/timestep
         os_fi_schedule.setIntervalLength(interval_length)
       end

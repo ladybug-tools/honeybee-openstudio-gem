@@ -42,8 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:WindowConstructionAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -55,8 +54,8 @@ module FromHoneybee
     def create_openstudio_object(openstudio_model)
       openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
       openstudio_construction.setName(@hash[:name])
-      openstudio_materials = OpenStudio::Model::MaterialVector.new
       
+      openstudio_materials = OpenStudio::Model::MaterialVector.new
       @hash[:layers].each do |layer|
         material_name = layer
         material = openstudio_model.getMaterialByName(material_name)
@@ -65,8 +64,8 @@ module FromHoneybee
           openstudio_materials << openstudio_material
         end
       end
-
       openstudio_construction.setLayers(openstudio_materials)
+
       openstudio_construction
     end
 

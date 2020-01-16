@@ -42,29 +42,29 @@ module FromHoneybee
     end
   
     def defaults
-      result = {}
-      result
+      @@schema[:components][:schemas][:SetpointAbridged][:properties]
     end
       
     def create_openstudio_object(openstudio_model)
-      openstudio_setpoint_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
-      
+      os_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
+
       if @hash[:humidification_schedule]
-        humidification_schedule = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
-        unless humidification_schedule.empty?
-          humidification_schedule_object = humidification_schedule.get
-        end
-        openstudio_setpoint_humidistat.setHumidifyingRelativeHumiditySetpointSchedule(humidification_schedule_object)
-      end
-        
-      if @hash[:dehumidification_schedule]
-        dehumidification_schedule = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
-        unless dehumidification_schedule.empty?
-          dehumidification_schedule_object = dehumidification_schedule.get
+        humid_sch = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
+        unless humid_sch.empty?
+          humid_sch_object = humid_sch.get
+          os_humidistat.setHumidifyingRelativeHumiditySetpointSchedule(humid_sch_object)
         end
       end
 
-      openstudio_setpoint_humidistat
+      if @hash[:dehumidification_schedule]
+        dehumid_sch = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
+        unless dehumid_sch.empty?
+          dehumid_sch_object = dehumid_sch.get
+          os_humidistat.setDehumidifyingRelativeHumiditySetpointSchedule(dehumid_sch_object)
+        end
+      end
+
+      os_humidistat
     end
 
   end #SetpointHumidistat
