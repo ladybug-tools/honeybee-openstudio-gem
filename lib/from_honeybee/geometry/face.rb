@@ -32,7 +32,6 @@
 require 'from_honeybee/model_object'
 require 'from_honeybee/geometry/aperture'
 require 'from_honeybee/geometry/door'
-require 'from_honeybee/geometry/shade'
 
 require 'openstudio'
 
