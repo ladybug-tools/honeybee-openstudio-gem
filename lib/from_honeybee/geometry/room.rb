@@ -103,18 +103,13 @@ module FromHoneybee
         openstudio_surface = ladybug_face.to_openstudio(openstudio_model)
         openstudio_surface.setSpace(os_space)
 
-        # TODO: process all air walls between Roooms
+        # TODO: process all air walls between Rooms
 
         # assign face-level shades if they exist
         if face[:outdoor_shades]
-          os_shd_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-          os_shd_group.setShadedSurface(openstudio_surface)
-          os_shd_group.setSpace(os_space)
-          os_shd_group.setShadingSurfaceType("Space")
+          os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
           face[:outdoor_shades].each do |outdoor_shade|
-            hb_outdoor_shade = Shade.new(outdoor_shade)
-            os_outdoor_shade = hb_outdoor_shade.to_openstudio(openstudio_model)
-            os_outdoor_shade.setShadingSurfaceGroup(os_shd_group)
+            add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
           end
         end
 
@@ -123,15 +118,24 @@ module FromHoneybee
           face[:apertures].each do |aperture|
             if aperture[:outdoor_shades]
               unless os_shd_group
-                os_shd_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-                os_shd_group.setShadedSurface(openstudio_surface)
-                os_shd_group.setSpace(os_space)
-                os_shd_group.setShadingSurfaceType("Space")
+                os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
               end
               aperture[:outdoor_shades].each do |outdoor_shade|
-                hb_outdoor_shade = Shade.new(outdoor_shade)
-                os_outdoor_shade = hb_outdoor_shade.to_openstudio(openstudio_model)
-                os_outdoor_shade.setShadingSurfaceGroup(os_shd_group)
+                add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
+              end
+            end
+          end
+        end
+
+        # assign door-level shades if they exist
+        if face[:doors]
+          face[:doors].each do |door|
+            if door[:outdoor_shades]
+              unless os_shd_group
+                os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
+              end
+              door[:outdoor_shades].each do |outdoor_shade|
+                add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
               end
             end
           end
@@ -154,9 +158,7 @@ module FromHoneybee
         os_shd_group.setSpace(os_space)
         os_shd_group.setShadingSurfaceType("Space")
         @hash[:outdoor_shades].each do |outdoor_shade|
-          outdoor_shade = Shade.new(outdoor_shade)
-          os_outdoor_shade = outdoor_shade.to_openstudio(openstudio_model)
-          os_outdoor_shade.setShadingSurfaceGroup(os_shd_group)
+          add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
         end
       end
 
@@ -254,6 +256,23 @@ module FromHoneybee
       end
 
       os_space
+    end
+
+    # method to make a space-assigned Shade group for shades assigned to parent objects
+    def make_shade_group(openstudio_model, openstudio_surface, os_space)
+      os_shd_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
+      os_shd_group.setShadedSurface(openstudio_surface)
+      os_shd_group.setSpace(os_space)
+      os_shd_group.setShadingSurfaceType("Space")
+
+      os_shd_group
+    end
+
+    # method to create a Shade and add it to a shade group
+    def add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
+      hb_outdoor_shade = Shade.new(outdoor_shade)
+      os_outdoor_shade = hb_outdoor_shade.to_openstudio(openstudio_model)
+      os_outdoor_shade.setShadingSurfaceGroup(os_shd_group)
     end
   
     # method to check for the closest-assigned interior ceiling or floor construction
