@@ -82,42 +82,57 @@ module FromHoneybee
           end
         end
         if @hash[:wall_set][:exterior_construction]
-          assign_constr_to_set(openstudio_model, ext_surf_const, 'Wall',
-            @hash[:wall_set][:exterior_construction])
+          ext_wall_ref = openstudio_model.getConstructionByName(@hash[:wall_set][:exterior_construction])
+          unless ext_wall_ref.empty?
+            exterior_wall = ext_wall_ref.get
+            ext_surf_const.setWallConstruction(exterior_wall)
+          end
         end
         if @hash[:wall_set][:ground_construction]
-          assign_constr_to_set(openstudio_model, grnd_surf_const, 'Wall',
-            @hash[:wall_set][:ground_construction])
+          grd_wall_ref = openstudio_model.getConstructionByName(@hash[:wall_set][:ground_construction])
+          unless grd_wall_ref.empty?
+            ground_wall = grd_wall_ref.get
+            grnd_surf_const.setWallConstruction(ground_wall)
+          end
         end
       end
 
       # assign any constructions in the floor set
       if @hash[:floor_set]
         if @hash[:floor_set][:interior_construction]
-          assign_constr_to_set(openstudio_model, int_surf_const, 'Floor',
-            @hash[:floor_set][:interior_construction])
+          constr_name_int = openstudio_model.getConstructionByName(@hash[:floor_set][:interior_construction])
+          assign_constr_to_set_int(openstudio_model, int_surf_const, 'Floor',
+            constr_name_int)
         end
         if @hash[:floor_set][:exterior_construction]
-          assign_constr_to_set(openstudio_model, ext_surf_const, 'Floor',
-            @hash[:floor_set][:exterior_construction])
+          constr_name_ext = openstudio_model.getConstructionByName(@hash[:floor_set][:exterior_construction])
+          assign_constr_to_set_ext(openstudio_model, ext_surf_const, 'Floor',
+            constr_name_ext
+          )
         end
-        assign_constr_to_set(openstudio_model, grnd_surf_const, 'Floor',
-            @hash[:floor_set][:ground_construction])
+        if @hash[:floor_set][:ground_construction]
+          constr_name_grd = openstudio_model.getConstructionByName(@hash[:floor_set][:ground_construction])
+          assign_constr_to_set_grd(openstudio_model, grnd_surf_const, 'Floor',
+            constr_name_grd)
+        end
       end
 
       # assign any constructions in the roof ceiling set
       if @hash[:roof_ceiling_set]
         if @hash[:roof_ceiling_set][:interior_construction]
-          assign_constr_to_set(openstudio_model, int_surf_const, 'Roof',
-            @hash[:roof_ceiling_set][:interior_construction])
+          constr_name_int = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:interior_construction])
+          assign_constr_to_set_int(openstudio_model, int_surf_const, 'Roof',
+            constr_name_int)
         end
         if @hash[:roof_ceiling_set][:exterior_construction]
-          assign_constr_to_set(openstudio_model, ext_surf_const, 'Roof',
-            @hash[:roof_ceiling_set][:exterior_construction])
+          constr_name_ext = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:exterior_construction])
+          assign_constr_to_set_ext(openstudio_model, ext_surf_const, 'Roof',
+            constr_name_ext)
         end
         if @hash[:roof_ceiling_set][:ground_construction]
-          assign_constr_to_set(openstudio_model, grnd_surf_const, 'Roof',
-            @hash[:roof_ceiling_set][:ground_construction])
+          constr_name_grd = openstudio_model.getConstructionByName(@hash[:roof_ceiling_set][:ground_construction])
+          assign_constr_to_set_grd(openstudio_model, grnd_surf_const, 'Roof',
+            constr_name_grd)
         end
       end
 
@@ -215,18 +230,37 @@ module FromHoneybee
       os_constr_set
     end
 
-    def assign_constr_to_set(openstudio_model, constr_subset, face_type, constr_name)
+    def assign_constr_to_set_int(openstudio_model, constr_subset, face_type, constr_name_int)
       # assign a construction to a subset of a construction set
-      constr_reference = openstudio_model.getConstructionByName(constr_name)
-      unless constr_reference.empty?
-        os_construction = constr_reference.get
-        if face_type == 'Wall'
-          constr_subset.setWallConstruction(os_construction)
-        elsif face_type == 'Floor'
-          constr_subset.setFloorConstruction(os_construction)
-        else
-          constr_subset.setRoofCeilingConstruction(os_construction)
-        end
+      unless constr_name_int.empty?
+        constr_name = constr_name_int.get
+        check_constr_type(constr_name, face_type, constr_subset)
+      end
+    end
+
+    def assign_constr_to_set_ext(openstudio_model, constr_subset, face_type, constr_name_ext)
+      # assign a construction to a subset of a construction set
+      unless constr_name_ext.empty?
+        constr_name = constr_name_ext.get
+        check_constr_type(constr_name, face_type, constr_subset)
+      end
+    end
+
+    def assign_constr_to_set_grd(openstudio_model, constr_subset, face_type, constr_name_grd)
+      unless constr_name_grd.empty?
+        constr_name = constr_name_grd.get
+        check_constr_type(constr_name, face_type, constr_subset)
+      end
+    end
+        
+
+    def check_constr_type(constr_name, face_type, constr_subset)
+      if face_type == 'Wall'
+        constr_subset.setWallConstruction(constr_name)
+      elsif face_type == 'Floor'
+        constr_subset.setFloorConstruction(constr_name)
+      else
+       constr_subset.setRoofCeilingConstruction(constr_name)
       end
     end
 

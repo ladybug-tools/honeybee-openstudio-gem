@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Ladybug Tools Energy Model Schema, Copyright (c) 2019, Alliance for Sustainable
+# Honeybee Energy Model Measure, Copyright (c) 2020, Alliance for Sustainable 
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-#
+# 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -34,43 +34,34 @@ require 'from_honeybee/model_object'
 require 'openstudio'
 
 module FromHoneybee
-  class EnergyWindowMaterialGasMixture < ModelObject
-    attr_reader :erros, :warnings
+  class AirWall < ModelObject
+    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
     end
 
     def defaults
-      @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties]
+      @@schema[:components][:schemas][:AirWall][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasMixtureByName(@hash[:name])
+      object = openstudio_model.getConstructionByName(@hash[:name])
       return object.get if object.is_initialized
       nil
     end
 
     def to_openstudio(openstudio_model)
-      # create the gas mixture
-      os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
-      os_gas_mixture.setName(@hash[:name])
+      openstudio_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
+      openstudio_construction.setName(@hash[:name])
+      openstudio_construction.setSolarAndDaylightingMethod('GroupedZones')
+      openstudio_construction.setRadiantExchangeMethod('GroupedZones')
+      openstudio_construction.setAirExchangeMethod('None')
+      #TODO: Uncomment
+      #openstudio_construction.simpleMixingAirChangesPerHour(0) 
 
-      # set the thickness
-      if @hash[:thickness]
-        os_gas_mixture.setThickness(@hash[:thickness])
-      else
-        os_gas_mixture.setThickness(defaults[:thickness][:default])
-      end
-      
-      # set the gas types and ratios
-      if @hash[:gas_types]  
-        @hash[:gas_types].each_index do |i|
-          os_gas_mixture.setGasType(i, @hash[:gas_types][i], @hash[:gas_fractions][i])
-        end
-      end
-      
-      os_gas_mixture
+      openstudio_construction
     end
-  end # EnergyWindowMaterialGasMixture
-end # FromHoneybee
+
+  end #AirWall
+end #FromHoneybee

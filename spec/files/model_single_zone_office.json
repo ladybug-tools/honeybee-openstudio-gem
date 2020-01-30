@@ -1672,7 +1672,7 @@
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Generic Office Program",
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridged"
                     }
                 }
             },

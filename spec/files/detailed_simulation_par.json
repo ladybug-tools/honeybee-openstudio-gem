@@ -22,16 +22,14 @@
     },
     "run_period": {
         "type": "RunPeriod",
-        "start_date": {
-            "month": 1,
-            "day": 1,
-            "type": "Date"
-        },
-        "end_date": {
-            "month": 6,
-            "day": 21,
-            "type": "Date"
-        },
+        "start_date": [
+            1,
+            1            
+        ],
+        "end_date": [ 
+            6,
+            21
+        ],
         "start_day_of_week": "Monday",
         "holidays": [
             {

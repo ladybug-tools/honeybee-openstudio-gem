@@ -165,7 +165,7 @@ module FromHoneybee
         os_blind.setBackSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity_back])
       else
         os_blind.setBackSideSlatInfraredHemisphericalEmissivity(
-          defaults[:back_emissivity][:default])
+          defaults[:emissivity_back][:default])
       end
       
       if @hash[:distance_to_glass]

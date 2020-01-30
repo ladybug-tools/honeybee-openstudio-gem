@@ -1583,7 +1583,7 @@
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Plenum",
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridged"
                     },
                     "people": {
                         "type": "PeopleAbridged",

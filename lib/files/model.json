@@ -1469,7 +1469,7 @@
           },
           "hvac": {
             "title": "Hvac",
-            "description": "An optional name of a HVAC system (such as an IdealAirSystem) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
+            "description": "An optional name of a HVAC system (such as an IdealAirSystemAbridged) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"

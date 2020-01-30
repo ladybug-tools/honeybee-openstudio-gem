@@ -146,5 +146,5 @@ module FromHoneybee
       os_ideal_air
     end
 
-  end #IdealAirSystem
+  end #IdealAirSystemAbridged
 end #FromHoneybee        

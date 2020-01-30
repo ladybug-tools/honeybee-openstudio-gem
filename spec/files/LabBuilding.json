@@ -736,7 +736,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -1098,7 +1098,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -1534,7 +1534,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -1896,7 +1896,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -3556,7 +3556,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -3856,7 +3856,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -4136,7 +4136,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -4470,7 +4470,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -4966,7 +4966,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -5328,7 +5328,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -5690,7 +5690,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -6052,7 +6052,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -6414,7 +6414,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -6776,7 +6776,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -7138,7 +7138,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -7500,7 +7500,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -7862,7 +7862,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -8224,7 +8224,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -8586,7 +8586,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -8948,7 +8948,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -9310,7 +9310,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -9672,7 +9672,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -10034,7 +10034,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -10396,7 +10396,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -10758,7 +10758,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -11120,7 +11120,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -11482,7 +11482,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -11844,7 +11844,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -12206,7 +12206,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -12568,7 +12568,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -12930,7 +12930,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -13292,7 +13292,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -16682,7 +16682,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -17233,7 +17233,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -17595,7 +17595,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -17957,7 +17957,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -18319,7 +18319,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -18681,7 +18681,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -19272,7 +19272,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -19634,7 +19634,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -19996,7 +19996,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -20493,7 +20493,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -20855,7 +20855,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -21271,7 +21271,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -21713,7 +21713,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -22149,7 +22149,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -22585,7 +22585,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -23108,7 +23108,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -23470,7 +23470,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -23832,7 +23832,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -24194,7 +24194,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -24556,7 +24556,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -25053,7 +25053,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -25435,7 +25435,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -25797,7 +25797,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -26401,7 +26401,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -27113,7 +27113,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -27825,7 +27825,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -28187,7 +28187,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -28549,7 +28549,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -28911,7 +28911,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -29273,7 +29273,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -29635,7 +29635,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -29997,7 +29997,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -30522,7 +30522,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -31671,7 +31671,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -32250,7 +32250,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -32910,7 +32910,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -33435,7 +33435,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -33715,7 +33715,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -33995,7 +33995,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -34357,7 +34357,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -35739,7 +35739,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -36303,7 +36303,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -36827,7 +36827,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -37514,7 +37514,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -38389,7 +38389,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -38723,7 +38723,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -39327,7 +39327,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -40067,7 +40067,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -40672,7 +40672,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -41816,7 +41816,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -42096,7 +42096,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -42728,7 +42728,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -43062,7 +43062,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -43450,7 +43450,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -44506,7 +44506,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -45302,7 +45302,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -46446,7 +46446,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -46942,7 +46942,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -49011,7 +49011,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -49507,7 +49507,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
@@ -50003,7 +50003,7 @@
                     "type": "RoomEnergyPropertiesAbridged", 
                     "construction_set": "2013::ClimateZone5::SteelFramed", 
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridgedAbridged"
                     }
                 }, 
                 "type": "RoomPropertiesAbridged"
