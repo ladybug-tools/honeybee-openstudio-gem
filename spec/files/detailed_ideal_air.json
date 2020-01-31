@@ -1,5 +1,6 @@
 {
-    "type": "IdealAirSystem",
+    "type": "IdealAirSystemAbridged",
+    "name": "Ideal Air System", 
     "heating_limit": 2000.0,
     "cooling_limit": 3500.0,
     "economizer_type": "DifferentialEnthalpy",

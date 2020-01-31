@@ -9376,11 +9376,10 @@
                         0.8401
                     ],
                     "timestep": 1,
-                    "start_date": {
-                        "month": 1,
-                        "day": 1,
-                        "type": "Date"
-                    },
+                    "start_date": [
+                        1,
+                        1
+                    ],
                     "placeholder_value": 0.0,
                     "interpolate": false,
                     "schedule_type_limit": "Fractional"
@@ -18936,11 +18935,10 @@
                         0.7497716894977169
                     ],
                     "timestep": 1,
-                    "start_date": {
-                        "month": 1,
-                        "day": 1,
-                        "type": "Date"
-                    },
+                    "start_date": [
+                        1,
+                        1
+                    ],
                     "placeholder_value": 0.0,
                     "interpolate": false,
                     "schedule_type_limit": "Fractional"
@@ -19192,7 +19190,7 @@
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Generic Office Program",
                     "hvac": {
-                        "type": "IdealAirSystem"
+                        "type": "IdealAirSystemAbridged"
                     },
                     "people": {
                         "type": "PeopleAbridged",

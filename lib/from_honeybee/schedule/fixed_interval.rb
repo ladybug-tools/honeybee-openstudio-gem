@@ -96,7 +96,7 @@ module FromHoneybee
 
       # assign the values as a timeseries
       year_description = openstudio_model.getYearDescription
-      start_date = year_description.makeDate(@hash[:start_date][:month], @hash[:start_date][:day])
+      start_date = year_description.makeDate(@hash[:start_date][0], @hash[:start_date][1])
       values = @hash[:values]
       timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '') 
       os_fi_schedule.setTimeSeries(timeseries)

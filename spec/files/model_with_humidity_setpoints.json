@@ -1294,7 +1294,7 @@
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "2013::Hospital::ICU_PatRm",
                     "hvac": {
-                        "type": "IdealAirSystem",
+                        "type": "IdealAirSystemAbridged",
                         "economizer_type": "DifferentialEnthalpy",
                         "sensible_heat_recovery": 0.81,
                         "latent_heat_recovery": 0.68

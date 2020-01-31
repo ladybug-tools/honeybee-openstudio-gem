@@ -106,7 +106,7 @@ module FromHoneybee
       if @hash[:distance_to_glass]
         os_shade_mat.setShadetoGlassDistance(@hash[:distance_to_glass])
       else
-        os_shade_mat.setShadetoGlassDistance(defaults[:shade_toglass_distance][:default])
+        os_shade_mat.setShadetoGlassDistance(defaults[:distance_to_glass][:default])
       end
       
       if @hash[:top_opening_multiplier]

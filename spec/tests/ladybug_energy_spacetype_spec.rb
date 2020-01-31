@@ -205,7 +205,7 @@ RSpec.describe FromHoneybee do
   it 'can load and validate detailed ideal air' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/detailed_ideal_air.json')
-    model = FromHoneybee::IdealAirSystem.read_from_disk(file)
+    model = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
     
     openstudio_model = model.to_openstudio(openstudio_model)
     expect(openstudio_model).not_to be nil
