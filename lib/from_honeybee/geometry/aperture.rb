@@ -53,13 +53,13 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
-      # create the openstudio subsurface
-      openstudio_vertices = OpenStudio::Point3dVector.new
+      # create the OpenStudio aperture object
+      os_vertices = OpenStudio::Point3dVector.new
       @hash[:geometry][:boundary].each do |vertex|
-        openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
 
-      os_subsurface = OpenStudio::Model::SubSurface.new(openstudio_vertices, openstudio_model)
+      os_subsurface = OpenStudio::Model::SubSurface.new(os_vertices, openstudio_model)
       os_subsurface.setName(@hash[:name])
 
       # assign the construction if it exists
@@ -67,8 +67,8 @@ module FromHoneybee
         construction_name = @hash[:properties][:energy][:construction]
         construction = openstudio_model.getConstructionByName(construction_name)
         unless construction.empty?
-          openstudio_construction = construction.get
-          os_subsurface.setConstruction(openstudio_construction)
+          os_construction = construction.get
+          os_subsurface.setConstruction(os_construction)
         end
       end
       

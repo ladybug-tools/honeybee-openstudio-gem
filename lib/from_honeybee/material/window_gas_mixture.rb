@@ -63,13 +63,15 @@ module FromHoneybee
         os_gas_mixture.setThickness(defaults[:thickness][:default])
       end
       
-      # set the gas types and ratios
-      if @hash[:gas_types]  
-        @hash[:gas_types].each_index do |i|
-          os_gas_mixture.setGasType(i, @hash[:gas_types][i], @hash[:gas_fractions][i])
-        end
+      # set the gas types
+      @hash[:gas_types].each_index do |i|
+        os_gas_mixture.setGasType(i, @hash[:gas_types][i])
       end
       
+      @hash[:gas_fractions].each_index do |i|
+        os_gas_mixture.setGasFraction(i, @hash[:gas_fractions][i])
+      end
+
       os_gas_mixture
     end
   end # EnergyWindowMaterialGasMixture

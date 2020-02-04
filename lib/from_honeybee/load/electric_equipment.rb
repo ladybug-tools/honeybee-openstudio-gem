@@ -52,31 +52,37 @@ module FromHoneybee
     end
   
     def to_openstudio(openstudio_model)
+      # create electrical equipment and set name
       os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
       os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
       os_electric_equip_def.setName(@hash[:name])
       os_electric_equip.setName(@hash[:name])
 
+      # assign watts per area 
       os_electric_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
+      # assign schedule
       electric_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless electric_equipment_schedule.empty?
         electric_equipment_schedule_object = electric_equipment_schedule.get
         os_electric_equip.setSchedule(electric_equipment_schedule_object)
       end
 
+      # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
         os_electric_equip_def.setFractionRadiant(@hash[:radiant_fraction])
       else 
         os_electric_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
       end
 
+      # assign latent fraction if it exists
       if @hash[:latent_fraction]
         os_electric_equip_def.setFractionLatent(@hash[:latent_fraction])
       else
         os_electric_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
       end
 
+      # assign lost fraction if it exists
       if @hash[:lost_fraction]
         os_electric_equip_def.setFractionLost(@hash[:lost_fraction])
       else 

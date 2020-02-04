@@ -52,29 +52,38 @@ module FromHoneybee
     end
   
     def to_openstudio(openstudio_model)
+
+      # create lights OpenStudio object and set name
       os_lights_def = OpenStudio::Model::LightsDefinition.new(openstudio_model)
       os_lights = OpenStudio::Model::Lights.new(os_lights_def)
       os_lights_def.setName(@hash[:name])
       os_lights.setName(@hash[:name])
 
+      # assign watts per space floor area
       os_lights_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
+      # assign lighting schedule
       lighting_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless lighting_schedule.empty?
         lighting_schedule_object = lighting_schedule.get
         os_lights.setSchedule(lighting_schedule_object)
       end
 
+      # assign visible fraction if it exists
       if @hash[:visible_fraction]
         os_lights_def.setFractionVisible(@hash[:visible_fraction])
       else
         os_lights_def.setFractionVisible(defaults[:visible_fraction][:default])
       end
+
+      # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
         os_lights_def.setFractionRadiant(@hash[:radiant_fraction])
       else
         os_lights_def.setFractionRadiant(defaults[:radiant_fraction][:default])
       end
+
+      # assign return air fraction if it exists
       if @hash[:return_air_fraction]
         os_lights_def.setReturnAirFraction(@hash[:return_air_fraction])
       else 

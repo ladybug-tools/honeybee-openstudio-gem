@@ -52,6 +52,7 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create standard opaque OpenStudio material 
       os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
       os_opaque_mat.setName(@hash[:name])
       os_opaque_mat.setThickness(@hash[:thickness])
@@ -59,24 +60,28 @@ module FromHoneybee
       os_opaque_mat.setDensity(@hash[:density])
       os_opaque_mat.setSpecificHeat(@hash[:specific_heat])
 
+      # assign roughness if it exists
       if @hash[:roughness]
         os_opaque_mat.setRoughness(@hash[:roughness])
       else
         os_opaque_mat.setRoughness(defaults[:roughness][:default])
       end
 
+      # assign thermal absorptance if it exists
       if @hash[:thermal_absorptance]
         os_opaque_mat.setThermalAbsorptance(@hash[:thermal_absorptance])
       else
         os_opaque_mat.setThermalAbsorptance(defaults[:thermal_absorptance][:default])
       end
 
+      # assign solar absorptance if it exists
       if @hash[:solar_absorptance]
         os_opaque_mat.setSolarAbsorptance(@hash[:solar_absorptance])
       else
         os_opaque_mat.setSolarAbsorptance(defaults[:solar_absorptance][:default])
       end
 
+      # assign visible absorptance if it exists
       if @hash[:visible_absorptance]
         os_opaque_mat.setVisibleAbsorptance(@hash[:visible_absorptance])
       else

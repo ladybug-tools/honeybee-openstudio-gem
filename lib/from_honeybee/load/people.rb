@@ -52,31 +52,38 @@ module FromHoneybee
     end
   
     def to_openstudio(openstudio_model)
+
+      # create people OpenStudio object and set name
       os_people_def = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
       os_people = OpenStudio::Model::People.new(os_people_def)
       os_people_def.setName(@hash[:name])
       os_people.setName(@hash[:name])
 
+      # assign people per space floor area
       os_people_def.setPeopleperSpaceFloorArea(@hash[:people_per_area])
 
+      # assign activity schedule
       activity_sch = openstudio_model.getScheduleByName(@hash[:activity_schedule])
       unless activity_sch.empty?
         activity_sch_object = activity_sch.get
         os_people.setActivityLevelSchedule(activity_sch_object)
       end
 
+      # assign occupancy schedule
       occupancy_sch = openstudio_model.getScheduleByName(@hash[:occupancy_schedule])
       unless occupancy_sch.empty?
         occupancy_sch_object = occupancy_sch.get
         os_people.setNumberofPeopleSchedule(occupancy_sch_object)
       end
 
+      # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
         os_people_def.setFractionRadiant(@hash[:radiant_fraction])
       else
         os_people_def.setFractionRadiant(defaults[:radiant_fraction][:default])
       end
 
+      # assign latent fraction if it exists
       if @hash[:latent_fraction]
         if @hash[:latent_fraction] == 'autocalculate'
           os_people_def.autocalculateSensibleHeatFraction()

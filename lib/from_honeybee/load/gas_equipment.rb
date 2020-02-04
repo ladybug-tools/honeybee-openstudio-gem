@@ -52,31 +52,38 @@ module FromHoneybee
     end
   
     def to_openstudio(openstudio_model)
+
+      # create gas equipment and set name
       os_gas_equip_def = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
       os_gas_equip = OpenStudio::Model::GasEquipment.new(os_gas_equip_def)
       os_gas_equip_def.setName(@hash[:name])
       os_gas_equip.setName(@hash[:name])
 
+      # assign watts per space floor area
       os_gas_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
 
+      # assign schedule
       gas_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless gas_equipment_schedule.empty?
         gas_equipment_schedule_object = gas_equipment_schedule.get
         os_gas_equip.setSchedule(gas_equipment_schedule_object)
       end
 
+      # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
         os_gas_equip_def.setFractionRadiant(@hash[:radiant_fraction])
       else 
         os_gas_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
       end
       
+      # assign latent fraction if it exists
       if @hash[:latent_fraction]
         os_gas_equip_def.setFractionLatent(@hash[:latent_fraction])
       else
         os_gas_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
       end
       
+      # assign lost fraction if it exists
       if @hash[:lost_fraction]
         os_gas_equip_def.setFractionLost(@hash[:lost_fraction])
       else 

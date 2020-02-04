@@ -52,16 +52,19 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create window gas OpenStudio object
       os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
       os_window_gas.setName(@hash[:name])
 
+      # assign thickness
       if @hash[:thickness]
         os_window_gas.setThickness(@hash[:thickness])
       else
         os_window_gas.setThickness(defaults[:thickness][:default])
       end
 
-      if @hash[:thickness]
+      # assign gas type
+      if @hash[:gas_type]
         os_window_gas.setGasType(@hash[:gas_type])
       else
         os_window_gas.setGasType(defaults[:gas_type][:default])

@@ -52,21 +52,24 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
-      openstudio_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      openstudio_construction.setName(@hash[:name])
+      # create construction and set name      
+      os_construction = OpenStudio::Model::Construction.new(openstudio_model)
+      os_construction.setName(@hash[:name])
       
-      openstudio_materials = OpenStudio::Model::MaterialVector.new
+      # create material vector       
+      os_materials = OpenStudio::Model::MaterialVector.new
+      # loop through each layer and add to material vector
       @hash[:layers].each do |layer|
         material_name = layer
         material = openstudio_model.getMaterialByName(material_name)
         unless material.empty?
-          openstudio_material = material.get
-          openstudio_materials << openstudio_material
+          os_material = material.get
+          os_materials << os_material
         end
       end
-      openstudio_construction.setLayers(openstudio_materials)
+      os_construction.setLayers(os_materials)
 
-      openstudio_construction
+      os_construction
     end
 
   end #WindowConstructionAbridged

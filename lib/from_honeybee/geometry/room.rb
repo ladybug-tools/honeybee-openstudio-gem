@@ -100,14 +100,14 @@ module FromHoneybee
       # assign all of the faces to the room
       @hash[:faces].each do |face|
         ladybug_face = Face.new(face)
-        openstudio_surface = ladybug_face.to_openstudio(openstudio_model)
-        openstudio_surface.setSpace(os_space)
+        os_surface = ladybug_face.to_openstudio(openstudio_model)
+        os_surface.setSpace(os_space)
 
         # TODO: process all air walls between Rooms
 
         # assign face-level shades if they exist
         if face[:outdoor_shades]
-          os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
+          os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
           face[:outdoor_shades].each do |outdoor_shade|
             add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
           end
@@ -118,7 +118,7 @@ module FromHoneybee
           face[:apertures].each do |aperture|
             if aperture[:outdoor_shades]
               unless os_shd_group
-                os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
+                os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
               end
               aperture[:outdoor_shades].each do |outdoor_shade|
                 add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
@@ -132,7 +132,7 @@ module FromHoneybee
           face[:doors].each do |door|
             if door[:outdoor_shades]
               unless os_shd_group
-                os_shd_group = make_shade_group(openstudio_model, openstudio_surface, os_space)
+                os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
               end
               door[:outdoor_shades].each do |outdoor_shade|
                 add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
@@ -146,7 +146,7 @@ module FromHoneybee
           if face[:face_type] != 'Wall'
             interior_construction = closest_interior_construction(openstudio_model, os_space, face[:face_type])
             unless interior_construction.nil?
-              openstudio_surface.setConstruction(interior_construction)
+              os_surface.setConstruction(interior_construction)
             end
           end
         end
@@ -170,11 +170,12 @@ module FromHoneybee
           people_object.setSpace(os_space)
         else
           people_space = PeopleAbridged.new(@hash[:properties][:energy][:people])
-          openstudio_people_space = people_space.to_openstudio(openstudio_model)
-          openstudio_people_space.setSpace(os_space)
+          os_people_space = people_space.to_openstudio(openstudio_model)
+          os_people_space.setSpace(os_space)
         end
       end
 
+      # assign lighting if it exists
       if @hash[:properties][:energy][:lighting]
         lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:name])
         unless lighting.empty?
@@ -182,11 +183,12 @@ module FromHoneybee
           lighting_object.setSpace(os_space)
         else
           lighting_space = LightingAbridged.new(@hash[:properties][:energy][:lighting])
-          openstudio_lighting_space = lighting_space.to_openstudio(openstudio_model)
-          openstudio_lighting_space.setSpace(os_space)
+          os_lighting_space = lighting_space.to_openstudio(openstudio_model)
+          os_lighting_space.setSpace(os_space)
         end
       end
 
+      # assign electric equipment if it exists
       if @hash[:properties][:energy][:electric_equipment]
         electric_equipment = openstudio_model.getElectricEquipmentByName(
           @hash[:properties][:energy][:electric_equipment][:name])
@@ -195,11 +197,12 @@ module FromHoneybee
           electric_equipment_object.setSpace(os_space)
         else
           electric_equipment_space = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
-          openstudio_electric_equipment_space = electric_equipment_space.to_openstudio(openstudio_model)
-          openstudio_electric_equipment_space.setSpace(os_space)
+          os_electric_equipment_space = electric_equipment_space.to_openstudio(openstudio_model)
+          os_electric_equipment_space.setSpace(os_space)
         end
       end
       
+      # assign gas equipment if it exists
       if @hash[:properties][:energy][:gas_equipment]
         gas_equipment = openstudio_model.getGasEquipmentByName(
           @hash[:properties][:energy][:gas_equipment][:name])
@@ -208,11 +211,12 @@ module FromHoneybee
           gas_equipment_object.setSpace(os_space)
         else
           gas_equipment_space = GasEquipmentAbridged.new(@hash[:properties][:energy][:gas_equipment])
-          openstudio_gas_equipment_space = gas_equipment_space.to_openstudio(openstudio_model)
-          openstudio_gas_equipment_space.setSpace(os_space)
+          os_gas_equipment_space = gas_equipment_space.to_openstudio(openstudio_model)
+          os_gas_equipment_space.setSpace(os_space)
         end
       end
 
+      # assign infiltration if it exists
       if @hash[:properties][:energy][:infiltration]
         infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(
           @hash[:properties][:energy][:infiltration][:name])
@@ -221,11 +225,12 @@ module FromHoneybee
           infiltration_object.setSpace(os_space)
         else
           infiltration_space = InfiltrationAbridged.new(@hash[:properties][:energy][:infiltration])
-          openstudio_infiltration_space = infiltration_space.to_openstudio(openstudio_model)
-          openstudio_infiltration_space.setSpace(os_space) 
+          os_infiltration_space = infiltration_space.to_openstudio(openstudio_model)
+          os_infiltration_space.setSpace(os_space) 
         end
       end
         
+      # assign ventilation if it exists
       if @hash[:properties][:energy][:ventilation] 
         ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(
           @hash[:properties][:energy][:ventilation][:name])
@@ -234,24 +239,25 @@ module FromHoneybee
           ventilation_object.setSpace(os_space)
         else
           ventilation_space = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
-          openstudio_ventilation_space = ventilation_space.to_openstudio(openstudio_model)
-          os_space.setDesignSpecificationOutdoorAir(openstudio_ventilation_space)
+          os_ventilation_space = ventilation_space.to_openstudio(openstudio_model)
+          os_space.setDesignSpecificationOutdoorAir(os_ventilation_space)
         end
       end
 
+      # assign setpoint if it exists
       if @hash[:properties][:energy][:setpoint]
         #thermostat object is created because heating and cooling schedule are required
         #fields.
         setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
-        openstudio_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
+        os_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
         #set thermostat to thermal zone
-        os_thermal_zone.setThermostatSetpointDualSetpoint(openstudio_setpoint_thermostat_space)
+        os_thermal_zone.setThermostatSetpointDualSetpoint(os_setpoint_thermostat_space)
         #humidistat object is created if humidification or dehumidification schedule is
         #specified.
         if @hash[:properties][:energy][:setpoint][:humidification_schedule] or @hash[:properties][:energy][:setpoint][:dehumidification_schedule]
           setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
-          openstudio_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
-          os_thermal_zone.setZoneControlHumidistat(openstudio_setpoint_humidistat_space)
+          os_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
+          os_thermal_zone.setZoneControlHumidistat(os_setpoint_humidistat_space)
         end
       end
 

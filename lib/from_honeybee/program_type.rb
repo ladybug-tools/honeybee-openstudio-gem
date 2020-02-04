@@ -63,43 +63,50 @@ module FromHoneybee
     end
   
     def to_openstudio(openstudio_model)    
-      openstudio_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
-      openstudio_space_type.setName(@hash[:name])
+      # create openstudio space type object
+      os_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
+      os_space_type.setName(@hash[:name])
 
+      # assign people 
       if @hash[:people]
         people = PeopleAbridged.new(@hash[:people])
-        openstudio_people = people.to_openstudio(openstudio_model)
-        openstudio_people.setSpaceType(openstudio_space_type)
+        os_people = people.to_openstudio(openstudio_model)
+        os_people.setSpaceType(os_space_type)
       end
 
+      # assign lighting
       if @hash[:lighting]
         lights = LightingAbridged.new(@hash[:lighting])
-        openstudio_lights = lights.to_openstudio(openstudio_model)
-        openstudio_lights.setSpaceType(openstudio_space_type)
+        os_lights = lights.to_openstudio(openstudio_model)
+        os_lights.setSpaceType(os_space_type)
       end
 
+      # assign electric equipment
       if @hash[:electric_equipment]
         electric_equipment = ElectricEquipmentAbridged.new(@hash[:electric_equipment])
-        openstudio_electric_equipment = electric_equipment.to_openstudio(openstudio_model)
-        openstudio_electric_equipment.setSpaceType(openstudio_space_type)
+        os_electric_equipment = electric_equipment.to_openstudio(openstudio_model)
+        os_electric_equipment.setSpaceType(os_space_type)
       end
 
+      # assign gas equipment
       if @hash[:gas_equipment]
         gas_equipment = GasEquipmentAbridged.new(@hash[:gas_equipment])
-        openstudio_gas_equipment = gas_equipment.to_openstudio(openstudio_model)
-        openstudio_gas_equipment.setSpaceType(openstudio_space_type)
+        os_gas_equipment = gas_equipment.to_openstudio(openstudio_model)
+        os_gas_equipment.setSpaceType(os_space_type)
       end
         
+      # assign infiltration
       if @hash[:infiltration]
         infiltration = InfiltrationAbridged.new(@hash[:infiltration])
-        openstudio_infiltration = infiltration.to_openstudio(openstudio_model)
-        openstudio_infiltration.setSpaceType(openstudio_space_type)
+        os_infiltration = infiltration.to_openstudio(openstudio_model)
+        os_infiltration.setSpaceType(os_space_type)
       end
     
+      # assign ventilation
       if @hash[:ventilation]
         ventilation = VentilationAbridged.new(@hash[:ventilation])
-        openstudio_ventilation = ventilation.to_openstudio(openstudio_model)
-        openstudio_space_type.setDesignSpecificationOutdoorAir(openstudio_ventilation)
+        os_ventilation = ventilation.to_openstudio(openstudio_model)
+        os_space_type.setDesignSpecificationOutdoorAir(os_ventilation)
       end
 
       # add setpoints from to a global hash that will be used to assign them to rooms
@@ -107,7 +114,7 @@ module FromHoneybee
         $programtype_setpoint_hash[@hash[:name]] = @hash[:setpoint]
       end
 
-      openstudio_space_type
+      os_space_type
     end
 
   end #ProgramTypeAbridged 

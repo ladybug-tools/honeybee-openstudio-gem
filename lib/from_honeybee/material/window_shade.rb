@@ -52,87 +52,102 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create openstudio shade object
       os_shade_mat = OpenStudio::Model::Shade.new(openstudio_model)
       os_shade_mat.setName(@hash[:name])
 
+      # assign solar transmittance
       if @hash[:solar_transmittance]
         os_shade_mat.setSolarTransmittance(@hash[:solar_transmittance])
       else
         os_shade_mat.setSolarTransmittance(defaults[:solar_transmittance][:default])
       end
 
+      # assign solar reflectance
       if @hash[:solar_reflectance]
         os_shade_mat.setSolarReflectance(@hash[:solar_reflectance])
       else
         os_shade_mat.setSolarReflectance(defaults[:solar_reflectance][:default])
       end
 
+      # assign visible transmittance
       if @hash[:visible_transmittance]
         os_shade_mat.setVisibleTransmittance(@hash[:visible_transmittance])
       else
         os_shade_mat.setVisibleTransmittance(defaults[:visible_transmittance][:default])
       end
 
+      # assign visible reflectance
       if @hash[:visible_reflectance]
         os_shade_mat.setVisibleReflectance(@hash[:visible_reflectance])
       else
         os_shade_mat.setVisibleReflectance(defaults[:visible_reflectance][:default])
       end
       
+      # assign emissivity
       if @hash[:emissivity]
         os_shade_mat.setThermalHemisphericalEmissivity(@hash[:emissivity])
       else
         os_shade_mat.setThermalHemisphericalEmissivity(defaults[:emissivity][:default])
       end
       
+      # assign infrared transmittance
       if @hash[:infrared_transmittance]
         os_shade_mat.setThermalTransmittance(@hash[:infrared_transmittance])
       else
         os_shade_mat.setThermalTransmittance(defaults[:infrared_transmittance][:default])
       end
       
+      # assign thickness
       if @hash[:thickness]
         os_shade_mat.setThickness(@hash[:thickness])
       else
         os_shade_mat.setThickness(defaults[:thickness][:default])
       end
       
+      # assign conductivity
       if @hash[:conductivity]
         os_shade_mat.setConductivity(@hash[:conductivity])
       else
         os_shade_mat.setConductivity(defaults[:conductivity][:default])
       end
       
+      # assign distance to glass
       if @hash[:distance_to_glass]
         os_shade_mat.setShadetoGlassDistance(@hash[:distance_to_glass])
       else
         os_shade_mat.setShadetoGlassDistance(defaults[:distance_to_glass][:default])
       end
       
+      # assign top opening multiplier
       if @hash[:top_opening_multiplier]
         os_shade_mat.setTopOpeningMultiplier(@hash[:top_opening_multiplier])
       else
         os_shade_mat.setTopOpeningMultiplier(defaults[:top_opening_multiplier][:default])
       end
       
+      # assign bottom opening multiplier
       if @hash[:bottom_opening_multiplier]
         os_shade_mat.setBottomOpeningMultiplier(@hash[:bottom_opening_multiplier])
       else
         os_shade_mat.setSolarReflectance(defaults[:bottom_opening_multiplier][:default])
       end
       
+      # assign left opening multiplier
       if @hash[:left_opening_multiplier]
         os_shade_mat.setLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
       else
         os_shade_mat.setLeftSideOpeningMultiplier(defaults[:left_opening_multiplier][:default])
       end
       
+      # assign right opening muliplier
       if @hash[:right_opening_multiplier]
         os_shade_mat.setRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
       else
         os_shade_mat.setRightSideOpeningMultiplier(defaults[:right_opening_multiplier][:default])
       end
       
+      # assign airflow permeability
       if @hash[:airflow_permeability]
         os_shade_mat.setAirflowPermeability(@hash[:airflow_permeability])
       else

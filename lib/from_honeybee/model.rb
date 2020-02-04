@@ -154,7 +154,7 @@ module FromHoneybee
 
     private
 
-    # create openstudio objects in the openstudio model
+    # create OpenStudio bjects in the OpenStudio model
     def create_openstudio_objects
       # create all of the non-geometric model elements
       puts 'Starting Model translation from Honeybee to OpenStudio'

@@ -52,28 +52,36 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+
+      # create no mass material OpenStudio object and set name 
       os_nomass_mat = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
       os_nomass_mat.setName(@hash[:name])
+
+      # assign thermal resistance
       os_nomass_mat.setThermalResistance(@hash[:r_value])
       
+      # assign roughness if it exists
       if @hash[:roughness]
         os_nomass_mat.setRoughness(@hash[:roughness])
       else
         os_nomass_mat.setRoughness(defaults[:roughness][:default])
       end
 
+      # assign thermal absorptance if it exists
       if @hash[:thermal_absorptance]
         os_nomass_mat.setThermalAbsorptance(@hash[:thermal_absorptance])
       else
         os_nomass_mat.setThermalAbsorptance(defaults[:thermal_absorptance][:default])
       end
 
+      # assign solar absorptance if it exists
       if @hash[:solar_absorptance]
         os_nomass_mat.setSolarAbsorptance(@hash[:solar_absorptance])
       else
         os_nomass_mat.setSolarAbsorptance(defaults[:solar_absorptance][:default])
       end
 
+      # assign visible absorptance if it exists
       if @hash[:visible_absorptance]
         os_nomass_mat.setVisibleAbsorptance(@hash[:visible_absorptance])
       else

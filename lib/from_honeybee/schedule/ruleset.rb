@@ -54,9 +54,11 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create openstudio schedule ruleset object
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
       os_sch_ruleset.setName(@hash[:name])
 
+      # loop through day schedules and create openstudio schedule day object
       @hash[:day_schedules].each do |day_schedule|
         day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
         day_schedule_new.setName(day_schedule[:name])
@@ -70,6 +72,7 @@ module FromHoneybee
         end
       end
       
+      # assign summer design day schedule 
       if @hash[:summer_designday_schedule]
         summer_design_day = openstudio_model.getScheduleDayByName(@hash[:summer_designday_schedule])
         unless summer_design_day.empty?
@@ -78,6 +81,7 @@ module FromHoneybee
         end
       end
 
+      # assign winter design day schedule
       if @hash[:winter_designday_schedule]
         winter_design_day = openstudio_model.getScheduleDayByName(@hash[:winter_designday_schedule])
         unless winter_design_day.empty?
@@ -86,6 +90,7 @@ module FromHoneybee
         end
       end       
     
+      # assign default day schedule
       default_day_schedule = openstudio_model.getScheduleDayByName(@hash[:default_day_schedule])
       unless default_day_schedule.empty?
         default_day_schedule_object = default_day_schedule.get
@@ -96,6 +101,7 @@ module FromHoneybee
         end
       end
       
+      # assign schedule type limit
       if @hash[:schedule_type_limit]
         schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
         unless schedule_type_limit.empty?
@@ -104,6 +110,7 @@ module FromHoneybee
         end
       end
 
+      # assign schedule rules
       if @hash[:schedule_rules]
         @hash[:schedule_rules].each do |rule|          
           openstudio_schedule_rule = OpenStudio::Model::ScheduleRule.new(os_sch_ruleset)
