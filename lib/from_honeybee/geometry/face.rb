@@ -80,20 +80,20 @@ module FromHoneybee
       boundary_condition = (@hash[:boundary_condition][:type])
       case boundary_condition
       when 'Outdoors'
-        if @hash[:boundary_condition][:sun_exposure] == true
-          openstudio_surface.setSunExposure('SunExposed')
-        else 
+        if @hash[:boundary_condition][:sun_exposure] == false
           openstudio_surface.setSunExposure('NoSun')
+        else 
+          openstudio_surface.setSunExposure('SunExposed')
         end
-        if @hash[:boundary_condition][:wind_exposure] == true
-          openstudio_surface.setWindExposure('WindExposed')
-        else
+        if @hash[:boundary_condition][:wind_exposure] == false
           openstudio_surface.setWindExposure('NoWind')
-        end
-        if @hash[:boundary_condition][:view_factor] == 'autocalculate'
-          openstudio_surface.autocalculateViewFactortoGround
         else
+          openstudio_surface.setWindExposure('WindExposed')
+        end
+        if @hash[:boundary_condition][:view_factor].is_a? Numeric
           openstudio_surface.setViewFactortoGround(@hash[:boundary_condition][:view_factor])
+        else
+          openstudio_surface.autocalculateViewFactortoGround
         end
       when 'Surface'
         # get adjacent surface by name from openstudio model

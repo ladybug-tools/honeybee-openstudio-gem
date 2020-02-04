@@ -57,11 +57,11 @@ module FromHoneybee
       os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
       os_type_limit.setName(@hash[:name])
 
-      if @hash[:lower_limit]
+      if @hash[:lower_limit] != nil and @hash[:lower_limit] != {'type': 'NoLimit'}
         os_type_limit.setLowerLimitValue(@hash[:lower_limit])
       end
 
-      if @hash[:upper_limit]
+      if @hash[:upper_limit] != nil and @hash[:upper_limit] != {'type': 'NoLimit'}
         os_type_limit.setUpperLimitValue(@hash[:upper_limit])
       end
 
