@@ -78,11 +78,11 @@ module FromHoneybee
       end
 
       if @hash[:latent_fraction]
-        if @hash[:latent_fraction] == 'autocalculate'
-          os_people_def.autocalculateSensibleHeatFraction()
-        else
+        if @hash[:latent_fraction].is_a? Numeric
           sensible_fraction = 1 - (@hash[:latent_fraction])
           os_people_def.setSensibleHeatFraction(sensible_fraction)
+        else
+          os_people_def.autocalculateSensibleHeatFraction()
         end
       end
 
