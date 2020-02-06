@@ -52,42 +52,52 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
       os_construction.setName(@hash[:name])
       os_materials = OpenStudio::Model::MaterialVector.new
 
+      # create standard glazing if is specular is true
       if @hash[:is_specular] == true
         os_material = OpenStudio::Model::StandardGlazing.new(openstudio_model)
         
+        # assign solar reflectance
         if @hash[:solar_reflectance]
           os_material.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
         else
           os_material.setFrontSideSolarReflectanceatNormalIncidence(defaults[:solar_reflectance][:default])
         end
         
+        # assign visible reflectance
         if @hash[:visible_reflectance]
           os_material.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
         else
           os_material.setFrontSideVisibleReflectanceatNormalIncidence(defaults[:solar_reflectance][:default])
         end
+
+      # create standard opaque material if is specular is false  
       else
         os_material = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
         
+        # assign solar reflectance
         if @hash[:solar_reflectance]
           os_material.setSolarReflectance(OpenStudio::OptionalDouble.new(@hash[:solar_reflectance]))
         else 
           os_material.setSolarReflectance(OpenStudio::OptionalDouble.new(defaults[:visible_reflectance][:default]))
         end
         
+        # assign visible reflectance
         if @hash[:visible_reflectance]
           os_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(@hash[:visible_reflectance]))
         else 
           os_material.setVisibleReflectance(OpenStudio::OptionalDouble.new(defaults[:solar_reflectance][:default]))
         end
         
+        # assign specific heat
         os_material.setSpecificHeat(100)  # bug in OpenStudio default Specific Heat is 0.1.
       end
       
+      # add materials and set layers to construction
       os_materials << os_material
       os_construction.setLayers(os_materials)
       os_construction

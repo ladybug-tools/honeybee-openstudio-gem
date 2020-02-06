@@ -52,15 +52,18 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create openstudio standard glazing object and set name
       os_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
       os_glazing.setName(@hash[:name])
       
+      # assign thickness
       if @hash[:thickness]
         os_glazing.setThickness(@hash[:thickness])
       else
         os_glazing.setThickness(defaults[:thickness][:default])
       end
       
+      # assign solar transmittance
       if @hash[:solar_transmittance]
         os_glazing.setSolarTransmittanceatNormalIncidence(@hash[:solar_transmittance])
       else
@@ -68,6 +71,7 @@ module FromHoneybee
           defaults[:solar_transmittance][:default])
       end
       
+      # assign front solar reflectance
       if @hash[:solar_reflectance]
         os_glazing.setFrontSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance])
       else
@@ -75,6 +79,7 @@ module FromHoneybee
           defaults[:solar_reflectance][:default])
       end
       
+      # assign back solar reflectance
       if @hash[:solar_reflectance_back]
         os_glazing.setBackSideSolarReflectanceatNormalIncidence(@hash[:solar_reflectance_back])
       else
@@ -82,6 +87,7 @@ module FromHoneybee
           defaults[:solar_reflectance_back][:default])
       end
       
+      # assign visible transmittance at normal incidence
       if @hash[:visible_transmittance]
         os_glazing.setVisibleTransmittanceatNormalIncidence(@hash[:visible_transmittance])
       else
@@ -89,6 +95,7 @@ module FromHoneybee
           defaults[:visible_transmittance][:default])
       end
       
+      # assign front side visible reflectance
       if @hash[:visible_reflectance]
         os_glazing.setFrontSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance])
       else
@@ -96,6 +103,7 @@ module FromHoneybee
           defaults[:visible_reflectance][:default])
       end
       
+      # assign back side visible reflectance
       if @hash[:visible_reflectance_back]
         os_glazing.setBackSideVisibleReflectanceatNormalIncidence(@hash[:visible_reflectance_back])
       else
@@ -103,6 +111,7 @@ module FromHoneybee
           defaults[:visible_reflectance_back][:default])
       end
       
+      # assign infrared transmittance
       if @hash[:infrared_transmittance]
         os_glazing.setInfraredTransmittanceatNormalIncidence(@hash[:infrared_transmittance])
       else
@@ -110,6 +119,7 @@ module FromHoneybee
           defaults[:infrared_transmittance][:default])
       end
       
+      # assign front side emissivity 
       if @hash[:emissivity]
         os_glazing.setFrontSideInfraredHemisphericalEmissivity(@hash[:emissivity])
       else
@@ -117,6 +127,7 @@ module FromHoneybee
           defaults[:emissivity][:default])
       end
       
+      # assign back side emissivity
       if @hash[:emissivity_back]
         os_glazing.setBackSideInfraredHemisphericalEmissivity(@hash[:emissivity_back])
       else
@@ -124,6 +135,7 @@ module FromHoneybee
           defaults[:emissivity_back][:default])
       end
       
+      # assign conductivity
       if @hash[:conductivity]
         os_glazing.setThermalConductivity(@hash[:conductivity])
       else
@@ -131,6 +143,7 @@ module FromHoneybee
           defaults[:conductivity_glass][:default])
       end
       
+      # assign dirt correction
       if @hash[:dirt_correction]
         os_glazing.setDirtCorrectionFactorforSolarandVisibleTransmittance(@hash[:dirt_correction])
       else
@@ -138,6 +151,7 @@ module FromHoneybee
           defaults[:dirt_correction][:default])
       end
       
+      # assign solar diffusing
       if @hash[:solar_diffusing] == false
         os_glazing.setSolarDiffusing(false)
       elsif @hash[:solar_diffusing] == true

@@ -52,11 +52,13 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      #  create simple glazing openstudio object
       os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
       os_simple_glazing.setName(@hash[:name])
       os_simple_glazing.setUFactor(@hash[:u_factor])
       os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
 
+      # assign visible transmittance
       if @hash[:vt]
         os_simple_glazing.setVisibleTransmittance(@hash[:vt])
       else

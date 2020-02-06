@@ -54,21 +54,21 @@ module FromHoneybee
 
     def to_openstudio(openstudio_model)
       # create the openstudio shading surface
-      openstudio_vertices = OpenStudio::Point3dVector.new
+      os_vertices = OpenStudio::Point3dVector.new
       @hash[:geometry][:boundary].each do |vertex|
-        openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
 
-      openstudio_shading_surface = OpenStudio::Model::ShadingSurface.new(openstudio_vertices, openstudio_model)
-      openstudio_shading_surface.setName(@hash[:name])
+      os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
+      os_shading_surface.setName(@hash[:name])
 
       # assign the construction if it exists
       if @hash[:properties][:energy][:construction]
         construction_name = @hash[:properties][:energy][:construction]
         construction = openstudio_model.getConstructionByName(construction_name)
         unless construction.empty?
-          openstudio_construction = construction.get
-          openstudio_shading_surface.setConstruction(openstudio_construction)
+          os_construction = construction.get
+          os_shading_surface.setConstruction(os_construction)
         end
       end
 
@@ -77,12 +77,12 @@ module FromHoneybee
         schedule_name = @hash[:properties][:energy][:transmittance_schedule]
         schedule = openstudio_model.getScheduleByName(schedule_name)
         unless schedule.empty?
-          openstudio_schedule = schedule.get
-          openstudio_shading_surface.setTransmittanceSchedule(openstudio_schedule)
+          os_schedule = schedule.get
+          os_shading_surface.setTransmittanceSchedule(os_schedule)
         end
       end
   
-      openstudio_shading_surface
+      os_shading_surface
     end
   end #Shade
 end #FromHoneybee

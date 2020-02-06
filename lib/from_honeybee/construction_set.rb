@@ -217,6 +217,7 @@ module FromHoneybee
         end
       end
       
+      # assign any constructions to space shading construction set
       if @hash[:shade_construction]
         if @hash[:shade_construction]
           shade_ref = openstudio_model.getConstructionByName(@hash[:shade_construction])
@@ -230,30 +231,31 @@ module FromHoneybee
       os_constr_set
     end
 
+    # get interior construction subset
     def assign_constr_to_set_int(openstudio_model, constr_subset, face_type, constr_name_int)
-      # assign a construction to a subset of a construction set
       unless constr_name_int.empty?
         constr_name = constr_name_int.get
         check_constr_type(constr_name, face_type, constr_subset)
       end
     end
 
+    # get exterior construction subset
     def assign_constr_to_set_ext(openstudio_model, constr_subset, face_type, constr_name_ext)
-      # assign a construction to a subset of a construction set
       unless constr_name_ext.empty?
         constr_name = constr_name_ext.get
         check_constr_type(constr_name, face_type, constr_subset)
       end
     end
 
+    # get ground construction subset
     def assign_constr_to_set_grd(openstudio_model, constr_subset, face_type, constr_name_grd)
       unless constr_name_grd.empty?
         constr_name = constr_name_grd.get
         check_constr_type(constr_name, face_type, constr_subset)
       end
     end
-        
-
+    
+    # check face type and assign to construction subset
     def check_constr_type(constr_name, face_type, constr_subset)
       if face_type == 'Wall'
         constr_subset.setWallConstruction(constr_name)

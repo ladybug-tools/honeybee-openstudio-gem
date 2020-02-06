@@ -52,11 +52,11 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
-      openstudio_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
-      openstudio_construction.setName(@hash[:name])
-      openstudio_construction.setSolarAndDaylightingMethod('GroupedZones')
-      openstudio_construction.setRadiantExchangeMethod('GroupedZones')
-      openstudio_construction.setAirExchangeMethod('None')
+      os_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
+      os_construction.setName(@hash[:name])
+      os_construction.setSolarAndDaylightingMethod('GroupedZones')
+      os_construction.setRadiantExchangeMethod('GroupedZones')
+      os_construction.setAirExchangeMethod('None')
       #TODO: Uncomment
       #openstudio_construction.simpleMixingAirChangesPerHour(0) 
 

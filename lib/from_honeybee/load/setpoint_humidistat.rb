@@ -46,8 +46,11 @@ module FromHoneybee
     end
       
     def to_openstudio(openstudio_model)
+
+      # create humidistat openstudio object
       os_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
 
+      # assign humidification schedule if it exists
       if @hash[:humidification_schedule]
         humid_sch = openstudio_model.getScheduleByName(@hash[:humidification_schedule])
         unless humid_sch.empty?
@@ -56,6 +59,7 @@ module FromHoneybee
         end
       end
 
+      # assign dehumidification schedule if it exists
       if @hash[:dehumidification_schedule]
         dehumid_sch = openstudio_model.getScheduleByName(@hash[:dehumidification_schedule])
         unless dehumid_sch.empty?

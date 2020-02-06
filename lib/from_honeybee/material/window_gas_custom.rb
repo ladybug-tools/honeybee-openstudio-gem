@@ -53,6 +53,7 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create window gas openstudio object
       os_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
       os_gas_custom.setName(@hash[:name])
       os_gas_custom.setGasType('Custom')
@@ -62,43 +63,49 @@ module FromHoneybee
       os_gas_custom.setSpecificHeatRatio(@hash[:specific_heat_ratio])
       os_gas_custom.setMolecularWeight(@hash[:molecular_weight])
 
+      # assign thickness
       if @hash[:thickness]
         os_gas_custom.setThickness(@hash[:thickness])
       else
         os_gas_custom.setThickness(defaults[:thickness][:default])
       end
 
+      # assign conductivity coefficient b
       if @hash[:conductivity_coeff_b]
         os_gas_custom.setConductivityCoefficientB(@hash[:conductivity_coeff_b])
       else
         os_gas_custom.setConductivityCoefficientB(defaults[:conductivity_coeff_b][:default])
       end
       
+      # assign conductivity coeffient c
       if @hash[:conductivity_coeff_c]
         os_gas_custom.setConductivityCoefficientC(@hash[:conductivity_coeff_c])
       else
         os_gas_custom.setConductivityCoefficientC(defaults[:conductivity_coeff_c][:default])
       end
       
-      
+      # assign viscosity coefficient b
       if @hash[:viscosity_coeff_b]
         os_gas_custom.setViscosityCoefficientB(@hash[:viscosity_coeff_b])
       else
         os_gas_custom.setViscosityCoefficientB(defaults[:viscosity_coeff_b][:default])
       end
       
+      # assign viscosity coefficient c
       if @hash[:viscosity_coeff_c]
         os_gas_custom.setViscosityCoefficientC(@hash[:viscosity_coeff_c])
       else
         os_gas_custom.setViscosityCoefficientC(defaults[:viscosity_coeff_c][:default])
       end
 
+      # assign specific heat coefficient b
       if @hash[:specific_heat_coeff_b]
         os_gas_custom.setSpecificHeatCoefficientB(@hash[:specific_heat_coeff_b])
       else
         os_gas_custom.setSpecificHeatCoefficientB(defaults[:specific_heat_coeff_b][:default])
       end
 
+      # assign specific heat coefficient c
       if @hash[:specific_heat_coeff_c]
         os_gas_custom.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_c])
       else

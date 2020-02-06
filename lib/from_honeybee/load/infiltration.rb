@@ -51,30 +51,37 @@ module FromHoneybee
       nil
     end
   
-    def to_openstudio(openstudio_model)       
+    def to_openstudio(openstudio_model)    
+      
+      # create infiltration OpenStudio object and set name
       os_infilt = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
       os_infilt.setName(@hash[:name])
 
+      # assign flow per surface
       os_infilt.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])
 
+      # assign schedule
       infiltration_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
       unless infiltration_schedule.empty?
         infiltration_schedule_object = infiltration_schedule.get
         os_infilt.setSchedule(infiltration_schedule_object)
       end
 
+      # assign constant coefficient if it exists
       if @hash[:constant_coefficient]
         os_infilt.setConstantTermCoefficient(@hash[:constant_coefficient])
       else 
         os_infilt.setConstantTermCoefficient(defaults[:constant_coefficient][:default])
       end
       
+      # assign temperature coefficient
       if @hash[:temperature_coefficient]
         os_infilt.setTemperatureTermCoefficient(@hash[:temperature_coefficient])
       else
         os_infilt.setTemperatureTermCoefficient(defaults[:temperature_coefficient][:default])
       end
       
+      # assign velocity coefficient
       if @hash[:velocity_coefficient]
         os_infilt.setVelocityTermCoefficient(@hash[:velocity_coefficient])
       else 

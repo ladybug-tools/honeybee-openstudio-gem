@@ -54,6 +54,7 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create schedule type limits openstudio object
       os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
       os_type_limit.setName(@hash[:name])
 
@@ -65,12 +66,14 @@ module FromHoneybee
         os_type_limit.setUpperLimitValue(@hash[:upper_limit])
       end
 
+      # assign numeric type
       if @hash[:numeric_type]
         os_type_limit.setNumericType(@hash[:numeric_type])
       else
         os_type_limit.setNumericType(defaults[:numeric_type])
       end
 
+      # assign unit type
       if @hash[:unit_type]
         os_type_limit.setUnitType(@hash[:unit_type])
       else 

@@ -57,22 +57,22 @@ module FromHoneybee
 
     def to_openstudio(openstudio_model)
       # create the openstudio surface
-      openstudio_vertices = OpenStudio::Point3dVector.new
+      os_vertices = OpenStudio::Point3dVector.new
       @hash[:geometry][:boundary].each do |vertex|
-        openstudio_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+        os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
 
-      openstudio_surface = OpenStudio::Model::Surface.new(openstudio_vertices, openstudio_model)        
-      openstudio_surface.setName(@hash[:name])
-      openstudio_surface.setSurfaceType(@hash[:face_type])
+      os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)        
+      os_surface.setName(@hash[:name])
+      os_surface.setSurfaceType(@hash[:face_type])
 
       # assign the construction if it is present
       if @hash[:properties][:energy][:construction]
         construction_name = @hash[:properties][:energy][:construction]
         construction = openstudio_model.getConstructionByName(construction_name)
         unless construction.empty?
-          openstudio_construction = construction.get
-          openstudio_surface.setConstruction(openstudio_construction)
+          os_construction = construction.get
+          os_surface.setConstruction(os_construction)
         end
       end
       
@@ -101,24 +101,24 @@ module FromHoneybee
         surface_object = openstudio_model.getSurfaceByName(adj_srf_name)
         unless surface_object.empty?
           surface = surface_object.get
-          openstudio_surface.setAdjacentSurface(surface)
+          os_surface.setAdjacentSurface(surface)
         end
       end
       unless @hash[:boundary_condition][:type] == 'Surface'
-        openstudio_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
+        os_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
       end
 
       # assign apertures if they exist
       if @hash[:apertures]
         @hash[:apertures].each do |aperture|
           ladybug_aperture = Aperture.new(aperture)
-          openstudio_subsurface_aperture = ladybug_aperture.to_openstudio(openstudio_model)
+          os_subsurface_aperture = ladybug_aperture.to_openstudio(openstudio_model)
           if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor'
             if @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
-              openstudio_subsurface_aperture.setSubSurfaceType('Skylight')
+              os_subsurface_aperture.setSubSurfaceType('Skylight')
             end
           end
-          openstudio_subsurface_aperture.setSurface(openstudio_surface)
+          os_subsurface_aperture.setSurface(os_surface)
         end
       end
 
@@ -126,15 +126,15 @@ module FromHoneybee
       if @hash[:doors]
         @hash[:doors].each do |door|
           door = Door.new(door)
-          openstudio_subsurface_door = door.to_openstudio(openstudio_model)
+          os_subsurface_door = door.to_openstudio(openstudio_model)
           if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors'
-            openstudio_subsurface_aperture.setSubSurfaceType('OverheadDoor')
+            os_subsurface_aperture.setSubSurfaceType('OverheadDoor')
           end
-          openstudio_subsurface_door.setSurface(openstudio_surface)
+          os_subsurface_door.setSurface(os_surface)
         end
       end
               
-      openstudio_surface
+      os_surface
     end
   end # Face
 end # FromHoneybee

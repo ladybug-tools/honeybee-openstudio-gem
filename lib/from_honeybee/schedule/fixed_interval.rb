@@ -96,7 +96,14 @@ module FromHoneybee
 
       # assign the values as a timeseries
       year_description = openstudio_model.getYearDescription
+
+      # set is leap year = true in case start date has 3 integers
+      if @hash[:start_date][2] 
+        year_description.setIsLeapYear(true)
+      end
+
       start_date = year_description.makeDate(@hash[:start_date][0], @hash[:start_date][1])
+     
       values = @hash[:values]
       timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '') 
       os_fi_schedule.setTimeSeries(timeseries)

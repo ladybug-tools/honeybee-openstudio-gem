@@ -52,45 +52,60 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
+      # create blind OpenStudio object
       os_blind = OpenStudio::Model::Blind.new(openstudio_model)
       os_blind.setName(@hash[:name])
-      os_blind.setSlatOrientation(@hash[:slat_orientation])
+      
+      # assign slat orientation
+      if @hash[:slat_orientation]
+        os_blind.setSlatOrientation(@hash[:slat_orientation])
+      else
+        os_blind.setSlatOrientation(defaults[:slat_orientation][:default])
+      end
+
+      # assign slat width
       if @hash[:slat_width]
         os_blind.setSlatWidth(@hash[:slat_width])
       else
         os_blind.setSlatWidth(defaults[:slat_width][:default])
       end
       
+      # assign slat separation if it exists
       if @hash[:slat_separation]
         os_blind.setSlatSeparation(@hash[:slat_separation])
       else
         os_blind.setSlatSeparation(defaults[:slat_separation][:default])
       end
       
+      # assign slat thickness if it exists
       if @hash[:slat_thickness]
         os_blind.setSlatThickness(@hash[:slat_thickness])
       else
         os_blind.setSlatThickness(defaults[:slat_thickness][:default])
       end
-      
+
+      # assign slat angle if it exists
       if @hash[:slat_angle]
         os_blind.setSlatAngle(@hash[:slat_angle])
       else
         os_blind.setSlatAngle(defaults[:slat_angle][:default])
       end
       
+      # assign slat conductivity if it exists
       if @hash[:slat_conductivity]
         os_blind.setSlatConductivity(@hash[:slat_conductivity])
       else
         os_blind.setSlatConductivity(defaults[:slat_conductivity][:default])
       end
       
+      # assign beam solar transmittance if it exists
       if @hash[:beam_solar_transmittance]
         os_blind.setSlatBeamSolarTransmittance(@hash[:beam_solar_transmittance])
       else
         os_blind.setSlatBeamSolarTransmittance(defaults[:beam_solar_transmittance][:default])
       end
       
+      # assign beam solar reflectance front if it exists
       if @hash[:beam_solar_reflectance]
         os_blind.setFrontSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance])
       else
@@ -98,6 +113,7 @@ module FromHoneybee
           defaults[:beam_solar_reflectance][:default])
       end
       
+      # assign beam solar reflectance back
       if @hash[:beam_solar_reflectance_back]
         os_blind.setBackSideSlatBeamSolarReflectance(@hash[:beam_solar_reflectance_back])
       else
@@ -105,6 +121,7 @@ module FromHoneybee
           defaults[:beam_solar_reflectance_back][:default])
       end
       
+      # assign diffuse solar transmittance
       if @hash[:diffuse_solar_transmittance]
         os_blind.setSlatDiffuseSolarTransmittance(@hash[:diffuse_solar_transmittance])
       else
@@ -112,13 +129,15 @@ module FromHoneybee
           defaults[:diffuse_solar_transmittance][:default])
       end
       
+      # assign front diffuse solar reflectance
       if @hash[:diffuse_solar_reflectance]
         os_blind.setFrontSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance])
       else
         os_blind.setFrontSideSlatDiffuseSolarReflectance(
           defaults[:diffuse_solar_reflectance][:default])
       end
-      
+
+      # assign back diffuse solar reflectance
       if @hash[:diffuse_solar_reflectance_back]
         os_blind.setBackSideSlatDiffuseSolarReflectance(@hash[:diffuse_solar_reflectance_back])
       else
@@ -126,6 +145,7 @@ module FromHoneybee
           defaults[:diffuse_solar_reflectance_back][:default])
       end
       
+      # assign front diffuse visible transmittance
       if @hash[:diffuse_visible_transmittance]
         os_blind.setSlatDiffuseVisibleTransmittance(@hash[:diffuse_visible_transmittance])
       else
@@ -133,6 +153,7 @@ module FromHoneybee
           defaults[:diffuse_visible_transmittance][:default])
       end
       
+      # assign front diffuse visible reflectance
       if @hash[:diffuse_visible_reflectance]
         os_blind.setFrontSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance])
       else
@@ -140,6 +161,7 @@ module FromHoneybee
           defaults[:diffuse_visible_reflectance][:default])
       end
       
+      # assign back diffuse visible reflectance
       if @hash[:diffuse_visible_reflectance_back]
         os_blind.setBackSideSlatDiffuseVisibleReflectance(@hash[:diffuse_visible_reflectance_back])
       else
@@ -147,6 +169,7 @@ module FromHoneybee
           defaults[:diffuse_visible_reflectance_back][:default])
       end
       
+      # assign infraret transmittance
       if @hash[:infrared_transmittance]
         os_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_transmittance])
       else
@@ -154,6 +177,7 @@ module FromHoneybee
           defaults[:infrared_transmittance][:default])
       end
       
+      # assign front side emissivity
       if @hash[:emissivity]
         os_blind.setFrontSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity])
       else
@@ -161,6 +185,7 @@ module FromHoneybee
           defaults[:emissivity][:default])
       end
       
+      # assign back side emissivity
       if @hash[:emissivity_back]
         os_blind.setBackSideSlatInfraredHemisphericalEmissivity(@hash[:emissivity_back])
       else
@@ -168,12 +193,14 @@ module FromHoneybee
           defaults[:emissivity_back][:default])
       end
       
+      # assign distance to glass
       if @hash[:distance_to_glass]
         os_blind.setBlindtoGlassDistance(@hash[:distance_to_glass])
       else
         os_blind.setBlindtoGlassDistance(defaults[:distance_to_glass][:default])
       end
       
+      # assign top opening multiplier
       if @hash[:top_opening_multiplier]
         os_blind.setBlindTopOpeningMultiplier(@hash[:top_opening_multiplier])
       else
@@ -181,6 +208,7 @@ module FromHoneybee
           defaults[:top_opening_multiplier][:default])
       end
       
+      # assign bottom opening multiplier
       if @hash[:bottom_opening_multiplier]
         os_blind.setBlindBottomOpeningMultiplier(@hash[:bottom_opening_multiplier])
       else
@@ -188,6 +216,7 @@ module FromHoneybee
           defaults[:bottom_opening_multiplier][:default])
       end
       
+      # assign left opening multiplier
       if @hash[:left_opening_multiplier]
         os_blind.setBlindLeftSideOpeningMultiplier(@hash[:left_opening_multiplier])
       else
@@ -195,6 +224,7 @@ module FromHoneybee
           defaults[:left_opening_multiplier][:default])
       end
       
+      # assign right opening multiplier
       if @hash[:right_opening_multiplier]
         os_blind.setBlindRightSideOpeningMultiplier(@hash[:right_opening_multiplier])
       else
