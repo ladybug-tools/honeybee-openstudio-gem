@@ -80,19 +80,17 @@ module FromHoneybee
       boundary_condition = (@hash[:boundary_condition][:type])
       case boundary_condition
       when 'Outdoors'
-        if @hash[:boundary_condition][:sun_exposure] == true
-          os_surface.setSunExposure('SunExposed')
-        else 
+        if @hash[:boundary_condition][:sun_exposure] == false
           os_surface.setSunExposure('NoSun')
+        else 
+          os_surface.setSunExposure('SunExposed')
         end
-        if @hash[:boundary_condition][:wind_exposure] == true
+        if @hash[:boundary_condition][:wind_exposure] == false
+          os_surface.setWindExposure('NoWind')      
+        else
           os_surface.setWindExposure('WindExposed')
-        else
-          os_surface.setWindExposure('NoWind')
         end
-        if @hash[:boundary_condition][:view_factor] == 'autocalculate'
-          os_surface.autocalculateViewFactortoGround
-        else
+        if @hash[:boundary_condition][:view_factor].is_a? Numeric
           os_surface.setViewFactortoGround(@hash[:boundary_condition][:view_factor])
         end
       when 'Surface'

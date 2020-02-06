@@ -59,12 +59,12 @@ module FromHoneybee
       os_type_limit.setName(@hash[:name])
 
       # assign lower limit value
-      if @hash[:lower_limit]
+      if @hash[:lower_limit] != nil and @hash[:lower_limit] != {'type': 'NoLimit'}
         os_type_limit.setLowerLimitValue(@hash[:lower_limit])
       end
 
       # assign upper limit value
-      if @hash[:upper_limit]
+      if @hash[:upper_limit] != nil and @hash[:upper_limit] != {'type': 'NoLimit'}
         os_type_limit.setUpperLimitValue(@hash[:upper_limit])
       end
 

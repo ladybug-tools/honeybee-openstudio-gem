@@ -100,7 +100,7 @@ module FromHoneybee
       end
 
       # assign limits to the system's heating capacity
-      if @hash[:heating_limit] == 'NoLimit'
+      if @hash[:heating_limit] == {'type': 'NoLimit'}
         os_ideal_air.setHeatingLimit('NoLimit')
       else
         os_ideal_air.setHeatingLimit('LimitCapacity')
@@ -112,7 +112,7 @@ module FromHoneybee
       end
 
       # assign limits to the system's cooling capacity
-      if @hash[:cooling_limit] == 'NoLimit'
+      if @hash[:cooling_limit] == {'type': 'NoLimit'}
         os_ideal_air.setCoolingLimit('NoLimit')
       else
         os_ideal_air.setCoolingLimit('LimitFlowRateAndCapacity')
