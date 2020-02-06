@@ -265,9 +265,9 @@ module FromHoneybee
     end
 
     # method to make a space-assigned Shade group for shades assigned to parent objects
-    def make_shade_group(openstudio_model, openstudio_surface, os_space)
+    def make_shade_group(openstudio_model, os_surface, os_space)
       os_shd_group = OpenStudio::Model::ShadingSurfaceGroup.new(openstudio_model)
-      os_shd_group.setShadedSurface(openstudio_surface)
+      os_shd_group.setShadedSurface(os_surface)
       os_shd_group.setSpace(os_space)
       os_shd_group.setShadingSurfaceType("Space")
 
