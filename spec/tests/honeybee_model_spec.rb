@@ -51,7 +51,7 @@ RSpec.describe FromHoneybee do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_complete_single_zone_office.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
 
     openstudio_surfaces = openstudio_model.getSurfaces
@@ -93,7 +93,7 @@ RSpec.describe FromHoneybee do
     model = FromHoneybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
+    openstudio_model = model.to_openstudio_model(openstudio_model, log_report=false)
 
     openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 6
@@ -133,7 +133,7 @@ RSpec.describe FromHoneybee do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_complete_multi_zone_office.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
 
     openstudio_default_construction = openstudio_model.getBuilding.defaultConstructionSet
@@ -158,7 +158,7 @@ RSpec.describe FromHoneybee do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_complete_patient_room.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
   end
 
@@ -166,7 +166,7 @@ RSpec.describe FromHoneybee do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_energy_fixed_interval.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
   end
 
@@ -174,7 +174,7 @@ RSpec.describe FromHoneybee do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_energy_no_program.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
   end
 

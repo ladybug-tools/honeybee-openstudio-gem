@@ -53,7 +53,7 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
   end
 
 
@@ -62,7 +62,7 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
   end
 
 end

@@ -86,11 +86,13 @@ module FromHoneybee
     end
 
     # convert to openstudio model, clears errors and warnings
-    def to_openstudio_model(openstudio_model = nil)
+    def to_openstudio_model(openstudio_model=nil, log_report=false)
       @errors = []
       @warnings = []
 
-      puts 'Starting SimulationParameter translation from Honeybee to OpenStudio'
+      if log_report
+        puts 'Starting SimulationParameter translation from Honeybee to OpenStudio'
+      end
       @openstudio_model = if openstudio_model
                             openstudio_model
                           else
@@ -98,7 +100,10 @@ module FromHoneybee
                           end
 
       create_openstudio_objects
-      puts 'Done with SimulationParameter translation!'
+
+      if log_report
+        puts 'Done with SimulationParameter translation!'
+      end
 
       @openstudio_model
     end
