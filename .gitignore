@@ -16,6 +16,7 @@
 
 # rspec failure tracking
 .rspec_status
+.rakeTasks
 
 # Ignore IDE files
 /.idea

@@ -54,13 +54,6 @@ RSpec.describe FromHoneybee do
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model)
-
-    # load the same construction again in the same model, should find existing construction
-
-    honeybee_obj_2 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 
@@ -70,11 +63,6 @@ RSpec.describe FromHoneybee do
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model)
-
-    honeybee_obj_2 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end

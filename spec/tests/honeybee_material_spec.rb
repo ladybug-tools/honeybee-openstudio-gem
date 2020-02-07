@@ -51,10 +51,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    material2 = FromHoneybee::EnergyMaterial.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load opaque material concrete' do
@@ -63,10 +59,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    material2 = FromHoneybee::EnergyMaterial.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load opaque material gypsum' do
@@ -75,10 +67,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    material2 = FromHoneybee::EnergyMaterial.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load opaque insulation' do
@@ -87,10 +75,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    material2 = FromHoneybee::EnergyMaterial.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load opaque wall gap' do
@@ -99,11 +83,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterialNoMass.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyMaterialNoMass.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window blind' do
@@ -112,11 +91,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialBlind.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialBlind.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window gas custom' do
@@ -125,11 +99,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialGasCustom.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialGasCustom.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window gas mixture' do
@@ -138,11 +107,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialGasMixture.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialGasMixture.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window gas' do
@@ -151,25 +115,14 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialGas.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialGas.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window glazing clear' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/material/material_window_glazing_clear.json')
     material1 = FromHoneybee::EnergyWindowMaterialGlazing.read_from_disk(file)
-
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialGlazing.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window glazing lowe' do
@@ -178,11 +131,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialGlazing.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialGlazing.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window glazing system' do
@@ -191,11 +139,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialSimpleGlazSys.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialSimpleGlazSys.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load material window shade' do
@@ -204,11 +147,6 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialShade.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    material2 = FromHoneybee::EnergyWindowMaterialShade.read_from_disk(file)
-    object2 = material2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end

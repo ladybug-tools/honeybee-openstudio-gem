@@ -53,13 +53,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule fixed interval 2' do
@@ -69,13 +62,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule fixed interval 3' do
@@ -85,13 +71,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule fixed interval 4' do
@@ -101,13 +80,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule primary school occupancy' do
@@ -117,13 +89,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   
@@ -134,13 +99,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule ruleset simple repeating' do
@@ -150,13 +108,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load schedule type limit' do
@@ -166,13 +117,6 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::ScheduleTypeLimit.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end 

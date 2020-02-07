@@ -45,21 +45,21 @@ RSpec.describe FromHoneybee do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  # add assertions
+  it 'can load ideal air default' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../files/hvac/ideal_air_default.json')
+    honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio(openstudio_model)
+    expect(object1).not_to be nil
+  end
+
+  # TODO: add assertions about properties
   it 'can load ideal air detailed' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/hvac/ideal_air_detailed.json')
     honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
-
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    honeybee_obj_2 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end
