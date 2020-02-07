@@ -29,6 +29,11 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+# start simplecov so that we can track coverage when we run tests
+require 'simplecov'
+SimpleCov.start
+SimpleCov.add_filter 'spec/tests' # will reject all test from coverage
+
 require 'bundler/setup'
 require 'from_honeybee'
 

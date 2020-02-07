@@ -85,14 +85,14 @@ module FromHoneybee
       # assign the timestep
       if @hash[:timestep]
         timestep = @hash[:timestep]
-        interval_length = 60/timestep
+        interval_length = 60 / timestep
         os_fi_schedule.setIntervalLength(interval_length)
       else
         timestep = defaults[:timestep][:default]
-        interval_length = 60/timestep
+        interval_length = 60 / timestep
         os_fi_schedule.setIntervalLength(interval_length)
       end
-      openstudio_interval_length = OpenStudio::Time.new(0,0,interval_length) 
+      openstudio_interval_length = OpenStudio::Time.new(0, 0, interval_length) 
 
       # assign the values as a timeseries
       year_description = openstudio_model.getYearDescription
@@ -103,9 +103,9 @@ module FromHoneybee
       end
 
       start_date = year_description.makeDate(@hash[:start_date][0], @hash[:start_date][1])
-     
+
       values = @hash[:values]
-      timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '') 
+      timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(values), '')
       os_fi_schedule.setTimeSeries(timeseries)
 
       os_fi_schedule

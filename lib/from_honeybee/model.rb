@@ -124,9 +124,13 @@ module FromHoneybee
     end
     
     # convert to openstudio model, clears errors and warnings
-    def to_openstudio_model(openstudio_model = nil)
+    def to_openstudio_model(openstudio_model=nil, log_report=true)
       @errors = []
       @warnings = []
+
+      if log_report
+        puts 'Starting Model translation from Honeybee to OpenStudio'
+      end
 
       @openstudio_model = if openstudio_model
                             openstudio_model
@@ -135,7 +139,7 @@ module FromHoneybee
                           end
 
       # create all openstudio objects in the model
-      create_openstudio_objects
+      create_openstudio_objects(log_report)
 
       # assign the north
       if @hash[:north_angle]
@@ -149,41 +153,64 @@ module FromHoneybee
         os_site.setTerrain(@hash[:properties][:energy][:terrain_type])
       end
 
+      if log_report
+        puts 'Done with Model translation!'
+      end
+
       @openstudio_model
     end
 
     private
 
     # create OpenStudio bjects in the OpenStudio model
-    def create_openstudio_objects
+    def create_openstudio_objects(log_report=true)
       # create all of the non-geometric model elements
-      puts 'Starting Model translation from Honeybee to OpenStudio'
-      puts 'Translating Materials'
+      if log_report
+        puts 'Translating Materials'
+      end
       create_materials
-      puts 'Translating Constructions'
+
+      if log_report
+        puts 'Translating Constructions'
+      end
       create_constructions
-      puts 'Translating ConstructionSets'
+      
+      if log_report
+        puts 'Translating ConstructionSets'
+      end
       create_construction_set
       create_global_construction_set
-      puts 'Translating Schedules'
+
+      if log_report
+        puts 'Translating Schedules'
+      end
       create_schedule_type_limits
       create_schedules
-      puts 'Translating ProgramTypes'
+
+      if log_report
+        puts 'Translating ProgramTypes'
+      end
       create_program_types
 
       # create all of the model geometry
-      puts 'Translating Room Geometry'
+      if log_report
+        puts 'Translating Room Geometry'
+      end
       create_rooms
-      puts 'Translating Context Shade Geometry'
+
+      if log_report
+        puts 'Translating Context Shade Geometry'
+      end
       create_orphaned_shades
       create_orphaned_faces
       create_orphaned_apertures
       create_orphaned_doors
 
       # create the hvac systems
-      puts 'Translating HVAC Systems'
+      if log_report
+        puts 'Translating HVAC Systems'
+      end
       create_hvacs
-      puts 'Done with Model translation!'
     end
 
     def create_materials
