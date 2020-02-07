@@ -45,37 +45,21 @@ RSpec.describe FromHoneybee do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  # add assertions
+  # TODO: add assertions about properties
   it 'can load construction set complete' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_set/constructionset_complete.json')
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
-
     object1 = constr_set_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    constr_set_2 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
-    object2 = constr_set_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction set partial' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/construction_set/constructionset_partial_exterior.json')
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
-
     object1 = constr_set_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-
-    constr_set_2 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
-    object2 = constr_set_2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end

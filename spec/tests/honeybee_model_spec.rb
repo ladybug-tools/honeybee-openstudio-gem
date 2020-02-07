@@ -47,13 +47,12 @@ RSpec.describe FromHoneybee do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-
-  it 'can load single zone model' do
-    file = File.join(File.dirname(__FILE__), '../files/model/model_single_zone_tiny_house.json')
-    model = FromHoneybee::Model.read_from_disk(file)
-    
+  it 'can load and validate complete single zone office' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
+    file = File.join(File.dirname(__FILE__), '../files/model/model_complete_single_zone_office.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    expect(object1).not_to be nil
 
     openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 6
@@ -61,19 +60,19 @@ RSpec.describe FromHoneybee do
     openstudio_sub_surfaces = openstudio_model.getSubSurfaces
     expect(openstudio_sub_surfaces.size).to eq 3
 
-    openstudio_surface = openstudio_model.getSurfaceByName('TinyHouseZone_Bottom')
+    openstudio_surface = openstudio_model.getSurfaceByName('TinyHouseOffice_Bottom')
     expect(openstudio_surface.empty?).to be false
 
     openstudio_surface = openstudio_surface.get
-    expect(openstudio_surface.nameString).to eq 'TinyHouseZone_Bottom'
+    expect(openstudio_surface.nameString).to eq 'TinyHouseOffice_Bottom'
 
     openstudio_sub_surfaces = openstudio_surface.subSurfaces
     expect(openstudio_sub_surfaces.size).to eq 0
-    openstudio_space = openstudio_surface.space
 
+    openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'TinyHouseZone'
+    expect(openstudio_space.nameString).to eq 'TinyHouseOffice'
 
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
@@ -90,7 +89,7 @@ RSpec.describe FromHoneybee do
   end
 
   it 'can load and validate shoebox model' do
-    file = File.join(File.dirname(__FILE__), '../files/model/model_shoe_box.json')
+    file = File.join(File.dirname(__FILE__), '../files/model/model_energy_shoe_box.json')
     model = FromHoneybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
@@ -130,13 +129,12 @@ RSpec.describe FromHoneybee do
     expect(openstudio_layered_construction.numLayers).to be <= 10
   end
 
-  it 'can load and validate mutizone model' do
-    file = File.join(File.dirname(__FILE__), '../files/model/model_multi_zone_single_family_house.json')
-    model = FromHoneybee::Model.read_from_disk(file)
-
+  it 'can load and validate model complete multi zone office' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model = model.to_openstudio_model(openstudio_model)
-    
+    file = File.join(File.dirname(__FILE__), '../files/model/model_complete_multi_zone_office.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
+    expect(object1).not_to be nil
 
     openstudio_default_construction = openstudio_model.getBuilding.defaultConstructionSet
     expect(openstudio_default_construction.empty?).to be false
@@ -156,43 +154,12 @@ RSpec.describe FromHoneybee do
     expect(openstudio_space.nameString).to eq 'Attic'
   end
 
-  it 'can load model complete multi zone office' do
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/model/model_complete_multi_zone_office.json')
-    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
-    expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
-  end
-
   it 'can load complete patient room' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../files/model/model_complete_patient_room.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
-  end
-
-  it 'can load complete single zone office' do
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/model/model_complete_single_zone_office.json')
-    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
-    expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
   end
 
   it 'can load model energy fixed interval' do
@@ -201,11 +168,6 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
   end
 
   it 'can load model energy no program' do
@@ -214,24 +176,6 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
-  end
-
-  it 'can load energy shoe box' do
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/model/model_energy_shoe_box.json')
-    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model)
-    expect(object1).not_to be nil
-
-    # load the same object again in the same model, should find existing object
-    honeybee_obj_2 = FromHoneybee::Model.read_from_disk(file)
-    object2 = honeybee_obj_2.to_openstudio_model(openstudio_model)
-    expect(object2).not_to be nil
   end
 
 end

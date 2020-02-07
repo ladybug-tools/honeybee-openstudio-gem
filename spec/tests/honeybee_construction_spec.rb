@@ -57,24 +57,14 @@ RSpec.describe FromHoneybee do
 
     expect(construction1.name).to eq('Generic Exterior Door')
 
-    # raise errors for non-existant hash key
+    # raise errors for non-existant hash keys an methods
     expect(construction1.respond_to?(:not_a_key)).to be false
     expect(construction1.respond_to?(:not_a_key=)).to be false
-
-    # DLM: should we make it return nil for the non-existant getter instead?
-    # expect( construction1.not_a_key ).to be nil
-
     expect{construction1.not_a_key }.to raise_error(NoMethodError)
     expect{construction1.not_a_key = 'Internal Floor'}.to raise_error(NoMethodError)
 
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same construction again in the same model, should find existing construction
-    construction2 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction opaque roof' do
@@ -83,12 +73,6 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    # load the same construction again in the same model, should find existing construction
-    construction2 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction opaque wall' do
@@ -97,11 +81,6 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    construction2 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction window_blinds' do
@@ -110,11 +89,6 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    construction2 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction window double' do
@@ -123,11 +97,6 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    construction2 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
   it 'can load construction window triple' do
@@ -136,11 +105,6 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-
-    construction2 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
-    object2 = construction2.to_openstudio(openstudio_model)
-    expect(object2).not_to be nil
-    expect(object2.handle.to_s).not_to be(object1.handle.to_s)
   end
 
 end

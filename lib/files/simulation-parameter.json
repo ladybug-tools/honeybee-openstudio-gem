@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee energy simulation parameter schema.",
-    "version": "1.3.0",
+    "version": "1.13.0",
     "title": "Honeybee Energy Simulation Parameter Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -269,7 +269,9 @@
               "type": "array",
               "items": {
                 "type": "integer"
-              }
+              },
+              "minItems": 2,
+              "maxItems": 2
             }
           },
           "daylight_savings_time": {
@@ -385,12 +387,6 @@
         "description": "Used to specify dry bulb conditions on a design day.",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "DryBulbCondition",
-            "type": "string",
-            "pattern": "^DryBulbCondition$"
-          },
           "dry_bulb_max": {
             "title": "Dry Bulb Max",
             "description": "The maximum dry bulb temperature on the design day [C].",
@@ -403,6 +399,12 @@
             "description": "The difference between min and max temperatures on thedesign day [C].",
             "minimum": 0,
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "DryBulbCondition",
+            "type": "string",
+            "pattern": "^DryBulbCondition$"
           }
         },
         "required": [
@@ -415,12 +417,6 @@
         "description": "Used to specify humidity conditions on a design day.",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "HumidityCondition",
-            "type": "string",
-            "pattern": "^HumidityCondition$"
-          },
           "humidity_type": {
             "title": "Humidity Type",
             "enum": [
@@ -435,6 +431,12 @@
             "title": "Humidity Value",
             "description": "The value correcponding to the humidity_type.",
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "HumidityCondition",
+            "type": "string",
+            "pattern": "^HumidityCondition$"
           },
           "barometric_pressure": {
             "title": "Barometric Pressure",
@@ -467,18 +469,18 @@
         "description": "Used to specify wind conditions on a design day.",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "WindCondition",
-            "type": "string",
-            "pattern": "^WindCondition$"
-          },
           "wind_speed": {
             "title": "Wind Speed",
             "description": "Wind speed on the design day [m/s].",
             "minimum": 0,
             "maximum": 40,
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindCondition",
+            "type": "string",
+            "pattern": "^WindCondition$"
           },
           "wind_direction": {
             "title": "Wind Direction",
@@ -508,6 +510,13 @@
             "minItems": 2,
             "maxItems": 3
           },
+          "clearness": {
+            "title": "Clearness",
+            "description": "Value between 0 and 1.2 that will get multiplied by the irradinace to correct for factors like elevation above sea level.",
+            "minimum": 0,
+            "maximum": 1.2,
+            "type": "number"
+          },
           "daylight_savings": {
             "title": "Daylight Savings",
             "description": "Boolean to indicate whether daylight savings time is active on the design day.",
@@ -519,13 +528,6 @@
             "default": "ASHRAEClearSky",
             "type": "string",
             "pattern": "^ASHRAEClearSky$"
-          },
-          "clearness": {
-            "title": "Clearness",
-            "description": "Value between 0 and 1.2 that will get multiplied by the irradinace to correct for factors like elevation above sea level.",
-            "minimum": 0,
-            "maximum": 1.2,
-            "type": "number"
           }
         },
         "required": [
@@ -548,18 +550,6 @@
             "minItems": 2,
             "maxItems": 3
           },
-          "daylight_savings": {
-            "title": "Daylight Savings",
-            "description": "Boolean to indicate whether daylight savings time is active on the design day.",
-            "default": false,
-            "type": "boolean"
-          },
-          "type": {
-            "title": "Type",
-            "default": "ASHRAETau",
-            "type": "string",
-            "pattern": "^ASHRAETau$"
-          },
           "tau_b": {
             "title": "Tau B",
             "description": "Value for the beam optical depth. Typically found in .stat files.",
@@ -573,6 +563,18 @@
             "minimum": 0,
             "maximum": 3,
             "type": "number"
+          },
+          "daylight_savings": {
+            "title": "Daylight Savings",
+            "description": "Boolean to indicate whether daylight savings time is active on the design day.",
+            "default": false,
+            "type": "boolean"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ASHRAETau",
+            "type": "string",
+            "pattern": "^ASHRAETau$"
           }
         },
         "required": [
@@ -592,12 +594,6 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "DesignDay",
-            "type": "string",
-            "pattern": "^DesignDay$"
           },
           "day_type": {
             "title": "Day Type",
@@ -645,23 +641,20 @@
           },
           "sky_condition": {
             "title": "Sky Condition",
-            "description": "A SkyCondition (either ASHRAEClearSky or ASHRAETau) describing solar irradiance conditions on the design day.",
             "anyOf": [
               {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/ASHRAEClearSky"
-                  }
-                ]
+                "$ref": "#/components/schemas/ASHRAEClearSky"
               },
               {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/ASHRAETau"
-                  }
-                ]
+                "$ref": "#/components/schemas/ASHRAETau"
               }
             ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "DesignDay",
+            "type": "string",
+            "pattern": "^DesignDay$"
           }
         },
         "required": [

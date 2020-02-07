@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": "1.3.0",
+    "version": "1.13.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -48,6 +48,16 @@
       "name": "aperturesetabridged_model",
       "x-displayName": "ApertureSetAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureSetAbridged\" />\n"
+    },
+    {
+      "name": "autocalculate_model",
+      "x-displayName": "Autocalculate",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Autocalculate\" />\n"
+    },
+    {
+      "name": "autosize_model",
+      "x-displayName": "Autosize",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Autosize\" />\n"
     },
     {
       "name": "constructionsetabridged_model",
@@ -190,6 +200,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModelProperties\" />\n"
     },
     {
+      "name": "nolimit_model",
+      "x-displayName": "NoLimit",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/NoLimit\" />\n"
+    },
+    {
       "name": "opaqueconstructionabridged_model",
       "x-displayName": "OpaqueConstructionAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/OpaqueConstructionAbridged\" />\n"
@@ -314,6 +329,8 @@
         "apertureenergypropertiesabridged_model",
         "aperturepropertiesabridged_model",
         "aperturesetabridged_model",
+        "autocalculate_model",
+        "autosize_model",
         "constructionsetabridged_model",
         "door_model",
         "doorenergypropertiesabridged_model",
@@ -342,6 +359,7 @@
         "model_model",
         "modelenergyproperties_model",
         "modelproperties_model",
+        "nolimit_model",
         "opaqueconstructionabridged_model",
         "outdoors_model",
         "peopleabridged_model",
@@ -375,12 +393,6 @@
         "title": "Plane",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "Plane",
-            "type": "string",
-            "pattern": "^Plane$"
-          },
           "n": {
             "title": "N",
             "description": "Plane normal as 3 (x, y, z) values.",
@@ -401,9 +413,15 @@
             "minItems": 3,
             "maxItems": 3
           },
+          "type": {
+            "title": "Type",
+            "default": "Plane",
+            "type": "string",
+            "pattern": "^Plane$"
+          },
           "x": {
             "title": "X",
-            "description": "Plane x-axis as 3 (x, y, z) values",
+            "description": "Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.",
             "type": "array",
             "items": {
               "type": "number"
@@ -422,12 +440,6 @@
         "description": "A single planar face in 3D space.",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "Face3D",
-            "type": "string",
-            "pattern": "^Face3D$"
-          },
           "boundary": {
             "title": "Boundary",
             "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
@@ -436,8 +448,17 @@
               "type": "array",
               "items": {
                 "type": "number"
-              }
-            }
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "minItems": 3
+          },
+          "type": {
+            "title": "Type",
+            "default": "Face3D",
+            "type": "string",
+            "pattern": "^Face3D$"
           },
           "holes": {
             "title": "Holes",
@@ -449,8 +470,11 @@
                 "type": "array",
                 "items": {
                   "type": "number"
-                }
-              }
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "minItems": 3
             }
           },
           "plane": {
@@ -479,6 +503,18 @@
           }
         }
       },
+      "Autocalculate": {
+        "title": "Autocalculate",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Autocalculate",
+            "type": "string",
+            "pattern": "^Autocalculate$"
+          }
+        }
+      },
       "Outdoors": {
         "title": "Outdoors",
         "type": "object",
@@ -503,11 +539,13 @@
           },
           "view_factor": {
             "title": "View Factor",
-            "description": "A number for the view factor to the ground. This can also be the word \"autocalculate\" to have the view factor automatically calculated.",
-            "default": "autocalculate",
+            "description": "A number for the view factor to the ground. This can also be an Autocalculate object to have the view factor automatically calculated.",
+            "default": {
+              "type": "Autocalculate"
+            },
             "anyOf": [
               {
-                "type": "string"
+                "$ref": "#/components/schemas/Autocalculate"
               },
               {
                 "type": "number",
@@ -534,12 +572,6 @@
         "title": "Surface",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "Surface",
-            "type": "string",
-            "pattern": "^Surface$"
-          },
           "boundary_condition_objects": {
             "title": "Boundary Condition Objects",
             "description": "A list of up to 3 object names that are adjacent to this one. The first object is always the one that is immediately adjacet and is of the same object type (Face, Aperture, Door). When this boundary condition is applied to a Face, the second object in the tuple will be the parent Room of the adjacent object. When the boundary condition is applied to a sub-face (Door or Aperture), the second object will be the parent Face of the adjacent sub-face and the third object will be the parent Room of the adjacent sub-face.",
@@ -549,6 +581,12 @@
               "type": "string"
             },
             "maxItems": 3
+          },
+          "type": {
+            "title": "Type",
+            "default": "Surface",
+            "type": "string",
+            "pattern": "^Surface$"
           }
         },
         "required": [
@@ -565,15 +603,15 @@
             "type": "string",
             "pattern": "^ShadeEnergyPropertiesAbridged$"
           },
-          "transmittance_schedule": {
-            "title": "Transmittance Schedule",
-            "description": "Name of a ShadeConstruction to set the reflectance and specularity of the Shade. If None, the construction is set by theparent Room construction_set or the Model global_construction_set.",
+          "construction": {
+            "title": "Construction",
+            "description": "Name of a ShadeConstruction to set the reflectance and specularity of the Shade. If None, the construction is set by theparent Room construction_set, the Model global_construction_set or (in the case fo an orphaned shade) the EnergyPlus default of 0.2 diffuse reflectance.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
           },
-          "construction": {
-            "title": "Construction",
+          "transmittance_schedule": {
+            "title": "Transmittance Schedule",
             "description": "Name of a schedule to set the transmittance of the shade, which can vary throughout the simulation. If None, the shade will be completely opauqe.",
             "maxLength": 100,
             "minLength": 1,
@@ -609,17 +647,6 @@
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
           },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "Shade",
-            "type": "string",
-            "pattern": "^Shade$"
-          },
           "geometry": {
             "title": "Geometry",
             "description": "Planar Face3D for the geometry.",
@@ -637,6 +664,17 @@
                 "$ref": "#/components/schemas/ShadePropertiesAbridged"
               }
             ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Shade",
+            "type": "string",
+            "pattern": "^Shade$"
           }
         },
         "required": [
@@ -692,17 +730,6 @@
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
           },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "Aperture",
-            "type": "string",
-            "pattern": "^Aperture$"
-          },
           "geometry": {
             "title": "Geometry",
             "description": "Planar Face3D for the geometry.",
@@ -722,6 +749,26 @@
                 "$ref": "#/components/schemas/Surface"
               }
             ]
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AperturePropertiesAbridged"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Aperture",
+            "type": "string",
+            "pattern": "^Aperture$"
           },
           "is_operable": {
             "title": "Is Operable",
@@ -744,15 +791,6 @@
             "items": {
               "$ref": "#/components/schemas/Shade"
             }
-          },
-          "properties": {
-            "title": "Properties",
-            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AperturePropertiesAbridged"
-              }
-            ]
           }
         },
         "required": [
@@ -809,17 +847,6 @@
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
           },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "Door",
-            "type": "string",
-            "pattern": "^Door$"
-          },
           "geometry": {
             "title": "Geometry",
             "description": "Planar Face3D for the geometry.",
@@ -840,12 +867,6 @@
               }
             ]
           },
-          "is_glass": {
-            "title": "Is Glass",
-            "description": "Boolean to note whether this object is a glass door as opposed to an opaque door.",
-            "default": false,
-            "type": "boolean"
-          },
           "properties": {
             "title": "Properties",
             "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
@@ -854,6 +875,39 @@
                 "$ref": "#/components/schemas/DoorPropertiesAbridged"
               }
             ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Door",
+            "type": "string",
+            "pattern": "^Door$"
+          },
+          "is_glass": {
+            "title": "Is Glass",
+            "description": "Boolean to note whether this object is a glass door as opposed to an opaque door.",
+            "default": false,
+            "type": "boolean"
+          },
+          "indoor_shades": {
+            "title": "Indoor Shades",
+            "description": "Shades assigned to the interior side of this object.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
+          },
+          "outdoor_shades": {
+            "title": "Outdoor Shades",
+            "description": "Shades assigned to the exterior side of this object (eg. entryway awning).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Shade"
+            }
           }
         },
         "required": [
@@ -910,17 +964,6 @@
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
           },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "Face",
-            "type": "string",
-            "pattern": "^Face$"
-          },
           "geometry": {
             "title": "Geometry",
             "description": "Planar Face3D for the geometry.",
@@ -957,6 +1000,26 @@
               }
             ]
           },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FacePropertiesAbridged"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Face",
+            "type": "string",
+            "pattern": "^Face$"
+          },
           "apertures": {
             "title": "Apertures",
             "description": "Apertures assigned to this Face. Should be coplanar with this Face and completely within the boundary of the Face to be valid.",
@@ -988,15 +1051,6 @@
             "items": {
               "$ref": "#/components/schemas/Shade"
             }
-          },
-          "properties": {
-            "title": "Properties",
-            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FacePropertiesAbridged"
-              }
-            ]
           }
         },
         "required": [
@@ -1019,12 +1073,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "PeopleAbridged",
-            "type": "string",
-            "pattern": "^PeopleAbridged$"
-          },
           "people_per_area": {
             "title": "People Per Area",
             "description": "People per floor area expressed as [people/m2]",
@@ -1045,6 +1093,12 @@
             "minLength": 1,
             "type": "string"
           },
+          "type": {
+            "title": "Type",
+            "default": "PeopleAbridged",
+            "type": "string",
+            "pattern": "^PeopleAbridged$"
+          },
           "radiant_fraction": {
             "title": "Radiant Fraction",
             "description": "The radiant fraction of sensible heat released by people. The defaultvalue is 0.30.",
@@ -1055,16 +1109,18 @@
           },
           "latent_fraction": {
             "title": "Latent Fraction",
-            "description": "Number for the latent fraction of heat gain due to people or simply the word \"autocalculate\".",
-            "default": "autocalculate",
+            "description": "Number for the latent fraction of heat gain due to people or an Autocalculate object.",
+            "default": {
+              "type": "Autocalculate"
+            },
             "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autocalculate"
+              },
               {
                 "type": "number",
                 "minimum": 0,
                 "maximum": 1
-              },
-              {
-                "type": "string"
               }
             ]
           }
@@ -1088,12 +1144,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "LightingAbridged",
-            "type": "string",
-            "pattern": "^LightingAbridged$"
-          },
           "watts_per_area": {
             "title": "Watts Per Area",
             "description": "Lighting per floor area as [W/m2].",
@@ -1106,6 +1156,12 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "LightingAbridged",
+            "type": "string",
+            "pattern": "^LightingAbridged$"
           },
           "visible_fraction": {
             "title": "Visible Fraction",
@@ -1175,16 +1231,9 @@
             "title": "Latent Fraction",
             "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
             "default": 0,
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1
-              },
-              {
-                "type": "string"
-              }
-            ]
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -1244,16 +1293,9 @@
             "title": "Latent Fraction",
             "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
             "default": 0,
-            "anyOf": [
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1
-              },
-              {
-                "type": "string"
-              }
-            ]
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -1288,12 +1330,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "InfiltrationAbridged",
-            "type": "string",
-            "pattern": "^InfiltrationAbridged$"
-          },
           "flow_per_exterior_area": {
             "title": "Flow Per Exterior Area",
             "description": "Number for the infiltration per exterior surface area in m3/s-m2.",
@@ -1306,6 +1342,12 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "InfiltrationAbridged",
+            "type": "string",
+            "pattern": "^InfiltrationAbridged$"
           },
           "constant_coefficient": {
             "title": "Constant Coefficient",
@@ -1402,12 +1444,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "SetpointAbridged",
-            "type": "string",
-            "pattern": "^SetpointAbridged$"
-          },
           "cooling_schedule": {
             "title": "Cooling Schedule",
             "description": "Name of the schedule for the cooling setpoint. The values in this schedule should be temperature in [C].",
@@ -1421,6 +1457,12 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "SetpointAbridged",
+            "type": "string",
+            "pattern": "^SetpointAbridged$"
           },
           "humidification_schedule": {
             "title": "Humidification Schedule",
@@ -1469,7 +1511,7 @@
           },
           "hvac": {
             "title": "Hvac",
-            "description": "An optional name of a HVAC system (such as an IdealAirSystemAbridged) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
+            "description": "An optional name of a HVAC system (such as an IdealAirSystem) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -1494,7 +1536,7 @@
           },
           "electric_equipment": {
             "title": "Electric Equipment",
-            "description": "ElectricEquipment object to describe the equipment usage.",
+            "description": "ElectricEquipment object to describe the electric equipment usage.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ElectricEquipmentAbridged"
@@ -1503,7 +1545,7 @@
           },
           "gas_equipment": {
             "title": "Gas Equipment",
-            "description": "GasEquipment object to describe the equipment usage.",
+            "description": "GasEquipment object to describe the gas equipment usage.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasEquipmentAbridged"
@@ -1552,10 +1594,7 @@
           "energy": {
             "$ref": "#/components/schemas/RoomEnergyPropertiesAbridged"
           }
-        },
-        "required": [
-          "energy"
-        ]
+        }
       },
       "Room": {
         "title": "Room",
@@ -1570,6 +1609,24 @@
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
           },
+          "faces": {
+            "title": "Faces",
+            "description": "Faces that together form the closed volume of a room.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Face"
+            },
+            "minItems": 4
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoomPropertiesAbridged"
+              }
+            ]
+          },
           "display_name": {
             "title": "Display Name",
             "description": "Display name of the object with no restrictions.",
@@ -1580,15 +1637,6 @@
             "default": "Room",
             "type": "string",
             "pattern": "^Room$"
-          },
-          "faces": {
-            "title": "Faces",
-            "description": "Faces that together form the closed volume of a room.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Face"
-            },
-            "minItems": 4
           },
           "indoor_shades": {
             "title": "Indoor Shades",
@@ -1606,14 +1654,12 @@
               "$ref": "#/components/schemas/Shade"
             }
           },
-          "properties": {
-            "title": "Properties",
-            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RoomPropertiesAbridged"
-              }
-            ]
+          "multiplier": {
+            "title": "Multiplier",
+            "description": "An integer noting how many times this Room is repeated. Multipliers are used to speed up the calculation when similar Rooms are repeated more than once. Essentially, a given simulation with the Room is run once and then the result is mutliplied by the multiplier.",
+            "default": 1,
+            "minimum": 1,
+            "type": "integer"
           }
         },
         "required": [
@@ -1900,12 +1946,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "OpaqueConstructionAbridged",
-            "type": "string",
-            "pattern": "^OpaqueConstructionAbridged$"
-          },
           "layers": {
             "title": "Layers",
             "description": "List of strings for material names. The order of the materials is from exterior to interior.",
@@ -1917,6 +1957,12 @@
             },
             "minItems": 1,
             "maxItems": 10
+          },
+          "type": {
+            "title": "Type",
+            "default": "OpaqueConstructionAbridged",
+            "type": "string",
+            "pattern": "^OpaqueConstructionAbridged$"
           }
         },
         "required": [
@@ -1936,12 +1982,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "WindowConstructionAbridged",
-            "type": "string",
-            "pattern": "^WindowConstructionAbridged$"
-          },
           "layers": {
             "title": "Layers",
             "description": "List of strings for material names. The order of the materials is from exterior to interior.",
@@ -1953,6 +1993,12 @@
             },
             "minItems": 1,
             "maxItems": 8
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionAbridged",
+            "type": "string",
+            "pattern": "^WindowConstructionAbridged$"
           }
         },
         "required": [
@@ -2017,25 +2063,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "EnergyMaterial",
-            "type": "string",
-            "pattern": "^EnergyMaterial$"
-          },
-          "roughness": {
-            "title": "Roughness",
-            "default": "MediumRough",
-            "enum": [
-              "VeryRough",
-              "Rough",
-              "MediumRough",
-              "MediumSmooth",
-              "Smooth",
-              "VerySmooth"
-            ],
-            "type": "string"
-          },
           "thickness": {
             "title": "Thickness",
             "description": "Thickness of the material layer in meters.",
@@ -2060,6 +2087,25 @@
             "description": "Specific heat of the material layer in J/(kg-K).",
             "exclusiveMinimum": 0,
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterial",
+            "type": "string",
+            "pattern": "^EnergyMaterial$"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "default": "MediumRough",
+            "enum": [
+              "VeryRough",
+              "Rough",
+              "MediumRough",
+              "MediumSmooth",
+              "Smooth",
+              "VerySmooth"
+            ],
+            "type": "string"
           },
           "thermal_absorptance": {
             "title": "Thermal Absorptance",
@@ -2106,17 +2152,17 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "EnergyMaterialNoMass",
-            "type": "string",
-            "pattern": "^EnergyMaterialNoMass$"
-          },
           "r_value": {
             "title": "R Value",
             "description": "The thermal resistance (R-value) of the material layer [m2-K/W].",
             "minimum": 0.001,
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterialNoMass",
+            "type": "string",
+            "pattern": "^EnergyMaterialNoMass$"
           },
           "roughness": {
             "title": "Roughness",
@@ -2214,6 +2260,36 @@
             "minLength": 1,
             "type": "string"
           },
+          "conductivity_coeff_a": {
+            "title": "Conductivity Coeff A",
+            "description": "The A coefficient for gas conductivity in W/(m-K).",
+            "type": "number"
+          },
+          "viscosity_coeff_a": {
+            "title": "Viscosity Coeff A",
+            "description": "The A coefficient for gas viscosity in kg/(m-s).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "specific_heat_coeff_a": {
+            "title": "Specific Heat Coeff A",
+            "description": "The A coefficient for gas specific heat in J/(kg-K).",
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "specific_heat_ratio": {
+            "title": "Specific Heat Ratio",
+            "description": "The specific heat ratio for gas.",
+            "exclusiveMinimum": 1,
+            "type": "number"
+          },
+          "molecular_weight": {
+            "title": "Molecular Weight",
+            "description": "The molecular weight for gas in g/mol.",
+            "minimum": 20,
+            "maximum": 200,
+            "type": "number"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGasCustom",
@@ -2225,11 +2301,6 @@
             "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
             "default": 0.0125,
             "exclusiveMinimum": 0,
-            "type": "number"
-          },
-          "conductivity_coeff_a": {
-            "title": "Conductivity Coeff A",
-            "description": "The A coefficient for gas conductivity in W/(m-K).",
             "type": "number"
           },
           "conductivity_coeff_b": {
@@ -2244,12 +2315,6 @@
             "default": 0,
             "type": "number"
           },
-          "viscosity_coeff_a": {
-            "title": "Viscosity Coeff A",
-            "description": "The A coefficient for gas viscosity in kg/(m-s).",
-            "exclusiveMinimum": 0,
-            "type": "number"
-          },
           "viscosity_coeff_b": {
             "title": "Viscosity Coeff B",
             "description": "The B coefficient for gas viscosity in kg/(m-s-K).",
@@ -2262,12 +2327,6 @@
             "default": 0,
             "type": "number"
           },
-          "specific_heat_coeff_a": {
-            "title": "Specific Heat Coeff A",
-            "description": "The A coefficient for gas specific heat in J/(kg-K).",
-            "exclusiveMinimum": 0,
-            "type": "number"
-          },
           "specific_heat_coeff_b": {
             "title": "Specific Heat Coeff B",
             "description": "The B coefficient for gas specific heat in J/(kg-K2).",
@@ -2278,19 +2337,6 @@
             "title": "Specific Heat Coeff C",
             "description": "The C coefficient for gas specific heat in J/(kg-K3).",
             "default": 0,
-            "type": "number"
-          },
-          "specific_heat_ratio": {
-            "title": "Specific Heat Ratio",
-            "description": "The specific heat ratio for gas.",
-            "exclusiveMinimum": 1,
-            "type": "number"
-          },
-          "molecular_weight": {
-            "title": "Molecular Weight",
-            "description": "The molecular weight for gas in g/mol.",
-            "minimum": 20,
-            "maximum": 200,
             "type": "number"
           }
         },
@@ -2314,19 +2360,6 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialGasMixture",
-            "type": "string",
-            "pattern": "^EnergyWindowMaterialGasMixture$"
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "The thickness of the gas mixture layer in meters.",
-            "default": 0.0125,
-            "exclusiveMinimum": 0,
-            "type": "number"
           },
           "gas_types": {
             "title": "Gas Types",
@@ -2353,6 +2386,19 @@
             },
             "minItems": 2,
             "maxItems": 4
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGasMixture",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialGasMixture$"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The thickness of the gas mixture layer in meters.",
+            "default": 0.0125,
+            "exclusiveMinimum": 0,
+            "type": "number"
           }
         },
         "required": [
@@ -2373,12 +2419,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialSimpleGlazSys",
-            "type": "string",
-            "pattern": "^EnergyWindowMaterialSimpleGlazSys$"
-          },
           "u_factor": {
             "title": "U Factor",
             "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
@@ -2392,6 +2432,12 @@
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 1,
             "type": "number"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialSimpleGlazSys",
+            "type": "string",
+            "pattern": "^EnergyWindowMaterialSimpleGlazSys$"
           },
           "vt": {
             "title": "Vt",
@@ -2890,6 +2936,30 @@
           "name"
         ]
       },
+      "Autosize": {
+        "title": "Autosize",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "Autosize",
+            "type": "string",
+            "pattern": "^Autosize$"
+          }
+        }
+      },
+      "NoLimit": {
+        "title": "NoLimit",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "NoLimit",
+            "type": "string",
+            "pattern": "^NoLimit$"
+          }
+        }
+      },
       "IdealAirSystemAbridged": {
         "title": "IdealAirSystemAbridged",
         "description": "Provides a model for an ideal HVAC system.",
@@ -2959,29 +3029,39 @@
           },
           "heating_limit": {
             "title": "Heating Limit",
-            "description": "A number for the maximum heating capacity in Watts. This can also be the text \"autosize\" to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be the text \"NoLimit\" to indicate no upper limit to the heating capacity. Note that setting this to None will trigger the default (\"autosize\").",
-            "default": "autosize",
+            "description": "A number for the maximum heating capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit boject to indicate no upper limit to the heating capacity.",
+            "default": {
+              "type": "Autosize"
+            },
             "anyOf": [
+              {
+                "$ref": "#/components/schemas/NoLimit"
+              },
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
               {
                 "type": "number",
                 "minimum": 0
-              },
-              {
-                "type": "string"
               }
             ]
           },
           "cooling_limit": {
             "title": "Cooling Limit",
-            "description": "A number for the maximum cooling capacity in Watts. This can also be the text \"autosize\" to indicate that the capacity should be determined during the sizing calculation. This can also be the text \"NoLimit\" to indicate no upper limit to the cooling capacity. Note that setting this to None will trigger the default (\"autosize\").",
-            "default": "autosize",
+            "description": "A number for the maximum cooling capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit boject to indicate no upper limit to the cooling capacity.",
+            "default": {
+              "type": "Autosize"
+            },
             "anyOf": [
+              {
+                "$ref": "#/components/schemas/NoLimit"
+              },
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
               {
                 "type": "number",
                 "minimum": 0
-              },
-              {
-                "type": "string"
               }
             ]
           },
@@ -3040,8 +3120,8 @@
               }
             ]
           },
-          "electrical_equipment": {
-            "title": "Electrical Equipment",
+          "electric_equipment": {
+            "title": "Electric Equipment",
             "description": "ElectricEquipment to describe the usage of electric equipment within the program. If None, no electric equipment will be assumed.",
             "allOf": [
               {
@@ -3102,12 +3182,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "ScheduleDay",
-            "type": "string",
-            "pattern": "^ScheduleDay$"
-          },
           "values": {
             "title": "Values",
             "description": "A list of floats or integers for the values of the schedule. The length of this list must match the length of the times list.",
@@ -3115,6 +3189,12 @@
             "items": {
               "type": "number"
             }
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleDay",
+            "type": "string",
+            "pattern": "^ScheduleDay$"
           },
           "times": {
             "title": "Times",
@@ -3127,8 +3207,10 @@
             "items": {
               "type": "array",
               "items": {
-                "type": "number"
-              }
+                "type": "integer"
+              },
+              "minItems": 2,
+              "maxItems": 2
             }
           },
           "interpolate": {
@@ -3148,18 +3230,18 @@
         "description": "Schedule rule including a ScheduleDay and when it should be applied..",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "ScheduleRuleAbridged",
-            "type": "string",
-            "pattern": "^ScheduleRuleAbridged$"
-          },
           "schedule_day": {
             "title": "Schedule Day",
             "description": "A ScheduleDay object associated with this rule.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleRuleAbridged",
+            "type": "string",
+            "pattern": "^ScheduleRuleAbridged$"
           },
           "apply_sunday": {
             "title": "Apply Sunday",
@@ -3254,12 +3336,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "ScheduleRulesetAbridged",
-            "type": "string",
-            "pattern": "^ScheduleRulesetAbridged$"
-          },
           "day_schedules": {
             "title": "Day Schedules",
             "description": "A list of ScheduleDays that are referenced in the other keys of this ScheduleRulesetAbridged.",
@@ -3274,6 +3350,12 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleRulesetAbridged",
+            "type": "string",
+            "pattern": "^ScheduleRulesetAbridged$"
           },
           "schedule_rules": {
             "title": "Schedule Rules",
@@ -3323,12 +3405,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": {
-            "title": "Type",
-            "default": "ScheduleFixedIntervalAbridged",
-            "type": "string",
-            "pattern": "^ScheduleFixedIntervalAbridged$"
-          },
           "values": {
             "title": "Values",
             "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
@@ -3338,6 +3414,12 @@
             },
             "minItems": 24,
             "maxItems": 527040
+          },
+          "type": {
+            "title": "Type",
+            "default": "ScheduleFixedIntervalAbridged",
+            "type": "string",
+            "pattern": "^ScheduleFixedIntervalAbridged$"
           },
           "schedule_type_limit": {
             "title": "Schedule Type Limit",
@@ -3404,13 +3486,33 @@
           },
           "lower_limit": {
             "title": "Lower Limit",
-            "description": "Lower limit for the schedule type is entered.",
-            "type": "number"
+            "description": "Lower limit for the schedule type or NoLimit.",
+            "default": {
+              "type": "NoLimit"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NoLimit"
+              },
+              {
+                "type": "number"
+              }
+            ]
           },
           "upper_limit": {
             "title": "Upper Limit",
-            "description": "Upper limit for the schedule type is entered.",
-            "type": "number"
+            "description": "Upper limit for the schedule type or NoLimit.",
+            "default": {
+              "type": "NoLimit"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NoLimit"
+              },
+              {
+                "type": "number"
+              }
+            ]
           },
           "numeric_type": {
             "title": "Numeric Type",
@@ -3451,39 +3553,6 @@
         "title": "ModelEnergyProperties",
         "type": "object",
         "properties": {
-          "type": {
-            "title": "Type",
-            "default": "ModelEnergyProperties",
-            "type": "string",
-            "pattern": "^ModelEnergyProperties$"
-          },
-          "terrain_type": {
-            "title": "Terrain Type",
-            "default": "City",
-            "enum": [
-              "Ocean",
-              "Country",
-              "Suburbs",
-              "Urban",
-              "City"
-            ],
-            "type": "string"
-          },
-          "global_construction_set": {
-            "title": "Global Construction Set",
-            "description": "Name for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "construction_sets": {
-            "title": "Construction Sets",
-            "description": "List of all ConstructionSets in the Model.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConstructionSetAbridged"
-            }
-          },
           "constructions": {
             "title": "Constructions",
             "description": "A list of all unique constructions in the model. This includes constructions across all Faces, Apertures, Doors, Shades, Room ConstructionSets, and the global_construction_set.",
@@ -3538,9 +3607,43 @@
               ]
             }
           },
+          "type": {
+            "title": "Type",
+            "default": "ModelEnergyProperties",
+            "type": "string",
+            "pattern": "^ModelEnergyProperties$"
+          },
+          "terrain_type": {
+            "title": "Terrain Type",
+            "description": "Text for the terrain in which the model sits. This is used to determine the wind profile over the height of the rooms.",
+            "default": "City",
+            "enum": [
+              "Ocean",
+              "Country",
+              "Suburbs",
+              "Urban",
+              "City"
+            ],
+            "type": "string"
+          },
+          "global_construction_set": {
+            "title": "Global Construction Set",
+            "description": "Name for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "construction_sets": {
+            "title": "Construction Sets",
+            "description": "List of all ConstructionSets in the Model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConstructionSetAbridged"
+            }
+          },
           "hvacs": {
             "title": "Hvacs",
-            "description": "List of all ProgramTypes in the Model.",
+            "description": "List of all HVAC systems in the Model.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IdealAirSystemAbridged"
@@ -3548,7 +3651,7 @@
           },
           "program_types": {
             "title": "Program Types",
-            "description": "List of all HVAC systems in the Model.",
+            "description": "List of all ProgramTypes in the Model.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProgramTypeAbridged"
@@ -3596,10 +3699,7 @@
           "energy": {
             "$ref": "#/components/schemas/ModelEnergyProperties"
           }
-        },
-        "required": [
-          "energy"
-        ]
+        }
       },
       "Model": {
         "title": "Model",
@@ -3613,6 +3713,15 @@
             "minLength": 1,
             "pattern": "[A-Za-z0-9_-]",
             "type": "string"
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ModelProperties"
+              }
+            ]
           },
           "display_name": {
             "title": "Display Name",
@@ -3673,14 +3782,30 @@
             "minimum": 0,
             "type": "number"
           },
-          "properties": {
-            "title": "Properties",
-            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ModelProperties"
-              }
-            ]
+          "units": {
+            "title": "Units",
+            "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
+            "default": "Meters",
+            "enum": [
+              "Meters",
+              "Millimeters",
+              "Feet",
+              "Inches",
+              "Centimeters"
+            ],
+            "type": "string"
+          },
+          "tolerance": {
+            "title": "Tolerance",
+            "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether Room volumes are closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a Model. Typical tolerances for builing geometry range from 0.1 to 0.0001 depending on the units of the geometry.",
+            "default": 0,
+            "type": "number"
+          },
+          "angle_tolerance": {
+            "title": "Angle Tolerance",
+            "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether the Room volumes is closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a given Model. Typical tolerances for builing geometry are often around 1 degree.",
+            "default": 0,
+            "type": "number"
           }
         },
         "required": [
