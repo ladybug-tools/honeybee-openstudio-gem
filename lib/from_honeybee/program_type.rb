@@ -111,7 +111,7 @@ module FromHoneybee
 
       # add setpoints from to a global hash that will be used to assign them to rooms
       if @hash[:setpoint]
-        $programtype_setpoint_hash[@hash[:name]]  = @hash[:setpoint]
+        $programtype_setpoint_hash[@hash[:name]] = @hash[:setpoint]
       end
 
       os_space_type

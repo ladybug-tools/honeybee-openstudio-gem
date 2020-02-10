@@ -86,6 +86,21 @@ RSpec.describe FromHoneybee do
     openstudio_layered_construction = openstudio_layered_construction.get
     expect(openstudio_layered_construction.numLayers).to be > 0
     expect(openstudio_layered_construction.numLayers).to be <= 10
+
+    openstudio_surface2 = openstudio_model.getSurfaceByName('TinyHouseOffice_Front')
+    expect(openstudio_surface2.empty?).to be false
+
+    openstudio_surface2 = openstudio_surface2.get
+
+    openstudio_subsurfaces2 = openstudio_surface2.subSurfaces
+    expect(openstudio_subsurfaces2.size).to eq 2
+
+    openstudio_aperture = openstudio_subsurfaces2[0]
+    expect(openstudio_aperture.nameString).to eq 'FrontAperture'
+
+    openstudio_door = openstudio_subsurfaces2[1]
+    expect(openstudio_door.nameString).to eq 'FrontDoor'
+
   end
 
   it 'can load and validate shoebox model' do
