@@ -99,13 +99,14 @@ class FromHoneybeeSimulationParameter_Test < Minitest::Test
 
   def test_simulation_par_simple
     args = {}
-    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__), 'simulation_par_simple.json')
+    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) + 
+    "/../../../../spec/samples/simulation_parameter/simulation_par_simple.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
   def test_simulation_par_detailed
     args = {}
-    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__), 'simulation_par_detailed.json')
+    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) +  "/../../../../spec/samples/simulation_parameter/simulation_par_detailed.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
