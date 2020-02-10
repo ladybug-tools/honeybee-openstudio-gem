@@ -217,14 +217,22 @@ module FromHoneybee
         end
       end
       
-      # assign any constructions to space shading construction set
+      # assign any shading constructions to construction set
       if @hash[:shade_construction]
-        if @hash[:shade_construction]
-          shade_ref = openstudio_model.getConstructionByName(@hash[:shade_construction])
-          unless shade_ref.empty?
-            shade_construction = shade_ref.get
-            os_constr_set.setSpaceShadingConstruction(shade_construction)
-          end
+        shade_ref = openstudio_model.getConstructionByName(@hash[:shade_construction])
+        unless shade_ref.empty?
+          shade_construction = shade_ref.get
+          os_constr_set.setSpaceShadingConstruction(shade_construction)
+        end
+      end
+
+      # assign any air boundary constructions to construction set
+      if @hash[:air_boundary_construction]
+        air_ref = openstudio_model.getConstructionAirBoundaryByName(
+          @hash[:air_boundary_construction])
+        unless air_ref.empty?
+          air_construction = air_ref.get
+          os_constr_set.setInteriorPartitionConstruction(air_construction)
         end
       end
 
