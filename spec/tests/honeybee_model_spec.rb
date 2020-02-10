@@ -186,21 +186,4 @@ RSpec.describe FromHoneybee do
     expect(object1).not_to be nil
   end
 
-  it 'can load model complete office floor' do
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_office_floor.json')
-    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
-    expect(object1).not_to be nil
-  end
-
-  it 'can load model energy fixed interval' do
-    openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
-    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
-    expect(object1).not_to be nil
-  end
-  
-  
 end
