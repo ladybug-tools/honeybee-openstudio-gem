@@ -48,7 +48,7 @@ RSpec.describe FromHoneybee do
   # add assertions
   it 'can load schedule fixed interval 1' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_fixedinterval_increasing_fine_timestep.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_fine_timestep.json')
     honeybee_obj_1 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -57,7 +57,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule fixed interval 2' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_fixedinterval_increasing_single_day.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_single_day.json')
     honeybee_obj_1 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -66,7 +66,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule fixed interval 3' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_fixedinterval_leap_year.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_leap_year.json')
     honeybee_obj_1 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -75,7 +75,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule fixed interval 4' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_fixedinterval_random_annual.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_random_annual.json')
     honeybee_obj_1 = FromHoneybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -84,7 +84,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule primary school occupancy' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_primary_school_occupancy.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_primary_school_occupancy.json')
     honeybee_obj_1 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -94,7 +94,7 @@ RSpec.describe FromHoneybee do
   
   it 'can load schedule ruleset office occupance' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_ruleset_office_occupancy.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_office_occupancy.json')
     honeybee_obj_1 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -103,7 +103,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule ruleset simple repeating' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/schedule_ruleset_simple_repeating.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_simple_repeating.json')
     honeybee_obj_1 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -112,7 +112,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load schedule type limit' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/schedule/scheduletypelimit_temperature.json')
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/scheduletypelimit_temperature.json')
     honeybee_obj_1 = FromHoneybee::ScheduleTypeLimit.read_from_disk(file)
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)

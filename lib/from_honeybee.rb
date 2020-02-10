@@ -53,7 +53,7 @@ require 'from_honeybee/hvac/ideal_air'
 require 'from_honeybee/construction/opaque'
 require 'from_honeybee/construction/window'
 require 'from_honeybee/construction/shade'
-require 'from_honeybee/construction/air_wall'
+require 'from_honeybee/construction/air'
 
 # import the material objects
 require 'from_honeybee/material/opaque'

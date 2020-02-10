@@ -49,7 +49,7 @@ RSpec.describe FromHoneybee do
   end
 
   it 'can load simple simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simulation_parameter/simulation_par_simple.json')
+    file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_simple.json')
     honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
@@ -58,7 +58,7 @@ RSpec.describe FromHoneybee do
 
 
   it 'can load detailed simulation parameter' do
-    file = File.join(File.dirname(__FILE__), '../files/simulation_parameter/simulation_par_detailed.json')
+    file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_detailed.json')
     honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new

@@ -34,7 +34,7 @@ require 'from_honeybee/model_object'
 require 'openstudio'
 
 module FromHoneybee
-  class AirWall < ModelObject
+  class AirBoundaryConstructionAbridged < ModelObject
     attr_reader :errors, :warnings
 
     def initialize(hash = {})
@@ -42,7 +42,7 @@ module FromHoneybee
     end
 
     def defaults
-      @@schema[:components][:schemas][:AirWall][:properties]
+      @@schema[:components][:schemas][:AirBoundaryConstructionAbridged][:properties]
     end
 
     def find_existing_openstudio_object(openstudio_model)
@@ -57,11 +57,9 @@ module FromHoneybee
       os_construction.setSolarAndDaylightingMethod('GroupedZones')
       os_construction.setRadiantExchangeMethod('GroupedZones')
       os_construction.setAirExchangeMethod('None')
-      #TODO: Uncomment
-      #openstudio_construction.simpleMixingAirChangesPerHour(0) 
 
-      openstudio_construction
+      os_construction
     end
 
-  end #AirWall
+  end #AirBoundaryConstructionAbridged
 end #FromHoneybee
