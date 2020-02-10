@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": "1.13.0",
+    "version": "1.14.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -28,6 +28,11 @@
       "name": "adiabatic_model",
       "x-displayName": "Adiabatic",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Adiabatic\" />\n"
+    },
+    {
+      "name": "airboundaryconstructionabridged_model",
+      "x-displayName": "AirBoundaryConstructionAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AirBoundaryConstructionAbridged\" />\n"
     },
     {
       "name": "aperture_model",
@@ -325,6 +330,7 @@
       "name": "Models",
       "tags": [
         "adiabatic_model",
+        "airboundaryconstructionabridged_model",
         "aperture_model",
         "apertureenergypropertiesabridged_model",
         "aperturepropertiesabridged_model",
@@ -979,7 +985,7 @@
               "Wall",
               "Floor",
               "RoofCeiling",
-              "AirWall"
+              "AirBoundary"
             ],
             "type": "string"
           },
@@ -2049,6 +2055,44 @@
         },
         "required": [
           "name"
+        ]
+      },
+      "AirBoundaryConstructionAbridged": {
+        "title": "AirBoundaryConstructionAbridged",
+        "description": "Construction for Shade objects.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "air_mixing_schedule": {
+            "title": "Air Mixing Schedule",
+            "description": "Name of A fractional schedule for the air mixing schedule across the construction.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "AirBoundaryConstructionAbridged",
+            "type": "string",
+            "pattern": "^AirBoundaryConstructionAbridged$"
+          },
+          "air_mixing_per_area": {
+            "title": "Air Mixing Per Area",
+            "description": "A positive number for the amount of air mixing between Rooms across the air boundary surface [m3/s-m2]. Default: 0.1 corresponds to average indoor air speeds of 0.1 m/s (roughly 20 fpm), which is typical of what would be induced by a HVAC system.",
+            "default": 0.1,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "air_mixing_schedule"
         ]
       },
       "EnergyMaterial": {
@@ -3567,6 +3611,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ShadeConstruction"
+                },
+                {
+                  "$ref": "#/components/schemas/AirBoundaryConstructionAbridged"
                 }
               ]
             }

@@ -47,7 +47,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load ideal air default' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/hvac/ideal_air_default.json')
+    file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_default.json')
     honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
@@ -56,7 +56,7 @@ RSpec.describe FromHoneybee do
   # TODO: add assertions about properties
   it 'can load ideal air detailed' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../files/hvac/ideal_air_detailed.json')
+    file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_detailed.json')
     honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
