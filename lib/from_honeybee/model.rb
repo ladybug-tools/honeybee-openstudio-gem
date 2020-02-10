@@ -162,7 +162,7 @@ module FromHoneybee
 
     private
 
-    # create OpenStudio bjects in the OpenStudio model
+    # create OpenStudio objects in the OpenStudio model
     def create_openstudio_objects(log_report=true)
       # create all of the non-geometric model elements
       if log_report
@@ -241,8 +241,9 @@ module FromHoneybee
       end
     end
 
-
     def create_constructions
+      $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
+
       @hash[:properties][:energy][:constructions].each do |construction|
         name = construction[:name]
         construction_type = construction[:type]
@@ -256,6 +257,7 @@ module FromHoneybee
           construction_object = ShadeConstruction.new(construction)
         when 'AirBoundaryConstructionAbridged'
           construction_object = AirBoundaryConstructionAbridged.new(construction)
+          $air_boundary_hash[construction[:name]] = construction
         else
           raise "Unknown construction type #{construction_type}."
         end
@@ -313,7 +315,7 @@ module FromHoneybee
 
     def create_program_types
       if @hash[:properties][:energy][:program_types]
-        $programtype_setpoint_hash = Hash.new
+        $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
         @hash[:properties][:energy][:program_types].each do |space_type|
           space_type_object = ProgramTypeAbridged.new(space_type)
           space_type_object.to_openstudio(@openstudio_model)
@@ -323,6 +325,8 @@ module FromHoneybee
 
     def create_rooms
       if @hash[:rooms]
+        $air_mxing_array = []  # list to track any air mixing between Rooms
+
         @hash[:rooms].each do |room|
           room_object = Room.new(room)
           openstudio_room = room_object.to_openstudio(@openstudio_model)
@@ -343,6 +347,22 @@ module FromHoneybee
                 thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
               end
             end
+          end
+        end
+      
+        # Create mixing objects between Rooms
+        $air_mxing_array.each do |air_mix_props|
+          zone_mixing = OpenStudio::Model::ZoneMixing.new(air_mix_props[0])
+          zone_mixing.setDesignFlowRate(air_mix_props[1])
+          flow_sch_ref = @openstudio_model.getScheduleByName(air_mix_props[2])
+          unless flow_sch_ref.empty?
+            flow_sched = flow_sch_ref.get
+            zone_mixing.setSchedule(flow_sched)
+          end
+          source_zone_ref = @openstudio_model.getThermalZoneByName(air_mix_props[3])
+          unless source_zone_ref.empty?
+            source_zone = source_zone_ref.get
+            zone_mixing.setSourceZone(source_zone)
           end
         end
       end

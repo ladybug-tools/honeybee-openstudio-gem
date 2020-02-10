@@ -75,7 +75,7 @@ module FromHoneybee
           os_surface.setConstruction(os_construction)
         end
       end
-      
+
       # assign the boundary condition
       boundary_condition = (@hash[:boundary_condition][:type])
       case boundary_condition
