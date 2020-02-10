@@ -99,25 +99,25 @@ class FromHoneybeeModel_Test < Minitest::Test
 
   def test_shoe_box
     args = {}
-    args['model_json'] = File.join(File.dirname(__FILE__), 'model_shoe_box.json')
-    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
-  end
-
-  def test_single_zone_office_fixed_interval
-    args = {}
-    args['model_json'] = File.join(File.dirname(__FILE__), 'model_complete_single_zone_office_fixed_interval.json')
+    args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_energy_shoe_box.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
   def test_multi_zone_office
     args = {}
-    args['model_json'] = File.join(File.dirname(__FILE__), 'model_complete_multi_zone_office.json')
+    args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_complete_multi_zone_office.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
-  def test_lab_building
+  def test_detailed_loads
     args = {}
-    args['model_json'] = File.join(File.dirname(__FILE__), 'model_complete_lab_building.json')
+    args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_energy_detailed_loads.json")
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
+  def test_office_floor
+    args = {}
+    args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_complete_office_floor.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 

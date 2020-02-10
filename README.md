@@ -30,6 +30,16 @@ bundle update
 3. Run Core Library Tests:
 ```
 cd energy-model-measure
-rake
+bundle exec rake
 ```
+
+4. Run Measure Tests:
+```
+cd energy-model-measure/lib/measures/from_honeybee_model/tests/
+bundle exec ruby from_honeybee_model_test.rb
+
+cd energy-model-measure/lib/measures/from_honeybee_simulation_parameter/tests/
+bundle exec ruby from_honeybee_simulation_parameter_test.rb
+```
+
 coverage report will be output to `energy-model-measure/coverage/index.html`
