@@ -164,7 +164,8 @@
               "type": "string"
             }
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DaylightSavingTime": {
         "title": "DaylightSavingTime",
@@ -205,7 +206,8 @@
             "minItems": 2,
             "maxItems": 3
           }
-        }
+        },
+        "additionalProperties": false
       },
       "RunPeriod": {
         "title": "RunPeriod",
@@ -274,8 +276,8 @@
               "maxItems": 2
             }
           },
-          "daylight_savings_time": {
-            "title": "Daylight Savings Time",
+          "daylight_saving_time": {
+            "title": "Daylight Saving Time",
             "description": "A DaylightSavingTime to dictate the start and end dates of daylight saving time. If None, no daylight saving time is applied to the simulation.",
             "allOf": [
               {
@@ -289,7 +291,8 @@
             "default": false,
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "SimulationControl": {
         "title": "SimulationControl",
@@ -332,7 +335,8 @@
             "default": false,
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ShadowCalculation": {
         "title": "ShadowCalculation",
@@ -380,7 +384,8 @@
             "minimum": 200,
             "type": "integer"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DryBulbCondition": {
         "title": "DryBulbCondition",
@@ -410,7 +415,8 @@
         "required": [
           "dry_bulb_max",
           "dry_bulb_range"
-        ]
+        ],
+        "additionalProperties": false
       },
       "HumidityCondition": {
         "title": "HumidityCondition",
@@ -462,7 +468,8 @@
         "required": [
           "humidity_type",
           "humidity_value"
-        ]
+        ],
+        "additionalProperties": false
       },
       "WindCondition": {
         "title": "WindCondition",
@@ -493,7 +500,8 @@
         },
         "required": [
           "wind_speed"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ASHRAEClearSky": {
         "title": "ASHRAEClearSky",
@@ -533,7 +541,8 @@
         "required": [
           "date",
           "clearness"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ASHRAETau": {
         "title": "ASHRAETau",
@@ -581,7 +590,8 @@
           "date",
           "tau_b",
           "tau_d"
-        ]
+        ],
+        "additionalProperties": false
       },
       "DesignDay": {
         "title": "DesignDay",
@@ -664,7 +674,8 @@
           "humidity_condition",
           "wind_condition",
           "sky_condition"
-        ]
+        ],
+        "additionalProperties": false
       },
       "SizingParameter": {
         "title": "SizingParameter",
@@ -699,7 +710,8 @@
             "exclusiveMinimum": 0,
             "type": "number"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "SimulationParameter": {
         "title": "SimulationParameter",
@@ -765,7 +777,8 @@
               }
             ]
           }
-        }
+        },
+        "additionalProperties": false
       }
     }
   }

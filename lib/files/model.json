@@ -397,6 +397,7 @@
     "schemas": {
       "Plane": {
         "title": "Plane",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "n": {
@@ -439,7 +440,8 @@
         "required": [
           "n",
           "o"
-        ]
+        ],
+        "additionalProperties": false
       },
       "Face3D": {
         "title": "Face3D",
@@ -495,10 +497,12 @@
         },
         "required": [
           "boundary"
-        ]
+        ],
+        "additionalProperties": false
       },
       "Ground": {
         "title": "Ground",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -507,10 +511,12 @@
             "type": "string",
             "pattern": "^Ground$"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Autocalculate": {
         "title": "Autocalculate",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -519,10 +525,12 @@
             "type": "string",
             "pattern": "^Autocalculate$"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Outdoors": {
         "title": "Outdoors",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -560,10 +568,12 @@
               }
             ]
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Adiabatic": {
         "title": "Adiabatic",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -572,10 +582,12 @@
             "type": "string",
             "pattern": "^Adiabatic$"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Surface": {
         "title": "Surface",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "boundary_condition_objects": {
@@ -597,10 +609,12 @@
         },
         "required": [
           "boundary_condition_objects"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ShadeEnergyPropertiesAbridged": {
         "title": "ShadeEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -623,7 +637,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ShadePropertiesAbridged": {
         "title": "ShadePropertiesAbridged",
@@ -687,10 +702,12 @@
           "name",
           "geometry",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ApertureEnergyPropertiesAbridged": {
         "title": "ApertureEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -706,7 +723,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "AperturePropertiesAbridged": {
         "title": "AperturePropertiesAbridged",
@@ -804,10 +822,12 @@
           "geometry",
           "boundary_condition",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       },
       "DoorEnergyPropertiesAbridged": {
         "title": "DoorEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -823,7 +843,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DoorPropertiesAbridged": {
         "title": "DoorPropertiesAbridged",
@@ -921,10 +942,12 @@
           "geometry",
           "boundary_condition",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       },
       "FaceEnergyPropertiesAbridged": {
         "title": "FaceEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -940,7 +963,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "FacePropertiesAbridged": {
         "title": "FacePropertiesAbridged",
@@ -1065,7 +1089,8 @@
           "face_type",
           "boundary_condition",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       },
       "PeopleAbridged": {
         "title": "PeopleAbridged",
@@ -1136,7 +1161,8 @@
           "people_per_area",
           "occupancy_schedule",
           "activity_schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "LightingAbridged": {
         "title": "LightingAbridged",
@@ -1198,7 +1224,8 @@
           "name",
           "watts_per_area",
           "schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ElectricEquipmentAbridged": {
         "title": "ElectricEquipmentAbridged",
@@ -1260,7 +1287,8 @@
           "name",
           "watts_per_area",
           "schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "GasEquipmentAbridged": {
         "title": "GasEquipmentAbridged",
@@ -1322,7 +1350,8 @@
           "name",
           "watts_per_area",
           "schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "InfiltrationAbridged": {
         "title": "InfiltrationAbridged",
@@ -1378,7 +1407,8 @@
           "name",
           "flow_per_exterior_area",
           "schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "VentilationAbridged": {
         "title": "VentilationAbridged",
@@ -1436,7 +1466,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "SetpointAbridged": {
         "title": "SetpointAbridged",
@@ -1470,15 +1501,15 @@
             "type": "string",
             "pattern": "^SetpointAbridged$"
           },
-          "humidification_schedule": {
-            "title": "Humidification Schedule",
+          "humidifying_schedule": {
+            "title": "Humidifying Schedule",
             "description": "Name of the schedule for the humidification setpoint. The values in this schedule should be in [%].",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
           },
-          "dehumidification_schedule": {
-            "title": "Dehumidification Schedule",
+          "dehumidifying_schedule": {
+            "title": "Dehumidifying Schedule",
             "description": "Name of the schedule for the dehumidification setpoint. The values in this schedule should be in [%].",
             "maxLength": 100,
             "minLength": 1,
@@ -1489,10 +1520,12 @@
           "name",
           "cooling_schedule",
           "heating_schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "RoomEnergyPropertiesAbridged": {
         "title": "RoomEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -1585,7 +1618,8 @@
               }
             ]
           }
-        }
+        },
+        "additionalProperties": false
       },
       "RoomPropertiesAbridged": {
         "title": "RoomPropertiesAbridged",
@@ -1672,7 +1706,8 @@
           "name",
           "faces",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       },
       "WallSetAbridged": {
         "title": "WallSetAbridged",
@@ -1706,7 +1741,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "FloorSetAbridged": {
         "title": "FloorSetAbridged",
@@ -1740,7 +1776,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "RoofCeilingSetAbridged": {
         "title": "RoofCeilingSetAbridged",
@@ -1774,7 +1811,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ApertureSetAbridged": {
         "title": "ApertureSetAbridged",
@@ -1815,7 +1853,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DoorSetAbridged": {
         "title": "DoorSetAbridged",
@@ -1863,7 +1902,8 @@
             "minLength": 1,
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ConstructionSetAbridged": {
         "title": "ConstructionSetAbridged",
@@ -1930,7 +1970,14 @@
           },
           "shade_construction": {
             "title": "Shade Construction",
-            "description": "A ShadeConstruction to set the reflectance properties of all outdoor shades to which this ConstructionSet is assigned.",
+            "description": "The name of a ShadeConstruction to set the reflectance properties of all outdoor shades of all objects to which this ConstructionSet is assigned.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "air_boundary_construction": {
+            "title": "Air Boundary Construction",
+            "description": "The name of an AirBoundaryConstruction to set the properties of Faces with an AirBoundary type.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -1938,7 +1985,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "OpaqueConstructionAbridged": {
         "title": "OpaqueConstructionAbridged",
@@ -1974,7 +2022,8 @@
         "required": [
           "name",
           "layers"
-        ]
+        ],
+        "additionalProperties": false
       },
       "WindowConstructionAbridged": {
         "title": "WindowConstructionAbridged",
@@ -2010,7 +2059,8 @@
         "required": [
           "name",
           "layers"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ShadeConstruction": {
         "title": "ShadeConstruction",
@@ -2055,7 +2105,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "AirBoundaryConstructionAbridged": {
         "title": "AirBoundaryConstructionAbridged",
@@ -2093,7 +2144,8 @@
         "required": [
           "name",
           "air_mixing_schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyMaterial": {
         "title": "EnergyMaterial",
@@ -2182,7 +2234,8 @@
           "conductivity",
           "density",
           "specific_heat"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyMaterialNoMass": {
         "title": "EnergyMaterialNoMass",
@@ -2249,7 +2302,8 @@
         "required": [
           "name",
           "r_value"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialGas": {
         "title": "EnergyWindowMaterialGas",
@@ -2290,7 +2344,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialGasCustom": {
         "title": "EnergyWindowMaterialGasCustom",
@@ -2391,7 +2446,8 @@
           "specific_heat_coeff_a",
           "specific_heat_ratio",
           "molecular_weight"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialGasMixture": {
         "title": "EnergyWindowMaterialGasMixture",
@@ -2449,7 +2505,8 @@
           "name",
           "gas_types",
           "gas_fractions"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialSimpleGlazSys": {
         "title": "EnergyWindowMaterialSimpleGlazSys",
@@ -2496,7 +2553,8 @@
           "name",
           "u_factor",
           "shgc"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialBlind": {
         "title": "EnergyWindowMaterialBlind",
@@ -2728,7 +2786,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialGlazing": {
         "title": "EnergyWindowMaterialGlazing",
@@ -2845,7 +2904,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "EnergyWindowMaterialShade": {
         "title": "EnergyWindowMaterialShade",
@@ -2978,10 +3038,12 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "Autosize": {
         "title": "Autosize",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -2990,10 +3052,12 @@
             "type": "string",
             "pattern": "^Autosize$"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "NoLimit": {
         "title": "NoLimit",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "type": {
@@ -3002,7 +3066,8 @@
             "type": "string",
             "pattern": "^NoLimit$"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "IdealAirSystemAbridged": {
         "title": "IdealAirSystemAbridged",
@@ -3033,8 +3098,8 @@
             ],
             "type": "string"
           },
-          "demand_control_ventilation": {
-            "title": "Demand Control Ventilation",
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
             "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the zone.",
             "default": false,
             "type": "boolean"
@@ -3126,7 +3191,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ProgramTypeAbridged": {
         "title": "ProgramTypeAbridged",
@@ -3212,7 +3278,8 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ScheduleDay": {
         "title": "ScheduleDay",
@@ -3267,7 +3334,8 @@
         "required": [
           "name",
           "values"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ScheduleRuleAbridged": {
         "title": "ScheduleRuleAbridged",
@@ -3366,7 +3434,8 @@
         },
         "required": [
           "schedule_day"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ScheduleRulesetAbridged": {
         "title": "ScheduleRulesetAbridged",
@@ -3435,7 +3504,8 @@
           "name",
           "day_schedules",
           "default_day_schedule"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ScheduleFixedIntervalAbridged": {
         "title": "ScheduleFixedIntervalAbridged",
@@ -3508,7 +3578,8 @@
         "required": [
           "name",
           "values"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ScheduleTypeLimit": {
         "title": "ScheduleTypeLimit",
@@ -3591,10 +3662,12 @@
         },
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ModelEnergyProperties": {
         "title": "ModelEnergyProperties",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
         "type": "object",
         "properties": {
           "constructions": {
@@ -3731,7 +3804,8 @@
         "required": [
           "constructions",
           "materials"
-        ]
+        ],
+        "additionalProperties": false
       },
       "ModelProperties": {
         "title": "ModelProperties",
@@ -3858,7 +3932,8 @@
         "required": [
           "name",
           "properties"
-        ]
+        ],
+        "additionalProperties": false
       }
     }
   }
