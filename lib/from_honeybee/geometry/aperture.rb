@@ -58,6 +58,7 @@ module FromHoneybee
       @hash[:geometry][:boundary].each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
+      reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       os_subsurface = OpenStudio::Model::SubSurface.new(os_vertices, openstudio_model)
       os_vertices = os_subsurface.vertices

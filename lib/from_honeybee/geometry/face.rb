@@ -61,6 +61,7 @@ module FromHoneybee
       @hash[:geometry][:boundary].each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
+      reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)        
       os_vertices = os_surface.vertices
@@ -78,7 +79,7 @@ module FromHoneybee
           os_surface.setConstruction(os_construction)
         end
       end
-      
+
       # assign the boundary condition
       boundary_condition = (@hash[:boundary_condition][:type])
       case boundary_condition

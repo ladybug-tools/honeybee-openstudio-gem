@@ -103,8 +103,6 @@ module FromHoneybee
         os_surface = ladybug_face.to_openstudio(openstudio_model)
         os_surface.setSpace(os_space)
 
-        # TODO: process all air walls between Rooms
-
         # assign face-level shades if they exist
         if face[:outdoor_shades]
           os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
@@ -141,13 +139,33 @@ module FromHoneybee
           end
         end
 
-        # assign default interior construciton if Adiabatic and no assigned construction 
-        if face[:boundary_condition][:type] == 'Adiabatic' && !face[:properties][:energy][:construction]
-          if face[:face_type] != 'Wall'
-            interior_construction = closest_interior_construction(openstudio_model, os_space, face[:face_type])
-            unless interior_construction.nil?
-              os_surface.setConstruction(interior_construction)
+        if !face[:properties][:energy][:construction]
+          if face[:boundary_condition][:type] == 'Adiabatic'
+            # assign default interior construciton for Adiabatic Faces
+            if face[:face_type] != 'Wall'
+              interior_construction = closest_interior_construction(openstudio_model, os_space, face[:face_type])
+              unless interior_construction.nil?
+                os_surface.setConstruction(interior_construction)
+              end
             end
+          elsif face[:face_type] == 'AirBoundary'
+            # assign default air boundary construciton for AirBoundary face types
+            air_construction = closest_air_construction(openstudio_model, os_space)
+            unless air_construction.nil?
+              os_surface.setConstruction(air_construction)
+            end
+            # add air mixing properties to the global list that tracks them
+            air_hash = $air_boundary_hash[air_construction.name.to_s]
+            if air_hash[:air_mixing_per_area]
+              air_mix_area = air_hash[:air_mixing_per_area]
+            else
+              air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
+              air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
+            end
+            flow_rate = os_surface.netArea * air_mix_area
+            flow_sch_name = air_hash[:air_mixing_schedule]
+            adj_zone_name = face[:boundary_condition][:boundary_condition_objects][-1]
+            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_name, adj_zone_name]
           end
         end
       end
@@ -322,6 +340,32 @@ module FromHoneybee
         end
       end
       nil  # no construction was found
+    end
+
+    # method to check for the closest-assigned air boundary construction
+    def closest_air_construction(openstudio_model, os_space)
+      # first check the space-assigned construction set
+      constr_set_ref = os_space.defaultConstructionSet
+      unless constr_set_ref.empty?
+        constr_set_space = constr_set_ref.get
+        air_constr_ref = constr_set_space.interiorPartitionConstruction
+        unless air_constr_ref.empty?
+          return air_constr_ref.get
+        end
+      end
+      # if no construction was found, check the building-assigned construction set
+      building_ref = openstudio_model.building
+      unless building_ref.empty?
+        building = building_ref.get
+        constr_set_bldg_ref = building.defaultConstructionSet
+        unless constr_set_bldg_ref.empty?
+          constr_set_bldg = constr_set_bldg_ref.get
+          air_constr_ref = constr_set_bldg.interiorPartitionConstruction
+          unless air_constr_ref.empty?
+            return air_constr_ref.get
+          end
+        end
+      end
     end
 
   end #Room
