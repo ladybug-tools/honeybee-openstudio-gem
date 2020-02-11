@@ -63,15 +63,11 @@ module FromHoneybee
       end
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
-<<<<<<< HEAD
-      os_surface = OpenStudio::Model::Surface.new(reordered_vertices, openstudio_model)        
-=======
       os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)        
       os_vertices = os_surface.vertices
       # reorder vertices
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
       os_surface.setVertices(reordered_vertices)
->>>>>>> Implemented reorder vertices for aperture, door, shade
       os_surface.setName(@hash[:name])
       os_surface.setSurfaceType(@hash[:face_type])
       # assign the construction if it is present
