@@ -101,9 +101,6 @@ module FromHoneybee
       @hash[:faces].each do |face|
         ladybug_face = Face.new(face)
         os_surface = ladybug_face.to_openstudio(openstudio_model)
-        os_vertices = os_surface.vertices
-        reordered_vertices = OpenStudio.reorderULC(os_vertices)
-        os_surface.setVertices(reordered_vertices)
         os_surface.setSpace(os_space)
 
         # TODO: process all air walls between Rooms

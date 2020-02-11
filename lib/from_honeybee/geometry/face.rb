@@ -63,9 +63,12 @@ module FromHoneybee
       end
 
       os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)        
+      os_vertices = os_surface.vertices
+      # reorder vertices
+      reordered_vertices = OpenStudio.reorderULC(os_vertices)
+      os_surface.setVertices(reordered_vertices)
       os_surface.setName(@hash[:name])
       os_surface.setSurfaceType(@hash[:face_type])
-
       # assign the construction if it is present
       if @hash[:properties][:energy][:construction]
         construction_name = @hash[:properties][:energy][:construction]

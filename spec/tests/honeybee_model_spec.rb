@@ -95,12 +95,6 @@ RSpec.describe FromHoneybee do
     openstudio_subsurfaces2 = openstudio_surface2.subSurfaces
     expect(openstudio_subsurfaces2.size).to eq 2
 
-    openstudio_aperture = openstudio_subsurfaces2[0]
-    expect(openstudio_aperture.nameString).to eq 'FrontAperture'
-
-    openstudio_door = openstudio_subsurfaces2[1]
-    expect(openstudio_door.nameString).to eq 'FrontDoor'
-
   end
 
   it 'can load and validate shoebox model' do
