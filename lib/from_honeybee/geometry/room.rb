@@ -270,9 +270,9 @@ module FromHoneybee
         os_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
         #set thermostat to thermal zone
         os_thermal_zone.setThermostatSetpointDualSetpoint(os_setpoint_thermostat_space)
-        #humidistat object is created if humidification or dehumidification schedule is
+        #humidistat object is created if humidifying or dehumidifying schedule is
         #specified.
-        if @hash[:properties][:energy][:setpoint][:humidification_schedule] or @hash[:properties][:energy][:setpoint][:dehumidification_schedule]
+        if @hash[:properties][:energy][:setpoint][:humidifying_schedule] or @hash[:properties][:energy][:setpoint][:dehumidifying_schedule]
           setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
           os_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
           os_thermal_zone.setZoneControlHumidistat(os_setpoint_humidistat_space)
