@@ -91,12 +91,10 @@ RSpec.describe FromHoneybee do
     expect(openstudio_surface2.empty?).to be false
 
     openstudio_surface2 = openstudio_surface2.get
-
     openstudio_subsurfaces2 = openstudio_surface2.subSurfaces
     expect(openstudio_subsurfaces2.size).to eq 2
 
     construction_name = openstudio_model.getConstructionByName('Default Generic Construction Set')
-
     expect(construction_name).not_to be nil
 
     schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
