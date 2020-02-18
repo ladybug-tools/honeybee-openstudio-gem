@@ -52,6 +52,13 @@ RSpec.describe FromHoneybee do
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+    expect(object1.nameString).to eq 'Default Generic Construction Set'
+    #inter_surf_constr = object1.defaultInteriorSurfaceConstructions
+    #inter_surf_constr = inter_surf_constr.get
+    #inter_wall_surf_constr = inter_surf_constr.wallConstruction
+    #inter_wall_surf_constr = inter_wall_surf_constr.get
+    #expect(inter_wall_surf_constr).not_to be nil
+    
   end
 
   it 'can load construction set partial' do
@@ -59,6 +66,15 @@ RSpec.describe FromHoneybee do
     file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_partial_exterior.json')
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)
+    exte_surf_constr = object1.defaultExteriorSurfaceConstructions
+    exte_surf_constr = exte_surf_constr.get
+    expect(exte_surf_constr).not_to be nil
+    exte_wall_surf_constr = exte_surf_constr.wallConstruction
+    #puts "3HELLO = #{object1}"
+    #puts "1HELLO = #{exte_surf_constr}"
+    #puts "2HELLO = #{exte_wall_surf_constr}"
+    #exte_surf_constr = exte_wall_surf_constr.get
+    #expect(exte_wall_surf_constr.nameString).to eq 'Typical Insulated Steel Framed Exterior Wall-R19'
     expect(object1).not_to be nil
   end
 

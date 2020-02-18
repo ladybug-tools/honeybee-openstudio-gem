@@ -59,6 +59,15 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+
+    thickness = object1.thickness
+    expect(thickness).to eq(0.1)
+    conductivity = object1.thermalConductivity
+    expect(conductivity).to eq(0.53)
+    roughness = object1.roughness
+    expect(roughness).to eq('MediumRough')
+    solar_absorptance = object1.thermalAbsorptance
+    expect(solar_absorptance).to eq(0.9)
   end
 
   it 'can load opaque material gypsum' do
@@ -115,6 +124,11 @@ RSpec.describe FromHoneybee do
     material1 = FromHoneybee::EnergyWindowMaterialGas.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+
+    thickness = object1.thickness
+    expect(thickness).to eq(0.0127)
+    gas_type = object1.gasType
+    expect(gas_type).to eq('Air')
   end
 
   it 'can load material window glazing clear' do

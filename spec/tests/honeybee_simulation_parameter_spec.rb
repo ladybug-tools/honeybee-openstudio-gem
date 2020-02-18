@@ -63,6 +63,36 @@ RSpec.describe FromHoneybee do
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+
+    sim_contr = openstudio_model.getSimulationControl
+
+    expect(sim_contr.doZoneSizingCalculation).to be true
+    expect(sim_contr.doSystemSizingCalculation).to be true
+    expect(sim_contr.doPlantSizingCalculation).to be true
+    expect(sim_contr.solarDistribution).to eq 'FullInteriorAndExteriorWithReflections'
+    expect(sim_contr.sizingParameters).not_to be nil
+    expect(sim_contr.runPeriods).not_to be nil
+
+    sizing_par = openstudio_model.getSizingParameters
+    expect(sizing_par.heatingSizingFactor).to eq 1
+    expect(sizing_par.coolingSizingFactor).to eq 1
+
+    run_period = openstudio_model.runPeriod
+    run_period = run_period.get
+
+    expect(run_period.getBeginDayOfMonth).to eq 1
+    expect(run_period.getBeginMonth).to eq 1
+    expect(run_period.getEndMonth).to eq 6
+    expect(run_period.getEndDayOfMonth).to eq 21
+
+    output_variable = openstudio_model.getOutputVariables
+    expect(output_variable.size).to eq 6
+    expect(output_variable[0].reportingFrequency).to eq 'Daily'
+        
+    shadow_calc = sim_contr.shadowCalculation
+    shadow_calc = shadow_calc.get
+    expect(shadow_calc.calculationFrequency).to eq 20
+    expect(shadow_calc.calculationMethod).to eq 'AverageOverDaysInFrequency'
   end
 
 end

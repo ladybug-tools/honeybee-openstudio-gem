@@ -95,6 +95,13 @@ RSpec.describe FromHoneybee do
     openstudio_subsurfaces2 = openstudio_surface2.subSurfaces
     expect(openstudio_subsurfaces2.size).to eq 2
 
+    construction_name = openstudio_model.getConstructionByName('Default Generic Construction Set')
+
+    expect(construction_name).not_to be nil
+
+    schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
+    expect(schedule_ruleset).not_to be nil
+
   end
 
   it 'can load and validate shoebox model' do

@@ -73,6 +73,11 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+
+    layers = construction1.layers
+    expect(layers).not_to be nil
+    expect(layers.size).to eq(5)
+
   end
 
   it 'can load construction opaque wall' do

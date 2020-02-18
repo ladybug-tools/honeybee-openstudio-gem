@@ -78,7 +78,7 @@ module FromHoneybee
 
       # assign the demand controlled ventilation
       if @hash[:demand_controlled_ventilation]
-          os_ideal_air.setDemandControlledVentilationType('OccupancySchedule')
+        os_ideal_air.setDemandControlledVentilationType('OccupancySchedule')
       else 
         os_ideal_air.setDemandControlledVentilationType('None')
       end

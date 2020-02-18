@@ -71,6 +71,15 @@ module FromHoneybee
           day_schedule_new.addValue(time_until, values_day_new[i])
         end
       end
+
+      # assign holiday schedule
+      if @hash[:holiday_schedule]
+        holiday_schedule = openstudio_model.getScheduleDayByName(@hash[:holiday_schedule])
+        unless holiday_schedule.empty?
+          holiday_schedule_object = holiday_schedule.get
+          os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
+        end
+      end
       
       # assign summer design day schedule 
       if @hash[:summer_designday_schedule]

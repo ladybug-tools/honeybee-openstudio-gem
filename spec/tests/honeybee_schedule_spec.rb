@@ -45,7 +45,6 @@ RSpec.describe FromHoneybee do
     expect(File.exist?(extension.files_dir)).to be true
   end
 
-  # add assertions
   it 'can load schedule fixed interval 1' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_fine_timestep.json')
@@ -53,6 +52,17 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+
+    expect(object1.nameString).to eq 'Solstice Increasing'
+
+    start_day = object1.startDay
+    expect(start_day).to eq(21)
+
+    interpolate = object1.interpolatetoTimestep
+    expect(interpolate).to eq(false)
+
+    interval_length = object1.intervalLength
+    expect(interval_length).to eq(10.0)
   end
 
   it 'can load schedule fixed interval 2' do
@@ -89,10 +99,34 @@ RSpec.describe FromHoneybee do
 
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+
+    schedule_rules = object1.scheduleRules
+    expect(schedule_rules).not_to be nil
+    start_date = schedule_rules[0].startDate
+    expect(start_date).not_to be nil
+    app_mon = schedule_rules[0].applyMonday
+    expect(app_mon).to eq(true)
+
+    day_schedule = schedule_rules[0].daySchedule
+    expect(day_schedule).not_to be nil
+    time = day_schedule.times
+    expect(time).not_to be nil
+    expect(time.size).to eq(3)
+    value = day_schedule.values
+    expect(value).not_to be nil
+
+    default_day = object1.defaultDaySchedule
+    expect(default_day).not_to be nil
+    summer_design = object1.summerDesignDaySchedule
+    expect(summer_design.nameString).to eq 'School Summer Design 1'
+    expect(summer_design).not_to be nil
+    schedule_type = object1.scheduleTypeLimits
+    expect(schedule_type).not_to be nil
+
   end
 
   
-  it 'can load schedule ruleset office occupance' do
+  it 'can load schedule ruleset office occupancy' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_office_occupancy.json')
     honeybee_obj_1 = FromHoneybee::ScheduleRulesetAbridged.read_from_disk(file)
