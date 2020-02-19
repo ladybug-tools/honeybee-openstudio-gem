@@ -60,11 +60,7 @@ module FromHoneybee
       end
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
-      os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
-      os_vertices = os_shading_surface.vertices
-      # reorder vertices
-      reordered_os_vertices = OpenStudio.reorderULC(os_vertices)
-      os_shading_surface.setVertices(reordered_os_vertices)
+      os_shading_surface = OpenStudio::Model::ShadingSurface.new(reordered_vertices, openstudio_model)
       os_shading_surface.setName(@hash[:name])
 
       # assign the construction if it exists
