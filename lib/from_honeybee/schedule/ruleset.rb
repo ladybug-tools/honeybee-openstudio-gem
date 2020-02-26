@@ -80,9 +80,6 @@ module FromHoneybee
           begin
             os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)  
           rescue NoMethodError 
-          else
-            # setHolidaySchedule only when the method exists
-            os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
           end
         end
       end
