@@ -13,7 +13,7 @@ before_install:
 - sudo dpkg -i ./OpenStudio-2.9.1.3472e8b799-Linux.deb
 # install the openstudio extension gem
 - export RUBYLIB=/usr/local/openstudio-2.9.1/Ruby
-- gem install openstudio-extension
+- gem install openstudio-extension -v 0.1.4
 
 install:
   - bundle install

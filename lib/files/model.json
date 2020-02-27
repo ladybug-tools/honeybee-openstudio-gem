@@ -3397,12 +3397,6 @@
             "default": false,
             "type": "boolean"
           },
-          "apply_holiday": {
-            "title": "Apply Holiday",
-            "description": "Boolean noting whether to apply schedule_day on Holidays.",
-            "default": false,
-            "type": "boolean"
-          },
           "start_date": {
             "title": "Start Date",
             "description": "A list of two integers for [month, day], representing the start date of the period over which the schedule_day will be applied.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
@@ -3477,6 +3471,13 @@
             "items": {
               "$ref": "#/components/schemas/ScheduleRuleAbridged"
             }
+          },
+          "holiday_schedule": {
+            "title": "Holiday Schedule",
+            "description": "A name for the ScheduleDay that will be used for holiday schedules. This ScheduleDay must be in the day_schedules.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "summer_designday_schedule": {
             "title": "Summer Designday Schedule",

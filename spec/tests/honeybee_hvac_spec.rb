@@ -50,16 +50,24 @@ RSpec.describe FromHoneybee do
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_default.json')
     honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
+    expect(object1.coolingLimit).to eq 'LimitFlowRateAndCapacity'
+    expect(object1.isMaximumCoolingAirFlowRateAutosized).to eq true
     expect(object1).not_to be nil
   end
 
-  # TODO: add assertions about properties
   it 'can load ideal air detailed' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_detailed.json')
     honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+    expect(object1.nameString).to eq 'Passive House HVAC System'
+    expect(object1.maximumHeatingSupplyAirTemperature).to eq 40.0
+    expect(object1.minimumCoolingSupplyAirTemperature).to eq 15.0
+    expect(object1.outdoorAirEconomizerType).to eq 'DifferentialEnthalpy'
+    expect(object1.heatingLimit).to eq 'LimitCapacity'
+    expect(object1.coolingLimit).to eq 'LimitFlowRateAndCapacity'
+    expect(object1.demandControlledVentilationType).to eq 'OccupancySchedule'
   end
 
 end

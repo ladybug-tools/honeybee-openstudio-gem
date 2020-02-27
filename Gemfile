@@ -4,10 +4,9 @@ source 'http://rubygems.org'
 gemspec
 
 if File.exist?('../OpenStudio-extension-gem')
-  # gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', branch: 'develop'
   gem 'openstudio-extension', path: '../OpenStudio-extension-gem'
 else
-  gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', branch: 'develop'
+  gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', tag: 'v0.1.4'
 end
 
 # this code appears to be outdated and so it's commented out for now

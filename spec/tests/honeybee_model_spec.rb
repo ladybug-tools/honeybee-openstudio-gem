@@ -86,6 +86,20 @@ RSpec.describe FromHoneybee do
     openstudio_layered_construction = openstudio_layered_construction.get
     expect(openstudio_layered_construction.numLayers).to be > 0
     expect(openstudio_layered_construction.numLayers).to be <= 10
+
+    openstudio_surface2 = openstudio_model.getSurfaceByName('TinyHouseOffice_Front')
+    expect(openstudio_surface2.empty?).to be false
+
+    openstudio_surface2 = openstudio_surface2.get
+    openstudio_subsurfaces2 = openstudio_surface2.subSurfaces
+    expect(openstudio_subsurfaces2.size).to eq 2
+
+    construction_name = openstudio_model.getConstructionByName('Default Generic Construction Set')
+    expect(construction_name).not_to be nil
+
+    schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
+    expect(schedule_ruleset).not_to be nil
+
   end
 
   it 'can load and validate shoebox model' do
