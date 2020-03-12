@@ -125,12 +125,17 @@ module FromHoneybee
       # assign doors if they exist
       if @hash[:doors]
         @hash[:doors].each do |door|
-          door = Door.new(door)
-          os_subsurface_door = door.to_openstudio(openstudio_model)
-          if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors'
-            os_subsurface_aperture.setSubSurfaceType('OverheadDoor')
-          end
+          honeybee_door = Door.new(door)
+          os_subsurface_door = honeybee_door.to_openstudio(openstudio_model)
           os_subsurface_door.setSurface(os_surface)
+          if door[:is_glass] == false
+            # set subsurface type
+            os_subsurface_door.setSubSurfaceType('Door')
+          elsif door[:is_glass] == true
+            os_subsurface_door.setSubSurfaceType('GlassDoor')
+          elsif @hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor' && @hash[:boundary_condition][:type] == 'Outdoors'
+            os_subsurface_door.setSubSurfaceType('OverheadDoor')
+          end
         end
       end
               

@@ -109,6 +109,12 @@ class FromHoneybeeModel_Test < Minitest::Test
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 
+  def test_single_zone_office
+    args = {}
+    args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_complete_single_zone_office.json")
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
   def test_detailed_loads
     args = {}
     args['model_json'] = File.join(File.dirname(__FILE__) + "/../../../../spec/samples/model/model_energy_detailed_loads.json")

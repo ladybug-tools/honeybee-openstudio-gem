@@ -84,13 +84,6 @@ module FromHoneybee
         end
       end
 
-      # assign the is_glass property
-      if @hash[:is_glass] == false
-        os_subsurface.setSubSurfaceType('Door')
-      else
-        os_subsurface.setSubSurfaceType('GlassDoor')
-      end
-
       os_subsurface
     end
   end # Door
