@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ladybug-tools-in2/energy-model-measure.svg?branch=master)](https://travis-ci.org/ladybug-tools-in2/energy-model-measure)
+
 # energy-model-measure
 
 Library and measures for converting Honeybee JSONs to/from OpenStudio.
