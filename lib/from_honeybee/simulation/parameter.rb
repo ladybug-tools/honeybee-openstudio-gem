@@ -231,9 +231,9 @@ module FromHoneybee
           os_dl_saving.setStartDate(
             OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:start_date][0]),
             @hash[:run_period][:daylight_saving_time][:start_date][1])
-            os_dl_saving.setEndDate(
-              OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:end_date][0]),
-              @hash[:run_period][:daylight_saving_time][:end_date][1])
+          os_dl_saving.setEndDate(
+            OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:end_date][0]),
+            @hash[:run_period][:daylight_saving_time][:end_date][1])
         end
 
         # TODO: set the holidays once they are available in OpenStudio SDK

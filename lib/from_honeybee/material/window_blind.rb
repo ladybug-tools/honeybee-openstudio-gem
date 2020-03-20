@@ -169,7 +169,7 @@ module FromHoneybee
           defaults[:diffuse_visible_reflectance_back][:default])
       end
       
-      # assign infraret transmittance
+      # assign infrared transmittance
       if @hash[:infrared_transmittance]
         os_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_transmittance])
       else

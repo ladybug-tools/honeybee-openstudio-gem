@@ -68,6 +68,7 @@ module FromHoneybee
         os_gas_mixture.setGasType(i, @hash[:gas_types][i])
       end
       
+      # set the gas fractions
       @hash[:gas_fractions].each_index do |i|
         os_gas_mixture.setGasFraction(i, @hash[:gas_fractions][i])
       end

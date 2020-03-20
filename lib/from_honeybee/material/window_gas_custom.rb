@@ -109,7 +109,7 @@ module FromHoneybee
       if @hash[:specific_heat_coeff_c]
         os_gas_custom.setSpecificHeatCoefficientC(@hash[:specific_heat_coeff_c])
       else
-        os_gas_custom.setConductivityCoefficientC(defaults[:specific_heat_coeff_c][:default])
+        os_gas_custom.setSpecificHeatCoefficientC(defaults[:specific_heat_coeff_c][:default])
       end
 
       os_gas_custom
