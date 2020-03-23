@@ -200,6 +200,12 @@ module FromHoneybee
             end
           end
         end
+        if @hash[:output][:summary_reports]
+          @hash[:output][:summary_reports].each do |report|
+            os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
+            os_report.addSummaryReport(report)
+          end
+        end
       end
 
       # set defaults for the year description
