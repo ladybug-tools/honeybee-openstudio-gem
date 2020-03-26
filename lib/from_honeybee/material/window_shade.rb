@@ -130,7 +130,7 @@ module FromHoneybee
       if @hash[:bottom_opening_multiplier]
         os_shade_mat.setBottomOpeningMultiplier(@hash[:bottom_opening_multiplier])
       else
-        os_shade_mat.setSolarReflectance(defaults[:bottom_opening_multiplier][:default])
+        os_shade_mat.setBottomOpeningMultiplier(defaults[:bottom_opening_multiplier][:default])
       end
       
       # assign left opening multiplier

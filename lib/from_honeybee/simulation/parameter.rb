@@ -200,6 +200,18 @@ module FromHoneybee
             end
           end
         end
+        if @hash[:output][:summary_reports]
+          begin
+            os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
+          rescue NameError
+          end
+          @hash[:output][:summary_reports].each do |report|
+            begin
+              os_report.addSummaryReport(report)
+            rescue NoMethodError
+            end
+          end
+        end
       end
 
       # set defaults for the year description
@@ -231,9 +243,9 @@ module FromHoneybee
           os_dl_saving.setStartDate(
             OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:start_date][0]),
             @hash[:run_period][:daylight_saving_time][:start_date][1])
-            os_dl_saving.setEndDate(
-              OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:end_date][0]),
-              @hash[:run_period][:daylight_saving_time][:end_date][1])
+          os_dl_saving.setEndDate(
+            OpenStudio::MonthOfYear.new(@hash[:run_period][:daylight_saving_time][:end_date][0]),
+            @hash[:run_period][:daylight_saving_time][:end_date][1])
         end
 
         # TODO: set the holidays once they are available in OpenStudio SDK
