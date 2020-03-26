@@ -201,11 +201,11 @@ module FromHoneybee
           end
         end
         if @hash[:output][:summary_reports]
+          begin
+            os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
+          rescue NameError
+          end
           @hash[:output][:summary_reports].each do |report|
-            begin
-              os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
-            rescue NameError
-            end
             begin
               os_report.addSummaryReport(report)
             rescue NoMethodError
