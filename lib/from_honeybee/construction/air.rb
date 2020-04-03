@@ -46,14 +46,14 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getConstructionByName(@hash[:name])
+      object = openstudio_model.getConstructionByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
 
     def to_openstudio(openstudio_model)
       os_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
-      os_construction.setName(@hash[:name])
+      os_construction.setName(@hash[:identifier])
       os_construction.setSolarAndDaylightingMethod('GroupedZones')
       os_construction.setRadiantExchangeMethod('GroupedZones')
       os_construction.setAirExchangeMethod('None')

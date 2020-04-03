@@ -245,7 +245,7 @@ module FromHoneybee
       $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
 
       @hash[:properties][:energy][:constructions].each do |construction|
-        name = construction[:name]
+        identifier = construction[:identifier]
         construction_type = construction[:type]
         
         case construction_type
@@ -257,7 +257,7 @@ module FromHoneybee
           construction_object = ShadeConstruction.new(construction)
         when 'AirBoundaryConstructionAbridged'
           construction_object = AirBoundaryConstructionAbridged.new(construction)
-          $air_boundary_hash[construction[:name]] = construction
+          $air_boundary_hash[construction[:identifier]] = construction
         else
           raise "Unknown construction type #{construction_type}."
         end
@@ -276,8 +276,8 @@ module FromHoneybee
 
     def create_global_construction_set
       if @hash[:properties][:energy][:global_construction_set]
-        construction_name = @hash[:properties][:energy][:global_construction_set]
-        construction = @openstudio_model.getDefaultConstructionSetByName(construction_name)
+        construction_id = @hash[:properties][:energy][:global_construction_set]
+        construction = @openstudio_model.getDefaultConstructionSetByName(construction_id)
         unless construction.empty?
           openstudio_construction = construction.get
         end
@@ -336,8 +336,8 @@ module FromHoneybee
             thermal_zone = openstudio_room.thermalZone()
             unless thermal_zone.empty?
               thermal_zone_object = thermal_zone.get
-              program_type_name = room[:properties][:energy][:program_type]
-              setpoint_hash = $programtype_setpoint_hash[program_type_name]
+              program_type_id = room[:properties][:energy][:program_type]
+              setpoint_hash = $programtype_setpoint_hash[program_type_id]
               thermostat_object = SetpointThermostat.new(setpoint_hash)
               openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
               thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
@@ -404,14 +404,14 @@ module FromHoneybee
         # gather all of the hashes of the HVACs
         hvac_hashes = Hash.new
         @hash[:properties][:energy][:hvacs].each do |hvac|
-          hvac_hashes[hvac[:name]] = hvac
-          hvac_hashes[hvac[:name]]['rooms'] = []
+          hvac_hashes[hvac[:identifier]] = hvac
+          hvac_hashes[hvac[:identifier]]['rooms'] = []
         end
         # loop through the rooms and trach which are assigned to each HVAC
         if @hash[:rooms]
           @hash[:rooms].each do |room|
             if room[:properties][:energy][:hvac]
-              hvac_hashes[room[:properties][:energy][:hvac]]['rooms'] << room[:name]
+              hvac_hashes[room[:properties][:energy][:hvac]]['rooms'] << room[:identifier]
             end
           end
         end
@@ -422,8 +422,8 @@ module FromHoneybee
           when 'IdealAirSystemAbridged'
             ideal_air_system = IdealAirSystemAbridged.new(hvac)
             os_ideal_air_system = ideal_air_system.to_openstudio(@openstudio_model)
-            hvac['rooms'].each do |room_name|
-              zone_get = @openstudio_model.getThermalZoneByName(room_name)
+            hvac['rooms'].each do |room_id|
+              zone_get = @openstudio_model.getThermalZoneByName(room_id)
               unless zone_get.empty?
                 os_thermal_zone = zone_get.get
                 os_ideal_air_system.addToThermalZone(os_thermal_zone)

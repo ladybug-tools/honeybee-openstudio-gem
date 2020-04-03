@@ -60,11 +60,11 @@ RSpec.describe FromHoneybee do
     openstudio_sub_surfaces = openstudio_model.getSubSurfaces
     expect(openstudio_sub_surfaces.size).to eq 3
 
-    openstudio_surface = openstudio_model.getSurfaceByName('TinyHouseOffice_Bottom')
+    openstudio_surface = openstudio_model.getSurfaceByName('Tiny_House_Office_Bottom')
     expect(openstudio_surface.empty?).to be false
 
     openstudio_surface = openstudio_surface.get
-    expect(openstudio_surface.nameString).to eq 'TinyHouseOffice_Bottom'
+    expect(openstudio_surface.nameString).to eq 'Tiny_House_Office_Bottom'
 
     openstudio_sub_surfaces = openstudio_surface.subSurfaces
     expect(openstudio_sub_surfaces.size).to eq 0
@@ -72,7 +72,7 @@ RSpec.describe FromHoneybee do
     openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'TinyHouseOffice'
+    expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
 
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
@@ -87,7 +87,7 @@ RSpec.describe FromHoneybee do
     expect(openstudio_layered_construction.numLayers).to be > 0
     expect(openstudio_layered_construction.numLayers).to be <= 10
 
-    openstudio_surface2 = openstudio_model.getSurfaceByName('TinyHouseOffice_Front')
+    openstudio_surface2 = openstudio_model.getSurfaceByName('Tiny_House_Office_Front')
     expect(openstudio_surface2.empty?).to be false
 
     openstudio_surface2 = openstudio_surface2.get
@@ -115,11 +115,11 @@ RSpec.describe FromHoneybee do
     openstudio_sub_surfaces = openstudio_model.getSubSurfaces
     expect(openstudio_sub_surfaces.size).to eq 2
 
-    openstudio_surface = openstudio_model.getSurfaceByName('SimpleShoeBoxZone_Front')
+    openstudio_surface = openstudio_model.getSurfaceByName('Simple_Shoe_Box_Zone_Front')
     expect(openstudio_surface.empty?).to be false
 
     openstudio_surface = openstudio_surface.get
-    expect(openstudio_surface.nameString).to eq 'SimpleShoeBoxZone_Front'
+    expect(openstudio_surface.nameString).to eq 'Simple_Shoe_Box_Zone_Front'
 
     openstudio_sub_surfaces = openstudio_surface.subSurfaces
     expect(openstudio_sub_surfaces.size).to eq 2
@@ -127,7 +127,7 @@ RSpec.describe FromHoneybee do
 
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'SimpleShoeBoxZone'
+    expect(openstudio_space.nameString).to eq 'Simple_Shoe_Box_Zone'
 
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false

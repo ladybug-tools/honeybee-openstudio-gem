@@ -46,18 +46,18 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_people = openstudio_model.getPeopleDefinitionByName(@hash[:name])
+      model_people = openstudio_model.getPeopleDefinitionByName(@hash[:identifier])
       return model_people.get unless model_people.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)
 
-      # create people OpenStudio object and set name
+      # create people OpenStudio object and set identifier
       os_people_def = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
       os_people = OpenStudio::Model::People.new(os_people_def)
-      os_people_def.setName(@hash[:name])
-      os_people.setName(@hash[:name])
+      os_people_def.setName(@hash[:identifier])
+      os_people.setName(@hash[:identifier])
 
       # assign people per space floor area
       os_people_def.setPeopleperSpaceFloorArea(@hash[:people_per_area])

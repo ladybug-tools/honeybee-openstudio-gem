@@ -1,7 +1,7 @@
 {
     "type": "Model",
-    "identifier": "Multi_Zone_Single_Family_House",
-    "display_name": "Multi_Zone_Single_Family_House",
+    "identifier": "Tiny_House",
+    "display_name": "Tiny_House",
     "units": "Meters",
     "properties": {
         "type": "ModelProperties",
@@ -47,58 +47,10 @@
                     },
                     "shade_construction": "Generic Shade",
                     "air_boundary_construction": "Generic Air Boundary"
-                },
-                {
-                    "type": "ConstructionSetAbridged",
-                    "identifier": "Attic Construction Set",
-                    "wall_set": {
-                        "type": "WallSetAbridged",
-                        "exterior_construction": null,
-                        "interior_construction": null,
-                        "ground_construction": null
-                    },
-                    "floor_set": {
-                        "type": "FloorSetAbridged",
-                        "exterior_construction": null,
-                        "interior_construction": "Attic Floor Construction",
-                        "ground_construction": null
-                    },
-                    "roof_ceiling_set": {
-                        "type": "RoofCeilingSetAbridged",
-                        "exterior_construction": "Attic Roof Construction",
-                        "interior_construction": null,
-                        "ground_construction": null
-                    },
-                    "aperture_set": {
-                        "type": "ApertureSetAbridged",
-                        "window_construction": null,
-                        "interior_construction": null,
-                        "skylight_construction": null,
-                        "operable_construction": null
-                    },
-                    "door_set": {
-                        "type": "DoorSetAbridged",
-                        "exterior_construction": null,
-                        "interior_construction": null,
-                        "exterior_glass_construction": null,
-                        "interior_glass_construction": null,
-                        "overhead_construction": null
-                    },
-                    "shade_construction": null,
-                    "air_boundary_construction": null
                 }
             ],
             "global_construction_set": "Default Generic Construction Set",
             "constructions": [
-                {
-                    "type": "OpaqueConstructionAbridged",
-                    "identifier": "Attic Floor Construction",
-                    "layers": [
-                        "Generic 25mm Wood",
-                        "Generic 50mm Insulation",
-                        "Generic 25mm Wood"
-                    ]
-                },
                 {
                     "type": "OpaqueConstructionAbridged",
                     "identifier": "Generic Exposed Floor",
@@ -138,13 +90,11 @@
                     ]
                 },
                 {
-                    "type": "OpaqueConstructionAbridged",
-                    "identifier": "Attic Roof Construction",
-                    "layers": [
-                        "Generic Roof Membrane",
-                        "PolyIso",
-                        "Generic 25mm Wood"
-                    ]
+                    "type": "ShadeConstruction",
+                    "identifier": "Outdoor_Light_Shelf",
+                    "solar_reflectance": 0.5,
+                    "visible_reflectance": 0.5,
+                    "is_specular": false
                 },
                 {
                     "type": "OpaqueConstructionAbridged",
@@ -161,6 +111,13 @@
                     "layers": [
                         "Generic 25mm Wood"
                     ]
+                },
+                {
+                    "type": "ShadeConstruction",
+                    "identifier": "Indoor_Light_Shelf",
+                    "solar_reflectance": 0.7,
+                    "visible_reflectance": 0.7,
+                    "is_specular": false
                 },
                 {
                     "type": "OpaqueConstructionAbridged",
@@ -310,18 +267,6 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "PolyIso",
-                    "roughness": "MediumRough",
-                    "thickness": 0.2,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
-                    "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
-                },
-                {
-                    "type": "EnergyMaterial",
                     "identifier": "Generic 50mm Insulation",
                     "roughness": "MediumRough",
                     "thickness": 0.05,
@@ -442,23 +387,7 @@
             "hvacs": [
                 {
                     "type": "IdealAirSystemAbridged",
-                    "identifier": "First_Floor_IdealAir",
-                    "economizer_type": "DifferentialDryBulb",
-                    "demand_controlled_ventilation": false,
-                    "sensible_heat_recovery": 0.0,
-                    "latent_heat_recovery": 0.0,
-                    "heating_air_temperature": 50.0,
-                    "cooling_air_temperature": 13.0,
-                    "heating_limit": {
-                        "type": "Autosize"
-                    },
-                    "cooling_limit": {
-                        "type": "Autosize"
-                    }
-                },
-                {
-                    "type": "IdealAirSystemAbridged",
-                    "identifier": "Second_Floor_IdealAir",
+                    "identifier": "Tiny_House_Office_IdealAir",
                     "economizer_type": "DifferentialDryBulb",
                     "demand_controlled_ventilation": false,
                     "sensible_heat_recovery": 0.0,
@@ -1898,14 +1827,14 @@
     "rooms": [
         {
             "type": "Room",
-            "identifier": "First_Floor",
-            "display_name": "First_Floor",
+            "identifier": "Tiny_House_Office",
+            "display_name": "Tiny_House_Office",
             "properties": {
                 "type": "RoomPropertiesAbridged",
                 "energy": {
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Generic Office Program",
-                    "hvac": "First_Floor_IdealAir"
+                    "hvac": "Tiny_House_Office_IdealAir"
                 },
                 "radiance": {
                     "type": "RoomRadiancePropertiesAbridged"
@@ -1914,8 +1843,8 @@
             "faces": [
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Bottom",
-                    "display_name": "First_Floor_Bottom",
+                    "identifier": "Tiny_House_Office_Bottom",
+                    "display_name": "Tiny_House_Office_Bottom",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1939,12 +1868,12 @@
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 0.0,
                                 0.0
                             ]
@@ -1957,8 +1886,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Front",
-                    "display_name": "First_Floor_Front",
+                    "identifier": "Tiny_House_Office_Front",
+                    "display_name": "Tiny_House_Office_Front",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1972,12 +1901,12 @@
                         "type": "Face3D",
                         "boundary": [
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 3.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 0.0
                             ],
@@ -2005,8 +1934,8 @@
                     "apertures": [
                         {
                             "type": "Aperture",
-                            "identifier": "First_Floor_Front_Glz0",
-                            "display_name": "First_Floor_Front_Glz0",
+                            "identifier": "Front_Aperture",
+                            "display_name": "Front_Aperture",
                             "properties": {
                                 "type": "AperturePropertiesAbridged",
                                 "energy": {
@@ -2020,24 +1949,24 @@
                                 "type": "Face3D",
                                 "boundary": [
                                     [
-                                        7.23606797749979,
+                                        4.5,
                                         10.0,
-                                        2.170820393249937
+                                        2.5
                                     ],
                                     [
-                                        7.23606797749979,
+                                        4.5,
                                         10.0,
-                                        0.8291796067500631
+                                        1.0
                                     ],
                                     [
-                                        2.76393202250021,
+                                        2.5,
                                         10.0,
-                                        0.8291796067500631
+                                        1.0
                                     ],
                                     [
-                                        2.76393202250021,
+                                        2.5,
                                         10.0,
-                                        2.170820393249937
+                                        2.5
                                     ]
                                 ]
                             },
@@ -2051,12 +1980,103 @@
                                 }
                             }
                         }
+                    ],
+                    "doors": [
+                        {
+                            "type": "Door",
+                            "identifier": "Front_Door",
+                            "display_name": "Front_Door",
+                            "properties": {
+                                "type": "DoorPropertiesAbridged",
+                                "energy": {
+                                    "type": "DoorEnergyPropertiesAbridged"
+                                },
+                                "radiance": {
+                                    "type": "DoorRadiancePropertiesAbridged"
+                                }
+                            },
+                            "geometry": {
+                                "type": "Face3D",
+                                "boundary": [
+                                    [
+                                        2.0,
+                                        10.0,
+                                        2.5
+                                    ],
+                                    [
+                                        2.0,
+                                        10.0,
+                                        0.1
+                                    ],
+                                    [
+                                        1.0,
+                                        10.0,
+                                        0.1
+                                    ],
+                                    [
+                                        1.0,
+                                        10.0,
+                                        2.5
+                                    ]
+                                ]
+                            },
+                            "is_glass": false,
+                            "boundary_condition": {
+                                "type": "Outdoors",
+                                "sun_exposure": true,
+                                "wind_exposure": true,
+                                "view_factor": {
+                                    "type": "Autocalculate"
+                                }
+                            }
+                        }
+                    ],
+                    "outdoor_shades": [
+                        {
+                            "type": "Shade",
+                            "identifier": "Tiny_House_Office_Front_OutOverhang0",
+                            "display_name": "Tiny_House_Office_Front_OutOverhang0",
+                            "properties": {
+                                "type": "ShadePropertiesAbridged",
+                                "energy": {
+                                    "type": "ShadeEnergyPropertiesAbridged"
+                                },
+                                "radiance": {
+                                    "type": "ShadeRadiancePropertiesAbridged"
+                                }
+                            },
+                            "geometry": {
+                                "type": "Face3D",
+                                "boundary": [
+                                    [
+                                        0.0,
+                                        10.0,
+                                        2.9999998999999997
+                                    ],
+                                    [
+                                        5.0,
+                                        10.0,
+                                        2.9999998999999997
+                                    ],
+                                    [
+                                        5.0,
+                                        10.25,
+                                        2.9999998999999997
+                                    ],
+                                    [
+                                        0.0,
+                                        10.25,
+                                        2.9999998999999997
+                                    ]
+                                ]
+                            }
+                        }
                     ]
                 },
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Right",
-                    "display_name": "First_Floor_Right",
+                    "identifier": "Tiny_House_Office_Right",
+                    "display_name": "Tiny_House_Office_Right",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -2070,22 +2090,22 @@
                         "type": "Face3D",
                         "boundary": [
                             [
-                                10.0,
+                                5.0,
                                 0.0,
                                 3.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 0.0,
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 3.0
                             ]
@@ -2099,62 +2119,12 @@
                         "view_factor": {
                             "type": "Autocalculate"
                         }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Right_Glz0",
-                            "display_name": "First_Floor_Right_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Back",
-                    "display_name": "First_Floor_Back",
+                    "identifier": "Tiny_House_Office_Back",
+                    "display_name": "Tiny_House_Office_Back",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -2178,110 +2148,12 @@
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 0.0,
                                 0.0
                             ],
                             [
-                                10.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Back_Glz0",
-                            "display_name": "First_Floor_Back_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "First_Floor_Left",
-                    "display_name": "First_Floor_Left",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                0.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            [
-                                0.0,
+                                5.0,
                                 0.0,
                                 3.0
                             ]
@@ -2299,8 +2171,8 @@
                     "apertures": [
                         {
                             "type": "Aperture",
-                            "identifier": "First_Floor_Left_Glz0",
-                            "display_name": "First_Floor_Left_Glz0",
+                            "identifier": "Tiny_House_Office_Back_Glz0",
+                            "display_name": "Tiny_House_Office_Back_Glz0",
                             "properties": {
                                 "type": "AperturePropertiesAbridged",
                                 "energy": {
@@ -2314,24 +2186,24 @@
                                 "type": "Face3D",
                                 "boundary": [
                                     [
+                                        0.9188611699158102,
                                         0.0,
-                                        7.23606797749979,
-                                        2.170820393249937
+                                        2.448683298050514
                                     ],
                                     [
+                                        0.9188611699158102,
                                         0.0,
-                                        7.23606797749979,
-                                        0.8291796067500631
+                                        0.5513167019494862
                                     ],
                                     [
+                                        4.08113883008419,
                                         0.0,
-                                        2.76393202250021,
-                                        0.8291796067500631
+                                        0.5513167019494862
                                     ],
                                     [
+                                        4.08113883008419,
                                         0.0,
-                                        2.76393202250021,
-                                        2.170820393249937
+                                        2.448683298050514
                                     ]
                                 ]
                             },
@@ -2343,14 +2215,98 @@
                                 "view_factor": {
                                     "type": "Autocalculate"
                                 }
-                            }
+                            },
+                            "outdoor_shades": [
+                                {
+                                    "type": "Shade",
+                                    "identifier": "Tiny_House_Office_Back_Glz0_OutOverhang0",
+                                    "display_name": "Tiny_House_Office_Back_Glz0_OutOverhang0",
+                                    "properties": {
+                                        "type": "ShadePropertiesAbridged",
+                                        "energy": {
+                                            "type": "ShadeEnergyPropertiesAbridged",
+                                            "construction": "Outdoor_Light_Shelf"
+                                        },
+                                        "radiance": {
+                                            "type": "ShadeRadiancePropertiesAbridged"
+                                        }
+                                    },
+                                    "geometry": {
+                                        "type": "Face3D",
+                                        "boundary": [
+                                            [
+                                                4.08113883008419,
+                                                0.0,
+                                                2.4486831980505146
+                                            ],
+                                            [
+                                                0.91886116991581,
+                                                0.0,
+                                                2.4486831980505146
+                                            ],
+                                            [
+                                                0.91886116991581,
+                                                -0.5,
+                                                2.4486831980505146
+                                            ],
+                                            [
+                                                4.08113883008419,
+                                                -0.5,
+                                                2.4486831980505146
+                                            ]
+                                        ]
+                                    }
+                                }
+                            ],
+                            "indoor_shades": [
+                                {
+                                    "type": "Shade",
+                                    "identifier": "Tiny_House_Office_Back_Glz0_InOverhang0",
+                                    "display_name": "Tiny_House_Office_Back_Glz0_InOverhang0",
+                                    "properties": {
+                                        "type": "ShadePropertiesAbridged",
+                                        "energy": {
+                                            "type": "ShadeEnergyPropertiesAbridged",
+                                            "construction": "Indoor_Light_Shelf"
+                                        },
+                                        "radiance": {
+                                            "type": "ShadeRadiancePropertiesAbridged"
+                                        }
+                                    },
+                                    "geometry": {
+                                        "type": "Face3D",
+                                        "boundary": [
+                                            [
+                                                4.08113883008419,
+                                                0.0,
+                                                2.4486831980505137
+                                            ],
+                                            [
+                                                0.91886116991581,
+                                                0.0,
+                                                2.4486831980505137
+                                            ],
+                                            [
+                                                0.91886116991581,
+                                                0.5,
+                                                2.4486831980505137
+                                            ],
+                                            [
+                                                4.08113883008419,
+                                                0.5,
+                                                2.4486831980505137
+                                            ]
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Top",
-                    "display_name": "First_Floor_Top",
+                    "identifier": "Tiny_House_Office_Left",
+                    "display_name": "Tiny_House_Office_Left",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -2364,12 +2320,60 @@
                         "type": "Face3D",
                         "boundary": [
                             [
+                                0.0,
                                 10.0,
+                                3.0
+                            ],
+                            [
+                                0.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                0.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Wall",
+                    "boundary_condition": {
+                        "type": "Outdoors",
+                        "sun_exposure": true,
+                        "wind_exposure": true,
+                        "view_factor": {
+                            "type": "Autocalculate"
+                        }
+                    }
+                },
+                {
+                    "type": "Face",
+                    "identifier": "Tiny_House_Office_Top",
+                    "display_name": "Tiny_House_Office_Top",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                5.0,
                                 0.0,
                                 3.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 3.0
                             ],
@@ -2386,755 +2390,6 @@
                         ]
                     },
                     "face_type": "RoofCeiling",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "Second_Floor_Bottom",
-                            "Second_Floor"
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "type": "Room",
-            "identifier": "Second_Floor",
-            "display_name": "Second_Floor",
-            "properties": {
-                "type": "RoomPropertiesAbridged",
-                "energy": {
-                    "type": "RoomEnergyPropertiesAbridged",
-                    "program_type": "Generic Office Program",
-                    "hvac": "Second_Floor_IdealAir"
-                },
-                "radiance": {
-                    "type": "RoomRadiancePropertiesAbridged"
-                }
-            },
-            "faces": [
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Bottom",
-                    "display_name": "Second_Floor_Bottom",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Floor",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "First_Floor_Top",
-                            "First_Floor"
-                        ]
-                    }
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Front",
-                    "display_name": "Second_Floor_Front",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Front_Glz0",
-                            "display_name": "Second_Floor_Front_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Right",
-                    "display_name": "Second_Floor_Right",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Right_Glz0",
-                            "display_name": "Second_Floor_Right_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Back",
-                    "display_name": "Second_Floor_Back",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Back_Glz0",
-                            "display_name": "Second_Floor_Back_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Left",
-                    "display_name": "Second_Floor_Left",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Left_Glz0",
-                            "display_name": "Second_Floor_Left_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                },
-                                "radiance": {
-                                    "type": "ApertureRadiancePropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Top",
-                    "display_name": "Second_Floor_Top",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "RoofCeiling",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "AtticFace1",
-                            "Attic"
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "type": "Room",
-            "identifier": "Attic",
-            "display_name": "Attic",
-            "properties": {
-                "type": "RoomPropertiesAbridged",
-                "energy": {
-                    "type": "RoomEnergyPropertiesAbridged",
-                    "construction_set": "Attic Construction Set"
-                },
-                "radiance": {
-                    "type": "RoomRadiancePropertiesAbridged"
-                }
-            },
-            "faces": [
-                {
-                    "type": "Face",
-                    "identifier": "AtticFace1",
-                    "display_name": "AtticFace1",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Floor",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "Second_Floor_Top",
-                            "Second_Floor"
-                        ]
-                    }
-                },
-                {
-                    "type": "Face",
-                    "identifier": "AtticFace2",
-                    "display_name": "AtticFace2",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                5.0,
-                                10.0,
-                                9.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                5.0,
-                                0.0,
-                                9.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    }
-                },
-                {
-                    "type": "Face",
-                    "identifier": "AtticFace3",
-                    "display_name": "AtticFace3",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                5.0,
-                                0.0,
-                                9.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                5.0,
-                                10.0,
-                                9.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    }
-                },
-                {
-                    "type": "Face",
-                    "identifier": "AtticFace4",
-                    "display_name": "AtticFace4",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                5.0,
-                                0.0,
-                                9.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    }
-                },
-                {
-                    "type": "Face",
-                    "identifier": "AtticFace5",
-                    "display_name": "AtticFace5",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        },
-                        "radiance": {
-                            "type": "FaceRadiancePropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                5.0,
-                                10.0,
-                                9.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
                     "boundary_condition": {
                         "type": "Outdoors",
                         "sun_exposure": true,

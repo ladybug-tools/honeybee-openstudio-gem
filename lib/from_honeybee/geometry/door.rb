@@ -47,7 +47,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getSubSurfaceByName(@hash[:name])
+      object = openstudio_model.getSubSurfaceByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -61,12 +61,12 @@ module FromHoneybee
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       os_subsurface = OpenStudio::Model::SubSurface.new(reordered_vertices, openstudio_model)
-      os_subsurface.setName(@hash[:name])
+      os_subsurface.setName(@hash[:identifier])
 
       # assign the construction if it exists
       if @hash[:properties][:energy][:construction]
-        construction_name = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_name)
+        construction_identifier = @hash[:properties][:energy][:construction]
+        construction = openstudio_model.getConstructionByName(construction_identifier)
         unless construction.empty?
           os_construction = construction.get
           os_subsurface.setConstruction(os_construction)
@@ -75,9 +75,9 @@ module FromHoneybee
 
       # assign the bondary condition object if it's a Surface
       if @hash[:boundary_condition][:type] == 'Surface'
-        # get adjacent sub surface by name from openstudio model
-        adj_srf_name = @hash[:boundary_condition][:boundary_condition_objects][0]
-        sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_name)
+        # get adjacent sub surface by identifier from openstudio model
+        adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
+        sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
         unless sub_srf_ref.empty?
           sub_srf = sub_srf_ref.get
           os_subsurface.setAdjacentSubSurface(sub_srf)

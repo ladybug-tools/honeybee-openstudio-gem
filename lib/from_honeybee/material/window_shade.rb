@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getShadeByName(@hash[:name])
+      object = openstudio_model.getShadeByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create openstudio shade object
       os_shade_mat = OpenStudio::Model::Shade.new(openstudio_model)
-      os_shade_mat.setName(@hash[:name])
+      os_shade_mat.setName(@hash[:identifier])
 
       # assign solar transmittance
       if @hash[:solar_transmittance]

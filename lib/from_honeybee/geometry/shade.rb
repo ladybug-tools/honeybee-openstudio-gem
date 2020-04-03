@@ -47,7 +47,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getSurfaceByName(@hash[:name])
+      object = openstudio_model.getSurfaceByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -61,12 +61,12 @@ module FromHoneybee
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       os_shading_surface = OpenStudio::Model::ShadingSurface.new(reordered_vertices, openstudio_model)
-      os_shading_surface.setName(@hash[:name])
+      os_shading_surface.setName(@hash[:identifier])
 
       # assign the construction if it exists
       if @hash[:properties][:energy][:construction]
-        construction_name = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_name)
+        construction_identifier = @hash[:properties][:energy][:construction]
+        construction = openstudio_model.getConstructionByName(construction_identifier)
         unless construction.empty?
           os_construction = construction.get
           os_shading_surface.setConstruction(os_construction)
@@ -75,8 +75,8 @@ module FromHoneybee
 
       # assign the transmittance schedule if it exists
       if @hash[:properties][:energy][:transmittance_schedule]
-        schedule_name = @hash[:properties][:energy][:transmittance_schedule]
-        schedule = openstudio_model.getScheduleByName(schedule_name)
+        schedule_identifier = @hash[:properties][:energy][:transmittance_schedule]
+        schedule = openstudio_model.getScheduleByName(schedule_identifier)
         unless schedule.empty?
           os_schedule = schedule.get
           os_shading_surface.setTransmittanceSchedule(os_schedule)

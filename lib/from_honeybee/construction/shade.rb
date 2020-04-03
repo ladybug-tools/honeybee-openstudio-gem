@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getConstructionByName(@hash[:name])
+      object = openstudio_model.getConstructionByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      os_construction.setName(@hash[:name])
+      os_construction.setName(@hash[:identifier])
       os_materials = OpenStudio::Model::MaterialVector.new
 
       # create standard glazing if is specular is true

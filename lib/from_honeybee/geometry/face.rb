@@ -50,7 +50,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      model_surf = openstudio_model.getSurfaceByName(@hash[:name])
+      model_surf = openstudio_model.getSurfaceByName(@hash[:identifier])
       return model_surf.get unless model_surf.empty?
       nil
     end
@@ -64,12 +64,12 @@ module FromHoneybee
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       os_surface = OpenStudio::Model::Surface.new(reordered_vertices, openstudio_model)     
-      os_surface.setName(@hash[:name])
+      os_surface.setName(@hash[:identifier])
       os_surface.setSurfaceType(@hash[:face_type])
       # assign the construction if it is present
       if @hash[:properties][:energy][:construction]
-        construction_name = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_name)
+        construction_identifier = @hash[:properties][:energy][:construction]
+        construction = openstudio_model.getConstructionByName(construction_identifier)
         unless construction.empty?
           os_construction = construction.get
           os_surface.setConstruction(os_construction)
@@ -96,9 +96,9 @@ module FromHoneybee
           os_surface.autocalculateViewFactortoGround
         end
       when 'Surface'
-        # get adjacent surface by name from openstudio model
-        adj_srf_name = @hash[:boundary_condition][:boundary_condition_objects][0]
-        surface_object = openstudio_model.getSurfaceByName(adj_srf_name)
+        # get adjacent surface by identifier from openstudio model
+        adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
+        surface_object = openstudio_model.getSurfaceByName(adj_srf_identifier)
         unless surface_object.empty?
           surface = surface_object.get
           os_surface.setAdjacentSurface(surface)
