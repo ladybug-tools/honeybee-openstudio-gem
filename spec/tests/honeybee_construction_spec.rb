@@ -52,10 +52,10 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
 
     # get and set existing hash key
-    expect(construction1.respond_to?(:name)).to be false
-    expect(construction1.respond_to?(:name=)).to be false
+    expect(construction1.respond_to?(:identifier)).to be false
+    expect(construction1.respond_to?(:identifier=)).to be false
 
-    expect(construction1.name).to eq('Generic Exterior Door')
+    expect(construction1.identifier).to eq('Generic Exterior Door')
 
     # raise errors for non-existant hash keys an methods
     expect(construction1.respond_to?(:not_a_key)).to be false

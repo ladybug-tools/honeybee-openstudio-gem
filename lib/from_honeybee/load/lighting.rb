@@ -46,18 +46,18 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_lights = openstudio_model.getLightsDefinitionByName(@hash[:name])
+      model_lights = openstudio_model.getLightsDefinitionByName(@hash[:identifier])
       return model_lights.get unless model_lights.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)
 
-      # create lights OpenStudio object and set name
+      # create lights OpenStudio object and set identifier
       os_lights_def = OpenStudio::Model::LightsDefinition.new(openstudio_model)
       os_lights = OpenStudio::Model::Lights.new(os_lights_def)
-      os_lights_def.setName(@hash[:name])
-      os_lights.setName(@hash[:name])
+      os_lights_def.setName(@hash[:identifier])
+      os_lights.setName(@hash[:identifier])
 
       # assign watts per space floor area
       os_lights_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])

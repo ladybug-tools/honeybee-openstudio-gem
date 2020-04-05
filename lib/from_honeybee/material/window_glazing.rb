@@ -46,15 +46,15 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getStandardGlazingByName(@hash[:name])
+      object = openstudio_model.getStandardGlazingByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
 
     def to_openstudio(openstudio_model)
-      # create openstudio standard glazing object and set name
+      # create openstudio standard glazing object and set identifier
       os_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
-      os_glazing.setName(@hash[:name])
+      os_glazing.setName(@hash[:identifier])
       
       # assign thickness
       if @hash[:thickness]

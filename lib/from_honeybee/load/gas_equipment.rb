@@ -46,18 +46,18 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_gas_equipment = openstudio_model.getGasEquipmentDefinitionByName(@hash[:name])
+      model_gas_equipment = openstudio_model.getGasEquipmentDefinitionByName(@hash[:identifier])
       return model_gas_equipment.get unless model_gas_equipment.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)
 
-      # create gas equipment and set name
+      # create gas equipment and set identifier
       os_gas_equip_def = OpenStudio::Model::GasEquipmentDefinition.new(openstudio_model)
       os_gas_equip = OpenStudio::Model::GasEquipment.new(os_gas_equip_def)
-      os_gas_equip_def.setName(@hash[:name])
-      os_gas_equip.setName(@hash[:name])
+      os_gas_equip_def.setName(@hash[:identifier])
+      os_gas_equip.setName(@hash[:identifier])
 
       # assign watts per space floor area
       os_gas_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])

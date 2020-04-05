@@ -46,22 +46,22 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getConstructionByName(@hash[:name])
+      object = openstudio_model.getConstructionByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
 
     def to_openstudio(openstudio_model)
-      # create construction and set name      
+      # create construction and set identifier      
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      os_construction.setName(@hash[:name])
+      os_construction.setName(@hash[:identifier])
       
       # create material vector       
       os_materials = OpenStudio::Model::MaterialVector.new
       # loop through each layer and add to material vector
       @hash[:layers].each do |layer|
-        material_name = layer
-        material = openstudio_model.getMaterialByName(material_name)
+        material_identifier = layer
+        material = openstudio_model.getMaterialByName(material_identifier)
         unless material.empty?
           os_material = material.get
           os_materials << os_material

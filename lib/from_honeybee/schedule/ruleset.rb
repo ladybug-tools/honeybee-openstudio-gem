@@ -48,7 +48,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getScheduleRulesetByName(@hash[:name])
+      object = openstudio_model.getScheduleRulesetByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -56,12 +56,12 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create openstudio schedule ruleset object
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
-      os_sch_ruleset.setName(@hash[:name])
+      os_sch_ruleset.setName(@hash[:identifier])
 
       # loop through day schedules and create openstudio schedule day object
       @hash[:day_schedules].each do |day_schedule|
         day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
-        day_schedule_new.setName(day_schedule[:name])
+        day_schedule_new.setName(day_schedule[:identifier])
         values_day_new = day_schedule[:values]
         times_day_new = day_schedule[:times]
         times_day_new.delete_at(0)  # Remove [0, 0] from array at index 0.

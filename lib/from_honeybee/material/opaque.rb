@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getStandardOpaqueMaterialByName(@hash[:name])
+      object = openstudio_model.getStandardOpaqueMaterialByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create standard opaque OpenStudio material 
       os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
-      os_opaque_mat.setName(@hash[:name])
+      os_opaque_mat.setName(@hash[:identifier])
       os_opaque_mat.setThickness(@hash[:thickness])
       os_opaque_mat.setConductivity(@hash[:conductivity])
       os_opaque_mat.setDensity(@hash[:density])

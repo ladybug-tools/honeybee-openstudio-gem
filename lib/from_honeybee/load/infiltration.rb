@@ -46,16 +46,16 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:name])
+      model_infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:identifier])
       return model_infiltration.get unless model_infiltration.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)    
       
-      # create infiltration OpenStudio object and set name
+      # create infiltration OpenStudio object and set identifier
       os_infilt = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
-      os_infilt.setName(@hash[:name])
+      os_infilt.setName(@hash[:identifier])
 
       # assign flow per surface
       os_infilt.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])

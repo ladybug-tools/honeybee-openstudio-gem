@@ -47,7 +47,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasByName(@hash[:name])
+      object = openstudio_model.getGasByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -55,7 +55,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create window gas openstudio object
       os_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
-      os_gas_custom.setName(@hash[:name])
+      os_gas_custom.setName(@hash[:identifier])
       os_gas_custom.setGasType('Custom')
       os_gas_custom.setConductivityCoefficientA(@hash[:conductivity_coeff_a])
       os_gas_custom.setViscosityCoefficientA(@hash[:viscosity_coeff_a])

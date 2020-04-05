@@ -59,7 +59,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      model_space = openstudio_model.getSpaceByName(@hash[:name])
+      model_space = openstudio_model.getSpaceByName(@hash[:identifier])
       return model_space.get unless model_space.empty?
       nil 
     end
@@ -67,9 +67,9 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
-      os_space.setName(@hash[:name])
+      os_space.setName(@hash[:identifier])
       os_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
-      os_thermal_zone.setName(@hash[:name])
+      os_thermal_zone.setName(@hash[:identifier])
       os_space.setThermalZone(os_thermal_zone)
 
       # assign the programtype
@@ -83,9 +83,9 @@ module FromHoneybee
 
       # assign the constructionset
       if @hash[:properties][:energy][:construction_set]
-        construction_set_name = @hash[:properties][:energy][:construction_set]
+        construction_set_identifier = @hash[:properties][:energy][:construction_set]
         # gets default construction set assigned to room from openstudio_model
-        construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_name)
+        construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_identifier)
         unless construction_set.empty?
           default_construction_set = construction_set.get
           os_space.setDefaultConstructionSet(default_construction_set) 
@@ -163,9 +163,9 @@ module FromHoneybee
               air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
             end
             flow_rate = os_surface.netArea * air_mix_area
-            flow_sch_name = air_hash[:air_mixing_schedule]
-            adj_zone_name = face[:boundary_condition][:boundary_condition_objects][-1]
-            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_name, adj_zone_name]
+            flow_sch_id = air_hash[:air_mixing_schedule]
+            adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
+            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
           end
         end
       end
@@ -182,7 +182,7 @@ module FromHoneybee
 
       #check whether there are any load objects on the room overriding the programtype
       if @hash[:properties][:energy][:people]
-        people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:name])
+        people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:identifier])
         unless people.empty?
           people_object = people.get
           people_object.setSpace(os_space)
@@ -195,7 +195,7 @@ module FromHoneybee
 
       # assign lighting if it exists
       if @hash[:properties][:energy][:lighting]
-        lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:name])
+        lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:identifier])
         unless lighting.empty?
           lighting_object = lighting.get
           lighting_object.setSpace(os_space)
@@ -209,7 +209,7 @@ module FromHoneybee
       # assign electric equipment if it exists
       if @hash[:properties][:energy][:electric_equipment]
         electric_equipment = openstudio_model.getElectricEquipmentByName(
-          @hash[:properties][:energy][:electric_equipment][:name])
+          @hash[:properties][:energy][:electric_equipment][:identifier])
         unless electric_equipment.empty?
           electric_equipment_object = electric_equipment.get
           electric_equipment_object.setSpace(os_space)
@@ -223,7 +223,7 @@ module FromHoneybee
       # assign gas equipment if it exists
       if @hash[:properties][:energy][:gas_equipment]
         gas_equipment = openstudio_model.getGasEquipmentByName(
-          @hash[:properties][:energy][:gas_equipment][:name])
+          @hash[:properties][:energy][:gas_equipment][:identifier])
         unless gas_equipment.empty?
           gas_equipment_object = gas_equipment.get
           gas_equipment_object.setSpace(os_space)
@@ -237,7 +237,7 @@ module FromHoneybee
       # assign infiltration if it exists
       if @hash[:properties][:energy][:infiltration]
         infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(
-          @hash[:properties][:energy][:infiltration][:name])
+          @hash[:properties][:energy][:infiltration][:identifier])
         unless infiltration.empty?
           infiltration_object = infiltration.get
           infiltration_object.setSpace(os_space)
@@ -251,7 +251,7 @@ module FromHoneybee
       # assign ventilation if it exists
       if @hash[:properties][:energy][:ventilation] 
         ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(
-          @hash[:properties][:energy][:ventilation][:name])
+          @hash[:properties][:energy][:ventilation][:identifier])
         unless ventilation.empty?
           ventilation_object = ventilation.get
           ventilation_object.setSpace(os_space)

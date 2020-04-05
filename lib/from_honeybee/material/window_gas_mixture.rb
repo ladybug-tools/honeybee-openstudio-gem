@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasMixtureByName(@hash[:name])
+      object = openstudio_model.getGasMixtureByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create the gas mixture
       os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
-      os_gas_mixture.setName(@hash[:name])
+      os_gas_mixture.setName(@hash[:identifier])
 
       # set the thickness
       if @hash[:thickness]

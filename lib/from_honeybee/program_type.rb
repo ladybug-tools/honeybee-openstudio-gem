@@ -57,7 +57,7 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_space_type = openstudio_model.getSpaceTypeByName(@hash[:name])
+      model_space_type = openstudio_model.getSpaceTypeByName(@hash[:identifier])
       return model_space_type.get unless model_space_type.empty?
       nil
     end
@@ -65,7 +65,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)    
       # create openstudio space type object
       os_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
-      os_space_type.setName(@hash[:name])
+      os_space_type.setName(@hash[:identifier])
 
       # assign people 
       if @hash[:people]
@@ -111,7 +111,7 @@ module FromHoneybee
 
       # add setpoints from to a global hash that will be used to assign them to rooms
       if @hash[:setpoint]
-        $programtype_setpoint_hash[@hash[:name]] = @hash[:setpoint]
+        $programtype_setpoint_hash[@hash[:identifier]] = @hash[:setpoint]
       end
 
       os_space_type

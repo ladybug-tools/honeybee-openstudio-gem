@@ -46,17 +46,17 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_electric_equipment = openstudio_model.getElectricEquipmentDefinitionByName(@hash[:name])
+      model_electric_equipment = openstudio_model.getElectricEquipmentDefinitionByName(@hash[:identifier])
       return model_electric_equipment.get unless model_electric_equipment.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)
-      # create electrical equipment and set name
+      # create electrical equipment and set identifier
       os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
       os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
-      os_electric_equip_def.setName(@hash[:name])
-      os_electric_equip.setName(@hash[:name])
+      os_electric_equip_def.setName(@hash[:identifier])
+      os_electric_equip.setName(@hash[:identifier])
 
       # assign watts per area 
       os_electric_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])

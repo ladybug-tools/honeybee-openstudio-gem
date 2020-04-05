@@ -46,9 +46,9 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
-      # create the ideal air system and set the name
+      # create the ideal air system and set the identifier
       os_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
-      os_ideal_air.setName(@hash[:name])
+      os_ideal_air.setName(@hash[:identifier])
       
       # assign the economizer type
       if @hash[:economizer_type]

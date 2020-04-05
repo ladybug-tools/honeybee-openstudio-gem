@@ -46,15 +46,15 @@ module FromHoneybee
     end
   
     def find_existing_openstudio_object(openstudio_model)
-      model_vent = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:name])
+      model_vent = openstudio_model.getDesignSpecificationOutdoorAirByName(@hash[:identifier])
       return model_vent.get unless model_vent.empty?
       nil
     end
   
     def to_openstudio(openstudio_model)  
-      # create ventilation openstudio object and set name     
+      # create ventilation openstudio object and set identifier     
       os_vent = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
-      os_vent.setName(@hash[:name])
+      os_vent.setName(@hash[:identifier])
 
       # assign air changes per hour if it exists
       if @hash[:air_changes_per_hour]

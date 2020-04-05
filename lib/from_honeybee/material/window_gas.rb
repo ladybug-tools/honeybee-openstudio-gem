@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasByName(@hash[:name])
+      object = openstudio_model.getGasByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create window gas OpenStudio object
       os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
-      os_window_gas.setName(@hash[:name])
+      os_window_gas.setName(@hash[:identifier])
 
       # assign thickness
       if @hash[:thickness]

@@ -47,7 +47,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      model_schedule = openstudio_model.getScheduleFixedIntervalByName(@hash[:name])
+      model_schedule = openstudio_model.getScheduleFixedIntervalByName(@hash[:identifier])
       return model_schedule.get unless model_schedule.empty?
       nil
     end
@@ -55,7 +55,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create the new schedule
       os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
-      os_fi_schedule.setName(@hash[:name])
+      os_fi_schedule.setName(@hash[:identifier])
 
       # assign start date
       if @hash[:start_date]

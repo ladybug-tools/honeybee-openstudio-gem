@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getBlindByName(@hash[:name])
+      object = openstudio_model.getBlindByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create blind OpenStudio object
       os_blind = OpenStudio::Model::Blind.new(openstudio_model)
-      os_blind.setName(@hash[:name])
+      os_blind.setName(@hash[:identifier])
       
       # assign slat orientation
       if @hash[:slat_orientation]

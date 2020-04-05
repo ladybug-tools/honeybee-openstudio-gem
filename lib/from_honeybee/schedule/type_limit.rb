@@ -48,7 +48,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getScheduleTypeLimitsByName(@hash[:name])
+      object = openstudio_model.getScheduleTypeLimitsByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -56,7 +56,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       # create schedule type limits openstudio object
       os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
-      os_type_limit.setName(@hash[:name])
+      os_type_limit.setName(@hash[:identifier])
 
       if @hash[:lower_limit] != nil and @hash[:lower_limit] != {'type': 'NoLimit'}
         os_type_limit.setLowerLimitValue(@hash[:lower_limit])

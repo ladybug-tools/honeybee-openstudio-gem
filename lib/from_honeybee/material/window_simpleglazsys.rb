@@ -46,7 +46,7 @@ module FromHoneybee
     end
 
     def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getSimpleGlazingByName(@hash[:name])
+      object = openstudio_model.getSimpleGlazingByName(@hash[:identifier])
       return object.get if object.is_initialized
       nil
     end
@@ -54,7 +54,7 @@ module FromHoneybee
     def to_openstudio(openstudio_model)
       #  create simple glazing openstudio object
       os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-      os_simple_glazing.setName(@hash[:name])
+      os_simple_glazing.setName(@hash[:identifier])
       os_simple_glazing.setUFactor(@hash[:u_factor])
       os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
 
