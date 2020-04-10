@@ -3,7 +3,9 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee energy simulation parameter schema.",
-    "version": "1.14.1",
+    "version": [
+      "1.21.1"
+    ],
     "title": "Honeybee Energy Simulation Parameter Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -138,13 +140,13 @@
           },
           "include_sqlite": {
             "title": "Include Sqlite",
-            "description": "Boolean to note whether a SQLite report should be generated from the simulation.",
+            "description": "Boolean to note whether a SQLite report should be requested from the simulation.",
             "default": true,
             "type": "boolean"
           },
           "include_html": {
             "title": "Include Html",
-            "description": "Boolean to note whether an HTML report should be generated from the simulation.",
+            "description": "Boolean to note whether an HTML report should be requested from the simulation.",
             "default": false,
             "type": "boolean"
           },
@@ -600,7 +602,7 @@
         "properties": {
           "name": {
             "title": "Name",
-            "description": "Name of the object. Must use only ASCII characters and exclude (, ; ! \\n \\t). It cannot be longer than 100 characters.",
+            "description": "Text string for a unique design day name. This name remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). It is also used to reference the object within SimulationParameters. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"

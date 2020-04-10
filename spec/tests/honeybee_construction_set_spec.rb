@@ -48,7 +48,7 @@ RSpec.describe FromHoneybee do
   # TODO: add assertions about properties
   it 'can load construction set complete' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_complete.json')
+    file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_abridged_complete.json')
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
@@ -58,7 +58,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load construction set partial' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_partial_exterior.json')
+    file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_abridged_partial_exterior.json')
     constr_set_1 = FromHoneybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)
     exte_surf_constr = object1.defaultExteriorSurfaceConstructions

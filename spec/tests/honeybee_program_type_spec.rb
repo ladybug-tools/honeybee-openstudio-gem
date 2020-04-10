@@ -49,7 +49,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load program type kitchen' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_kitchen.json')
+    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_kitchen.json')
     honeybee_obj_1 = FromHoneybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
@@ -108,7 +108,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load program type office' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_office.json')
+    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_office.json')
     honeybee_obj_1 = FromHoneybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
@@ -116,7 +116,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load program type patient room' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_patient_room.json')
+    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_patient_room.json')
     honeybee_obj_1 = FromHoneybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
@@ -124,7 +124,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load program type plenum' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_plenum.json')
+    file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_plenum.json')
     honeybee_obj_1 = FromHoneybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
