@@ -338,13 +338,15 @@ module FromHoneybee
               thermal_zone_object = thermal_zone.get
               program_type_id = room[:properties][:energy][:program_type]
               setpoint_hash = $programtype_setpoint_hash[program_type_id]
-              thermostat_object = SetpointThermostat.new(setpoint_hash)
-              openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
-              thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-              if setpoint_hash[:humidifying_schedule] or setpoint_hash[:dehumidifying_schedule]
-                humidistat_object = ZoneControlHumidistat.new(setpoint_hash)
-                openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-                thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+              if not setpoint_hash.nil?  # program type has no setpoint
+                thermostat_object = SetpointThermostat.new(setpoint_hash)
+                openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+                thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+                if setpoint_hash[:humidifying_schedule] or setpoint_hash[:dehumidifying_schedule]
+                  humidistat_object = ZoneControlHumidistat.new(setpoint_hash)
+                  openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                  thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+                end
               end
             end
           end
