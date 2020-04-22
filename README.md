@@ -5,6 +5,41 @@
 Library and measures for converting Honeybee JSONs to/from OpenStudio.
 
 
+## Run the measures of this repo using OpenStudio CLI
+
+Running the measures using OpenStudio CLI requires no installation other than cloning
+this repo and installing OpenStudio.
+
+1. Write out an OpenStudio Workflow (osw) JSON that passes honeybee model and simulation
+parameter JSON files to the measures. Here is a sample where the items in parentheses
+should be replaced with specific file paths:
+
+```
+{ 
+    "measure_paths": [(PATH TO THIS REPOSITORY)/lib/measures"], 
+    "steps": [
+        {
+            "arguments": {"model_json": (PATH TO MODEL JSON)}, 
+            "measure_dir_name": "from_honeybee_model"
+        }, 
+        {
+            "arguments": {"simulation_parameter_json": (PATH TO SIMULATION PARAMETER JSON)}, 
+            "measure_dir_name": "from_honeybee_simulation_parameter"
+        }
+    ]
+}
+```
+
+2. Call the OpenStudio CLI from command line, making sure to pass this repository's
+lib folder to the CLI using the `-I` (or `--include`) option. Here is a sample
+where the items in parentheses should be replaced with specific file paths:
+
+```
+"(OPENSTUDIO INSTALLATION PATH)/bin/openstudio.exe" -I (PATH TO THIS REPOSITORY)/lib run -m -w (PATH TO OSW FILE)
+
+```
+
+
 ## Local Development
 1. Clone this repo locally
 ```
@@ -45,3 +80,15 @@ bundle exec ruby from_honeybee_simulation_parameter_test.rb
 ```
 
 coverage report will be output to `energy-model-measure/coverage/index.html`
+
+5. Update doc_templates:
+```
+cd energy-model-measure
+bundle exec rake openstudio:update_copyright
+```
+
+6. See all available rake tasks:
+```
+cd energy-model-measure
+bundle exec rake -T
+```

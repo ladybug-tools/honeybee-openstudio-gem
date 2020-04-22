@@ -1,4 +1,4 @@
-Honeybee Energy Model Measure, Copyright (c) 2019, Alliance for Sustainable Energy, LLC, Ladybug Tools LLC
+Honeybee Energy Model Measure, Copyright (c) 2020, Alliance for Sustainable Energy, LLC, Ladybug Tools LLC
 and other contributors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
