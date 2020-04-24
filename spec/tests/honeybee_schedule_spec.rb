@@ -32,20 +32,6 @@
 require_relative '../spec_helper'
 
 RSpec.describe FromHoneybee do
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
-
-  it 'has a measures directory' do
-    extension = FromHoneybee::Extension.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-
-  it 'has a files directory' do
-    extension = FromHoneybee::Extension.new
-    expect(File.exist?(extension.files_dir)).to be true
-  end
-
   it 'can load schedule fixed interval 1' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_fine_timestep.json')

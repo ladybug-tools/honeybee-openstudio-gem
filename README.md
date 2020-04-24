@@ -10,7 +10,7 @@ Library and measures for converting Honeybee JSONs to/from OpenStudio.
 Running the measures using OpenStudio CLI requires no installation other than cloning
 this repo and installing OpenStudio.
 
-1. Write out an OpenStudio Workflow (osw) JSON that passes honeybee model and simulation
+1. Write an OpenStudio Workflow (osw) JSON that passes honeybee model and simulation
 parameter JSON files to the measures. Here is a sample where the items in parentheses
 should be replaced with specific file paths:
 

@@ -33,19 +33,9 @@ require_relative '../spec_helper'
 require 'from_honeybee/simulation/extension'
 
 RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
-
-  it 'has a measures directory' do
+  it 'has a schema_file' do
     extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.measures_dir)).to be true
-  end
-
-  it 'has a files directory' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.files_dir)).to be true
+    expect(File.exist?(extension.schema_file)).to be true
   end
 
   it 'can load simple simulation parameter' do

@@ -73,7 +73,7 @@ module FromHoneybee
 
     # return path to the model schema file
     def schema_file
-      File.join(files_dir, 'model.json')
+      File.join(@lib_dir, 'from_honeybee', '_openapi', 'model.json')
     end
 
     # return the model schema
@@ -89,7 +89,7 @@ module FromHoneybee
       @@schema
     end
 
-  # check if the model schema is valid
+    # check if the model schema is valid
     def schema_valid?
       if Gem.loaded_specs.has_key?("json-schema")
         require 'json-schema'

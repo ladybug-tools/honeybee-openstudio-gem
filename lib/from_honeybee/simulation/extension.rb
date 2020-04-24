@@ -39,7 +39,7 @@ module FromHoneybee
     @@schema = nil
 
     def schema_file
-      File.join(files_dir, 'simulation-parameter.json')
+      File.join(@lib_dir, 'from_honeybee', '_openapi', 'simulation-parameter.json')
     end
 
   end
