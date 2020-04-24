@@ -42,9 +42,9 @@ RSpec.describe FromHoneybee do
     expect(File.exist?(extension.measures_dir)).to be true
   end
 
-  it 'has a files directory' do
+  it 'has a schema_file' do
     extension = FromHoneybee::Extension.new
-    expect(File.exist?(extension.files_dir)).to be true
+    expect(File.exist?(extension.schema_file)).to be true
   end
 
   it 'can load and validate complete single zone office' do
@@ -198,6 +198,17 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
+  end
+
+  it 'can triangulate 5vertex sub faces' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+
+    openstudio_surfaces = openstudio_model.getSubSurfaces
+    # expect(openstudio_surfaces.size).to be > 3
   end
 
 end
