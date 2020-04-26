@@ -59,39 +59,80 @@ module FromHoneybee
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
-
-      os_subsurface = OpenStudio::Model::SubSurface.new(reordered_vertices, openstudio_model)
-      os_subsurface.setName(@hash[:identifier])
-
-      # assign the construction if it exists
-      if @hash[:properties][:energy][:construction]
-        construction_identifier = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_identifier)
-        unless construction.empty?
-          os_construction = construction.get
-          os_subsurface.setConstruction(os_construction)
+      
+      # triangulate subsurface if neccesary
+      triangulated = false
+      final_vertices_list = []
+      if reordered_vertices.size > 4
+        
+        # transform to face coordinates
+        t = OpenStudio::Transformation::alignFace(reordered_vertices)
+        tInv = t.inverse
+        face_vertices = OpenStudio::reverse(tInv*reordered_vertices)
+        
+        # no holes in the subsurface
+        holes = OpenStudio::Point3dVectorVector.new
+        
+        # triangulate surface
+        triangles = OpenStudio::computeTriangulation(face_vertices, holes)
+        if triangles.empty?
+          raise "Failed to triangulate aperture #{@hash[:identifier]} with #{reordered_vertices.size} vertices"
         end
+        
+        # create new list of surfaces
+        triangles.each do |vertices|
+          final_vertices_list << OpenStudio::reverse(t*vertices)
+        end
+        
+        triangulated = true
+        
+      else
+        # reordered_vertices are good as is
+        final_vertices_list << reordered_vertices
+      end
+
+      result = []
+      final_vertices_list.each_with_index do |reordered_vertices, index|
+        os_subsurface = OpenStudio::Model::SubSurface.new(reordered_vertices, openstudio_model)
+        
+        if triangulated
+          os_subsurface.setName(@hash[:identifier] + "..#{index}")
+        else
+          os_subsurface.setName(@hash[:identifier])
+        end
+        
+        # assign the construction if it exists
+        if @hash[:properties][:energy][:construction]
+          construction_identifier = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_identifier)
+          unless construction.empty?
+            os_construction = construction.get
+            os_subsurface.setConstruction(os_construction)
+          end
+        end
+        
+        # assign the bondary condition object if it's a Surface
+        if @hash[:boundary_condition][:type] == 'Surface'
+          # get adjacent sub surface by identifier from openstudio model
+          adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
+          sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
+          unless sub_srf_ref.empty?
+            sub_srf = sub_srf_ref.get
+            os_subsurface.setAdjacentSubSurface(sub_srf)
+          end
+        end
+
+        # assign the operable property
+        if @hash[:is_operable] == false
+          os_subsurface.setSubSurfaceType('FixedWindow')
+        else 
+          os_subsurface.setSubSurfaceType('OperableWindow')
+        end
+        
+        result << os_subsurface
       end
       
-      # assign the bondary condition object if it's a Surface
-      if @hash[:boundary_condition][:type] == 'Surface'
-        # get adjacent sub surface by identifier from openstudio model
-        adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
-        sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
-        unless sub_srf_ref.empty?
-          sub_srf = sub_srf_ref.get
-          os_subsurface.setAdjacentSubSurface(sub_srf)
-        end
-      end
-
-      # assign the operable property
-      if @hash[:is_operable] == false
-        os_subsurface.setSubSurfaceType('FixedWindow')
-      else 
-        os_subsurface.setSubSurfaceType('OperableWindow')
-      end
-      
-      os_subsurface
+      return result
     end
   end # Aperture
 end # FromHoneybee

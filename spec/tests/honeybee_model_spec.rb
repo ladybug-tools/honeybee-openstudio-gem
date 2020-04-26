@@ -208,7 +208,7 @@ RSpec.describe FromHoneybee do
     expect(object1).not_to be nil
 
     openstudio_surfaces = openstudio_model.getSubSurfaces
-    # expect(openstudio_surfaces.size).to be > 3
+    expect(openstudio_surfaces.size).to be >= 4
   end
 
 end
