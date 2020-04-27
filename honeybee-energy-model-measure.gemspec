@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'honeybee-energy-model-measure'
   spec.version       = FromHoneybee::VERSION
   spec.authors       = ['Tanushree Charan', 'Dan Macumber', 'Chris Mackey', 'Mostapha Sadeghipour Roudsari']
-  spec.email         = ['']
+  spec.email         = ['tanushree.charan@nrel.gov', 'chris@ladybug.tools']
 
   spec.summary       = 'Library and measures for converting Honeybee JSONs to/from OpenStudio'
   spec.description   = 'Library and measures for converting Heoneybee JSONs to/from OpenStudio'
