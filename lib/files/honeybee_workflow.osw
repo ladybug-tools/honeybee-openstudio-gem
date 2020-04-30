@@ -8,7 +8,7 @@
     {
       "measure_dir_name": "from_honeybee_simulation_parameter",
       "arguments": {
-        "simulation_parameter_json": "multi_zone_model.json"
+        "simulation_parameter_json": "simulation_parameter.json"
       }
     },{
       "measure_dir_name": "from_honeybee_model",
@@ -36,6 +36,7 @@
     },{
       "measure_dir_name": "default_feature_reports",
       "arguments": {
+        "__SKIP__": true,
         "feature_id": null,
         "feature_name": null,
         "feature_type": null

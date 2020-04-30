@@ -78,7 +78,7 @@ module URBANopt
 
         # convert to hash
         building_hash = feature.to_hash
-        
+
         if building_hash.key?(:system_type)
           system_type = building_hash[:system_type]
         else
@@ -91,22 +91,14 @@ module URBANopt
         # now we have the feature, we can look up its properties and set arguments in the OSW
         osw[:name] = feature_name
         osw[:description] = feature_name
-        
-        # point to measures directory in energy-model-measure
-        osw[:measure_paths] << File.join(File.dirname(__FILE__) + "/../../measures")
 
         # store name of input JSON file for feature
         feature_json = feature.detailed_model_filename
 
         #TODO: Update path
-        simulation_parameter_path = File.join(File.dirname(__FILE__) + "/../../../spec/samples/model/#{feature_json}")
-
-        #TODO: Update path
-        model_path = File.join(File.dirname(__FILE__) + "/../../../spec/samples/simulation_parameter/#{feature_json}")
+        model_path = feature_json
 
         if feature_type == 'Building'
-
-            OpenStudio::Extension.set_measure_argument(osw, 'from_honeybee_simulation_parameter', 'simulation_parameter_json', simulation_parameter_path)
           
             OpenStudio::Extension.set_measure_argument(osw, 'from_honeybee_model', 'model_json', model_json_path)
 
