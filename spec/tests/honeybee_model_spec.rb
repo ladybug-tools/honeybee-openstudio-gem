@@ -211,4 +211,19 @@ RSpec.describe FromHoneybee do
     # expect(openstudio_surfaces.size).to be > 3
   end
 
+  it 'can triangulate 5vertex sub faces with interior boundary conditions' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces_interior.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+
+    openstudio_surfaces = openstudio_model.getSubSurfaces
+    # expect(openstudio_surfaces.size).to be > 7
+    openstudio_surfaces.each do |srf|
+      bc = srf.outsideBoundaryCondition
+      expect(bc.to_s).to eq 'Surface'
+    end
+  end
+
 end
