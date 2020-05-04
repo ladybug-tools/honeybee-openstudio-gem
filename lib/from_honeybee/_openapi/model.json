@@ -3,14 +3,12 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": [
-      "1.21.1"
-    ],
+    "version": "1.27.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
       "email": "info@ladybug.tools",
-      "url": "https://github.com/ladybug-tools/honeybee-core"
+      "url": "https://github.com/ladybug-tools/honeybee-schema"
     },
     "x-logo": {
       "url": "https://www.ladybug.tools/assets/img/honeybee-large.png",
@@ -22,8 +20,8 @@
     }
   },
   "externalDocs": {
-    "description": "See how to use these schema in action.",
-    "url": "https://api.pollination.cloud/"
+    "description": "OpenAPI Specification with Inheritance",
+    "url": "./model_inheritance.json"
   },
   "tags": [
     {
@@ -62,9 +60,24 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureEnergyPropertiesAbridged\" />\n"
     },
     {
+      "name": "aperturemodifierset_model",
+      "x-displayName": "ApertureModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureModifierSet\" />\n"
+    },
+    {
+      "name": "aperturemodifiersetabridged_model",
+      "x-displayName": "ApertureModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureModifierSetAbridged\" />\n"
+    },
+    {
       "name": "aperturepropertiesabridged_model",
       "x-displayName": "AperturePropertiesAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AperturePropertiesAbridged\" />\n"
+    },
+    {
+      "name": "apertureradiancepropertiesabridged_model",
+      "x-displayName": "ApertureRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ApertureRadiancePropertiesAbridged\" />\n"
     },
     {
       "name": "autocalculate_model",
@@ -75,6 +88,11 @@
       "name": "autosize_model",
       "x-displayName": "Autosize",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Autosize\" />\n"
+    },
+    {
+      "name": "bsdf_model",
+      "x-displayName": "BSDF",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/BSDF\" />\n"
     },
     {
       "name": "constructionset_model",
@@ -107,9 +125,24 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorEnergyPropertiesAbridged\" />\n"
     },
     {
+      "name": "doormodifierset_model",
+      "x-displayName": "DoorModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorModifierSet\" />\n"
+    },
+    {
+      "name": "doormodifiersetabridged_model",
+      "x-displayName": "DoorModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorModifierSetAbridged\" />\n"
+    },
+    {
       "name": "doorpropertiesabridged_model",
       "x-displayName": "DoorPropertiesAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "doorradiancepropertiesabridged_model",
+      "x-displayName": "DoorRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorRadiancePropertiesAbridged\" />\n"
     },
     {
       "name": "electricequipment_model",
@@ -187,6 +220,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FacePropertiesAbridged\" />\n"
     },
     {
+      "name": "faceradiancepropertiesabridged_model",
+      "x-displayName": "FaceRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceRadiancePropertiesAbridged\" />\n"
+    },
+    {
       "name": "floorconstructionset_model",
       "x-displayName": "FloorConstructionSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorConstructionSet\" />\n"
@@ -197,6 +235,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorConstructionSetAbridged\" />\n"
     },
     {
+      "name": "floormodifierset_model",
+      "x-displayName": "FloorModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorModifierSet\" />\n"
+    },
+    {
+      "name": "floormodifiersetabridged_model",
+      "x-displayName": "FloorModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorModifierSetAbridged\" />\n"
+    },
+    {
       "name": "gasequipment_model",
       "x-displayName": "GasEquipment",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasEquipment\" />\n"
@@ -205,6 +253,16 @@
       "name": "gasequipmentabridged_model",
       "x-displayName": "GasEquipmentAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasEquipmentAbridged\" />\n"
+    },
+    {
+      "name": "glass_model",
+      "x-displayName": "Glass",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Glass\" />\n"
+    },
+    {
+      "name": "glow_model",
+      "x-displayName": "Glow",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Glow\" />\n"
     },
     {
       "name": "ground_model",
@@ -227,6 +285,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/InfiltrationAbridged\" />\n"
     },
     {
+      "name": "light_model",
+      "x-displayName": "Light",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Light\" />\n"
+    },
+    {
       "name": "lighting_model",
       "x-displayName": "Lighting",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Lighting\" />\n"
@@ -235,6 +298,11 @@
       "name": "lightingabridged_model",
       "x-displayName": "LightingAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/LightingAbridged\" />\n"
+    },
+    {
+      "name": "mirror_model",
+      "x-displayName": "Mirror",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Mirror\" />\n"
     },
     {
       "name": "model_model",
@@ -250,6 +318,21 @@
       "name": "modelproperties_model",
       "x-displayName": "ModelProperties",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModelProperties\" />\n"
+    },
+    {
+      "name": "modelradianceproperties_model",
+      "x-displayName": "ModelRadianceProperties",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModelRadianceProperties\" />\n"
+    },
+    {
+      "name": "modifierset_model",
+      "x-displayName": "ModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModifierSet\" />\n"
+    },
+    {
+      "name": "modifiersetabridged_model",
+      "x-displayName": "ModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModifierSetAbridged\" />\n"
     },
     {
       "name": "nolimit_model",
@@ -287,6 +370,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Plane\" />\n"
     },
     {
+      "name": "plastic_model",
+      "x-displayName": "Plastic",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Plastic\" />\n"
+    },
+    {
       "name": "programtype_model",
       "x-displayName": "ProgramType",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ProgramType\" />\n"
@@ -307,6 +395,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoofCeilingConstructionSetAbridged\" />\n"
     },
     {
+      "name": "roofceilingmodifierset_model",
+      "x-displayName": "RoofCeilingModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoofCeilingModifierSet\" />\n"
+    },
+    {
+      "name": "roofceilingmodifiersetabridged_model",
+      "x-displayName": "RoofCeilingModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoofCeilingModifierSetAbridged\" />\n"
+    },
+    {
       "name": "room_model",
       "x-displayName": "Room",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Room\" />\n"
@@ -320,6 +418,11 @@
       "name": "roompropertiesabridged_model",
       "x-displayName": "RoomPropertiesAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoomPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "roomradiancepropertiesabridged_model",
+      "x-displayName": "RoomRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoomRadiancePropertiesAbridged\" />\n"
     },
     {
       "name": "scheduleday_model",
@@ -382,14 +485,34 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeEnergyPropertiesAbridged\" />\n"
     },
     {
+      "name": "shademodifierset_model",
+      "x-displayName": "ShadeModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeModifierSet\" />\n"
+    },
+    {
+      "name": "shademodifiersetabridged_model",
+      "x-displayName": "ShadeModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeModifierSetAbridged\" />\n"
+    },
+    {
       "name": "shadepropertiesabridged_model",
       "x-displayName": "ShadePropertiesAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadePropertiesAbridged\" />\n"
     },
     {
+      "name": "shaderadiancepropertiesabridged_model",
+      "x-displayName": "ShadeRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeRadiancePropertiesAbridged\" />\n"
+    },
+    {
       "name": "surface_model",
       "x-displayName": "Surface",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Surface\" />\n"
+    },
+    {
+      "name": "trans_model",
+      "x-displayName": "Trans",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Trans\" />\n"
     },
     {
       "name": "ventilation_model",
@@ -402,6 +525,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationAbridged\" />\n"
     },
     {
+      "name": "void_model",
+      "x-displayName": "Void",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Void\" />\n"
+    },
+    {
       "name": "wallconstructionset_model",
       "x-displayName": "WallConstructionSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallConstructionSet\" />\n"
@@ -410,6 +538,16 @@
       "name": "wallconstructionsetabridged_model",
       "x-displayName": "WallConstructionSetAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallConstructionSetAbridged\" />\n"
+    },
+    {
+      "name": "wallmodifierset_model",
+      "x-displayName": "WallModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallModifierSet\" />\n"
+    },
+    {
+      "name": "wallmodifiersetabridged_model",
+      "x-displayName": "WallModifierSetAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallModifierSetAbridged\" />\n"
     },
     {
       "name": "windowconstruction_model",
@@ -433,16 +571,23 @@
         "apertureconstructionset_model",
         "apertureconstructionsetabridged_model",
         "apertureenergypropertiesabridged_model",
+        "aperturemodifierset_model",
+        "aperturemodifiersetabridged_model",
         "aperturepropertiesabridged_model",
+        "apertureradiancepropertiesabridged_model",
         "autocalculate_model",
         "autosize_model",
+        "bsdf_model",
         "constructionset_model",
         "constructionsetabridged_model",
         "door_model",
         "doorconstructionset_model",
         "doorconstructionsetabridged_model",
         "doorenergypropertiesabridged_model",
+        "doormodifierset_model",
+        "doormodifiersetabridged_model",
         "doorpropertiesabridged_model",
+        "doorradiancepropertiesabridged_model",
         "electricequipment_model",
         "electricequipmentabridged_model",
         "energymaterial_model",
@@ -458,19 +603,29 @@
         "face_model",
         "faceenergypropertiesabridged_model",
         "facepropertiesabridged_model",
+        "faceradiancepropertiesabridged_model",
         "floorconstructionset_model",
         "floorconstructionsetabridged_model",
+        "floormodifierset_model",
+        "floormodifiersetabridged_model",
         "gasequipment_model",
         "gasequipmentabridged_model",
+        "glass_model",
+        "glow_model",
         "ground_model",
         "idealairsystemabridged_model",
         "infiltration_model",
         "infiltrationabridged_model",
+        "light_model",
         "lighting_model",
         "lightingabridged_model",
+        "mirror_model",
         "model_model",
         "modelenergyproperties_model",
         "modelproperties_model",
+        "modelradianceproperties_model",
+        "modifierset_model",
+        "modifiersetabridged_model",
         "nolimit_model",
         "opaqueconstruction_model",
         "opaqueconstructionabridged_model",
@@ -478,13 +633,17 @@
         "people_model",
         "peopleabridged_model",
         "plane_model",
+        "plastic_model",
         "programtype_model",
         "programtypeabridged_model",
         "roofceilingconstructionset_model",
         "roofceilingconstructionsetabridged_model",
+        "roofceilingmodifierset_model",
+        "roofceilingmodifiersetabridged_model",
         "room_model",
         "roomenergypropertiesabridged_model",
         "roompropertiesabridged_model",
+        "roomradiancepropertiesabridged_model",
         "scheduleday_model",
         "schedulefixedinterval_model",
         "schedulefixedintervalabridged_model",
@@ -497,12 +656,19 @@
         "shade_model",
         "shadeconstruction_model",
         "shadeenergypropertiesabridged_model",
+        "shademodifierset_model",
+        "shademodifiersetabridged_model",
         "shadepropertiesabridged_model",
+        "shaderadiancepropertiesabridged_model",
         "surface_model",
+        "trans_model",
         "ventilation_model",
         "ventilationabridged_model",
+        "void_model",
         "wallconstructionset_model",
         "wallconstructionsetabridged_model",
+        "wallmodifierset_model",
+        "wallmodifiersetabridged_model",
         "windowconstruction_model",
         "windowconstructionabridged_model"
       ]
@@ -521,7 +687,8 @@
             "description": "Plane normal as 3 (x, y, z) values.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 3,
             "maxItems": 3
@@ -531,7 +698,8 @@
             "description": "Plane origin as 3 (x, y, z) values",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 3,
             "maxItems": 3
@@ -539,15 +707,17 @@
           "type": {
             "title": "Type",
             "default": "Plane",
+            "pattern": "^Plane$",
             "type": "string",
-            "pattern": "^Plane$"
+            "readOnly": true
           },
           "x": {
             "title": "X",
             "description": "Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 3,
             "maxItems": 3
@@ -567,33 +737,38 @@
           "boundary": {
             "title": "Boundary",
             "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "array",
               "items": {
-                "type": "number"
+                "type": "number",
+                "format": "double"
               },
               "minItems": 3,
               "maxItems": 3
-            },
-            "minItems": 3
+            }
           },
           "type": {
             "title": "Type",
             "default": "Face3D",
+            "pattern": "^Face3D$",
             "type": "string",
-            "pattern": "^Face3D$"
+            "readOnly": true
           },
           "holes": {
             "title": "Holes",
             "description": "Optional list of lists with one list for each hole in the face.Each hole should be a list of at least 3 points and each point a list of 3 (x, y, z) values. If None, it will be assumed that there are no holes in the face.",
+            "minItems": 3,
             "type": "array",
             "items": {
               "type": "array",
               "items": {
                 "type": "array",
                 "items": {
-                  "type": "number"
+                  "type": "number",
+                  "format": "double"
                 },
                 "minItems": 3,
                 "maxItems": 3
@@ -624,8 +799,9 @@
           "type": {
             "title": "Type",
             "default": "Ground",
+            "pattern": "^Ground$",
             "type": "string",
-            "pattern": "^Ground$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -638,8 +814,9 @@
           "type": {
             "title": "Type",
             "default": "Autocalculate",
+            "pattern": "^Autocalculate$",
             "type": "string",
-            "pattern": "^Autocalculate$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -652,8 +829,9 @@
           "type": {
             "title": "Type",
             "default": "Outdoors",
+            "pattern": "^Outdoors$",
             "type": "string",
-            "pattern": "^Outdoors$"
+            "readOnly": true
           },
           "sun_exposure": {
             "title": "Sun Exposure",
@@ -680,7 +858,8 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 1,
+                "format": "double"
               }
             ]
           }
@@ -695,8 +874,9 @@
           "type": {
             "title": "Type",
             "default": "Adiabatic",
+            "pattern": "^Adiabatic$",
             "type": "string",
-            "pattern": "^Adiabatic$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -719,8 +899,9 @@
           "type": {
             "title": "Type",
             "default": "Surface",
+            "pattern": "^Surface$",
             "type": "string",
-            "pattern": "^Surface$"
+            "readOnly": true
           }
         },
         "required": [
@@ -736,8 +917,9 @@
           "type": {
             "title": "Type",
             "default": "ShadeEnergyPropertiesAbridged",
+            "pattern": "^ShadeEnergyPropertiesAbridged$",
             "type": "string",
-            "pattern": "^ShadeEnergyPropertiesAbridged$"
+            "readOnly": true
           },
           "construction": {
             "title": "Construction",
@@ -756,6 +938,31 @@
         },
         "additionalProperties": false
       },
+      "ShadeRadiancePropertiesAbridged": {
+        "title": "ShadeRadiancePropertiesAbridged",
+        "description": "Radiance Properties for Honeybee Shade Abridged.",
+        "type": "object",
+        "properties": {
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier.",
+            "type": "string"
+          },
+          "modifier_blk": {
+            "title": "Modifier Blk",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeRadiancePropertiesAbridged",
+            "pattern": "^ShadeRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ShadePropertiesAbridged": {
         "title": "ShadePropertiesAbridged",
         "type": "object",
@@ -763,11 +970,15 @@
           "type": {
             "title": "Type",
             "default": "ShadePropertiesAbridged",
+            "pattern": "^ShadePropertiesAbridged$",
             "type": "string",
-            "pattern": "^ShadePropertiesAbridged$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/ShadeEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/ShadeRadiancePropertiesAbridged"
           }
         }
       },
@@ -815,8 +1026,9 @@
           "type": {
             "title": "Type",
             "default": "Shade",
+            "pattern": "^Shade$",
             "type": "string",
-            "pattern": "^Shade$"
+            "readOnly": true
           }
         },
         "required": [
@@ -834,8 +1046,9 @@
           "type": {
             "title": "Type",
             "default": "ApertureEnergyPropertiesAbridged",
+            "pattern": "^ApertureEnergyPropertiesAbridged$",
             "type": "string",
-            "pattern": "^ApertureEnergyPropertiesAbridged$"
+            "readOnly": true
           },
           "construction": {
             "title": "Construction",
@@ -847,6 +1060,31 @@
         },
         "additionalProperties": false
       },
+      "ApertureRadiancePropertiesAbridged": {
+        "title": "ApertureRadiancePropertiesAbridged",
+        "description": "Radiance Properties for Honeybee Aperture Abridged.",
+        "type": "object",
+        "properties": {
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier.",
+            "type": "string"
+          },
+          "modifier_blk": {
+            "title": "Modifier Blk",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ApertureRadiancePropertiesAbridged",
+            "pattern": "^ApertureRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AperturePropertiesAbridged": {
         "title": "AperturePropertiesAbridged",
         "type": "object",
@@ -854,11 +1092,15 @@
           "type": {
             "title": "Type",
             "default": "AperturePropertiesAbridged",
+            "pattern": "^AperturePropertiesAbridged$",
             "type": "string",
-            "pattern": "^AperturePropertiesAbridged$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/ApertureEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/ApertureRadiancePropertiesAbridged"
           }
         }
       },
@@ -917,8 +1159,9 @@
           "type": {
             "title": "Type",
             "default": "Aperture",
+            "pattern": "^Aperture$",
             "type": "string",
-            "pattern": "^Aperture$"
+            "readOnly": true
           },
           "is_operable": {
             "title": "Is Operable",
@@ -959,8 +1202,9 @@
           "type": {
             "title": "Type",
             "default": "DoorEnergyPropertiesAbridged",
+            "pattern": "^DoorEnergyPropertiesAbridged$",
             "type": "string",
-            "pattern": "^DoorEnergyPropertiesAbridged$"
+            "readOnly": true
           },
           "construction": {
             "title": "Construction",
@@ -972,6 +1216,31 @@
         },
         "additionalProperties": false
       },
+      "DoorRadiancePropertiesAbridged": {
+        "title": "DoorRadiancePropertiesAbridged",
+        "description": "Radiance Properties for Honeybee Door Abridged.",
+        "type": "object",
+        "properties": {
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier.",
+            "type": "string"
+          },
+          "modifier_blk": {
+            "title": "Modifier Blk",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "DoorRadiancePropertiesAbridged",
+            "pattern": "^DoorRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DoorPropertiesAbridged": {
         "title": "DoorPropertiesAbridged",
         "type": "object",
@@ -979,11 +1248,15 @@
           "type": {
             "title": "Type",
             "default": "DoorPropertiesAbridged",
+            "pattern": "^DoorPropertiesAbridged$",
             "type": "string",
-            "pattern": "^DoorPropertiesAbridged$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/DoorEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/DoorRadiancePropertiesAbridged"
           }
         }
       },
@@ -1042,8 +1315,9 @@
           "type": {
             "title": "Type",
             "default": "Door",
+            "pattern": "^Door$",
             "type": "string",
-            "pattern": "^Door$"
+            "readOnly": true
           },
           "is_glass": {
             "title": "Is Glass",
@@ -1084,8 +1358,9 @@
           "type": {
             "title": "Type",
             "default": "FaceEnergyPropertiesAbridged",
+            "pattern": "^FaceEnergyPropertiesAbridged$",
             "type": "string",
-            "pattern": "^FaceEnergyPropertiesAbridged$"
+            "readOnly": true
           },
           "construction": {
             "title": "Construction",
@@ -1097,6 +1372,31 @@
         },
         "additionalProperties": false
       },
+      "FaceRadiancePropertiesAbridged": {
+        "title": "FaceRadiancePropertiesAbridged",
+        "description": "Radiance Properties for Honeybee Face Abridged.",
+        "type": "object",
+        "properties": {
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier.",
+            "type": "string"
+          },
+          "modifier_blk": {
+            "title": "Modifier Blk",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "FaceRadiancePropertiesAbridged",
+            "pattern": "^FaceRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "FacePropertiesAbridged": {
         "title": "FacePropertiesAbridged",
         "type": "object",
@@ -1104,11 +1404,15 @@
           "type": {
             "title": "Type",
             "default": "FacePropertiesAbridged",
+            "pattern": "^FacePropertiesAbridged$",
             "type": "string",
-            "pattern": "^FacePropertiesAbridged$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/FaceEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/FaceRadiancePropertiesAbridged"
           }
         }
       },
@@ -1183,8 +1487,9 @@
           "type": {
             "title": "Type",
             "default": "Face",
+            "pattern": "^Face$",
             "type": "string",
-            "pattern": "^Face$"
+            "readOnly": true
           },
           "apertures": {
             "title": "Apertures",
@@ -1244,7 +1549,8 @@
             "title": "People Per Area",
             "description": "People per floor area expressed as [people/m2]",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "occupancy_schedule": {
             "title": "Occupancy Schedule",
@@ -1268,8 +1574,9 @@
           "type": {
             "title": "Type",
             "default": "PeopleAbridged",
+            "pattern": "^PeopleAbridged$",
             "type": "string",
-            "pattern": "^PeopleAbridged$"
+            "readOnly": true
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -1277,7 +1584,8 @@
             "default": 0.3,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -1292,7 +1600,8 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 1,
+                "format": "double"
               }
             ]
           }
@@ -1321,7 +1630,8 @@
             "title": "Watts Per Area",
             "description": "Lighting per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -1338,8 +1648,9 @@
           "type": {
             "title": "Type",
             "default": "LightingAbridged",
+            "pattern": "^LightingAbridged$",
             "type": "string",
-            "pattern": "^LightingAbridged$"
+            "readOnly": true
           },
           "visible_fraction": {
             "title": "Visible Fraction",
@@ -1347,7 +1658,8 @@
             "default": 0.25,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -1355,7 +1667,8 @@
             "default": 0.32,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "return_air_fraction": {
             "title": "Return Air Fraction",
@@ -1363,7 +1676,8 @@
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -1389,7 +1703,8 @@
             "title": "Watts Per Area",
             "description": "Equipment level per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -1409,7 +1724,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -1417,7 +1733,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -1425,13 +1742,15 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "ElectricEquipmentAbridged",
+            "pattern": "^ElectricEquipmentAbridged$",
             "type": "string",
-            "pattern": "^ElectricEquipmentAbridged$"
+            "readOnly": true
           }
         },
         "required": [
@@ -1457,7 +1776,8 @@
             "title": "Watts Per Area",
             "description": "Equipment level per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -1477,7 +1797,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -1485,7 +1806,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -1493,13 +1815,15 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "GasEquipmentAbridged",
+            "pattern": "^GasEquipmentAbridged$",
             "type": "string",
-            "pattern": "^GasEquipmentAbridged$"
+            "readOnly": true
           }
         },
         "required": [
@@ -1525,7 +1849,8 @@
             "title": "Flow Per Exterior Area",
             "description": "Number for the infiltration per exterior surface area in m3/s-m2.",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -1542,26 +1867,30 @@
           "type": {
             "title": "Type",
             "default": "InfiltrationAbridged",
+            "pattern": "^InfiltrationAbridged$",
             "type": "string",
-            "pattern": "^InfiltrationAbridged$"
+            "readOnly": true
           },
           "constant_coefficient": {
             "title": "Constant Coefficient",
             "default": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "temperature_coefficient": {
             "title": "Temperature Coefficient",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "velocity_coefficient": {
             "title": "Velocity Coefficient",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -1591,36 +1920,41 @@
           "type": {
             "title": "Type",
             "default": "VentilationAbridged",
+            "pattern": "^VentilationAbridged$",
             "type": "string",
-            "pattern": "^VentilationAbridged$"
+            "readOnly": true
           },
           "flow_per_person": {
             "title": "Flow Per Person",
             "description": "Intensity of ventilation in[] m3/s per person]. Note that setting this value does not mean that ventilation is varied based on real-time occupancy but rather that the design level of ventilation is determined using this value and the People object of the Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "flow_per_area": {
             "title": "Flow Per Area",
             "description": "Intensity of ventilation in [m3/s per m2 of floor area].",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "air_changes_per_hour": {
             "title": "Air Changes Per Hour",
             "description": "Intensity of ventilation in air changes per hour (ACH) for the entire Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "flow_per_zone": {
             "title": "Flow Per Zone",
             "description": "Intensity of ventilation in m3/s for the entire Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -1669,8 +2003,9 @@
           "type": {
             "title": "Type",
             "default": "SetpointAbridged",
+            "pattern": "^SetpointAbridged$",
             "type": "string",
-            "pattern": "^SetpointAbridged$"
+            "readOnly": true
           },
           "humidifying_schedule": {
             "title": "Humidifying Schedule",
@@ -1702,8 +2037,9 @@
           "type": {
             "title": "Type",
             "default": "RoomEnergyPropertiesAbridged",
+            "pattern": "^RoomEnergyPropertiesAbridged$",
             "type": "string",
-            "pattern": "^RoomEnergyPropertiesAbridged$"
+            "readOnly": true
           },
           "construction_set": {
             "title": "Construction Set",
@@ -1792,6 +2128,26 @@
         },
         "additionalProperties": false
       },
+      "RoomRadiancePropertiesAbridged": {
+        "title": "RoomRadiancePropertiesAbridged",
+        "description": "Abridged Radiance Properties for Honeybee Room.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RoomRadiancePropertiesAbridged",
+            "pattern": "^RoomRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier_set": {
+            "title": "Modifier Set",
+            "description": "An identifier for a unique Room-Assigned ModifierSet (default: None).",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RoomPropertiesAbridged": {
         "title": "RoomPropertiesAbridged",
         "type": "object",
@@ -1799,11 +2155,15 @@
           "type": {
             "title": "Type",
             "default": "RoomPropertiesAbridged",
+            "pattern": "^RoomPropertiesAbridged$",
             "type": "string",
-            "pattern": "^RoomPropertiesAbridged$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/RoomEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/RoomRadiancePropertiesAbridged"
           }
         }
       },
@@ -1851,8 +2211,9 @@
           "type": {
             "title": "Type",
             "default": "Room",
+            "pattern": "^Room$",
             "type": "string",
-            "pattern": "^Room$"
+            "readOnly": true
           },
           "indoor_shades": {
             "title": "Indoor Shades",
@@ -1875,7 +2236,8 @@
             "description": "An integer noting how many times this Room is repeated. Multipliers are used to speed up the calculation when similar Rooms are repeated more than once. Essentially, a given simulation with the Room is run once and then the result is mutliplied by the multiplier.",
             "default": 1,
             "minimum": 1,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "required": [
@@ -1914,8 +2276,9 @@
           "type": {
             "title": "Type",
             "default": "WallConstructionSetAbridged",
+            "pattern": "^WallConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^WallConstructionSetAbridged$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -1949,8 +2312,9 @@
           "type": {
             "title": "Type",
             "default": "FloorConstructionSetAbridged",
+            "pattern": "^FloorConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^FloorConstructionSetAbridged$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -1984,8 +2348,9 @@
           "type": {
             "title": "Type",
             "default": "RoofCeilingConstructionSetAbridged",
+            "pattern": "^RoofCeilingConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^RoofCeilingConstructionSetAbridged$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -1998,8 +2363,9 @@
           "type": {
             "title": "Type",
             "default": "ApertureConstructionSetAbridged",
+            "pattern": "^ApertureConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^ApertureConstructionSetAbridged$"
+            "readOnly": true
           },
           "interior_construction": {
             "title": "Interior Construction",
@@ -2040,8 +2406,9 @@
           "type": {
             "title": "Type",
             "default": "DoorConstructionSetAbridged",
+            "pattern": "^DoorConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^DoorConstructionSetAbridged$"
+            "readOnly": true
           },
           "interior_construction": {
             "title": "Interior Construction",
@@ -2101,8 +2468,9 @@
           "type": {
             "title": "Type",
             "default": "ConstructionSetAbridged",
+            "pattern": "^ConstructionSetAbridged$",
             "type": "string",
-            "pattern": "^ConstructionSetAbridged$"
+            "readOnly": true
           },
           "wall_set": {
             "title": "Wall Set",
@@ -2186,25 +2554,29 @@
             "description": "Thickness of the material layer in meters.",
             "exclusiveMinimum": 0,
             "maximum": 3,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "conductivity": {
             "title": "Conductivity",
             "description": "Thermal conductivity of the material layer in W/(m-K).",
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "density": {
             "title": "Density",
             "description": "Density of the material layer in kg/m3.",
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "specific_heat": {
             "title": "Specific Heat",
             "description": "Specific heat of the material layer in J/(kg-K).",
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "display_name": {
             "title": "Display Name",
@@ -2214,8 +2586,9 @@
           "type": {
             "title": "Type",
             "default": "EnergyMaterial",
+            "pattern": "^EnergyMaterial$",
             "type": "string",
-            "pattern": "^EnergyMaterial$"
+            "readOnly": true
           },
           "roughness": {
             "title": "Roughness",
@@ -2236,7 +2609,8 @@
             "default": 0.9,
             "exclusiveMinimum": 0,
             "maximum": 0.99999,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_absorptance": {
             "title": "Solar Absorptance",
@@ -2244,7 +2618,8 @@
             "default": 0.7,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_absorptance": {
             "title": "Visible Absorptance",
@@ -2252,7 +2627,8 @@
             "default": 0.7,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2280,7 +2656,8 @@
             "title": "R Value",
             "description": "The thermal resistance (R-value) of the material layer [m2-K/W].",
             "minimum": 0.001,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "display_name": {
             "title": "Display Name",
@@ -2290,8 +2667,9 @@
           "type": {
             "title": "Type",
             "default": "EnergyMaterialNoMass",
+            "pattern": "^EnergyMaterialNoMass$",
             "type": "string",
-            "pattern": "^EnergyMaterialNoMass$"
+            "readOnly": true
           },
           "roughness": {
             "title": "Roughness",
@@ -2312,7 +2690,8 @@
             "default": 0.9,
             "exclusiveMinimum": 0,
             "maximum": 0.99999,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_absorptance": {
             "title": "Solar Absorptance",
@@ -2320,7 +2699,8 @@
             "default": 0.7,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_absorptance": {
             "title": "Visible Absorptance",
@@ -2328,7 +2708,8 @@
             "default": 0.7,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2352,6 +2733,8 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "minLength": 1,
+            "maxLength": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -2386,8 +2769,9 @@
           "type": {
             "title": "Type",
             "default": "OpaqueConstruction",
+            "pattern": "^OpaqueConstruction$",
             "type": "string",
-            "pattern": "^OpaqueConstruction$"
+            "readOnly": true
           }
         },
         "required": [
@@ -2432,8 +2816,9 @@
           "type": {
             "title": "Type",
             "default": "WallConstructionSet",
+            "pattern": "^WallConstructionSet$",
             "type": "string",
-            "pattern": "^WallConstructionSet$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -2473,8 +2858,9 @@
           "type": {
             "title": "Type",
             "default": "FloorConstructionSet",
+            "pattern": "^FloorConstructionSet$",
             "type": "string",
-            "pattern": "^FloorConstructionSet$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -2514,8 +2900,9 @@
           "type": {
             "title": "Type",
             "default": "RoofCeilingConstructionSet",
+            "pattern": "^RoofCeilingConstructionSet$",
             "type": "string",
-            "pattern": "^RoofCeilingConstructionSet$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -2540,15 +2927,17 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGas",
+            "pattern": "^EnergyWindowMaterialGas$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialGas$"
+            "readOnly": true
           },
           "thickness": {
             "title": "Thickness",
             "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
             "default": 0.0125,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "gas_type": {
             "title": "Gas Type",
@@ -2582,32 +2971,37 @@
           "conductivity_coeff_a": {
             "title": "Conductivity Coeff A",
             "description": "The A coefficient for gas conductivity in W/(m-K).",
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "viscosity_coeff_a": {
             "title": "Viscosity Coeff A",
             "description": "The A coefficient for gas viscosity in kg/(m-s).",
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "specific_heat_coeff_a": {
             "title": "Specific Heat Coeff A",
             "description": "The A coefficient for gas specific heat in J/(kg-K).",
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "specific_heat_ratio": {
             "title": "Specific Heat Ratio",
             "description": "The specific heat ratio for gas.",
             "exclusiveMinimum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "molecular_weight": {
             "title": "Molecular Weight",
             "description": "The molecular weight for gas in g/mol.",
             "minimum": 20,
             "maximum": 200,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "display_name": {
             "title": "Display Name",
@@ -2617,51 +3011,59 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGasCustom",
+            "pattern": "^EnergyWindowMaterialGasCustom$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialGasCustom$"
+            "readOnly": true
           },
           "thickness": {
             "title": "Thickness",
             "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
             "default": 0.0125,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "conductivity_coeff_b": {
             "title": "Conductivity Coeff B",
             "description": "The B coefficient for gas conductivity in W/(m-K2).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "conductivity_coeff_c": {
             "title": "Conductivity Coeff C",
             "description": "The C coefficient for gas conductivity in W/(m-K3).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "viscosity_coeff_b": {
             "title": "Viscosity Coeff B",
             "description": "The B coefficient for gas viscosity in kg/(m-s-K).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "viscosity_coeff_c": {
             "title": "Viscosity Coeff C",
             "description": "The C coefficient for gas viscosity in kg/(m-s-K2).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "specific_heat_coeff_b": {
             "title": "Specific Heat Coeff B",
             "description": "The B coefficient for gas specific heat in J/(kg-K2).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "specific_heat_coeff_c": {
             "title": "Specific Heat Coeff C",
             "description": "The C coefficient for gas specific heat in J/(kg-K3).",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2707,7 +3109,8 @@
             "description": "A list of fractional numbers describing the volumetric fractions of gas types in the mixture. This list must align with the gas_types list and must sum to 1.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 2,
             "maxItems": 4
@@ -2720,15 +3123,17 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGasMixture",
+            "pattern": "^EnergyWindowMaterialGasMixture$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialGasMixture$"
+            "readOnly": true
           },
           "thickness": {
             "title": "Thickness",
             "description": "The thickness of the gas mixture layer in meters.",
             "default": 0.0125,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2755,14 +3160,16 @@
             "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
             "exclusiveMinimum": 0,
             "maximum": 5.8,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "shgc": {
             "title": "Shgc",
             "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "display_name": {
             "title": "Display Name",
@@ -2772,8 +3179,9 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialSimpleGlazSys",
+            "pattern": "^EnergyWindowMaterialSimpleGlazSys$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialSimpleGlazSys$"
+            "readOnly": true
           },
           "vt": {
             "title": "Vt",
@@ -2781,7 +3189,8 @@
             "default": 0.54,
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2793,7 +3202,7 @@
       },
       "EnergyWindowMaterialBlind": {
         "title": "EnergyWindowMaterialBlind",
-        "description": "Window blind properties.\n\nWindow blind properties consist of flat, equally-spaced slats.",
+        "description": "Window blind material consisting of flat, equally-spaced slats.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2811,16 +3220,16 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialBlind",
+            "pattern": "^EnergyWindowMaterialBlind$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialBlind$"
+            "readOnly": true
           },
           "slat_orientation": {
             "title": "Slat Orientation",
             "default": "Horizontal",
             "enum": [
               "Horizontal",
-              "Vertical",
-              "Choices include Horizontal and Vertical. Horizontal means the slats are parallel to the X-axis of the window. Vertical means the slats are parallel to the Y-axis of the window."
+              "Vertical"
             ],
             "type": "string"
           },
@@ -2830,7 +3239,8 @@
             "default": 0.025,
             "exclusiveMinimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "slat_separation": {
             "title": "Slat Separation",
@@ -2838,7 +3248,8 @@
             "default": 0.01875,
             "exclusiveMinimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "slat_thickness": {
             "title": "Slat Thickness",
@@ -2846,7 +3257,8 @@
             "default": 0.001,
             "exclusiveMinimum": 0,
             "maximum": 0.1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "slat_angle": {
             "title": "Slat Angle",
@@ -2854,14 +3266,16 @@
             "default": 45,
             "minimum": 0,
             "maximum": 180,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "slat_conductivity": {
             "title": "Slat Conductivity",
             "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
             "default": 221,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_solar_transmittance": {
             "title": "Beam Solar Transmittance",
@@ -2869,7 +3283,8 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_solar_reflectance": {
             "title": "Beam Solar Reflectance",
@@ -2877,7 +3292,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_solar_reflectance_back": {
             "title": "Beam Solar Reflectance Back",
@@ -2885,7 +3301,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_solar_transmittance": {
             "title": "Diffuse Solar Transmittance",
@@ -2893,7 +3310,8 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_solar_reflectance": {
             "title": "Diffuse Solar Reflectance",
@@ -2901,7 +3319,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_solar_reflectance_back": {
             "title": "Diffuse Solar Reflectance Back",
@@ -2909,7 +3328,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_visible_transmittance": {
             "title": "Beam Visible Transmittance",
@@ -2917,7 +3337,8 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_visible_reflectance": {
             "title": "Beam Visible Reflectance",
@@ -2925,7 +3346,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "beam_visible_reflectance_back": {
             "title": "Beam Visible Reflectance Back",
@@ -2933,7 +3355,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_visible_transmittance": {
             "title": "Diffuse Visible Transmittance",
@@ -2941,7 +3364,8 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_visible_reflectance": {
             "title": "Diffuse Visible Reflectance",
@@ -2949,7 +3373,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "diffuse_visible_reflectance_back": {
             "title": "Diffuse Visible Reflectance Back",
@@ -2957,7 +3382,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "infrared_transmittance": {
             "title": "Infrared Transmittance",
@@ -2965,7 +3391,8 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "emissivity": {
             "title": "Emissivity",
@@ -2973,7 +3400,8 @@
             "default": 0.9,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "emissivity_back": {
             "title": "Emissivity Back",
@@ -2981,7 +3409,8 @@
             "default": 0.9,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "distance_to_glass": {
             "title": "Distance To Glass",
@@ -2989,7 +3418,8 @@
             "default": 0.05,
             "minimum": 0.01,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "top_opening_multiplier": {
             "title": "Top Opening Multiplier",
@@ -2997,7 +3427,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "bottom_opening_multiplier": {
             "title": "Bottom Opening Multiplier",
@@ -3005,7 +3436,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "left_opening_multiplier": {
             "title": "Left Opening Multiplier",
@@ -3013,7 +3445,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "right_opening_multiplier": {
             "title": "Right Opening Multiplier",
@@ -3021,7 +3454,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -3049,15 +3483,17 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGlazing",
+            "pattern": "^EnergyWindowMaterialGlazing$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialGlazing$"
+            "readOnly": true
           },
           "thickness": {
             "title": "Thickness",
             "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
             "default": 0.003,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_transmittance": {
             "title": "Solar Transmittance",
@@ -3065,7 +3501,8 @@
             "default": 0.85,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_reflectance": {
             "title": "Solar Reflectance",
@@ -3073,12 +3510,14 @@
             "default": 0.075,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_reflectance_back": {
             "title": "Solar Reflectance Back",
             "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_transmittance": {
             "title": "Visible Transmittance",
@@ -3086,7 +3525,8 @@
             "default": 0.9,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_reflectance": {
             "title": "Visible Reflectance",
@@ -3094,14 +3534,16 @@
             "default": 0.075,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_reflectance_back": {
             "title": "Visible Reflectance Back",
             "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "infrared_transmittance": {
             "title": "Infrared Transmittance",
@@ -3109,7 +3551,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "emissivity": {
             "title": "Emissivity",
@@ -3117,7 +3560,8 @@
             "default": 0.84,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "emissivity_back": {
             "title": "Emissivity Back",
@@ -3125,20 +3569,23 @@
             "default": 0.84,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "conductivity": {
             "title": "Conductivity",
             "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
             "default": 0.9,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "dirt_correction": {
             "title": "Dirt Correction",
             "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
             "default": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_diffusing": {
             "title": "Solar Diffusing",
@@ -3172,8 +3619,9 @@
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialShade",
+            "pattern": "^EnergyWindowMaterialShade$",
             "type": "string",
-            "pattern": "^EnergyWindowMaterialShade$"
+            "readOnly": true
           },
           "solar_transmittance": {
             "title": "Solar Transmittance",
@@ -3181,7 +3629,8 @@
             "default": 0.4,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "solar_reflectance": {
             "title": "Solar Reflectance",
@@ -3189,7 +3638,8 @@
             "default": 0.5,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_transmittance": {
             "title": "Visible Transmittance",
@@ -3197,7 +3647,8 @@
             "default": 0.4,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_reflectance": {
             "title": "Visible Reflectance",
@@ -3205,7 +3656,8 @@
             "default": 0.4,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "emissivity": {
             "title": "Emissivity",
@@ -3213,7 +3665,8 @@
             "default": 0.9,
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "infrared_transmittance": {
             "title": "Infrared Transmittance",
@@ -3221,21 +3674,24 @@
             "default": 0,
             "exclusiveMaximum": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "thickness": {
             "title": "Thickness",
             "description": "The thickness of the shade material in meters. Default value is 0.005.",
             "default": 0.005,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "conductivity": {
             "title": "Conductivity",
             "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
             "default": 0.1,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "distance_to_glass": {
             "title": "Distance To Glass",
@@ -3243,7 +3699,8 @@
             "default": 0.05,
             "minimum": 0.001,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "top_opening_multiplier": {
             "title": "Top Opening Multiplier",
@@ -3251,7 +3708,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "bottom_opening_multiplier": {
             "title": "Bottom Opening Multiplier",
@@ -3259,7 +3717,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "left_opening_multiplier": {
             "title": "Left Opening Multiplier",
@@ -3267,7 +3726,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "right_opening_multiplier": {
             "title": "Right Opening Multiplier",
@@ -3275,7 +3735,8 @@
             "default": 0.5,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "airflow_permeability": {
             "title": "Airflow Permeability",
@@ -3283,7 +3744,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 0.8,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -3306,6 +3768,8 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "minLength": 1,
+            "maxLength": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -3355,8 +3819,9 @@
           "type": {
             "title": "Type",
             "default": "WindowConstruction",
+            "pattern": "^WindowConstruction$",
             "type": "string",
-            "pattern": "^WindowConstruction$"
+            "readOnly": true
           }
         },
         "required": [
@@ -3374,8 +3839,9 @@
           "type": {
             "title": "Type",
             "default": "ApertureConstructionSet",
+            "pattern": "^ApertureConstructionSet$",
             "type": "string",
-            "pattern": "^ApertureConstructionSet$"
+            "readOnly": true
           },
           "interior_construction": {
             "title": "Interior Construction",
@@ -3424,8 +3890,9 @@
           "type": {
             "title": "Type",
             "default": "DoorConstructionSet",
+            "pattern": "^DoorConstructionSet$",
             "type": "string",
-            "pattern": "^DoorConstructionSet$"
+            "readOnly": true
           },
           "interior_construction": {
             "title": "Interior Construction",
@@ -3495,8 +3962,9 @@
           "type": {
             "title": "Type",
             "default": "ShadeConstruction",
+            "pattern": "^ShadeConstruction$",
             "type": "string",
-            "pattern": "^ShadeConstruction$"
+            "readOnly": true
           },
           "solar_reflectance": {
             "title": "Solar Reflectance",
@@ -3504,7 +3972,8 @@
             "default": 0.2,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "visible_reflectance": {
             "title": "Visible Reflectance",
@@ -3512,7 +3981,8 @@
             "default": 0.2,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "is_specular": {
             "title": "Is Specular",
@@ -3543,7 +4013,8 @@
             "description": "A list of floats or integers for the values of the schedule. The length of this list must match the length of the times list.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             }
           },
           "display_name": {
@@ -3554,8 +4025,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleDay",
+            "pattern": "^ScheduleDay$",
             "type": "string",
-            "pattern": "^ScheduleDay$"
+            "readOnly": true
           },
           "times": {
             "title": "Times",
@@ -3564,11 +4036,14 @@
               0,
               0
             ],
+            "minItems": 2,
+            "maxItems": 2,
             "type": "array",
             "items": {
               "type": "array",
               "items": {
-                "type": "integer"
+                "type": "integer",
+                "format": "int32"
               },
               "minItems": 2,
               "maxItems": 2
@@ -3602,8 +4077,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleRuleAbridged",
+            "pattern": "^ScheduleRuleAbridged$",
             "type": "string",
-            "pattern": "^ScheduleRuleAbridged$"
+            "readOnly": true
           },
           "apply_sunday": {
             "title": "Apply Sunday",
@@ -3656,7 +4132,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -3670,7 +4147,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -3689,8 +4167,9 @@
           "type": {
             "title": "Type",
             "default": "NoLimit",
+            "pattern": "^NoLimit$",
             "type": "string",
-            "pattern": "^NoLimit$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3715,8 +4194,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleTypeLimit",
+            "pattern": "^ScheduleTypeLimit$",
             "type": "string",
-            "pattern": "^ScheduleTypeLimit$"
+            "readOnly": true
           },
           "lower_limit": {
             "title": "Lower Limit",
@@ -3729,7 +4209,8 @@
                 "$ref": "#/components/schemas/NoLimit"
               },
               {
-                "type": "number"
+                "type": "number",
+                "format": "double"
               }
             ]
           },
@@ -3744,7 +4225,8 @@
                 "$ref": "#/components/schemas/NoLimit"
               },
               {
-                "type": "number"
+                "type": "number",
+                "format": "double"
               }
             ]
           },
@@ -3819,8 +4301,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleRuleset",
+            "pattern": "^ScheduleRuleset$",
             "type": "string",
-            "pattern": "^ScheduleRuleset$"
+            "readOnly": true
           },
           "schedule_rules": {
             "title": "Schedule Rules",
@@ -3885,7 +4368,8 @@
             "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 24,
             "maxItems": 527040
@@ -3898,8 +4382,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleFixedInterval",
+            "pattern": "^ScheduleFixedInterval$",
             "type": "string",
-            "pattern": "^ScheduleFixedInterval$"
+            "readOnly": true
           },
           "schedule_type_limit": {
             "title": "Schedule Type Limit",
@@ -3914,7 +4399,8 @@
             "title": "Timestep",
             "description": "An integer for the number of steps per hour that the input values correspond to.  For example, if each value represents 30 minutes, the timestep is 2. For 15 minutes, it is 4.",
             "default": 1,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           },
           "start_date": {
             "title": "Start Date",
@@ -3925,7 +4411,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -3934,7 +4421,8 @@
             "title": "Placeholder Value",
             "description": " A value that will be used for all times not covered by the input values. Typically, your simulation should not need to use this value if the input values completely cover the simulation period.",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "interpolate": {
             "title": "Interpolate",
@@ -3981,15 +4469,17 @@
           "type": {
             "title": "Type",
             "default": "AirBoundaryConstruction",
+            "pattern": "^AirBoundaryConstruction$",
             "type": "string",
-            "pattern": "^AirBoundaryConstruction$"
+            "readOnly": true
           },
           "air_mixing_per_area": {
             "title": "Air Mixing Per Area",
             "description": "A positive number for the amount of air mixing between Rooms across the air boundary surface [m3/s-m2]. Default: 0.1 corresponds to average indoor air speeds of 0.1 m/s (roughly 20 fpm), which is typical of what would be induced by a HVAC system.",
             "default": 0.1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -4018,8 +4508,9 @@
           "type": {
             "title": "Type",
             "default": "ConstructionSet",
+            "pattern": "^ConstructionSet$",
             "type": "string",
-            "pattern": "^ConstructionSet$"
+            "readOnly": true
           },
           "wall_set": {
             "title": "Wall Set",
@@ -4105,6 +4596,8 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "minLength": 1,
+            "maxLength": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -4122,8 +4615,9 @@
           "type": {
             "title": "Type",
             "default": "OpaqueConstructionAbridged",
+            "pattern": "^OpaqueConstructionAbridged$",
             "type": "string",
-            "pattern": "^OpaqueConstructionAbridged$"
+            "readOnly": true
           }
         },
         "required": [
@@ -4147,6 +4641,8 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "minLength": 1,
+            "maxLength": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -4164,8 +4660,9 @@
           "type": {
             "title": "Type",
             "default": "WindowConstructionAbridged",
+            "pattern": "^WindowConstructionAbridged$",
             "type": "string",
-            "pattern": "^WindowConstructionAbridged$"
+            "readOnly": true
           }
         },
         "required": [
@@ -4201,15 +4698,17 @@
           "type": {
             "title": "Type",
             "default": "AirBoundaryConstructionAbridged",
+            "pattern": "^AirBoundaryConstructionAbridged$",
             "type": "string",
-            "pattern": "^AirBoundaryConstructionAbridged$"
+            "readOnly": true
           },
           "air_mixing_per_area": {
             "title": "Air Mixing Per Area",
             "description": "A positive number for the amount of air mixing between Rooms across the air boundary surface [m3/s-m2]. Default: 0.1 corresponds to average indoor air speeds of 0.1 m/s (roughly 20 fpm), which is typical of what would be induced by a HVAC system.",
             "default": 0.1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -4226,8 +4725,9 @@
           "type": {
             "title": "Type",
             "default": "Autosize",
+            "pattern": "^Autosize$",
             "type": "string",
-            "pattern": "^Autosize$"
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4252,8 +4752,9 @@
           "type": {
             "title": "Type",
             "default": "IdealAirSystemAbridged",
+            "pattern": "^IdealAirSystemAbridged$",
             "type": "string",
-            "pattern": "^IdealAirSystemAbridged$"
+            "readOnly": true
           },
           "economizer_type": {
             "title": "Economizer Type",
@@ -4278,7 +4779,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
@@ -4286,7 +4788,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "heating_air_temperature": {
             "title": "Heating Air Temperature",
@@ -4294,7 +4797,8 @@
             "default": 50,
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 100,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "cooling_air_temperature": {
             "title": "Cooling Air Temperature",
@@ -4302,7 +4806,8 @@
             "default": 13,
             "exclusiveMinimum": -100,
             "exclusiveMaximum": 50,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "heating_limit": {
             "title": "Heating Limit",
@@ -4319,7 +4824,8 @@
               },
               {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "format": "double"
               }
             ]
           },
@@ -4338,7 +4844,8 @@
               },
               {
                 "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "format": "double"
               }
             ]
           },
@@ -4382,8 +4889,9 @@
           "type": {
             "title": "Type",
             "default": "ProgramTypeAbridged",
+            "pattern": "^ProgramTypeAbridged$",
             "type": "string",
-            "pattern": "^ProgramTypeAbridged$"
+            "readOnly": true
           },
           "people": {
             "title": "People",
@@ -4470,7 +4978,8 @@
             "title": "People Per Area",
             "description": "People per floor area expressed as [people/m2]",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "occupancy_schedule": {
             "title": "Occupancy Schedule",
@@ -4504,8 +5013,9 @@
           "type": {
             "title": "Type",
             "default": "People",
+            "pattern": "^People$",
             "type": "string",
-            "pattern": "^People$"
+            "readOnly": true
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -4513,7 +5023,8 @@
             "default": 0.3,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -4528,7 +5039,8 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 1,
+                "format": "double"
               }
             ]
           }
@@ -4557,7 +5069,8 @@
             "title": "Watts Per Area",
             "description": "Lighting per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -4579,8 +5092,9 @@
           "type": {
             "title": "Type",
             "default": "Lighting",
+            "pattern": "^Lighting$",
             "type": "string",
-            "pattern": "^Lighting$"
+            "readOnly": true
           },
           "visible_fraction": {
             "title": "Visible Fraction",
@@ -4588,7 +5102,8 @@
             "default": 0.25,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -4596,7 +5111,8 @@
             "default": 0.32,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "return_air_fraction": {
             "title": "Return Air Fraction",
@@ -4604,7 +5120,8 @@
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -4630,7 +5147,8 @@
             "title": "Watts Per Area",
             "description": "Equipment level per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -4655,7 +5173,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -4663,7 +5182,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -4671,13 +5191,15 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "ElectricEquipment",
+            "pattern": "^ElectricEquipment$",
             "type": "string",
-            "pattern": "^ElectricEquipment$"
+            "readOnly": true
           }
         },
         "required": [
@@ -4703,7 +5225,8 @@
             "title": "Watts Per Area",
             "description": "Equipment level per floor area as [W/m2].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -4728,7 +5251,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "latent_fraction": {
             "title": "Latent Fraction",
@@ -4736,7 +5260,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "lost_fraction": {
             "title": "Lost Fraction",
@@ -4744,13 +5269,15 @@
             "default": 0,
             "minimum": 0,
             "maximum": 1,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "GasEquipment",
+            "pattern": "^GasEquipment$",
             "type": "string",
-            "pattern": "^GasEquipment$"
+            "readOnly": true
           }
         },
         "required": [
@@ -4776,7 +5303,8 @@
             "title": "Flow Per Exterior Area",
             "description": "Number for the infiltration per exterior surface area in m3/s-m2.",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -4798,26 +5326,30 @@
           "type": {
             "title": "Type",
             "default": "Infiltration",
+            "pattern": "^Infiltration$",
             "type": "string",
-            "pattern": "^Infiltration$"
+            "readOnly": true
           },
           "constant_coefficient": {
             "title": "Constant Coefficient",
             "default": 1,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "temperature_coefficient": {
             "title": "Temperature Coefficient",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "velocity_coefficient": {
             "title": "Velocity Coefficient",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -4847,36 +5379,41 @@
           "type": {
             "title": "Type",
             "default": "Ventilation",
+            "pattern": "^Ventilation$",
             "type": "string",
-            "pattern": "^Ventilation$"
+            "readOnly": true
           },
           "flow_per_person": {
             "title": "Flow Per Person",
             "description": "Intensity of ventilation in[] m3/s per person]. Note that setting this value does not mean that ventilation is varied based on real-time occupancy but rather that the design level of ventilation is determined using this value and the People object of the Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "flow_per_area": {
             "title": "Flow Per Area",
             "description": "Intensity of ventilation in [m3/s per m2 of floor area].",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "air_changes_per_hour": {
             "title": "Air Changes Per Hour",
             "description": "Intensity of ventilation in air changes per hour (ACH) for the entire Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "flow_per_zone": {
             "title": "Flow Per Zone",
             "description": "Intensity of ventilation in m3/s for the entire Room.",
             "default": 0,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "schedule": {
             "title": "Schedule",
@@ -4940,8 +5477,9 @@
           "type": {
             "title": "Type",
             "default": "Setpoint",
+            "pattern": "^Setpoint$",
             "type": "string",
-            "pattern": "^Setpoint$"
+            "readOnly": true
           },
           "humidifying_schedule": {
             "title": "Humidifying Schedule",
@@ -4995,8 +5533,9 @@
           "type": {
             "title": "Type",
             "default": "ProgramType",
+            "pattern": "^ProgramType$",
             "type": "string",
-            "pattern": "^ProgramType$"
+            "readOnly": true
           },
           "people": {
             "title": "People",
@@ -5102,8 +5641,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleRulesetAbridged",
+            "pattern": "^ScheduleRulesetAbridged$",
             "type": "string",
-            "pattern": "^ScheduleRulesetAbridged$"
+            "readOnly": true
           },
           "schedule_rules": {
             "title": "Schedule Rules",
@@ -5166,7 +5706,8 @@
             "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "format": "double"
             },
             "minItems": 24,
             "maxItems": 527040
@@ -5179,8 +5720,9 @@
           "type": {
             "title": "Type",
             "default": "ScheduleFixedIntervalAbridged",
+            "pattern": "^ScheduleFixedIntervalAbridged$",
             "type": "string",
-            "pattern": "^ScheduleFixedIntervalAbridged$"
+            "readOnly": true
           },
           "schedule_type_limit": {
             "title": "Schedule Type Limit",
@@ -5193,7 +5735,8 @@
             "title": "Timestep",
             "description": "An integer for the number of steps per hour that the input values correspond to.  For example, if each value represents 30 minutes, the timestep is 2. For 15 minutes, it is 4.",
             "default": 1,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           },
           "start_date": {
             "title": "Start Date",
@@ -5204,7 +5747,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -5213,7 +5757,8 @@
             "title": "Placeholder Value",
             "description": " A value that will be used for all times not covered by the input values. Typically, your simulation should not need to use this value if the input values completely cover the simulation period.",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "interpolate": {
             "title": "Interpolate",
@@ -5236,8 +5781,9 @@
           "type": {
             "title": "Type",
             "default": "ModelEnergyProperties",
+            "pattern": "^ModelEnergyProperties$",
             "type": "string",
-            "pattern": "^ModelEnergyProperties$"
+            "readOnly": true
           },
           "terrain_type": {
             "title": "Terrain Type",
@@ -5395,6 +5941,2047 @@
         },
         "additionalProperties": false
       },
+      "Void": {
+        "title": "Void",
+        "description": "Void modifier",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "void",
+            "pattern": "^void$",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Mirror": {
+        "title": "Mirror",
+        "description": "Radiance mirror material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "mirror",
+            "pattern": "^mirror$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_reflectance": {
+            "title": "R Reflectance",
+            "description": "A value between 0 and 1 for the red channel reflectance (default: 1).",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_reflectance": {
+            "title": "G Reflectance",
+            "description": "A value between 0 and 1 for the green channel reflectance (default: 1).",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_reflectance": {
+            "title": "B Reflectance",
+            "description": "A value between 0 and 1 for the blue channel reflectance (default: 1).",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "alternate_material": {
+            "title": "Alternate Material",
+            "description": "An optional material that may be used like the illum type to specify a different material to be used for shading non-source rays. If None, this will keep the alternat_material as mirror. If this alternate material is given as Void, then the mirror surface will be invisible. Using Void is only appropriate if the surface hides other (more detailed) geometry with the same overall reflectance (default: None).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Trans": {
+        "title": "Trans",
+        "description": "Radiance Translucent material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "trans",
+            "pattern": "^trans$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_reflectance": {
+            "title": "R Reflectance",
+            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_reflectance": {
+            "title": "G Reflectance",
+            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_reflectance": {
+            "title": "B Reflectance",
+            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "specularity": {
+            "title": "Specularity",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic. (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "transmitted_diff": {
+            "title": "Transmitted Diff",
+            "description": "The fraction of transmitted light that is transmitted diffusely in a scattering fashion (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "transmitted_spec": {
+            "title": "Transmitted Spec",
+            "description": "The fraction of transmitted light that is not diffusely scattered (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Light": {
+        "title": "Light",
+        "description": "Radiance Light material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "light",
+            "pattern": "^light$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_emittance": {
+            "title": "R Emittance",
+            "description": "A value between 0 and 1 for the red channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_emittance": {
+            "title": "G Emittance",
+            "description": "A value between 0 and 1 for the green channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_emittance": {
+            "title": "B Emittance",
+            "description": "A value between 0 and 1 for the blue channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Glow": {
+        "title": "Glow",
+        "description": "Radiance Glow material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "glow",
+            "pattern": "^glow$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_emittance": {
+            "title": "R Emittance",
+            "description": "A value between 0 and 1 for the red channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_emittance": {
+            "title": "G Emittance",
+            "description": "A value between 0 and 1 for the green channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_emittance": {
+            "title": "B Emittance",
+            "description": "A value between 0 and 1 for the blue channel of the modifier (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "max_radius": {
+            "title": "Max Radius",
+            "description": "Maximum radius for shadow testing (default: 0). Surfaces with zero will never be tested for zero, although it may participate in interreflection calculation. Negative values will never contribute to scene illumination.",
+            "default": 0,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "BSDF": {
+        "title": "BSDF",
+        "description": "Radiance BSDF (Bidirectional Scattering Distribution Function) material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "bsdf_data": {
+            "title": "Bsdf Data",
+            "description": "BSDF xml file data as bytes.",
+            "type": "string",
+            "format": "binary"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "BSDF",
+            "pattern": "^BSDF$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "up_orientation": {
+            "title": "Up Orientation",
+            "description": "Vector as sequence that sets the hemisphere that the BSDF material faces. (default: (0.01, 0.01, 1.00).",
+            "default": [
+              0.01,
+              0.01,
+              1.0
+            ],
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Optional number to set the thickness of the BSDF material Sign of thickness indicates whether proxied geometry is behind the BSDF surface (when thickness is positive) or in front (when thickness is negative)(default: 0).",
+            "default": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "function_file": {
+            "title": "Function File",
+            "description": "Optional input for function file (default: \".\").",
+            "default": ".",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "transform": {
+            "title": "Transform",
+            "description": "Optional transform input to scale the thickness and reorient the up vector (default: None).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "front_diffuse_reflectance": {
+            "title": "Front Diffuse Reflectance",
+            "description": "Optional additional front diffuse reflectance as sequence of numbers (default: None).",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "back_diffuse_reflectance": {
+            "title": "Back Diffuse Reflectance",
+            "description": "Optional additional back diffuse reflectance as sequence of numbers (default: None).",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "diffuse_transmittance": {
+            "title": "Diffuse Transmittance",
+            "description": "Optional additional diffuse transmittance as sequence of numbers (default: None).",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "identifier",
+          "bsdf_data"
+        ],
+        "additionalProperties": false
+      },
+      "Glass": {
+        "title": "Glass",
+        "description": "Radiance glass material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "glass",
+            "pattern": "^glass$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_transmissivity": {
+            "title": "R Transmissivity",
+            "description": "A value between 0 and 1 for the red channel transmissivity (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_transmissivity": {
+            "title": "G Transmissivity",
+            "description": "A value between 0 and 1 for the green channel transmissivity (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_transmissivity": {
+            "title": "B Transmissivity",
+            "description": "A value between 0 and 1 for the blue channel transmissivity (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "refraction_index": {
+            "title": "Refraction Index",
+            "description": "A value between 0 and 1 for the index of refraction (default: 1.52).",
+            "default": 1.52,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Plastic": {
+        "title": "Plastic",
+        "description": "Radiance plastic material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "plastic",
+            "pattern": "^plastic$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_reflectance": {
+            "title": "R Reflectance",
+            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_reflectance": {
+            "title": "G Reflectance",
+            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_reflectance": {
+            "title": "B Reflectance",
+            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "specularity": {
+            "title": "Specularity",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic. (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WallModifierSet": {
+        "title": "WallModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's Walls.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "A radiance modifier object for faces with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "WallModifierSet",
+            "pattern": "^WallModifierSet$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FloorModifierSet": {
+        "title": "FloorModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's Floors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "A radiance modifier object for faces with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "FloorModifierSet",
+            "pattern": "^FloorModifierSet$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoofCeilingModifierSet": {
+        "title": "RoofCeilingModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's roofs.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "A radiance modifier object for faces with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "RoofCeilingModifierSet",
+            "pattern": "^RoofCeilingModifierSet$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApertureModifierSet": {
+        "title": "ApertureModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's Apertures.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureModifierSet",
+            "pattern": "^ApertureModifierSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "window_modifier": {
+            "title": "Window Modifier",
+            "description": "A modifier object for apertures with an Outdoors boundary condition, False is_operable property, and Wall parent Face.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A modifier object for apertures with a Surface boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "skylight_modifier": {
+            "title": "Skylight Modifier",
+            "description": "A modifier object for apertures with an Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "operable_modifier": {
+            "title": "Operable Modifier",
+            "description": "A modifier object for apertures with an Outdoors boundary condition and a True is_operable property.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoorModifierSet": {
+        "title": "DoorModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's Doors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "A radiance modifier object for faces with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "DoorModifierSet",
+            "pattern": "^DoorModifierSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "interior_glass_modifier": {
+            "title": "Interior Glass Modifier",
+            "description": "A modifier object for glass with a Surface boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "exterior_glass_modifier": {
+            "title": "Exterior Glass Modifier",
+            "description": "A modifier object for glass with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "overhead_modifier": {
+            "title": "Overhead Modifier",
+            "description": "A window modifier object for doors with an Outdoors boundary condition and a RoofCeiling or Floor face type for their parent face.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShadeModifierSet": {
+        "title": "ShadeModifierSet",
+        "description": "Set containing radiance modifiers needed for a model's Shade.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "A radiance modifier object for faces with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "A radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeModifierSet",
+            "pattern": "^ShadeModifierSet$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModifierSet": {
+        "title": "ModifierSet",
+        "description": "Set containing all radiance modifiers needed to create a radiance model.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ModifierSet",
+            "pattern": "^ModifierSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "wall_set": {
+            "title": "Wall Set",
+            "description": "An optional WallModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WallModifierSet"
+              }
+            ]
+          },
+          "floor_set": {
+            "title": "Floor Set",
+            "description": "An optional FloorModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorModifierSet"
+              }
+            ]
+          },
+          "roof_ceiling_set": {
+            "title": "Roof Ceiling Set",
+            "description": "An optional RoofCeilingModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoofCeilingModifierSet"
+              }
+            ]
+          },
+          "aperture_set": {
+            "title": "Aperture Set",
+            "description": "An optional ApertureModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApertureModifierSet"
+              }
+            ]
+          },
+          "door_set": {
+            "title": "Door Set",
+            "description": "An optional DoorModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorModifierSet"
+              }
+            ]
+          },
+          "shade_set": {
+            "title": "Shade Set",
+            "description": "An optional ShadeModifierSet object for this ModifierSet. (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeModifierSet"
+              }
+            ]
+          },
+          "air_boundary_modifier": {
+            "title": "Air Boundary Modifier",
+            "description": "An optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honyebee generic air wall modifier.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WallModifierSetAbridged": {
+        "title": "WallModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Walls.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WallModifierSetAbridged",
+            "pattern": "^WallModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FloorModifierSetAbridged": {
+        "title": "FloorModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Floors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "FloorModifierSetAbridged",
+            "pattern": "^FloorModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoofCeilingModifierSetAbridged": {
+        "title": "RoofCeilingModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Roofs.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "RoofCeilingModifierSetAbridged",
+            "pattern": "^RoofCeilingModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApertureModifierSetAbridged": {
+        "title": "ApertureModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Apertures.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureModifierSetAbridged",
+            "pattern": "^ApertureModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "window_modifier": {
+            "title": "Window Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and Wall parent Face.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier of modifier object for apertures with a Surface boundary condition.",
+            "type": "string"
+          },
+          "skylight_modifier": {
+            "title": "Skylight Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
+            "type": "string"
+          },
+          "operable_modifier": {
+            "title": "Operable Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition and a True is_operable property.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoorModifierSetAbridged": {
+        "title": "DoorModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Doors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "DoorModifierSetAbridged",
+            "pattern": "^DoorModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "interior_glass_modifier": {
+            "title": "Interior Glass Modifier",
+            "description": "Identifier of modifier object for glass with a Surface boundary condition.",
+            "type": "string"
+          },
+          "exterior_glass_modifier": {
+            "title": "Exterior Glass Modifier",
+            "description": "Identifier of modifier object for glass with an Outdoors boundary condition.",
+            "type": "string"
+          },
+          "overhead_modifier": {
+            "title": "Overhead Modifier",
+            "description": "Identifier of a modifier object for doors with an Outdoors boundary condition and a RoofCeiling or Floor face type for their parent face.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShadeModifierSetAbridged": {
+        "title": "ShadeModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Shade.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeModifierSetAbridged",
+            "pattern": "^ShadeModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModifierSetAbridged": {
+        "title": "ModifierSetAbridged",
+        "description": "Abridged set containing all modifiers needed to create a radiance model.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ModifierSetAbridged",
+            "pattern": "^ModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "wall_set": {
+            "title": "Wall Set",
+            "description": "Optional WallModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WallModifierSetAbridged"
+              }
+            ]
+          },
+          "floor_set": {
+            "title": "Floor Set",
+            "description": "Optional FloorModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorModifierSetAbridged"
+              }
+            ]
+          },
+          "roof_ceiling_set": {
+            "title": "Roof Ceiling Set",
+            "description": "Optional RoofCeilingModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoofCeilingModifierSetAbridged"
+              }
+            ]
+          },
+          "aperture_set": {
+            "title": "Aperture Set",
+            "description": "Optional ApertureModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApertureModifierSetAbridged"
+              }
+            ]
+          },
+          "door_set": {
+            "title": "Door Set",
+            "description": "Optional DoorModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorModifierSetAbridged"
+              }
+            ]
+          },
+          "shade_set": {
+            "title": "Shade Set",
+            "description": "Optional ShadeModifierSet object for this ModifierSet (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeModifierSetAbridged"
+              }
+            ]
+          },
+          "air_boundary_modifier": {
+            "title": "Air Boundary Modifier",
+            "description": "Optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honyebee generic air wall modifier.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "ModelRadianceProperties": {
+        "title": "ModelRadianceProperties",
+        "description": "Radiance Properties for Honeybee Model.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ModelRadianceProperties",
+            "pattern": "^ModelRadianceProperties$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifiers": {
+            "title": "Modifiers",
+            "description": "A list of all unique modifiers in the model. This includes modifiers across all Faces, Apertures, Doors, Shades, Room ModifierSets, and the global_modifier_set. (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "modifier_sets": {
+            "title": "Modifier Sets",
+            "description": "A list of all unique Room-Assigned ModifierSets in the Model (default: []).",
+            "default": [],
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ModifierSet"
+                },
+                {
+                  "$ref": "#/components/schemas/ModifierSetAbridged"
+                }
+              ]
+            }
+          },
+          "global_modifier_set": {
+            "title": "Global Modifier Set",
+            "description": "Identifier of a ModifierSet or ModifierSetAbridged object to be used as as a default object for all unassigned objects in the Model (default: None).",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "ModelProperties": {
         "title": "ModelProperties",
         "type": "object",
@@ -5402,11 +7989,15 @@
           "type": {
             "title": "Type",
             "default": "ModelProperties",
+            "pattern": "^ModelProperties$",
             "type": "string",
-            "pattern": "^ModelProperties$"
+            "readOnly": true
           },
           "energy": {
             "$ref": "#/components/schemas/ModelEnergyProperties"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/ModelRadianceProperties"
           }
         }
       },
@@ -5445,8 +8036,9 @@
           "type": {
             "title": "Type",
             "default": "Model",
+            "pattern": "^Model$",
             "type": "string",
-            "pattern": "^Model$"
+            "readOnly": true
           },
           "rooms": {
             "title": "Rooms",
@@ -5494,7 +8086,8 @@
             "default": 0,
             "exclusiveMaximum": 360,
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "units": {
             "title": "Units",
@@ -5513,13 +8106,15 @@
             "title": "Tolerance",
             "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether Room volumes are closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a Model. Typical tolerances for builing geometry range from 0.1 to 0.0001 depending on the units of the geometry.",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "angle_tolerance": {
             "title": "Angle Tolerance",
             "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether the Room volumes is closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a given Model. Typical tolerances for builing geometry are often around 1 degree.",
             "default": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [

@@ -3,14 +3,12 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee energy simulation parameter schema.",
-    "version": [
-      "1.21.1"
-    ],
+    "version": "1.27.1",
     "title": "Honeybee Energy Simulation Parameter Schema",
     "contact": {
       "name": "Ladybug Tools",
       "email": "info@ladybug.tools",
-      "url": "https://github.com/ladybug-tools/honeybee-core"
+      "url": "https://github.com/ladybug-tools/honeybee-schema"
     },
     "x-logo": {
       "url": "https://www.ladybug.tools/assets/img/honeybee-large.png",
@@ -22,8 +20,8 @@
     }
   },
   "externalDocs": {
-    "description": "See how to use these schema in action.",
-    "url": "https://api.pollination.cloud/"
+    "description": "OpenAPI Specification with Inheritance",
+    "url": "./simulation-parameter_inheritance.json"
   },
   "tags": [
     {
@@ -123,8 +121,9 @@
           "type": {
             "title": "Type",
             "default": "SimulationOutput",
+            "pattern": "^SimulationOutput$",
             "type": "string",
-            "pattern": "^SimulationOutput$"
+            "readOnly": true
           },
           "reporting_frequency": {
             "title": "Reporting Frequency",
@@ -177,8 +176,9 @@
           "type": {
             "title": "Type",
             "default": "DaylightSavingTime",
+            "pattern": "^DaylightSavingTime$",
             "type": "string",
-            "pattern": "^DaylightSavingTime$"
+            "readOnly": true
           },
           "start_date": {
             "title": "Start Date",
@@ -189,7 +189,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -203,7 +204,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -219,8 +221,9 @@
           "type": {
             "title": "Type",
             "default": "RunPeriod",
+            "pattern": "^RunPeriod$",
             "type": "string",
-            "pattern": "^RunPeriod$"
+            "readOnly": true
           },
           "start_date": {
             "title": "Start Date",
@@ -231,7 +234,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 2
@@ -245,7 +249,8 @@
             ],
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 2
@@ -268,11 +273,14 @@
           "holidays": {
             "title": "Holidays",
             "description": "A list of lists where each sub-list consists of two integers for [month, day], representing a date which is a holiday within the simulation. If None, no holidays are applied.",
+            "minItems": 2,
+            "maxItems": 2,
             "type": "array",
             "items": {
               "type": "array",
               "items": {
-                "type": "integer"
+                "type": "integer",
+                "format": "int32"
               },
               "minItems": 2,
               "maxItems": 2
@@ -304,8 +312,9 @@
           "type": {
             "title": "Type",
             "default": "SimulationControl",
+            "pattern": "^SimulationControl$",
             "type": "string",
-            "pattern": "^SimulationControl$"
+            "readOnly": true
           },
           "do_zone_sizing": {
             "title": "Do Zone Sizing",
@@ -348,12 +357,13 @@
           "type": {
             "title": "Type",
             "default": "ShadowCalculation",
+            "pattern": "^ShadowCalculation$",
             "type": "string",
-            "pattern": "^ShadowCalculation$"
+            "readOnly": true
           },
           "solar_distribution": {
             "title": "Solar Distribution",
-            "default": "FullInteriorAndExteriorWithReflections",
+            "default": "FullExteriorWithReflections",
             "enum": [
               "MinimalShadowing",
               "FullExterior",
@@ -368,7 +378,8 @@
             "description": "Integer for the number of days in each period for which a unique shadow calculation will be performed. This field is only used if the AverageOverDaysInFrequency calculation_method is used.",
             "default": 30,
             "minimum": 1,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           },
           "calculation_method": {
             "title": "Calculation Method",
@@ -384,7 +395,8 @@
             "description": "Number of allowable figures in shadow overlap calculations.",
             "default": 15000,
             "minimum": 200,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -399,19 +411,22 @@
             "description": "The maximum dry bulb temperature on the design day [C].",
             "minimum": -90,
             "maximum": 70,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "dry_bulb_range": {
             "title": "Dry Bulb Range",
             "description": "The difference between min and max temperatures on thedesign day [C].",
             "minimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "DryBulbCondition",
+            "pattern": "^DryBulbCondition$",
             "type": "string",
-            "pattern": "^DryBulbCondition$"
+            "readOnly": true
           }
         },
         "required": [
@@ -438,13 +453,15 @@
           "humidity_value": {
             "title": "Humidity Value",
             "description": "The value correcponding to the humidity_type.",
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "HumidityCondition",
+            "pattern": "^HumidityCondition$",
             "type": "string",
-            "pattern": "^HumidityCondition$"
+            "readOnly": true
           },
           "barometric_pressure": {
             "title": "Barometric Pressure",
@@ -452,7 +469,8 @@
             "default": 101325,
             "minimum": 31000,
             "maximum": 120000,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "rain": {
             "title": "Rain",
@@ -483,13 +501,15 @@
             "description": "Wind speed on the design day [m/s].",
             "minimum": 0,
             "maximum": 40,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "type": {
             "title": "Type",
             "default": "WindCondition",
+            "pattern": "^WindCondition$",
             "type": "string",
-            "pattern": "^WindCondition$"
+            "readOnly": true
           },
           "wind_direction": {
             "title": "Wind Direction",
@@ -497,7 +517,8 @@
             "default": 0,
             "minimum": 0,
             "maximum": 360,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -515,7 +536,8 @@
             "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -525,7 +547,8 @@
             "description": "Value between 0 and 1.2 that will get multiplied by the irradinace to correct for factors like elevation above sea level.",
             "minimum": 0,
             "maximum": 1.2,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "daylight_savings": {
             "title": "Daylight Savings",
@@ -536,8 +559,9 @@
           "type": {
             "title": "Type",
             "default": "ASHRAEClearSky",
+            "pattern": "^ASHRAEClearSky$",
             "type": "string",
-            "pattern": "^ASHRAEClearSky$"
+            "readOnly": true
           }
         },
         "required": [
@@ -556,7 +580,8 @@
             "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32"
             },
             "minItems": 2,
             "maxItems": 3
@@ -566,14 +591,16 @@
             "description": "Value for the beam optical depth. Typically found in .stat files.",
             "minimum": 0,
             "maximum": 1.2,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "tau_d": {
             "title": "Tau D",
             "description": "Value for the diffuse optical depth. Typically found in .stat files.",
             "minimum": 0,
             "maximum": 3,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "daylight_savings": {
             "title": "Daylight Savings",
@@ -584,8 +611,9 @@
           "type": {
             "title": "Type",
             "default": "ASHRAETau",
+            "pattern": "^ASHRAETau$",
             "type": "string",
-            "pattern": "^ASHRAETau$"
+            "readOnly": true
           }
         },
         "required": [
@@ -665,8 +693,9 @@
           "type": {
             "title": "Type",
             "default": "DesignDay",
+            "pattern": "^DesignDay$",
             "type": "string",
-            "pattern": "^DesignDay$"
+            "readOnly": true
           }
         },
         "required": [
@@ -687,8 +716,9 @@
           "type": {
             "title": "Type",
             "default": "SizingParameter",
+            "pattern": "^SizingParameter$",
             "type": "string",
-            "pattern": "^SizingParameter$"
+            "readOnly": true
           },
           "design_days": {
             "title": "Design Days",
@@ -703,14 +733,16 @@
             "description": "A number that will be multiplied by the peak heating load for each zone in order to size the heating system.",
             "default": 1.25,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           },
           "cooling_factor": {
             "title": "Cooling Factor",
             "description": "A number that will be multiplied by the peak cooling load for each zone in order to size the heating system.",
             "default": 1.15,
             "exclusiveMinimum": 0,
-            "type": "number"
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -723,8 +755,9 @@
           "type": {
             "title": "Type",
             "default": "SimulationParameter",
+            "pattern": "^SimulationParameter$",
             "type": "string",
-            "pattern": "^SimulationParameter$"
+            "readOnly": true
           },
           "output": {
             "title": "Output",
@@ -750,7 +783,8 @@
             "default": 6,
             "minimum": 1,
             "maximum": 60,
-            "type": "integer"
+            "type": "integer",
+            "format": "int32"
           },
           "simulation_control": {
             "title": "Simulation Control",
