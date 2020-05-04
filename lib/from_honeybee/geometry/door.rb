@@ -63,28 +63,49 @@ module FromHoneybee
       # triangulate subsurface if neccesary
       triangulated = false
       final_vertices_list = []
+      matching_os_subsurfaces = []
+      matching_os_subsurface_indices = []
       if reordered_vertices.size > 4
-        
-        # transform to face coordinates
-        t = OpenStudio::Transformation::alignFace(reordered_vertices)
-        tInv = t.inverse
-        face_vertices = OpenStudio::reverse(tInv*reordered_vertices)
-        
-        # no holes in the subsurface
-        holes = OpenStudio::Point3dVectorVector.new
-        
-        # triangulate surface
-        triangles = OpenStudio::computeTriangulation(face_vertices, holes)
-        if triangles.empty?
-          raise "Failed to triangulate aperture #{@hash[:identifier]} with #{reordered_vertices.size} vertices"
+      
+        # if this door has a matched door, see if the other one has already been created
+        # the matched door should have been converted to multiple subsurfaces
+        if @hash[:boundary_condition][:type] == 'Surface'
+          adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
+          regex = Regexp.new("#{adj_srf_identifier}\.\.(\d+)")
+          openstudio_model.getSubSurfaces.each do |subsurface|
+            if md = regex.match(subsurface.nameString)
+              final_vertices_list << OpenStudio.reorderULC(OpenStudio::reverse(subsurface.vertices))
+              matching_os_subsurfaces << subsurface
+              matching_os_subsurface_indices << md[1]
+            end
+          end
         end
         
-        # create new list of surfaces
-        triangles.each do |vertices|
-          final_vertices_list << OpenStudio::reverse(t*vertices)
+        # if other door is not already created, do the triangulation
+        if final_vertices_list.empty?
+          
+          # transform to face coordinates
+          t = OpenStudio::Transformation::alignFace(reordered_vertices)
+          tInv = t.inverse
+          face_vertices = OpenStudio::reverse(tInv*reordered_vertices)
+          
+          # no holes in the subsurface
+          holes = OpenStudio::Point3dVectorVector.new
+          
+          # triangulate surface
+          triangles = OpenStudio::computeTriangulation(face_vertices, holes)
+          if triangles.empty?
+            raise "Failed to triangulate door #{@hash[:identifier]} with #{reordered_vertices.size} vertices"
+          end
+          
+          # create new list of surfaces
+          triangles.each do |vertices|
+            final_vertices_list << OpenStudio.reorderULC(OpenStudio::reverse(t*vertices))
+          end
+          
+          triangulated = true
+          
         end
-        
-        triangulated = true
         
       else
         # reordered_vertices are good as is
@@ -95,7 +116,9 @@ module FromHoneybee
       final_vertices_list.each_with_index do |reordered_vertices, index|
         os_subsurface = OpenStudio::Model::SubSurface.new(reordered_vertices, openstudio_model)
         
-        if triangulated
+        if !matching_os_subsurfaces.empty?
+          os_subsurface.setName(@hash[:identifier] + "..#{matching_os_subsurface_indices[index]}")
+        elsif triangulated
           os_subsurface.setName(@hash[:identifier] + "..#{index}")
         else
           os_subsurface.setName(@hash[:identifier])
@@ -111,14 +134,21 @@ module FromHoneybee
           end
         end
         
-        # assign the bondary condition object if it's a Surface
+        # assign the boundary condition object if it's a Surface
         if @hash[:boundary_condition][:type] == 'Surface'
-          # get adjacent sub surface by identifier from openstudio model
-          adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
-          sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
-          unless sub_srf_ref.empty?
-            sub_srf = sub_srf_ref.get
-            os_subsurface.setAdjacentSubSurface(sub_srf)
+          if !matching_os_subsurfaces.empty?
+            # we already have the match because this was created from the matching_os_subsurfaces
+            os_subsurface.setAdjacentSubSurface(matching_os_subsurfaces[index])
+          elsif triangulated
+            # other subsurfaces haven't been created yet, no-op
+          else
+            # get adjacent sub surface by identifier from openstudio model
+            adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
+            sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
+            unless sub_srf_ref.empty?
+              sub_srf = sub_srf_ref.get
+              os_subsurface.setAdjacentSubSurface(sub_srf)
+            end
           end
         end
 
