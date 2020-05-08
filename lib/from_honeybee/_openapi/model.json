@@ -5785,19 +5785,6 @@
             "type": "string",
             "readOnly": true
           },
-          "terrain_type": {
-            "title": "Terrain Type",
-            "description": "Text for the terrain in which the model sits. This is used to determine the wind profile over the height of the rooms.",
-            "default": "City",
-            "enum": [
-              "Ocean",
-              "Country",
-              "Suburbs",
-              "Urban",
-              "City"
-            ],
-            "type": "string"
-          },
           "global_construction_set": {
             "title": "Global Construction Set",
             "description": "Identifier for the ConstructionSet to be used for all objects lacking their own construction or a parent Room construction_set. This ConstructionSet must appear under the Model construction_sets.",
@@ -5980,6 +5967,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6129,6 +6119,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6284,6 +6277,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6403,6 +6399,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6535,6 +6534,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6699,6 +6701,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -6826,6 +6831,9 @@
           "modifier": {
             "title": "Modifier",
             "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -8080,15 +8088,6 @@
               "$ref": "#/components/schemas/Door"
             }
           },
-          "north_angle": {
-            "title": "North Angle",
-            "description": "The clockwise north direction in degrees.",
-            "default": 0,
-            "exclusiveMaximum": 360,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
           "units": {
             "title": "Units",
             "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
@@ -8104,14 +8103,14 @@
           },
           "tolerance": {
             "title": "Tolerance",
-            "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether Room volumes are closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a Model. Typical tolerances for builing geometry range from 0.1 to 0.0001 depending on the units of the geometry.",
+            "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether Room volumes are closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a Model. Typical tolerances for building geometry range from 0.1 to 0.0001 depending on the units of the geometry.",
             "default": 0,
             "type": "number",
             "format": "double"
           },
           "angle_tolerance": {
             "title": "Angle Tolerance",
-            "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether the Room volumes is closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a given Model. Typical tolerances for builing geometry are often around 1 degree.",
+            "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether the Room volumes is closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a given Model. Typical tolerances for building geometry are often around 1 degree.",
             "default": 0,
             "type": "number",
             "format": "double"

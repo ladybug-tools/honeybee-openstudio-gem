@@ -812,6 +812,28 @@
                 "$ref": "#/components/schemas/SizingParameter"
               }
             ]
+          },
+          "north_angle": {
+            "title": "North Angle",
+            "description": "A number between -360 and 360 for the north direction in degrees.This is the counterclockwise difference between the North and the positive Y-axis. 90 is West and 270 is East. Note that this is different than the convention used in EnergyPlus, which uses clockwise difference instead of counterclockwise difference.",
+            "default": 0,
+            "exclusiveMaximum": 360,
+            "minimum": -360,
+            "type": "number",
+            "format": "double"
+          },
+          "terrain_type": {
+            "title": "Terrain Type",
+            "description": "Text for the terrain in which the model sits. This is used to determine the wind profile over the height of the rooms.",
+            "default": "City",
+            "enum": [
+              "Ocean",
+              "Country",
+              "Suburbs",
+              "Urban",
+              "City"
+            ],
+            "type": "string"
           }
         },
         "additionalProperties": false
