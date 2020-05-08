@@ -59,7 +59,7 @@ RSpec.describe FromHoneybee do
     expect(sim_contr.doZoneSizingCalculation).to be true
     expect(sim_contr.doSystemSizingCalculation).to be true
     expect(sim_contr.doPlantSizingCalculation).to be true
-    expect(sim_contr.solarDistribution).to eq 'FullInteriorAndExteriorWithReflections'
+    expect(sim_contr.solarDistribution).to eq 'FullExteriorWithReflections'
     expect(sim_contr.sizingParameters).not_to be nil
     expect(sim_contr.runPeriods).not_to be nil
 

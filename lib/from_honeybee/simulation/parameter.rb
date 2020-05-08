@@ -115,6 +115,7 @@ module FromHoneybee
       siz_defaults = defaults[:SizingParameter][:properties]
       out_defaults = defaults[:SimulationOutput][:properties]
       runper_defaults = defaults[:RunPeriod][:properties]
+      simpar_defaults = defaults[:SimulationParameter][:properties]
 
       # set defaults for the Model's SimulationControl object
       os_sim_control = @openstudio_model.getSimulationControl
@@ -256,7 +257,19 @@ module FromHoneybee
       if @hash[:timestep]
         os_timestep.setNumberOfTimestepsPerHour(@hash[:timestep])
       else
-        os_timestep.setNumberOfTimestepsPerHour(defaults[:timestep][:default])
+        os_timestep.setNumberOfTimestepsPerHour(simpar_defaults[:timestep][:default])
+      end
+
+      # assign the north
+      if @hash[:north_angle]
+        @openstudio_model.getBuilding.setNorthAxis(-@hash[:north_angle])
+      end
+
+      # assign the terrain
+      os_site = @openstudio_model.getSite
+      os_site.setTerrain(simpar_defaults[:terrain_type][:default])
+      if @hash[:terrain_type]
+        os_site.setTerrain(@hash[:terrain_type])
       end
     end
 
