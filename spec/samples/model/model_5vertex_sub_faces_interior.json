@@ -554,8 +554,8 @@
     "rooms": [
         {
             "type": "Room",
-            "identifier": "TinyHouseZone",
-            "display_name": "TinyHouseZone",
+            "identifier": "TinyHouseZone1",
+            "display_name": "TinyHouseZone1",
             "properties": {
                 "type": "RoomPropertiesAbridged",
                 "energy": {
@@ -568,8 +568,8 @@
             "faces": [
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Bottom",
-                    "display_name": "TinyHouseZone_Bottom",
+                    "identifier": "TinyHouseZone1_Bottom",
+                    "display_name": "TinyHouseZone1_Bottom",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -611,8 +611,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Front",
-                    "display_name": "TinyHouseZone_Front",
+                    "identifier": "TinyHouseZone1_Front",
+                    "display_name": "TinyHouseZone1_Front",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -649,12 +649,11 @@
                     },
                     "face_type": "Wall",
                     "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
+                        "type": "Surface",
+                        "boundary_condition_objects": [
+                            "TinyHouseZone2_Back",
+                            "TinyHouseZone2"
+                        ]
                     },
                     "apertures": [
                         {
@@ -702,12 +701,12 @@
                             },
                             "is_operable": false,
                             "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
+                                "type": "Surface",
+                                "boundary_condition_objects": [
+                                    "BackAperture",
+                                    "TinyHouseZone2_Back",
+                                    "TinyHouseZone2"
+                                ]
                             }
                         }
                     ],
@@ -757,20 +756,20 @@
                             },
                             "is_glass": false,
                             "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
+                                "type": "Surface",
+                                "boundary_condition_objects": [
+                                    "BackDoor",
+                                    "TinyHouseZone2_Back",
+                                    "TinyHouseZone2"
+                                ]
                             }
                         }
                     ]
                 },
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Right",
-                    "display_name": "TinyHouseZone_Right",
+                    "identifier": "TinyHouseZone1_Right",
+                    "display_name": "TinyHouseZone1_Right",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -817,8 +816,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Back",
-                    "display_name": "TinyHouseZone_Back",
+                    "identifier": "TinyHouseZone1_Back",
+                    "display_name": "TinyHouseZone1_Back",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -865,8 +864,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Left",
-                    "display_name": "TinyHouseZone_Left",
+                    "identifier": "TinyHouseZone1_Left",
+                    "display_name": "TinyHouseZone1_Left",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -913,8 +912,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "TinyHouseZone_Top",
-                    "display_name": "TinyHouseZone_Top",
+                    "identifier": "TinyHouseZone1_Top",
+                    "display_name": "TinyHouseZone1_Top",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -945,6 +944,414 @@
                             [
                                 0.0,
                                 0.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "RoofCeiling",
+                    "boundary_condition": {
+                        "type": "Outdoors",
+                        "sun_exposure": true,
+                        "wind_exposure": true,
+                        "view_factor": {
+                            "type": "Autocalculate"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Room",
+            "identifier": "TinyHouseZone2",
+            "display_name": "TinyHouseZone2",
+            "properties": {
+                "type": "RoomPropertiesAbridged",
+                "energy": {
+                    "type": "RoomEnergyPropertiesAbridged"
+                },
+                "radiance": {
+                    "type": "RoomRadiancePropertiesAbridged"
+                }
+            },
+            "faces": [
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Bottom",
+                    "display_name": "TinyHouseZone2_Bottom",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                0.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                10.0,
+                                0.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Floor",
+                    "boundary_condition": {
+                        "type": "Ground"
+                    }
+                },
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Front",
+                    "display_name": "TinyHouseZone2_Front",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                5.0,
+                                20.0,
+                                3.0
+                            ],
+                            [
+                                5.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                20.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Wall",
+                    "boundary_condition": {
+                        "type": "Outdoors",
+                        "sun_exposure": true,
+                        "wind_exposure": true,
+                        "view_factor": {
+                            "type": "Autocalculate"
+                        }
+                    }
+                },
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Right",
+                    "display_name": "TinyHouseZone2_Right",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                5.0,
+                                10.0,
+                                3.0
+                            ],
+                            [
+                                5.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                20.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Wall",
+                    "boundary_condition": {
+                        "type": "Outdoors",
+                        "sun_exposure": true,
+                        "wind_exposure": true,
+                        "view_factor": {
+                            "type": "Autocalculate"
+                        }
+                    }
+                },
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Back",
+                    "display_name": "TinyHouseZone2_Back",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                0.0,
+                                10.0,
+                                3.0
+                            ],
+                            [
+                                0.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                10.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Wall",
+                    "boundary_condition": {
+                        "type": "Surface",
+                        "boundary_condition_objects": [
+                            "TinyHouseZone1_Front",
+                            "TinyHouseZone1"
+                        ]
+                    },
+                    "apertures": [
+                        {
+                            "type": "Aperture",
+                            "identifier": "BackAperture",
+                            "display_name": "BackAperture",
+                            "properties": {
+                                "type": "AperturePropertiesAbridged",
+                                "energy": {
+                                    "type": "ApertureEnergyPropertiesAbridged"
+                                },
+                                "radiance": {
+                                    "type": "ApertureRadiancePropertiesAbridged"
+                                }
+                            },
+                            "geometry": {
+                                "type": "Face3D",
+                                "boundary": [
+                                    [
+                                        2.5,
+                                        10.0,
+                                        2.5
+                                    ],
+                                    [
+                                        2.5,
+                                        10.0,
+                                        1.0
+                                    ],
+                                    [
+                                        4.5,
+                                        10.0,
+                                        1.0
+                                    ],
+                                    [
+                                        4.5,
+                                        10.0,
+                                        2.5
+                                    ],
+                                    [
+                                        3.5,
+                                        10.0,
+                                        2.9
+                                    ]
+                                ]
+                            },
+                            "is_operable": false,
+                            "boundary_condition": {
+                                "type": "Surface",
+                                "boundary_condition_objects": [
+                                    "FrontAperture",
+                                    "TinyHouseZone1_Front",
+                                    "TinyHouseZone1"
+                                ]
+                            }
+                        }
+                    ],
+                    "doors": [
+                        {
+                            "type": "Door",
+                            "identifier": "BackDoor",
+                            "display_name": "BackDoor",
+                            "properties": {
+                                "type": "DoorPropertiesAbridged",
+                                "energy": {
+                                    "type": "DoorEnergyPropertiesAbridged"
+                                },
+                                "radiance": {
+                                    "type": "DoorRadiancePropertiesAbridged"
+                                }
+                            },
+                            "geometry": {
+                                "type": "Face3D",
+                                "boundary": [
+                                    [
+                                        1.0,
+                                        10.0,
+                                        2.5
+                                    ],
+                                    [
+                                        1.0,
+                                        10.0,
+                                        0.1
+                                    ],
+                                    [
+                                        2.0,
+                                        10.0,
+                                        0.1
+                                    ],
+                                    [
+                                        2.0,
+                                        10.0,
+                                        2.5
+                                    ],
+                                    [
+                                        1.5,
+                                        10.0,
+                                        2.8
+                                    ]
+                                ]
+                            },
+                            "is_glass": false,
+                            "boundary_condition": {
+                                "type": "Surface",
+                                "boundary_condition_objects": [
+                                    "FrontDoor",
+                                    "TinyHouseZone1_Front",
+                                    "TinyHouseZone1"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Left",
+                    "display_name": "TinyHouseZone2_Left",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                0.0,
+                                20.0,
+                                3.0
+                            ],
+                            [
+                                0.0,
+                                20.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                10.0,
+                                3.0
+                            ]
+                        ]
+                    },
+                    "face_type": "Wall",
+                    "boundary_condition": {
+                        "type": "Outdoors",
+                        "sun_exposure": true,
+                        "wind_exposure": true,
+                        "view_factor": {
+                            "type": "Autocalculate"
+                        }
+                    }
+                },
+                {
+                    "type": "Face",
+                    "identifier": "TinyHouseZone2_Top",
+                    "display_name": "TinyHouseZone2_Top",
+                    "properties": {
+                        "type": "FacePropertiesAbridged",
+                        "energy": {
+                            "type": "FaceEnergyPropertiesAbridged"
+                        },
+                        "radiance": {
+                            "type": "FaceRadiancePropertiesAbridged"
+                        }
+                    },
+                    "geometry": {
+                        "type": "Face3D",
+                        "boundary": [
+                            [
+                                5.0,
+                                10.0,
+                                3.0
+                            ],
+                            [
+                                5.0,
+                                20.0,
+                                3.0
+                            ],
+                            [
+                                0.0,
+                                20.0,
+                                3.0
+                            ],
+                            [
+                                0.0,
+                                10.0,
                                 3.0
                             ]
                         ]

@@ -9,6 +9,7 @@ else
   gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', tag: 'v0.1.4'
 end
 
-# this code appears to be outdated and so it's commented out for now
+# this code appears to be outdated and so it's commented out for now. Uncomment to run tests locally
+#using `bundle exec rake`.
 # simplecov has an unneccesary dependency on native json gem, use fork that does not require this
-# gem 'simplecov', github: 'NREL/simplecov'
+#gem 'simplecov', github: 'NREL/simplecov'

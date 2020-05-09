@@ -141,18 +141,6 @@ module FromHoneybee
       # create all openstudio objects in the model
       create_openstudio_objects(log_report)
 
-      # assign the north
-      if @hash[:north_angle]
-        @openstudio_model.getBuilding.setNorthAxis(@hash[:north_angle])
-      end
-
-      # assign the terrain
-      os_site = @openstudio_model.getSite
-      os_site.setTerrain(defaults[:terrain_type][:default])
-      if @hash[:properties][:energy][:terrain_type]
-        os_site.setTerrain(@hash[:properties][:energy][:terrain_type])
-      end
-
       if log_report
         puts 'Done with Model translation!'
       end

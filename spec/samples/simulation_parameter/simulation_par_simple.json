@@ -33,7 +33,7 @@
     },
     "shadow_calculation": {
         "type": "ShadowCalculation",
-        "solar_distribution": "FullInteriorAndExteriorWithReflections",
+        "solar_distribution": "FullExteriorWithReflections",
         "calculation_method": "AverageOverDaysInFrequency",
         "calculation_frequency": 30,
         "maximum_figures": 15000
@@ -42,5 +42,7 @@
         "type": "SizingParameter",
         "heating_factor": 1.25,
         "cooling_factor": 1.15
-    }
+    },
+    "north_angle": 0.0,
+    "terrain_type": "City"
 }
