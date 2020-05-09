@@ -141,7 +141,22 @@ module FromHoneybee
           end
         end
       end
-              
+
+      os_surface.subSurfaces.each do |os_subsurface|
+        if os_subsurface.hasAdditionalProperties
+          adj_sub_srf_identifier = os_subsurface.additionalProperties.getFeatureAsString("AdjacentSubSurfaceName")
+          unless adj_sub_srf_identifier.empty?
+            adj_sub_srf = openstudio_model.getSubSurfaceByName(adj_sub_srf_identifier.get)
+            unless adj_sub_srf.empty?
+              os_subsurface.setAdjacentSubSurface(adj_sub_srf.get)
+            end
+          end
+
+          # clean up, we don't need this object any more
+          os_subsurface.removeAdditionalProperties
+        end
+      end
+
       os_surface
     end
   end # Face

@@ -218,11 +218,33 @@ RSpec.describe FromHoneybee do
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
 
-    openstudio_surfaces = openstudio_model.getSubSurfaces
-    # expect(openstudio_surfaces.size).to be > 7
-    openstudio_surfaces.each do |srf|
-      bc = srf.outsideBoundaryCondition
-      expect(bc.to_s).to eq 'Surface'
+    openstudio_spaces = openstudio_model.getSpaces
+    expect(openstudio_spaces.size).to eq 2
+    openstudio_spaces.each do |space|
+      expect(space.surfaces.size).to eq 6
+
+      num_surfaces_with_subsurfaces = 0
+      space.surfaces.each do |srf|
+        if srf.subSurfaces.size > 0
+          num_surfaces_with_subsurfaces += 1
+          bc = srf.outsideBoundaryCondition
+          expect(bc.to_s).to eq 'Surface'
+          expect(srf.adjacentSurface.empty?).to be false
+
+          expect(srf.vertices.size).to eq 4
+          expect(srf.subSurfaces.size).to eq 6
+
+          srf.subSurfaces.each do |sub_srf|
+            expect(sub_srf.vertices.size).to be >= 3
+            expect(sub_srf.vertices.size).to be <= 4
+            bc = sub_srf.outsideBoundaryCondition
+            expect(bc.to_s).to eq 'Surface'
+            expect(sub_srf.adjacentSubSurface.empty?).to be false
+          end
+        end
+      end
+
+      expect(num_surfaces_with_subsurfaces).to eq 1
     end
   end
 

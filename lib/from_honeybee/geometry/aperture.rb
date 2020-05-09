@@ -71,7 +71,7 @@ module FromHoneybee
         # the matched apeture should have been converted to multiple subsurfaces
         if @hash[:boundary_condition][:type] == 'Surface'
           adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
-          regex = Regexp.new("#{adj_srf_identifier}\.\.(\d+)")
+          regex = Regexp.new("#{adj_srf_identifier}\.\.(\\d+)")
           openstudio_model.getSubSurfaces.each do |subsurface|
             if md = regex.match(subsurface.nameString)
               final_vertices_list << OpenStudio.reorderULC(OpenStudio::reverse(subsurface.vertices))
@@ -138,17 +138,16 @@ module FromHoneybee
         if @hash[:boundary_condition][:type] == 'Surface'
           if !matching_os_subsurfaces.empty?
             # we already have the match because this was created from the matching_os_subsurfaces
-            os_subsurface.setAdjacentSubSurface(matching_os_subsurfaces[index])
+            # setAdjacentSubSurface will fail at this point because sub surface is not assigned to surface yet, store data for later
+            adj_srf_identifier = matching_os_subsurfaces[index].nameString
+            os_subsurface.additionalProperties.setFeature("AdjacentSubSurfaceName", adj_srf_identifier)
           elsif triangulated
             # other subsurfaces haven't been created yet, no-op
           else
             # get adjacent sub surface by identifier from openstudio model
+            # setAdjacentSubSurface will fail at this point because sub surface is not assigned to surface yet, store data for later
             adj_srf_identifier = @hash[:boundary_condition][:boundary_condition_objects][0]
-            sub_srf_ref = openstudio_model.getSubSurfaceByName(adj_srf_identifier)
-            unless sub_srf_ref.empty?
-              sub_srf = sub_srf_ref.get
-              os_subsurface.setAdjacentSubSurface(sub_srf)
-            end
+            os_subsurface.additionalProperties.setFeature("AdjacentSubSurfaceName", adj_srf_identifier)
           end
         end
 
