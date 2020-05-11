@@ -112,13 +112,15 @@ module FromHoneybee
       if @hash[:apertures]
         @hash[:apertures].each do |aperture|
           ladybug_aperture = Aperture.new(aperture)
-          os_subsurface_aperture = ladybug_aperture.to_openstudio(openstudio_model)
-          if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor'
-            if @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
-              os_subsurface_aperture.setSubSurfaceType('Skylight')
+          os_subsurface_apertures = ladybug_aperture.to_openstudio(openstudio_model)
+          os_subsurface_apertures.each do |os_subsurface_aperture|
+            if @hash[:face_type] == 'RoofCeiling' or @hash[:face_type]  == 'Floor'
+              if @hash[:boundary_condition][:type] == 'Outdoors' && aperture[:is_operable] == false
+                os_subsurface_aperture.setSubSurfaceType('Skylight')
+              end
             end
+            os_subsurface_aperture.setSurface(os_surface)
           end
-          os_subsurface_aperture.setSurface(os_surface)
         end
       end
 
@@ -126,18 +128,35 @@ module FromHoneybee
       if @hash[:doors]
         @hash[:doors].each do |door|
           honeybee_door = Door.new(door)
-          os_subsurface_door = honeybee_door.to_openstudio(openstudio_model)
-          os_subsurface_door.setSurface(os_surface)
-          if door[:is_glass] == true
-            os_subsurface_door.setSubSurfaceType('GlassDoor')
-          elsif (@hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor') && @hash[:boundary_condition][:type] == 'Outdoors'
-            os_subsurface_door.setSubSurfaceType('OverheadDoor')
-          elsif door[:is_glass] == false or door[:is_glass].nil?
-            os_subsurface_door.setSubSurfaceType('Door')
+          os_subsurface_doors = honeybee_door.to_openstudio(openstudio_model)
+          os_subsurface_doors.each do |os_subsurface_door|
+            os_subsurface_door.setSurface(os_surface)
+            if door[:is_glass] == true
+              os_subsurface_door.setSubSurfaceType('GlassDoor')
+            elsif (@hash[:face_type] == 'RoofCeiling' or @hash[:face_type] == 'Floor') && @hash[:boundary_condition][:type] == 'Outdoors'
+              os_subsurface_door.setSubSurfaceType('OverheadDoor')
+            elsif door[:is_glass] == false or door[:is_glass].nil?
+              os_subsurface_door.setSubSurfaceType('Door')
+            end
           end
         end
       end
-              
+
+      os_surface.subSurfaces.each do |os_subsurface|
+        if os_subsurface.hasAdditionalProperties
+          adj_sub_srf_identifier = os_subsurface.additionalProperties.getFeatureAsString("AdjacentSubSurfaceName")
+          unless adj_sub_srf_identifier.empty?
+            adj_sub_srf = openstudio_model.getSubSurfaceByName(adj_sub_srf_identifier.get)
+            unless adj_sub_srf.empty?
+              os_subsurface.setAdjacentSubSurface(adj_sub_srf.get)
+            end
+          end
+
+          # clean up, we don't need this object any more
+          os_subsurface.removeAdditionalProperties
+        end
+      end
+
       os_surface
     end
   end # Face
