@@ -74,6 +74,11 @@ RSpec.describe FromHoneybee do
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
 
+    openstudio_story = openstudio_space.buildingStory 
+    expect(openstudio_story.empty?).to be false
+    openstudio_story = openstudio_story.get
+    expect(openstudio_story.nameString).to eq 'UndefiniedStory'
+
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
     expect(openstudio_vertices.size).to be >= 3

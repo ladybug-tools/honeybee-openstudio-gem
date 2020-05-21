@@ -96,6 +96,26 @@ module FromHoneybee
       if @hash[:multiplier] and @hash[:multiplier] != 1
         os_thermal_zone.setMultiplier(@hash[:multiplier])
       end
+
+      # assign the story
+      if @hash[:story]  # the users has specified the name of the story
+        story = openstudio_model.getBuildingStoryByName(@hash[:story])
+        if story.empty?  # first time that this story has been referenced
+          story = OpenStudio::Model::BuildingStory.new(openstudio_model)
+          story.setName(@hash[:story])
+        else
+          story = story.get
+        end
+      else  # give the room a dummy story so that it works with David's measures
+        story = openstudio_model.getBuildingStoryByName('UndefiniedStory')
+        if story.empty?  # first time that this story has been referenced
+          story = OpenStudio::Model::BuildingStory.new(openstudio_model)
+          story.setName('UndefiniedStory')
+        else
+          story = story.get
+        end
+      end
+      os_space.setBuildingStory(story)
       
       # assign all of the faces to the room
       @hash[:faces].each do |face|
