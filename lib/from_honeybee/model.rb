@@ -152,6 +152,10 @@ module FromHoneybee
 
     # create OpenStudio objects in the OpenStudio model
     def create_openstudio_objects(log_report=true)
+      # assign a standards building type so that David's measures can run
+      building = @openstudio_model.getBuilding
+      building.setStandardsBuildingType('MediumOffice')
+
       # create all of the non-geometric model elements
       if log_report
         puts 'Translating Materials'

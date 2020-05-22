@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ladybug-tools-in2/energy-model-measure.svg?branch=master)](https://travis-ci.org/ladybug-tools-in2/energy-model-measure)
+[![Build Status](https://travis-ci.org/ladybug-tools/energy-model-measure.svg?branch=master)](https://travis-ci.org/ladybug-tools/energy-model-measure)
 
 # energy-model-measure
 
@@ -43,11 +43,11 @@ where the items in parentheses should be replaced with specific file paths:
 ## Local Development
 1. Clone this repo locally
 ```
-git clone git@github.com:ladybug-tools-in2/energy-model-measure
+git clone git@github.com:ladybug-tools/energy-model-measure
 
 # or
 
-git clone https://github.com/ladybug-tools-in2/energy-model-measure
+git clone https://github.com/ladybug-tools/energy-model-measure
 ```
 
 2. Install dependencies:
