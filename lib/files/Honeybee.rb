@@ -56,8 +56,8 @@ module URBANopt
                 @@osw = JSON.parse(file.read, symbolize_names: true)
               end
 
-            # configures OSW with extension gem paths for measures and files, all extension gems must be
-            # required before this
+            # configure OSW with extension gem paths for measures and files
+            # all extension gems must be required before this line
             @@osw = OpenStudio::Extension.configure_osw(@@osw)
             end
           end
@@ -66,7 +66,7 @@ module URBANopt
       def create_osw(scenario, features, feature_names)
 
         if features.size != 1
-          raise "TestMapper1 currently cannot simulate more than one feature"
+          raise "Mapper currently cannot simulate more than one feature at a time."
         end
         feature = features[0]
         feature_id = feature.id
@@ -74,41 +74,35 @@ module URBANopt
         feature_name = feature.name
         if feature_names.size == 1
           feature_name = feature_names[0]
-        end
-
-        # convert to hash
-        building_hash = feature.to_hash
-
-        if building_hash.key?(:system_type)
-          system_type = building_hash[:system_type]
-        else
-          system_type = "Inferred"
-        end
+        end        
 
         # deep clone of @@osw before we configure it
         osw = Marshal.load(Marshal.dump(@@osw))
 
-        # now we have the feature, we can look up its properties and set arguments in the OSW
+        # set the name and description of the OSW to reference this particular feature
         osw[:name] = feature_name
         osw[:description] = feature_name
 
-        # store name of input JSON file for feature
-        feature_json = feature.detailed_model_filename
-
-        #TODO: Update path
-        model_path = feature_json
-
         if feature_type == 'Building'
-          
-            OpenStudio::Extension.set_measure_argument(osw, 'from_honeybee_model', 'model_json', model_json_path)
+            # set the honeybee JSON key to the from_honeybee_model measure
+            OpenStudio::Extension.set_measure_argument(
+                osw, 'from_honeybee_model', 'model_json', feature.detailed_model_filename)
 
-            # add system type
-            OpenStudio::Extension.set_measure_argument(osw, 'create_typical_building_from_model', 'system_type', system_type)
+            # check if there is a HVAC key in the feature JSON properties
+            building_hash = feature.to_hash
+            if building_hash.key?(:system_type)
+              # assume the typical building measure is in the OSW and add the system type
+              OpenStudio::Extension.set_measure_argument(
+                  osw, 'create_typical_building_from_model', 'system_type', system_type)
+            end
             
-            # call the default feature reporting measure
-            OpenStudio::Extension.set_measure_argument(osw, 'default_feature_reports', 'feature_id', feature_id)
-            OpenStudio::Extension.set_measure_argument(osw, 'default_feature_reports', 'feature_name', feature_name)
-            OpenStudio::Extension.set_measure_argument(osw, 'default_feature_reports', 'feature_type', feature_type)
+            # add the feature id and name to the reporting measure
+            OpenStudio::Extension.set_measure_argument(
+              osw, 'default_feature_reports', 'feature_id', feature_id)
+            OpenStudio::Extension.set_measure_argument(
+              osw, 'default_feature_reports', 'feature_name', feature_name)
+            OpenStudio::Extension.set_measure_argument(
+              osw, 'default_feature_reports', 'feature_type', feature_type)
 
         end
         return osw
