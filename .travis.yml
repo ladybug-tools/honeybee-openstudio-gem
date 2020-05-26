@@ -31,3 +31,9 @@ jobs:
     - git config --global user.email "releases@ladybug.tools"
     - git config --global user.name "ladybugbot"
     - npx semantic-release
+  - stage: docs
+    if: branch = master AND (NOT type IN (pull_request))
+    deploy:
+      provider: rubygems
+      skip_cleanup: true
+      api_key: $API_KEY
