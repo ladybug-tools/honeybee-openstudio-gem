@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem.svg?branch=master)](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem)
+[![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-openstudio-gem/badge.svg?branch=master)](https://coveralls.io/github/ladybug-tools/honeybee-openstudio-gem)
+
+![Ruby 2.2](https://img.shields.io/badge/ruby-2.2-blue.svg)
 
 # honeybee-openstudio-gem
 
@@ -78,8 +81,6 @@ bundle exec ruby from_honeybee_model_test.rb
 cd honeybee-openstudio-gem/lib/measures/from_honeybee_simulation_parameter/tests/
 bundle exec ruby from_honeybee_simulation_parameter_test.rb
 ```
-
-coverage report will be output to `honeybee-openstudio-gem/coverage/index.html`
 
 5. Update doc_templates:
 ```

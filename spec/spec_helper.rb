@@ -29,6 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+# use coveralls to generate coverage reports; comment these two lines to get html report
+require 'coveralls'
+Coveralls.wear!
+
 # start simplecov so that we can track coverage when we run tests
 require 'simplecov'
 SimpleCov.start
