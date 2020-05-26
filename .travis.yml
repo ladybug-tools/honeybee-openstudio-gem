@@ -39,3 +39,4 @@ jobs:
       provider: rubygems
       skip_cleanup: true
       api_key: $API_KEY
+      gem: honeybee-openstudio
