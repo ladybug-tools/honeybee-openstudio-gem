@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/ladybug-tools/energy-model-measure.svg?branch=master)](https://travis-ci.org/ladybug-tools/energy-model-measure)
+[![Build Status](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem.svg?branch=master)](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem)
 
-# energy-model-measure
+# honeybee-openstudio-gem
 
-Library and measures for converting Honeybee JSONs to/from OpenStudio.
+Library and measures for translating between Honeybee JSON schema and OpenStudio Model schema (OSM).
 
 
 ## Run the measures of this repo using OpenStudio CLI
@@ -43,11 +43,11 @@ where the items in parentheses should be replaced with specific file paths:
 ## Local Development
 1. Clone this repo locally
 ```
-git clone git@github.com:ladybug-tools/energy-model-measure
+git clone git@github.com:ladybug-tools/honeybee-openstudio-gem
 
 # or
 
-git clone https://github.com/ladybug-tools/energy-model-measure
+git clone https://github.com/ladybug-tools/honeybee-openstudio-gem
 ```
 
 2. Install dependencies:
@@ -60,35 +60,35 @@ gem install openstudio-extension
 ```
 Then, the specific dependencies of this measure can be installed by running:
 ```
-cd energy-model-measure
+cd honeybee-openstudio-gem
 bundle update
 ```
 
 3. Run Core Library Tests:
 ```
-cd energy-model-measure
+cd honeybee-openstudio-gem
 bundle exec rake
 ```
 
 4. Run Measure Tests:
 ```
-cd energy-model-measure/lib/measures/from_honeybee_model/tests/
+cd honeybee-openstudio-gem/lib/measures/from_honeybee_model/tests/
 bundle exec ruby from_honeybee_model_test.rb
 
-cd energy-model-measure/lib/measures/from_honeybee_simulation_parameter/tests/
+cd honeybee-openstudio-gem/lib/measures/from_honeybee_simulation_parameter/tests/
 bundle exec ruby from_honeybee_simulation_parameter_test.rb
 ```
 
-coverage report will be output to `energy-model-measure/coverage/index.html`
+coverage report will be output to `honeybee-openstudio-gem/coverage/index.html`
 
 5. Update doc_templates:
 ```
-cd energy-model-measure
+cd honeybee-openstudio-gem
 bundle exec rake openstudio:update_copyright
 ```
 
 6. See all available rake tasks:
 ```
-cd energy-model-measure
+cd honeybee-openstudio-gem
 bundle exec rake -T
 ```

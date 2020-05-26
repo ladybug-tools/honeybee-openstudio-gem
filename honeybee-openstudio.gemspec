@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'from_honeybee/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'honeybee-energy-model-measure'
+  spec.name          = 'honeybee-openstudio'
   spec.version       = FromHoneybee::VERSION
   spec.authors       = ['Tanushree Charan', 'Dan Macumber', 'Chris Mackey', 'Mostapha Sadeghipour Roudsari']
   spec.email         = ['tanushree.charan@nrel.gov', 'chris@ladybug.tools']
 
-  spec.summary       = 'Library and measures for converting Honeybee JSONs to/from OpenStudio'
-  spec.description   = 'Library and measures for converting Heoneybee JSONs to/from OpenStudio'
-  spec.homepage      = 'https://github.com/ladybug-tools-in2/energy-model-measure'
+  spec.summary       = 'Gem for translating between Honeybee JSON and OpenStudio Model.'
+  spec.description   = 'Library and measures for translating between Honeybee JSON schema and OpenStudio Model schema (OSM).'
+  spec.homepage      = 'https://github.com/ladybug-tools/honeybee-openstudio-gem'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

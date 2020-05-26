@@ -22,8 +22,8 @@ else
   gem 'urbanopt-geojson', '0.2.0'
 end
 
-# include the ladybug tools energy-model-measure
-gem 'honeybee-energy-model-measure', github: 'ladybug-tools/energy-model-measure'
+# include the honeybee-openstudio-gem
+gem 'honeybee-openstudio', github: 'ladybug-tools/honeybee-openstudio-gem'
 
 # simplecov has an unnecessary dependency on native json gem, use fork that does not require this
 gem 'simplecov', github: 'NREL/simplecov'
