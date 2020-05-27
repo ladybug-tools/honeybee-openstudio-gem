@@ -36,7 +36,8 @@ jobs:
   - stage: deploy
     if: tag IS present
     script:
-      - sed -i 's/"0.0.0"/'"$TRAVIS_TAG"'/g' honeybee-openstudio.gemspec
+      - export CLEAN_TAG=$(echo $TRAVIS_TAG | sed 's/v//g')
+      - sed -i 's/"0.0.0"/'"$CLEAN_TAG"'/g' honeybee-openstudio.gemspec
     deploy:
       on:
         tags: true
