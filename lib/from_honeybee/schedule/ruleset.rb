@@ -78,8 +78,8 @@ module FromHoneybee
         unless holiday_schedule.empty?
           holiday_schedule_object = holiday_schedule.get
           begin
-            os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)  
-          rescue NoMethodError 
+            os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
+          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
           end
         end
       end
