@@ -32,10 +32,6 @@
 require_relative '../spec_helper'
 
 RSpec.describe FromHoneybee do
- 
-  it 'has a version number' do
-    expect(FromHoneybee::VERSION).not_to be nil
-  end
 
   it 'has a measures directory' do
     extension = FromHoneybee::Extension.new
