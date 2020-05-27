@@ -147,20 +147,45 @@ module FromHoneybee
 
       # set defaults for the Model's ShadowCalculation object
       os_shadow_calc = @openstudio_model.getShadowCalculation
-      os_shadow_calc.setCalculationFrequency(shdw_defaults[:calculation_frequency][:default])
-      os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(shdw_defaults[:maximum_figures][:default])
-      os_shadow_calc.setCalculationMethod(shdw_defaults[:calculation_method][:default])
+      begin
+        os_shadow_calc.setShadingCalculationUpdateFrequency(
+          shdw_defaults[:calculation_frequency][:default])
+      rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
+        os_shadow_calc.setCalculationFrequency(
+          shdw_defaults[:calculation_frequency][:default])
+      end
+      os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(
+        shdw_defaults[:maximum_figures][:default])
+      begin
+        os_shadow_calc.setShadingCalculationMethod(
+          shdw_defaults[:calculation_method][:default])
+      rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
+        os_shadow_calc.setCalculationMethod(
+          shdw_defaults[:calculation_method][:default])
+      end
 
       # override any ShadowCalculation defaults with lodaded JSON
       if @hash[:shadow_calculation]
         if @hash[:shadow_calculation][:calculation_frequency]
-          os_shadow_calc.setCalculationFrequency(@hash[:shadow_calculation][:calculation_frequency])
+          begin
+            os_shadow_calc.setShadingCalculationUpdateFrequency(
+              @hash[:shadow_calculation][:calculation_frequency])
+          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
+            os_shadow_calc.setCalculationFrequency(
+              @hash[:shadow_calculation][:calculation_frequency])
+          end
         end
         if @hash[:shadow_calculation][:maximum_figures]
           os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(@hash[:shadow_calculation][:maximum_figures])
         end
         if @hash[:shadow_calculation][:calculation_method]
-          os_shadow_calc.setCalculationMethod(@hash[:shadow_calculation][:calculation_method])
+          begin
+            os_shadow_calc.setShadingCalculationMethod(
+              @hash[:shadow_calculation][:calculation_method])
+          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
+            os_shadow_calc.setCalculationMethod(
+              @hash[:shadow_calculation][:calculation_method])
+          end
         end
         if @hash[:shadow_calculation][:solar_distribution]
           os_sim_control.setSolarDistribution(@hash[:shadow_calculation][:solar_distribution])
@@ -203,13 +228,14 @@ module FromHoneybee
         end
         if @hash[:output][:summary_reports]
           begin
+            os_report = @openstudio_model.getOutputTableSummaryReports
+          rescue  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
             os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
-          rescue NameError
           end
           @hash[:output][:summary_reports].each do |report|
             begin
               os_report.addSummaryReport(report)
-            rescue NoMethodError
+            rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
             end
           end
         end

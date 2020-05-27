@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem.svg?branch=master)](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem)
 [![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-openstudio-gem/badge.svg?branch=master)](https://coveralls.io/github/ladybug-tools/honeybee-openstudio-gem)
 
-![Ruby 2.2](https://img.shields.io/badge/ruby-2.2-blue.svg)
+![Ruby 2.5](https://img.shields.io/badge/ruby-2.5-blue.svg)
 
 # honeybee-openstudio-gem
 

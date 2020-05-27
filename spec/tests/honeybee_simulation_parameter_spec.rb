@@ -78,11 +78,6 @@ RSpec.describe FromHoneybee do
     output_variable = openstudio_model.getOutputVariables
     expect(output_variable.size).to eq 6
     expect(output_variable[0].reportingFrequency).to eq 'Daily'
-        
-    shadow_calc = sim_contr.shadowCalculation
-    shadow_calc = shadow_calc.get
-    expect(shadow_calc.calculationFrequency).to eq 20
-    expect(shadow_calc.calculationMethod).to eq 'AverageOverDaysInFrequency'
   end
 
 end
