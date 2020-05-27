@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 # import the core objects from which everything inherits
-require 'from_honeybee/version'
 require 'from_honeybee/extension'
 require 'from_honeybee/model_object'
 

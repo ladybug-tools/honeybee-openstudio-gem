@@ -1,11 +1,10 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'from_honeybee/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'honeybee-openstudio'
-  spec.version       = FromHoneybee::VERSION
+  spec.version       = "0.0.0"
   spec.authors       = ['Tanushree Charan', 'Dan Macumber', 'Chris Mackey', 'Mostapha Sadeghipour Roudsari']
   spec.email         = ['tanushree.charan@nrel.gov', 'chris@ladybug.tools']
 
