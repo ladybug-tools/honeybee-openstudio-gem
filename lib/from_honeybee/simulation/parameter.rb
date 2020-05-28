@@ -244,7 +244,6 @@ module FromHoneybee
           begin
             os_report = @openstudio_model.getOutputTableSummaryReports
           rescue  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-            os_report = OpenStudio::Model::OutputTableSummaryReports.new(@openstudio_model)
           end
           @hash[:output][:summary_reports].each do |report|
             begin
