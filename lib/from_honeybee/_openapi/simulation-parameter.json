@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee energy simulation parameter schema.",
-    "version": "1.27.1",
+    "version": "0.0.1",
     "title": "Honeybee Energy Simulation Parameter Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -45,6 +45,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DesignDay\" />\n"
     },
     {
+      "name": "designdaytypes_model",
+      "x-displayName": "DesignDayTypes",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DesignDayTypes\" />\n"
+    },
+    {
       "name": "drybulbcondition_model",
       "x-displayName": "DryBulbCondition",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DryBulbCondition\" />\n"
@@ -55,14 +60,39 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/HumidityCondition\" />\n"
     },
     {
+      "name": "humiditytypes_model",
+      "x-displayName": "HumidityTypes",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/HumidityTypes\" />\n"
+    },
+    {
       "name": "runperiod_model",
       "x-displayName": "RunPeriod",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RunPeriod\" />\n"
     },
     {
+      "name": "daysofweek_model",
+      "x-displayName": "DaysOfWeek",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DaysOfWeek\" />\n"
+    },
+    {
       "name": "shadowcalculation_model",
       "x-displayName": "ShadowCalculation",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadowCalculation\" />\n"
+    },
+    {
+      "name": "solardistribution_model",
+      "x-displayName": "SolarDistribution",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SolarDistribution\" />\n"
+    },
+    {
+      "name": "calculationmethod_model",
+      "x-displayName": "CalculationMethod",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/CalculationMethod\" />\n"
+    },
+    {
+      "name": "calculationupdatemethod_model",
+      "x-displayName": "CalculationUpdateMethod",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/CalculationUpdateMethod\" />\n"
     },
     {
       "name": "simulationcontrol_model",
@@ -75,9 +105,19 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SimulationOutput\" />\n"
     },
     {
+      "name": "reportingfrequency_model",
+      "x-displayName": "ReportingFrequency",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ReportingFrequency\" />\n"
+    },
+    {
       "name": "simulationparameter_model",
       "x-displayName": "SimulationParameter",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SimulationParameter\" />\n"
+    },
+    {
+      "name": "terriantypes_model",
+      "x-displayName": "TerrianTypes",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/TerrianTypes\" />\n"
     },
     {
       "name": "sizingparameter_model",
@@ -96,16 +136,24 @@
       "tags": [
         "ashraeclearsky_model",
         "ashraetau_model",
+        "calculationmethod_model",
+        "calculationupdatemethod_model",
         "daylightsavingtime_model",
+        "daysofweek_model",
         "designday_model",
+        "designdaytypes_model",
         "drybulbcondition_model",
         "humiditycondition_model",
+        "humiditytypes_model",
+        "reportingfrequency_model",
         "runperiod_model",
         "shadowcalculation_model",
         "simulationcontrol_model",
         "simulationoutput_model",
         "simulationparameter_model",
         "sizingparameter_model",
+        "solardistribution_model",
+        "terriantypes_model",
         "windcondition_model"
       ]
     }
@@ -126,15 +174,13 @@
             "readOnly": true
           },
           "reporting_frequency": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportingFrequency"
+              }
+            ],
             "title": "Reporting Frequency",
             "default": "Hourly",
-            "enum": [
-              "Timestep",
-              "Hourly",
-              "Daily",
-              "Monthly",
-              "Annual"
-            ],
             "type": "string"
           },
           "include_sqlite": {
@@ -146,7 +192,7 @@
           "include_html": {
             "title": "Include Html",
             "description": "Boolean to note whether an HTML report should be requested from the simulation.",
-            "default": false,
+            "default": true,
             "type": "boolean"
           },
           "outputs": {
@@ -256,18 +302,14 @@
             "maxItems": 2
           },
           "start_day_of_week": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DaysOfWeek"
+              }
+            ],
             "title": "Start Day Of Week",
             "description": "Text for the day of the week on which the simulation starts.",
             "default": "Sunday",
-            "enum": [
-              "Sunday",
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday"
-            ],
             "type": "string"
           },
           "holidays": {
@@ -362,33 +404,44 @@
             "readOnly": true
           },
           "solar_distribution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SolarDistribution"
+              }
+            ],
             "title": "Solar Distribution",
             "default": "FullExteriorWithReflections",
-            "enum": [
-              "MinimalShadowing",
-              "FullExterior",
-              "FullInteriorAndExterior",
-              "FullExteriorWithReflections",
-              "FullInteriorAndExteriorWithReflections"
+            "type": "string"
+          },
+          "calculation_method": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CalculationMethod"
+              }
             ],
+            "title": "Calculation Method",
+            "description": "Text noting whether CPU-based polygon clipping method orGPU-based pixel counting method should be used. For low numbers of shadingsurfaces (less than ~200), PolygonClipping requires less runtime thanPixelCounting. However, PixelCounting runtime scales significantlybetter at higher numbers of shading surfaces. PixelCounting also hasno limitations related to zone concavity when used with any\u201cFullInterior\u201d solar distribution options.",
+            "default": "PolygonClipping",
+            "type": "string"
+          },
+          "calculation_update_method": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CalculationUpdateMethod"
+              }
+            ],
+            "title": "Calculation Update Method",
+            "description": "Text describing how often the solar and shading calculations are updated with respect to the flow of time in the simulation.",
+            "default": "Periodic",
             "type": "string"
           },
           "calculation_frequency": {
             "title": "Calculation Frequency",
-            "description": "Integer for the number of days in each period for which a unique shadow calculation will be performed. This field is only used if the AverageOverDaysInFrequency calculation_method is used.",
+            "description": "Integer for the number of days in each period for which a unique shadow calculation will be performed. This field is only used if the Periodic calculation_method is used.",
             "default": 30,
             "minimum": 1,
             "type": "integer",
             "format": "int32"
-          },
-          "calculation_method": {
-            "title": "Calculation Method",
-            "default": "AverageOverDaysInFrequency",
-            "enum": [
-              "AverageOverDaysInFrequency",
-              "TimestepFrequency"
-            ],
-            "type": "string"
           },
           "maximum_figures": {
             "title": "Maximum Figures",
@@ -441,13 +494,12 @@
         "type": "object",
         "properties": {
           "humidity_type": {
-            "title": "Humidity Type",
-            "enum": [
-              "Wetbulb",
-              "Dewpoint",
-              "HumidityRatio",
-              "Enthalpy"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HumidityTypes"
+              }
             ],
+            "title": "Humidity Type",
             "type": "string"
           },
           "humidity_value": {
@@ -544,7 +596,7 @@
           },
           "clearness": {
             "title": "Clearness",
-            "description": "Value between 0 and 1.2 that will get multiplied by the irradinace to correct for factors like elevation above sea level.",
+            "description": "Value between 0 and 1.2 that will get multiplied by the irradiance to correct for factors like elevation above sea level.",
             "minimum": 0,
             "maximum": 1.2,
             "type": "number",
@@ -636,20 +688,12 @@
             "type": "string"
           },
           "day_type": {
-            "title": "Day Type",
-            "enum": [
-              "SummerDesignDay",
-              "WinterDesignDay",
-              "Sunday",
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Holiday",
-              "CustomDay1",
-              "CustomDay2"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DesignDayTypes"
+              }
             ],
+            "title": "Day Type",
             "type": "string"
           },
           "dry_bulb_condition": {
@@ -823,20 +867,117 @@
             "format": "double"
           },
           "terrain_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TerrianTypes"
+              }
+            ],
             "title": "Terrain Type",
             "description": "Text for the terrain in which the model sits. This is used to determine the wind profile over the height of the rooms.",
             "default": "City",
-            "enum": [
-              "Ocean",
-              "Country",
-              "Suburbs",
-              "Urban",
-              "City"
-            ],
             "type": "string"
           }
         },
         "additionalProperties": false
+      },
+      "DesignDayTypes": {
+        "title": "Day Type",
+        "enum": [
+          "SummerDesignDay",
+          "WinterDesignDay",
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Holiday",
+          "CustomDay1",
+          "CustomDay2"
+        ],
+        "type": "string"
+      },
+      "HumidityTypes": {
+        "title": "Humidity Type",
+        "enum": [
+          "Wetbulb",
+          "Dewpoint",
+          "HumidityRatio",
+          "Enthalpy"
+        ],
+        "type": "string"
+      },
+      "DaysOfWeek": {
+        "title": "Start Day Of Week",
+        "description": "Text for the day of the week on which the simulation starts.",
+        "default": "Sunday",
+        "enum": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "type": "string"
+      },
+      "SolarDistribution": {
+        "title": "Solar Distribution",
+        "default": "FullExteriorWithReflections",
+        "enum": [
+          "MinimalShadowing",
+          "FullExterior",
+          "FullInteriorAndExterior",
+          "FullExteriorWithReflections",
+          "FullInteriorAndExteriorWithReflections"
+        ],
+        "type": "string"
+      },
+      "CalculationMethod": {
+        "title": "Calculation Method",
+        "description": "Text noting whether CPU-based polygon clipping method orGPU-based pixel counting method should be used. For low numbers of shadingsurfaces (less than ~200), PolygonClipping requires less runtime thanPixelCounting. However, PixelCounting runtime scales significantlybetter at higher numbers of shading surfaces. PixelCounting also hasno limitations related to zone concavity when used with any\u201cFullInterior\u201d solar distribution options.",
+        "default": "PolygonClipping",
+        "enum": [
+          "PolygonClipping",
+          "PixelCounting"
+        ],
+        "type": "string"
+      },
+      "CalculationUpdateMethod": {
+        "title": "Calculation Update Method",
+        "description": "Text describing how often the solar and shading calculations are updated with respect to the flow of time in the simulation.",
+        "default": "Periodic",
+        "enum": [
+          "Periodic",
+          "Timestep"
+        ],
+        "type": "string"
+      },
+      "ReportingFrequency": {
+        "title": "Reporting Frequency",
+        "default": "Hourly",
+        "enum": [
+          "Timestep",
+          "Hourly",
+          "Daily",
+          "Monthly",
+          "Annual"
+        ],
+        "type": "string"
+      },
+      "TerrianTypes": {
+        "title": "Terrain Type",
+        "description": "Text for the terrain in which the model sits. This is used to determine the wind profile over the height of the rooms.",
+        "default": "City",
+        "enum": [
+          "Ocean",
+          "Country",
+          "Suburbs",
+          "Urban",
+          "City"
+        ],
+        "type": "string"
       }
     }
   }
