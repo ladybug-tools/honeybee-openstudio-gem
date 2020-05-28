@@ -61,7 +61,7 @@ Then, you must install the OpenStudio Extension Gem itself with:
 ```
 gem install openstudio-extension
 ```
-Then, the specific dependencies of this measure can be installed by running:
+Then, the specific dependencies of this repository can be installed by running:
 ```
 cd honeybee-openstudio-gem
 bundle update

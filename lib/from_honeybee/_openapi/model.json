@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": "1.27.1",
+    "version": "0.0.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -160,6 +160,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterial\" />\n"
     },
     {
+      "name": "roughness_model",
+      "x-displayName": "Roughness",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Roughness\" />\n"
+    },
+    {
       "name": "energymaterialnomass_model",
       "x-displayName": "EnergyMaterialNoMass",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterialNoMass\" />\n"
@@ -170,9 +175,19 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialBlind\" />\n"
     },
     {
+      "name": "slatorientation_model",
+      "x-displayName": "SlatOrientation",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SlatOrientation\" />\n"
+    },
+    {
       "name": "energywindowmaterialgas_model",
       "x-displayName": "EnergyWindowMaterialGas",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGas\" />\n"
+    },
+    {
+      "name": "gastype_model",
+      "x-displayName": "GasType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasType\" />\n"
     },
     {
       "name": "energywindowmaterialgascustom_model",
@@ -203,6 +218,11 @@
       "name": "face_model",
       "x-displayName": "Face",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Face\" />\n"
+    },
+    {
+      "name": "facetype_model",
+      "x-displayName": "FaceType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceType\" />\n"
     },
     {
       "name": "face3d_model",
@@ -275,6 +295,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IdealAirSystemAbridged\" />\n"
     },
     {
+      "name": "economizertype_model",
+      "x-displayName": "EconomizerType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EconomizerType\" />\n"
+    },
+    {
       "name": "infiltration_model",
       "x-displayName": "Infiltration",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Infiltration\" />\n"
@@ -300,6 +325,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/LightingAbridged\" />\n"
     },
     {
+      "name": "metal_model",
+      "x-displayName": "Metal",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Metal\" />\n"
+    },
+    {
       "name": "mirror_model",
       "x-displayName": "Mirror",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Mirror\" />\n"
@@ -308,6 +338,11 @@
       "name": "model_model",
       "x-displayName": "Model",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Model\" />\n"
+    },
+    {
+      "name": "units_model",
+      "x-displayName": "Units",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Units\" />\n"
     },
     {
       "name": "modelenergyproperties_model",
@@ -385,6 +420,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ProgramTypeAbridged\" />\n"
     },
     {
+      "name": "radianceshadestateabridged_model",
+      "x-displayName": "RadianceShadeStateAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadianceShadeStateAbridged\" />\n"
+    },
+    {
+      "name": "radiancesubfacestateabridged_model",
+      "x-displayName": "RadianceSubFaceStateAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadianceSubFaceStateAbridged\" />\n"
+    },
+    {
       "name": "roofceilingconstructionset_model",
       "x-displayName": "RoofCeilingConstructionSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoofCeilingConstructionSet\" />\n"
@@ -460,6 +505,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleTypeLimit\" />\n"
     },
     {
+      "name": "schedulenumerictype_model",
+      "x-displayName": "ScheduleNumericType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleNumericType\" />\n"
+    },
+    {
+      "name": "scheduleunittype_model",
+      "x-displayName": "ScheduleUnitType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleUnitType\" />\n"
+    },
+    {
       "name": "setpoint_model",
       "x-displayName": "Setpoint",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Setpoint\" />\n"
@@ -503,6 +558,11 @@
       "name": "shaderadiancepropertiesabridged_model",
       "x-displayName": "ShadeRadiancePropertiesAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeRadiancePropertiesAbridged\" />\n"
+    },
+    {
+      "name": "stategeometryabridged_model",
+      "x-displayName": "StateGeometryAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/StateGeometryAbridged\" />\n"
     },
     {
       "name": "surface_model",
@@ -588,6 +648,7 @@
         "doormodifiersetabridged_model",
         "doorpropertiesabridged_model",
         "doorradiancepropertiesabridged_model",
+        "economizertype_model",
         "electricequipment_model",
         "electricequipmentabridged_model",
         "energymaterial_model",
@@ -604,12 +665,14 @@
         "faceenergypropertiesabridged_model",
         "facepropertiesabridged_model",
         "faceradiancepropertiesabridged_model",
+        "facetype_model",
         "floorconstructionset_model",
         "floorconstructionsetabridged_model",
         "floormodifierset_model",
         "floormodifiersetabridged_model",
         "gasequipment_model",
         "gasequipmentabridged_model",
+        "gastype_model",
         "glass_model",
         "glow_model",
         "ground_model",
@@ -619,6 +682,7 @@
         "light_model",
         "lighting_model",
         "lightingabridged_model",
+        "metal_model",
         "mirror_model",
         "model_model",
         "modelenergyproperties_model",
@@ -636,6 +700,8 @@
         "plastic_model",
         "programtype_model",
         "programtypeabridged_model",
+        "radianceshadestateabridged_model",
+        "radiancesubfacestateabridged_model",
         "roofceilingconstructionset_model",
         "roofceilingconstructionsetabridged_model",
         "roofceilingmodifierset_model",
@@ -644,13 +710,16 @@
         "roomenergypropertiesabridged_model",
         "roompropertiesabridged_model",
         "roomradiancepropertiesabridged_model",
+        "roughness_model",
         "scheduleday_model",
         "schedulefixedinterval_model",
         "schedulefixedintervalabridged_model",
+        "schedulenumerictype_model",
         "scheduleruleabridged_model",
         "scheduleruleset_model",
         "schedulerulesetabridged_model",
         "scheduletypelimit_model",
+        "scheduleunittype_model",
         "setpoint_model",
         "setpointabridged_model",
         "shade_model",
@@ -660,8 +729,11 @@
         "shademodifiersetabridged_model",
         "shadepropertiesabridged_model",
         "shaderadiancepropertiesabridged_model",
+        "slatorientation_model",
+        "stategeometryabridged_model",
         "surface_model",
         "trans_model",
+        "units_model",
         "ventilation_model",
         "ventilationabridged_model",
         "void_model",
@@ -938,6 +1010,87 @@
         },
         "additionalProperties": false
       },
+      "StateGeometryAbridged": {
+        "title": "StateGeometryAbridged",
+        "description": "A single planar geometry that can be assigned to Radiance states.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "A ladybug_geometry Face3D.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "StateGeometryAbridged",
+            "pattern": "^StateGeometryAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier identifier (default: None).",
+            "type": "string"
+          },
+          "modifier_direct": {
+            "title": "Modifier Direct",
+            "description": "A string for Honeybee Radiance Modifier identifiers to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier",
+          "geometry"
+        ],
+        "additionalProperties": false
+      },
+      "RadianceShadeStateAbridged": {
+        "title": "RadianceShadeStateAbridged",
+        "description": "RadianceShadeStateAbridged represents a single state for a dynamic Shade.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RadianceShadeStateAbridged",
+            "pattern": "^RadianceShadeStateAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "A Radiance Modifier identifier (default: None).",
+            "type": "string"
+          },
+          "modifier_direct": {
+            "title": "Modifier Direct",
+            "description": "A Radiance Modifier identifier (default: None).",
+            "type": "string"
+          },
+          "shades": {
+            "title": "Shades",
+            "description": "A list of StateGeometryAbridged objects (default: None).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StateGeometryAbridged"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "ShadeRadiancePropertiesAbridged": {
         "title": "ShadeRadiancePropertiesAbridged",
         "description": "Radiance Properties for Honeybee Shade Abridged.",
@@ -945,12 +1098,12 @@
         "properties": {
           "modifier": {
             "title": "Modifier",
-            "description": "A string for a Honeybee Radiance Modifier.",
+            "description": "A string for a Honeybee Radiance Modifier (default: None).",
             "type": "string"
           },
           "modifier_blk": {
             "title": "Modifier Blk",
-            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
             "type": "string"
           },
           "type": {
@@ -959,6 +1112,19 @@
             "pattern": "^ShadeRadiancePropertiesAbridged$",
             "type": "string",
             "readOnly": true
+          },
+          "dynamic_group_identifier": {
+            "title": "Dynamic Group Identifier",
+            "description": "An optional string to note the dynamic group '             'to which the Shade is a part of. Shades sharing the same '             'dynamic_group_identifier will have their states change in unison. '             'If None, the Shade is assumed to be static. (default: None).",
+            "type": "string"
+          },
+          "states": {
+            "title": "States",
+            "description": "An optional list of abridged states (default: None).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RadianceShadeStateAbridged"
+            }
           }
         },
         "additionalProperties": false
@@ -1060,6 +1226,57 @@
         },
         "additionalProperties": false
       },
+      "RadianceSubFaceStateAbridged": {
+        "title": "RadianceSubFaceStateAbridged",
+        "description": "RadianceSubFaceStateAbridged is an abridged state for a dynamic Aperture or Door.\n    ",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "RadianceSubFaceStateAbridged",
+            "pattern": "^RadianceSubFaceStateAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "A Radiance Modifier identifier (default: None).",
+            "type": "string"
+          },
+          "modifier_direct": {
+            "title": "Modifier Direct",
+            "description": "A Radiance Modifier identifier (default: None).",
+            "type": "string"
+          },
+          "shades": {
+            "title": "Shades",
+            "description": "A list of StateGeometryAbridged objects (default: None).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StateGeometryAbridged"
+            }
+          },
+          "vmtx_geometry": {
+            "title": "Vmtx Geometry",
+            "description": "A Face3D for the view matrix geometry (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          },
+          "dmtx_geometry": {
+            "title": "Dmtx Geometry",
+            "description": "A Face3D for the daylight matrix geometry (default: None).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Face3D"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "ApertureRadiancePropertiesAbridged": {
         "title": "ApertureRadiancePropertiesAbridged",
         "description": "Radiance Properties for Honeybee Aperture Abridged.",
@@ -1067,12 +1284,12 @@
         "properties": {
           "modifier": {
             "title": "Modifier",
-            "description": "A string for a Honeybee Radiance Modifier.",
+            "description": "A string for a Honeybee Radiance Modifier (default: None).",
             "type": "string"
           },
           "modifier_blk": {
             "title": "Modifier Blk",
-            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
             "type": "string"
           },
           "type": {
@@ -1081,6 +1298,19 @@
             "pattern": "^ApertureRadiancePropertiesAbridged$",
             "type": "string",
             "readOnly": true
+          },
+          "dynamic_group_identifier": {
+            "title": "Dynamic Group Identifier",
+            "description": "An optional string to note the dynamic group '             'to which the Aperture is a part of. Apertures sharing the same '             'dynamic_group_identifier will have their states change in unison. '             'If None, the Aperture is assumed to be static. (default: None).",
+            "type": "string"
+          },
+          "states": {
+            "title": "States",
+            "description": "An optional list of abridged states (default: None).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RadianceSubFaceStateAbridged"
+            }
           }
         },
         "additionalProperties": false
@@ -1223,12 +1453,12 @@
         "properties": {
           "modifier": {
             "title": "Modifier",
-            "description": "A string for a Honeybee Radiance Modifier.",
+            "description": "A string for a Honeybee Radiance Modifier (default: None).",
             "type": "string"
           },
           "modifier_blk": {
             "title": "Modifier Blk",
-            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
             "type": "string"
           },
           "type": {
@@ -1237,6 +1467,19 @@
             "pattern": "^DoorRadiancePropertiesAbridged$",
             "type": "string",
             "readOnly": true
+          },
+          "dynamic_group_identifier": {
+            "title": "Dynamic Group Identifier",
+            "description": "An optional string to note the dynamic group '             'to which the Door is a part of. Doors sharing the same '             'dynamic_group_identifier will have their states change in unison. '             'If None, the Door is assumed to be static. (default: None).",
+            "type": "string"
+          },
+          "states": {
+            "title": "States",
+            "description": "An optional list of abridged states (default: None).",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RadianceSubFaceStateAbridged"
+            }
           }
         },
         "additionalProperties": false
@@ -1379,12 +1622,12 @@
         "properties": {
           "modifier": {
             "title": "Modifier",
-            "description": "A string for a Honeybee Radiance Modifier.",
+            "description": "A string for a Honeybee Radiance Modifier (default: None).",
             "type": "string"
           },
           "modifier_blk": {
             "title": "Modifier Blk",
-            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects).",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
             "type": "string"
           },
           "type": {
@@ -1439,13 +1682,12 @@
             ]
           },
           "face_type": {
-            "title": "Face Type",
-            "enum": [
-              "Wall",
-              "Floor",
-              "RoofCeiling",
-              "AirBoundary"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FaceType"
+              }
             ],
+            "title": "Face Type",
             "type": "string"
           },
           "boundary_condition": {
@@ -2238,6 +2480,14 @@
             "minimum": 1,
             "type": "integer",
             "format": "int32"
+          },
+          "story": {
+            "title": "Story",
+            "description": "Text string for the story identifier to which this Room belongs. Rooms sharing the same story identifier are considered part of the same story in a Model.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
           }
         },
         "required": [
@@ -2591,16 +2841,13 @@
             "readOnly": true
           },
           "roughness": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Roughness"
+              }
+            ],
             "title": "Roughness",
             "default": "MediumRough",
-            "enum": [
-              "VeryRough",
-              "Rough",
-              "MediumRough",
-              "MediumSmooth",
-              "Smooth",
-              "VerySmooth"
-            ],
             "type": "string"
           },
           "thermal_absorptance": {
@@ -2672,16 +2919,13 @@
             "readOnly": true
           },
           "roughness": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Roughness"
+              }
+            ],
             "title": "Roughness",
             "default": "MediumRough",
-            "enum": [
-              "VeryRough",
-              "Rough",
-              "MediumRough",
-              "MediumSmooth",
-              "Smooth",
-              "VerySmooth"
-            ],
             "type": "string"
           },
           "thermal_absorptance": {
@@ -2940,14 +3184,13 @@
             "format": "double"
           },
           "gas_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GasType"
+              }
+            ],
             "title": "Gas Type",
             "default": "Air",
-            "enum": [
-              "Air",
-              "Argon",
-              "Krypton",
-              "Xenon"
-            ],
             "type": "string"
           }
         },
@@ -3093,11 +3336,10 @@
             "description": "List of gases in the gas mixture.",
             "type": "array",
             "items": {
-              "enum": [
-                "Air",
-                "Argon",
-                "Krypton",
-                "Xenon"
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/GasType"
+                }
               ],
               "type": "string"
             },
@@ -3225,12 +3467,13 @@
             "readOnly": true
           },
           "slat_orientation": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SlatOrientation"
+              }
+            ],
             "title": "Slat Orientation",
             "default": "Horizontal",
-            "enum": [
-              "Horizontal",
-              "Vertical"
-            ],
             "type": "string"
           },
           "slat_width": {
@@ -4231,33 +4474,23 @@
             ]
           },
           "numeric_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleNumericType"
+              }
+            ],
             "title": "Numeric Type",
             "default": "Continuous",
-            "enum": [
-              "Continuous",
-              "Discrete"
-            ],
             "type": "string"
           },
           "unit_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleUnitType"
+              }
+            ],
             "title": "Unit Type",
             "default": "Dimensionless",
-            "enum": [
-              "Dimensionless",
-              "Temperature",
-              "DeltaTemperature",
-              "PrecipitationRate",
-              "Angle",
-              "ConvectionCoefficient",
-              "ActivityLevel",
-              "Velocity",
-              "Capacity",
-              "Power",
-              "Availability",
-              "Percent",
-              "Control",
-              "Mode"
-            ],
             "type": "string"
           }
         },
@@ -4757,14 +4990,14 @@
             "readOnly": true
           },
           "economizer_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EconomizerType"
+              }
+            ],
             "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
             "default": "DifferentialDryBulb",
-            "enum": [
-              "NoEconomizer",
-              "DifferentialDryBulb",
-              "DifferentialEnthalpy"
-            ],
             "type": "string"
           },
           "demand_controlled_ventilation": {
@@ -5990,6 +6223,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -5999,8 +6235,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6021,6 +6256,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6081,12 +6319,160 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
                 "$ref": "#/components/schemas/Mirror"
               }
             ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Metal": {
+        "title": "Metal",
+        "description": "Radiance metal material.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "metal",
+            "pattern": "^metal$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifier": {
+            "title": "Modifier",
+            "description": "Material modifier (default: Void).",
+            "default": {
+              "type": "void"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Plastic"
+              },
+              {
+                "$ref": "#/components/schemas/Glass"
+              },
+              {
+                "$ref": "#/components/schemas/BSDF"
+              },
+              {
+                "$ref": "#/components/schemas/Glow"
+              },
+              {
+                "$ref": "#/components/schemas/Light"
+              },
+              {
+                "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
+                "$ref": "#/components/schemas/Void"
+              },
+              {
+                "$ref": "#/components/schemas/Mirror"
+              }
+            ]
+          },
+          "dependencies": {
+            "title": "Dependencies",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/BSDF"
+                },
+                {
+                  "$ref": "#/components/schemas/Glow"
+                },
+                {
+                  "$ref": "#/components/schemas/Light"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
+                },
+                {
+                  "$ref": "#/components/schemas/Void"
+                },
+                {
+                  "$ref": "#/components/schemas/Mirror"
+                }
+              ]
+            }
+          },
+          "r_reflectance": {
+            "title": "R Reflectance",
+            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "g_reflectance": {
+            "title": "G Reflectance",
+            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "b_reflectance": {
+            "title": "B Reflectance",
+            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "default": 0.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "specularity": {
+            "title": "Specularity",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions lower than 0.9 are not realistic for metallic materials. (default: 0.9).",
+            "default": 0.9,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "roughness": {
+            "title": "Roughness",
+            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -6142,6 +6528,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6151,8 +6540,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6173,6 +6561,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6212,7 +6603,7 @@
           },
           "specularity": {
             "title": "Specularity",
-            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic. (default: 0).",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials. (default: 0).",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -6300,6 +6691,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6309,8 +6703,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6331,6 +6724,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6422,6 +6818,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6431,8 +6830,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6453,6 +6851,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6515,9 +6916,8 @@
           },
           "bsdf_data": {
             "title": "Bsdf Data",
-            "description": "BSDF xml file data as bytes.",
-            "type": "string",
-            "format": "binary"
+            "description": "A string with the contents of the BSDF XML file.",
+            "type": "string"
           },
           "display_name": {
             "title": "Display Name",
@@ -6557,6 +6957,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6566,8 +6969,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6588,6 +6990,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6724,6 +7129,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6733,8 +7141,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6755,6 +7162,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6854,6 +7264,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -6863,8 +7276,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: []).",
-            "default": [],
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -6885,6 +7297,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Trans"
+                },
+                {
+                  "$ref": "#/components/schemas/Metal"
                 },
                 {
                   "$ref": "#/components/schemas/Void"
@@ -6924,7 +7339,7 @@
           },
           "specularity": {
             "title": "Specularity",
-            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic. (default: 0).",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials. (default: 0).",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -6974,6 +7389,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7002,6 +7420,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7049,6 +7470,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7077,6 +7501,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7124,6 +7551,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7152,6 +7582,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7206,6 +7639,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7234,6 +7670,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7266,6 +7705,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7294,6 +7736,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7334,6 +7779,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7362,6 +7810,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7401,6 +7852,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7431,6 +7885,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7459,6 +7916,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7499,6 +7959,9 @@
                 "$ref": "#/components/schemas/Trans"
               },
               {
+                "$ref": "#/components/schemas/Metal"
+              },
+              {
                 "$ref": "#/components/schemas/Void"
               },
               {
@@ -7527,6 +7990,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7643,6 +8109,9 @@
               },
               {
                 "$ref": "#/components/schemas/Trans"
+              },
+              {
+                "$ref": "#/components/schemas/Metal"
               },
               {
                 "$ref": "#/components/schemas/Void"
@@ -7934,8 +8403,7 @@
           },
           "modifiers": {
             "title": "Modifiers",
-            "description": "A list of all unique modifiers in the model. This includes modifiers across all Faces, Apertures, Doors, Shades, Room ModifierSets, and the global_modifier_set. (default: []).",
-            "default": [],
+            "description": "A list of all unique modifiers in the model. This includes modifiers across all Faces, Apertures, Doors, Shades, Room ModifierSets, and the global_modifier_set (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -7958,6 +8426,9 @@
                   "$ref": "#/components/schemas/Trans"
                 },
                 {
+                  "$ref": "#/components/schemas/Metal"
+                },
+                {
                   "$ref": "#/components/schemas/Void"
                 },
                 {
@@ -7968,8 +8439,7 @@
           },
           "modifier_sets": {
             "title": "Modifier Sets",
-            "description": "A list of all unique Room-Assigned ModifierSets in the Model (default: []).",
-            "default": [],
+            "description": "A list of all unique Room-Assigned ModifierSets in the Model (default: None).",
             "type": "array",
             "items": {
               "anyOf": [
@@ -8089,16 +8559,14 @@
             }
           },
           "units": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Units"
+              }
+            ],
             "title": "Units",
             "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
             "default": "Meters",
-            "enum": [
-              "Meters",
-              "Millimeters",
-              "Feet",
-              "Inches",
-              "Centimeters"
-            ],
             "type": "string"
           },
           "tolerance": {
@@ -8121,6 +8589,103 @@
           "properties"
         ],
         "additionalProperties": false
+      },
+      "Roughness": {
+        "title": "Roughness",
+        "default": "MediumRough",
+        "enum": [
+          "VeryRough",
+          "Rough",
+          "MediumRough",
+          "MediumSmooth",
+          "Smooth",
+          "VerySmooth"
+        ],
+        "type": "string"
+      },
+      "SlatOrientation": {
+        "title": "Slat Orientation",
+        "default": "Horizontal",
+        "enum": [
+          "Horizontal",
+          "Vertical"
+        ],
+        "type": "string"
+      },
+      "GasType": {
+        "title": "Gas Type",
+        "default": "Air",
+        "enum": [
+          "Air",
+          "Argon",
+          "Krypton",
+          "Xenon"
+        ],
+        "type": "string"
+      },
+      "FaceType": {
+        "title": "Face Type",
+        "enum": [
+          "Wall",
+          "Floor",
+          "RoofCeiling",
+          "AirBoundary"
+        ],
+        "type": "string"
+      },
+      "EconomizerType": {
+        "title": "Economizer Type",
+        "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
+        "default": "DifferentialDryBulb",
+        "enum": [
+          "NoEconomizer",
+          "DifferentialDryBulb",
+          "DifferentialEnthalpy"
+        ],
+        "type": "string"
+      },
+      "Units": {
+        "title": "Units",
+        "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
+        "default": "Meters",
+        "enum": [
+          "Meters",
+          "Millimeters",
+          "Feet",
+          "Inches",
+          "Centimeters"
+        ],
+        "type": "string"
+      },
+      "ScheduleNumericType": {
+        "title": "Numeric Type",
+        "default": "Continuous",
+        "enum": [
+          "Continuous",
+          "Discrete"
+        ],
+        "type": "string"
+      },
+      "ScheduleUnitType": {
+        "title": "Unit Type",
+        "default": "Dimensionless",
+        "enum": [
+          "Dimensionless",
+          "Temperature",
+          "DeltaTemperature",
+          "PrecipitationRate",
+          "Angle",
+          "ConvectionCoefficient",
+          "ActivityLevel",
+          "Velocity",
+          "Capacity",
+          "Power",
+          "Availability",
+          "Percent",
+          "Control",
+          "Mode"
+        ],
+        "type": "string"
       }
     }
   }

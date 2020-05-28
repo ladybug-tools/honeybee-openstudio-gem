@@ -59,7 +59,7 @@ RSpec.describe FromHoneybee do
     expect(sim_contr.doZoneSizingCalculation).to be true
     expect(sim_contr.doSystemSizingCalculation).to be true
     expect(sim_contr.doPlantSizingCalculation).to be true
-    expect(sim_contr.solarDistribution).to eq 'FullExteriorWithReflections'
+    expect(sim_contr.solarDistribution).to eq 'FullInteriorAndExteriorWithReflections'
     expect(sim_contr.sizingParameters).not_to be nil
     expect(sim_contr.runPeriods).not_to be nil
 
@@ -78,6 +78,12 @@ RSpec.describe FromHoneybee do
     output_variable = openstudio_model.getOutputVariables
     expect(output_variable.size).to eq 6
     expect(output_variable[0].reportingFrequency).to eq 'Daily'
+
+    shadow_calc = sim_contr.shadowCalculation
+    shadow_calc = shadow_calc.get
+    expect(shadow_calc.shadingCalculationMethod).to eq 'PixelCounting'
+    expect(shadow_calc.shadingCalculationUpdateFrequencyMethod).to eq 'Timestep'
+    expect(shadow_calc.shadingCalculationUpdateFrequency).to eq 30
   end
 
 end
