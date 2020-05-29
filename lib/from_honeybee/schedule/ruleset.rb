@@ -58,10 +58,23 @@ module FromHoneybee
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
       os_sch_ruleset.setName(@hash[:identifier])
 
+      # assign schedule type limit
+      sch_type_limit_obj = nil
+      if @hash[:schedule_type_limit]
+        schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
+        unless schedule_type_limit.empty?
+          sch_type_limit_obj = schedule_type_limit.get
+          os_sch_ruleset.setScheduleTypeLimits(sch_type_limit_obj)
+        end
+      end
+
       # loop through day schedules and create openstudio schedule day object
       @hash[:day_schedules].each do |day_schedule|
         day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
         day_schedule_new.setName(day_schedule[:identifier])
+        unless sch_type_limit_obj.nil?
+          day_schedule_new.setScheduleTypeLimits(sch_type_limit_obj)
+        end
         values_day_new = day_schedule[:values]
         times_day_new = day_schedule[:times]
         times_day_new.delete_at(0)  # Remove [0, 0] from array at index 0.
@@ -110,15 +123,6 @@ module FromHoneybee
         times = default_day_schedule_object.times
         values.each_index do |i|
           os_sch_ruleset.defaultDaySchedule.addValue(times[i], values[i])
-        end
-      end
-      
-      # assign schedule type limit
-      if @hash[:schedule_type_limit]
-        schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
-        unless schedule_type_limit.empty?
-          schedule_type_limit_object = schedule_type_limit.get
-          os_sch_ruleset.setScheduleTypeLimits(schedule_type_limit_object)
         end
       end
 
