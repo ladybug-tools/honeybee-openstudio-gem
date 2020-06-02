@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": "0.0.1",
+    "version": "1.32.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -618,6 +618,26 @@
       "name": "windowconstructionabridged_model",
       "x-displayName": "WindowConstructionAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionAbridged\" />\n"
+    },
+    {
+      "name": "windowconstructionshade_model",
+      "x-displayName": "WindowConstructionShade",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionShade\" />\n"
+    },
+    {
+      "name": "shadelocation_model",
+      "x-displayName": "ShadeLocation",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeLocation\" />\n"
+    },
+    {
+      "name": "controltype_model",
+      "x-displayName": "ControlType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ControlType\" />\n"
+    },
+    {
+      "name": "windowconstructionshadeabridged_model",
+      "x-displayName": "WindowConstructionShadeAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionShadeAbridged\" />\n"
     }
   ],
   "x-tagGroups": [
@@ -640,6 +660,7 @@
         "bsdf_model",
         "constructionset_model",
         "constructionsetabridged_model",
+        "controltype_model",
         "door_model",
         "doorconstructionset_model",
         "doorconstructionsetabridged_model",
@@ -725,6 +746,7 @@
         "shade_model",
         "shadeconstruction_model",
         "shadeenergypropertiesabridged_model",
+        "shadelocation_model",
         "shademodifierset_model",
         "shademodifiersetabridged_model",
         "shadepropertiesabridged_model",
@@ -742,7 +764,9 @@
         "wallmodifierset_model",
         "wallmodifiersetabridged_model",
         "windowconstruction_model",
-        "windowconstructionabridged_model"
+        "windowconstructionabridged_model",
+        "windowconstructionshade_model",
+        "windowconstructionshadeabridged_model"
       ]
     }
   ],
@@ -960,12 +984,12 @@
         "properties": {
           "boundary_condition_objects": {
             "title": "Boundary Condition Objects",
-            "description": "A list of up to 3 object identifiers that are adjacent to this one. The first object is always the one that is immediately adjacet and is of the same object type (Face, Aperture, Door). When this boundary condition is applied to a Face, the second object in the tuple will be the parent Room of the adjacent object. When the boundary condition is applied to a sub-face (Door or Aperture), the second object will be the parent Face of the adjacent sub-face and the third object will be the parent Room of the adjacent sub-face.",
-            "min_tems": 2,
+            "description": "A list of up to 3 object identifiers that are adjacent to this one. The first object is always the one that is immediately adjacent and is of the same object type (Face, Aperture, Door). When this boundary condition is applied to a Face, the second object in the tuple will be the parent Room of the adjacent object. When the boundary condition is applied to a sub-face (Door or Aperture), the second object will be the parent Face of the adjacent sub-face and the third object will be the parent Room of the adjacent sub-face.",
             "type": "array",
             "items": {
               "type": "string"
             },
+            "minItems": 2,
             "maxItems": 3
           },
           "type": {
@@ -1002,7 +1026,7 @@
           },
           "transmittance_schedule": {
             "title": "Transmittance Schedule",
-            "description": "Identifier of a schedule to set the transmittance of the shade, which can vary throughout the simulation. If None, the shade will be completely opauqe.",
+            "description": "Identifier of a schedule to set the transmittance of the shade, which can vary throughout the simulation. If None, the shade will be completely opaque.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -2640,7 +2664,7 @@
           },
           "operable_construction": {
             "title": "Operable Construction",
-            "description": "Identifier for a WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property..",
+            "description": "Identifier for a WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -2976,7 +3000,7 @@
           },
           "layers": {
             "title": "Layers",
-            "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
             "minLength": 1,
             "maxLength": 100,
             "type": "array",
@@ -2990,7 +3014,7 @@
           },
           "materials": {
             "title": "Materials",
-            "description": "List of materials. The order of the materials is from outside to inside.",
+            "description": "List of opaque materials. The order of the materials is from outside to inside.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -3149,6 +3173,199 @@
             "readOnly": true
           }
         },
+        "additionalProperties": false
+      },
+      "EnergyWindowMaterialSimpleGlazSys": {
+        "title": "EnergyWindowMaterialSimpleGlazSys",
+        "description": "Describe an entire glazing system rather than individual layers.\n\nUsed when only very limited information is available on the glazing layers or when\nspecific performance levels are being targeted.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "u_factor": {
+            "title": "U Factor",
+            "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
+            "exclusiveMinimum": 0,
+            "maximum": 5.8,
+            "type": "number",
+            "format": "double"
+          },
+          "shgc": {
+            "title": "Shgc",
+            "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialSimpleGlazSys",
+            "pattern": "^EnergyWindowMaterialSimpleGlazSys$",
+            "type": "string",
+            "readOnly": true
+          },
+          "vt": {
+            "title": "Vt",
+            "description": "The fraction of visible light falling on the window that makes it through the glass at normal incidence.",
+            "default": 0.54,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "u_factor",
+          "shgc"
+        ],
+        "additionalProperties": false
+      },
+      "EnergyWindowMaterialGlazing": {
+        "title": "EnergyWindowMaterialGlazing",
+        "description": "Describe a single glass pane corresponding to a layer in a window construction.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGlazing",
+            "pattern": "^EnergyWindowMaterialGlazing$",
+            "type": "string",
+            "readOnly": true
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
+            "default": 0.003,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
+            "default": 0.85,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_reflectance_back": {
+            "title": "Solar Reflectance Back",
+            "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
+            "type": "number",
+            "format": "double"
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
+            "default": 0.9,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance_back": {
+            "title": "Visible Reflectance Back",
+            "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "Long-wave transmittance at normal incidence.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "dirt_correction": {
+            "title": "Dirt Correction",
+            "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
+            "default": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_diffusing": {
+            "title": "Solar Diffusing",
+            "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
         "additionalProperties": false
       },
       "EnergyWindowMaterialGas": {
@@ -3385,617 +3602,6 @@
         ],
         "additionalProperties": false
       },
-      "EnergyWindowMaterialSimpleGlazSys": {
-        "title": "EnergyWindowMaterialSimpleGlazSys",
-        "description": "Describe an entire glazing system rather than individual layers.\n\nUsed when only very limited information is available on the glazing layers or when\nspecific performance levels are being targeted.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "u_factor": {
-            "title": "U Factor",
-            "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
-            "exclusiveMinimum": 0,
-            "maximum": 5.8,
-            "type": "number",
-            "format": "double"
-          },
-          "shgc": {
-            "title": "Shgc",
-            "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
-            "exclusiveMinimum": 0,
-            "exclusiveMaximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialSimpleGlazSys",
-            "pattern": "^EnergyWindowMaterialSimpleGlazSys$",
-            "type": "string",
-            "readOnly": true
-          },
-          "vt": {
-            "title": "Vt",
-            "description": "The fraction of visible light falling on the window that makes it through the glass at normal incidence.",
-            "default": 0.54,
-            "exclusiveMinimum": 0,
-            "exclusiveMaximum": 1,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier",
-          "u_factor",
-          "shgc"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyWindowMaterialBlind": {
-        "title": "EnergyWindowMaterialBlind",
-        "description": "Window blind material consisting of flat, equally-spaced slats.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialBlind",
-            "pattern": "^EnergyWindowMaterialBlind$",
-            "type": "string",
-            "readOnly": true
-          },
-          "slat_orientation": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SlatOrientation"
-              }
-            ],
-            "title": "Slat Orientation",
-            "default": "Horizontal",
-            "type": "string"
-          },
-          "slat_width": {
-            "title": "Slat Width",
-            "description": "The width of slat measured from edge to edge in meters.",
-            "default": 0.025,
-            "exclusiveMinimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_separation": {
-            "title": "Slat Separation",
-            "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
-            "default": 0.01875,
-            "exclusiveMinimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_thickness": {
-            "title": "Slat Thickness",
-            "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
-            "default": 0.001,
-            "exclusiveMinimum": 0,
-            "maximum": 0.1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_angle": {
-            "title": "Slat Angle",
-            "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
-            "default": 45,
-            "minimum": 0,
-            "maximum": 180,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_conductivity": {
-            "title": "Slat Conductivity",
-            "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
-            "default": 221,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_transmittance": {
-            "title": "Beam Solar Transmittance",
-            "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_reflectance": {
-            "title": "Beam Solar Reflectance",
-            "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_reflectance_back": {
-            "title": "Beam Solar Reflectance Back",
-            "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_transmittance": {
-            "title": "Diffuse Solar Transmittance",
-            "description": "The slat transmittance for hemisperically diffuse solar radiation. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_reflectance": {
-            "title": "Diffuse Solar Reflectance",
-            "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_reflectance_back": {
-            "title": "Diffuse Solar Reflectance Back",
-            "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_transmittance": {
-            "title": "Beam Visible Transmittance",
-            "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_reflectance": {
-            "title": "Beam Visible Reflectance",
-            "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_reflectance_back": {
-            "title": "Beam Visible Reflectance Back",
-            "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_transmittance": {
-            "title": "Diffuse Visible Transmittance",
-            "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_reflectance": {
-            "title": "Diffuse Visible Reflectance",
-            "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_reflectance_back": {
-            "title": "Diffuse Visible Reflectance Back",
-            "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity_back": {
-            "title": "Emissivity Back",
-            "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "distance_to_glass": {
-            "title": "Distance To Glass",
-            "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
-            "default": 0.05,
-            "minimum": 0.01,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "top_opening_multiplier": {
-            "title": "Top Opening Multiplier",
-            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "bottom_opening_multiplier": {
-            "title": "Bottom Opening Multiplier",
-            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "left_opening_multiplier": {
-            "title": "Left Opening Multiplier",
-            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "right_opening_multiplier": {
-            "title": "Right Opening Multiplier",
-            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyWindowMaterialGlazing": {
-        "title": "EnergyWindowMaterialGlazing",
-        "description": "Describe a single glass pane corresponding to a layer in a window construction.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialGlazing",
-            "pattern": "^EnergyWindowMaterialGlazing$",
-            "type": "string",
-            "readOnly": true
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
-            "default": 0.003,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_transmittance": {
-            "title": "Solar Transmittance",
-            "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
-            "default": 0.85,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance": {
-            "title": "Solar Reflectance",
-            "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
-            "default": 0.075,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance_back": {
-            "title": "Solar Reflectance Back",
-            "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
-            "type": "number",
-            "format": "double"
-          },
-          "visible_transmittance": {
-            "title": "Visible Transmittance",
-            "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
-            "default": 0.9,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance": {
-            "title": "Visible Reflectance",
-            "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
-            "default": 0.075,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance_back": {
-            "title": "Visible Reflectance Back",
-            "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "Long-wave transmittance at normal incidence.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
-            "default": 0.84,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity_back": {
-            "title": "Emissivity Back",
-            "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
-            "default": 0.84,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "conductivity": {
-            "title": "Conductivity",
-            "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "dirt_correction": {
-            "title": "Dirt Correction",
-            "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
-            "default": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_diffusing": {
-            "title": "Solar Diffusing",
-            "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
-            "default": false,
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyWindowMaterialShade": {
-        "title": "EnergyWindowMaterialShade",
-        "description": "This object specifies the properties of window shade materials.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialShade",
-            "pattern": "^EnergyWindowMaterialShade$",
-            "type": "string",
-            "readOnly": true
-          },
-          "solar_transmittance": {
-            "title": "Solar Transmittance",
-            "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default value is 0.4.",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance": {
-            "title": "Solar Reflectance",
-            "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_transmittance": {
-            "title": "Visible Transmittance",
-            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance": {
-            "title": "Visible Reflectance",
-            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "exclusiveMaximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "The thickness of the shade material in meters. Default value is 0.005.",
-            "default": 0.005,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "conductivity": {
-            "title": "Conductivity",
-            "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
-            "default": 0.1,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "distance_to_glass": {
-            "title": "Distance To Glass",
-            "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
-            "default": 0.05,
-            "minimum": 0.001,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "top_opening_multiplier": {
-            "title": "Top Opening Multiplier",
-            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "bottom_opening_multiplier": {
-            "title": "Bottom Opening Multiplier",
-            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "left_opening_multiplier": {
-            "title": "Left Opening Multiplier",
-            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "right_opening_multiplier": {
-            "title": "Right Opening Multiplier",
-            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "airflow_permeability": {
-            "title": "Airflow Permeability",
-            "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default value is 0.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 0.8,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
       "WindowConstruction": {
         "title": "WindowConstruction",
         "description": "Construction for window objects (Aperture, Door).",
@@ -4010,7 +3616,7 @@
           },
           "layers": {
             "title": "Layers",
-            "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
             "minLength": 1,
             "maxLength": 100,
             "type": "array",
@@ -4024,10 +3630,16 @@
           },
           "materials": {
             "title": "Materials",
-            "description": "List of materials. The order of the materials is from outside to inside.",
+            "description": "List of glazing and gas materials. The order of the materials is from outside to inside. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
             "type": "array",
             "items": {
               "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialSimpleGlazSys"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+                },
                 {
                   "$ref": "#/components/schemas/EnergyWindowMaterialGas"
                 },
@@ -4036,18 +3648,6 @@
                 },
                 {
                   "$ref": "#/components/schemas/EnergyWindowMaterialGasMixture"
-                },
-                {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialSimpleGlazSys"
-                },
-                {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
-                },
-                {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
-                },
-                {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialShade"
                 }
               ]
             },
@@ -4115,7 +3715,7 @@
           },
           "operable_construction": {
             "title": "Operable Construction",
-            "description": "A WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property..",
+            "description": "A WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/WindowConstruction"
@@ -4211,7 +3811,7 @@
           },
           "solar_reflectance": {
             "title": "Solar Reflectance",
-            "description": " A number for the solar reflectance of the construction.",
+            "description": "A number for the solar reflectance of the construction.",
             "default": 0.2,
             "minimum": 0,
             "maximum": 1,
@@ -4220,7 +3820,7 @@
           },
           "visible_reflectance": {
             "title": "Visible Reflectance",
-            "description": " A number for the visible reflectance of the construction.",
+            "description": "A number for the visible reflectance of the construction.",
             "default": 0.2,
             "minimum": 0,
             "maximum": 1,
@@ -4294,7 +3894,7 @@
           },
           "interpolate": {
             "title": "Interpolate",
-            "description": "Boolean to note whether values in between times should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corrsponding to them.",
+            "description": "Boolean to note whether values in between times should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corresponding to them.",
             "default": false,
             "type": "boolean"
           }
@@ -4659,7 +4259,7 @@
           },
           "interpolate": {
             "title": "Interpolate",
-            "description": "Boolean to note whether values in between intervals should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corrsponding to them.",
+            "description": "Boolean to note whether values in between intervals should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corresponding to them.",
             "default": false,
             "type": "boolean"
           }
@@ -4828,7 +4428,7 @@
           },
           "layers": {
             "title": "Layers",
-            "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
             "minLength": 1,
             "maxLength": 100,
             "type": "array",
@@ -4873,7 +4473,7 @@
           },
           "layers": {
             "title": "Layers",
-            "description": "List of strings for material identifiers. The order of the materials is from exterior to interior.",
+            "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
             "minLength": 1,
             "maxLength": 100,
             "type": "array",
@@ -4901,6 +4501,97 @@
         "required": [
           "identifier",
           "layers"
+        ],
+        "additionalProperties": false
+      },
+      "WindowConstructionShadeAbridged": {
+        "title": "WindowConstructionShadeAbridged",
+        "description": "Construction for window objects with an included shade layer.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "window_construction": {
+            "title": "Window Construction",
+            "description": "A WindowConstructionAbridged object that serves as the \"switched off\" version of the construction (aka. the \"bare construction\"). The shade_material and shade_location will be used to modify this starting construction.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstructionAbridged"
+              }
+            ]
+          },
+          "shade_material": {
+            "title": "Shade Material",
+            "description": "Identifier of a An EnergyWindowMaterialShade or an EnergyWindowMaterialBlind that serves as the shading layer for this construction. This can also be an EnergyWindowMaterialGlazing, which will indicate that the WindowConstruction has a dynamically-controlled glass pane like an electrochromic window assembly.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionShadeAbridged",
+            "pattern": "^WindowConstructionShadeAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "shade_location": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeLocation"
+              }
+            ],
+            "title": "Shade Location",
+            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+            "default": "Interior",
+            "type": "string"
+          },
+          "control_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ControlType"
+              }
+            ],
+            "title": "Control Type",
+            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+            "default": "AlwaysOn",
+            "type": "string"
+          },
+          "setpoint": {
+            "title": "Setpoint",
+            "description": "A number that corresponds to the specified control_type. This can be a value in (W/m2), (C) or (W) depending upon the control type.Note that this value cannot be None for any control type except \"AlwaysOn.\"",
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "An optional schedule identifier to be applied on top of the control_type. If None, the control_type will govern all behavior of the construction.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "window_construction",
+          "shade_material"
         ],
         "additionalProperties": false
       },
@@ -4947,6 +4638,520 @@
         "required": [
           "identifier",
           "air_mixing_schedule"
+        ],
+        "additionalProperties": false
+      },
+      "EnergyWindowMaterialShade": {
+        "title": "EnergyWindowMaterialShade",
+        "description": "This object specifies the properties of window shade materials.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialShade",
+            "pattern": "^EnergyWindowMaterialShade$",
+            "type": "string",
+            "readOnly": true
+          },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default value is 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The thickness of the shade material in meters. Default value is 0.005.",
+            "default": 0.005,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
+            "default": 0.1,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
+            "default": 0.05,
+            "minimum": 0.001,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "airflow_permeability": {
+            "title": "Airflow Permeability",
+            "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 0.8,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "EnergyWindowMaterialBlind": {
+        "title": "EnergyWindowMaterialBlind",
+        "description": "Window blind material consisting of flat, equally-spaced slats.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialBlind",
+            "pattern": "^EnergyWindowMaterialBlind$",
+            "type": "string",
+            "readOnly": true
+          },
+          "slat_orientation": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SlatOrientation"
+              }
+            ],
+            "title": "Slat Orientation",
+            "default": "Horizontal",
+            "type": "string"
+          },
+          "slat_width": {
+            "title": "Slat Width",
+            "description": "The width of slat measured from edge to edge in meters.",
+            "default": 0.025,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_separation": {
+            "title": "Slat Separation",
+            "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
+            "default": 0.01875,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_thickness": {
+            "title": "Slat Thickness",
+            "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
+            "default": 0.001,
+            "exclusiveMinimum": 0,
+            "maximum": 0.1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_angle": {
+            "title": "Slat Angle",
+            "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
+            "default": 45,
+            "minimum": 0,
+            "maximum": 180,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_conductivity": {
+            "title": "Slat Conductivity",
+            "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
+            "default": 221,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_transmittance": {
+            "title": "Beam Solar Transmittance",
+            "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_reflectance": {
+            "title": "Beam Solar Reflectance",
+            "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_reflectance_back": {
+            "title": "Beam Solar Reflectance Back",
+            "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_transmittance": {
+            "title": "Diffuse Solar Transmittance",
+            "description": "The slat transmittance for hemisperically diffuse solar radiation. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_reflectance": {
+            "title": "Diffuse Solar Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_reflectance_back": {
+            "title": "Diffuse Solar Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_transmittance": {
+            "title": "Beam Visible Transmittance",
+            "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_reflectance": {
+            "title": "Beam Visible Reflectance",
+            "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_reflectance_back": {
+            "title": "Beam Visible Reflectance Back",
+            "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_transmittance": {
+            "title": "Diffuse Visible Transmittance",
+            "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_reflectance": {
+            "title": "Diffuse Visible Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_reflectance_back": {
+            "title": "Diffuse Visible Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
+            "default": 0.05,
+            "minimum": 0.01,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WindowConstructionShade": {
+        "title": "WindowConstructionShade",
+        "description": "Construction for window objects (Aperture, Door).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "window_construction": {
+            "title": "Window Construction",
+            "description": "A WindowConstruction object that serves as the \"switched off\" version of the construction (aka. the \"bare construction\"). The shade_material and shade_location will be used to modify this starting construction.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              }
+            ]
+          },
+          "shade_material": {
+            "title": "Shade Material",
+            "description": "Identifier of a An EnergyWindowMaterialShade or an EnergyWindowMaterialBlind that serves as the shading layer for this construction. This can also be an EnergyWindowMaterialGlazing, which will indicate that the WindowConstruction has a dynamically-controlled glass pane like an electrochromic window assembly.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialShade"
+              },
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
+              },
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionShade",
+            "pattern": "^WindowConstructionShade$",
+            "type": "string",
+            "readOnly": true
+          },
+          "shade_location": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeLocation"
+              }
+            ],
+            "title": "Shade Location",
+            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+            "default": "Interior",
+            "type": "string"
+          },
+          "control_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ControlType"
+              }
+            ],
+            "title": "Control Type",
+            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+            "default": "AlwaysOn",
+            "type": "string"
+          },
+          "setpoint": {
+            "title": "Setpoint",
+            "description": "A number that corresponds to the specified control_type. This can be a value in (W/m2), (C) or (W) depending upon the control type.Note that this value cannot be None for any control type except \"AlwaysOn.\"",
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "An optional ScheduleRuleset or ScheduleFixedInterval to be applied on top of the control_type. If None, the control_type will govern all behavior of the construction.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "window_construction",
+          "shade_material"
         ],
         "additionalProperties": false
       },
@@ -5044,7 +5249,7 @@
           },
           "heating_limit": {
             "title": "Heating Limit",
-            "description": "A number for the maximum heating capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit boject to indicate no upper limit to the heating capacity.",
+            "description": "A number for the maximum heating capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit object to indicate no upper limit to the heating capacity.",
             "default": {
               "type": "Autosize"
             },
@@ -5064,7 +5269,7 @@
           },
           "cooling_limit": {
             "title": "Cooling Limit",
-            "description": "A number for the maximum cooling capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit boject to indicate no upper limit to the cooling capacity.",
+            "description": "A number for the maximum cooling capacity in Watts. This can also be an Autosize object to indicate that the capacity should be determined during the EnergyPlus sizing calculation. This can also be a NoLimit object to indicate no upper limit to the cooling capacity.",
             "default": {
               "type": "Autosize"
             },
@@ -5995,7 +6200,7 @@
           },
           "interpolate": {
             "title": "Interpolate",
-            "description": "Boolean to note whether values in between intervals should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corrsponding to them.",
+            "description": "Boolean to note whether values in between intervals should be linearly interpolated or whether successive values should take effect immediately upon the beginning time corresponding to them.",
             "default": false,
             "type": "boolean"
           }
@@ -6053,7 +6258,7 @@
                   "$ref": "#/components/schemas/WindowConstructionAbridged"
                 },
                 {
-                  "$ref": "#/components/schemas/ShadeConstruction"
+                  "$ref": "#/components/schemas/WindowConstructionShadeAbridged"
                 },
                 {
                   "$ref": "#/components/schemas/AirBoundaryConstructionAbridged"
@@ -6065,7 +6270,13 @@
                   "$ref": "#/components/schemas/WindowConstruction"
                 },
                 {
+                  "$ref": "#/components/schemas/WindowConstructionShade"
+                },
+                {
                   "$ref": "#/components/schemas/AirBoundaryConstruction"
+                },
+                {
+                  "$ref": "#/components/schemas/ShadeConstruction"
                 }
               ]
             }
@@ -8090,7 +8301,7 @@
           },
           "air_boundary_modifier": {
             "title": "Air Boundary Modifier",
-            "description": "An optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honyebee generic air wall modifier.",
+            "description": "An optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honeybee generic air wall modifier.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -8380,7 +8591,7 @@
           },
           "air_boundary_modifier": {
             "title": "Air Boundary Modifier",
-            "description": "Optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honyebee generic air wall modifier.",
+            "description": "Optional Modifier to be used for all Faces with an AirBoundary face type. If None, it will be the honeybee generic air wall modifier.",
             "type": "string"
           }
         },
@@ -8571,15 +8782,17 @@
           },
           "tolerance": {
             "title": "Tolerance",
-            "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether Room volumes are closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a Model. Typical tolerances for building geometry range from 0.1 to 0.0001 depending on the units of the geometry.",
-            "default": 0,
+            "description": "The maximum difference between x, y, and z values at which vertices are considered equivalent. This value should be in the Model units and it is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in bypassing all checks so it is recommended that this always be a positive number when such checks have not already been performed on a Model. The default of 0.01 is suitable for models in meters.",
+            "default": 0.01,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "angle_tolerance": {
             "title": "Angle Tolerance",
-            "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in no attempt to evaluate whether the Room volumes is closed or check face direction. So it is recommended that this always be a positive number when such checks have not been performed on a given Model. Typical tolerances for building geometry are often around 1 degree.",
-            "default": 0,
+            "description": "The max angle difference in degrees that vertices are allowed to differ from one another in order to consider them colinear. This value is used in a variety of checks, including checks for whether Room faces form a closed volume and subsequently correcting all face normals point outward from the Room. A value of 0 will result in bypassing all checks so it is recommended that this always be a positive number when such checks have not already been performed on a given Model.",
+            "default": 1.0,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           }
@@ -8684,6 +8897,34 @@
           "Percent",
           "Control",
           "Mode"
+        ],
+        "type": "string"
+      },
+      "ShadeLocation": {
+        "title": "Shade Location",
+        "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+        "default": "Interior",
+        "enum": [
+          "Interior",
+          "Between",
+          "Exterior"
+        ],
+        "type": "string"
+      },
+      "ControlType": {
+        "title": "Control Type",
+        "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+        "default": "AlwaysOn",
+        "enum": [
+          "AlwaysOn",
+          "OnIfHighSolarOnWindow",
+          "OnIfHighHorizontalSolar",
+          "OnIfHighOutdoorAirTemperature",
+          "OnIfHighZoneAirTemperature",
+          "OnIfHighZoneCooling",
+          "OnNightIfLowOutdoorTempAndOffDay",
+          "OnNightIfLowInsideTempAndOffDay",
+          "OnNightIfHeatingAndOffDay"
         ],
         "type": "string"
       }

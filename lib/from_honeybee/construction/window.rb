@@ -74,7 +74,6 @@ module FromHoneybee
 
   end #WindowConstructionAbridged
 end #FromHoneybee
-    
 
     
     

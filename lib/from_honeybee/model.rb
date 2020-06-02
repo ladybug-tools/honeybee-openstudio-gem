@@ -50,6 +50,7 @@ require 'from_honeybee/hvac/ideal_air'
 # import the construction objects
 require 'from_honeybee/construction/opaque'
 require 'from_honeybee/construction/window'
+require 'from_honeybee/construction/windowshade'
 require 'from_honeybee/construction/shade'
 require 'from_honeybee/construction/air'
 
@@ -184,11 +185,22 @@ module FromHoneybee
       end
       create_program_types
 
-      # create all of the model geometry
       if log_report
         puts 'Translating Room Geometry'
       end
       create_rooms
+
+      unless $window_shade_hash.empty?
+        if log_report
+          puts 'Translating Window Shading Control'
+        end
+        create_shading_control
+      end
+
+      if log_report
+        puts 'Translating HVAC Systems'
+      end
+      create_hvacs
 
       if log_report
         puts 'Translating Context Shade Geometry'
@@ -197,15 +209,11 @@ module FromHoneybee
       create_orphaned_faces
       create_orphaned_apertures
       create_orphaned_doors
-
-      # create the hvac systems
-      if log_report
-        puts 'Translating HVAC Systems'
-      end
-      create_hvacs
     end
 
     def create_materials
+      $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
+
       @hash[:properties][:energy][:materials].each do |material|
         material_type = material[:type]
 
@@ -216,8 +224,13 @@ module FromHoneybee
           material_object = EnergyMaterialNoMass.new(material)
         when 'EnergyWindowMaterialGas'
           material_object = EnergyWindowMaterialGas.new(material)
+          $gas_gap_hash[material[:identifier]] = material_object
+        when 'EnergyWindowMaterialGasMixture'
+          material_object = EnergyWindowMaterialGasMixture.new(material)
+          $gas_gap_hash[material[:identifier]] = material_object
         when 'EnergyWindowMaterialGasCustom'
           material_object = EnergyWindowMaterialGasCustom.new(material)
+          $gas_gap_hash[material[:identifier]] = material_object
         when 'EnergyWindowMaterialSimpleGlazSys'
           material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
         when 'EnergyWindowMaterialBlind'
@@ -235,6 +248,7 @@ module FromHoneybee
 
     def create_constructions
       $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
+      $window_shade_hash = Hash.new  # hash to track any window constructions with shade
 
       @hash[:properties][:energy][:constructions].each do |construction|
         identifier = construction[:identifier]
@@ -245,6 +259,9 @@ module FromHoneybee
           construction_object = OpaqueConstructionAbridged.new(construction)
         when 'WindowConstructionAbridged'
           construction_object = WindowConstructionAbridged.new(construction)
+        when 'WindowConstructionShadeAbridged'
+          construction_object = WindowConstructionShadeAbridged.new(construction)
+          $window_shade_hash[construction[:identifier]] = construction_object
         when 'ShadeConstruction'
           construction_object = ShadeConstruction.new(construction)
         when 'AirBoundaryConstructionAbridged'
@@ -344,7 +361,7 @@ module FromHoneybee
           end
         end
       
-        # Create mixing objects between Rooms
+        # create mixing objects between Rooms
         $air_mxing_array.each do |air_mix_props|
           zone_mixing = OpenStudio::Model::ZoneMixing.new(air_mix_props[0])
           zone_mixing.setDesignFlowRate(air_mix_props[1])
@@ -361,35 +378,25 @@ module FromHoneybee
         end
       end
     end
-          
-    
-    def create_orphaned_shades
-      if @hash[:orphaned_shades]
-        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
-        shading_surface_group.setShadingSurfaceType('Building')
-        @hash[:orphaned_shades].each do |shade|
-        shade_object = Shade.new(shade)
-        openstudio_shade = shade_object.to_openstudio(@openstudio_model)
-        openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+
+    def create_shading_control
+      # assign any shading control objects to windows with shades
+      # this is run as a separate step once all logic about construction sets is in place
+      sub_faces = @openstudio_model.getSubSurfaces()
+      sub_faces.each do |sub_face|
+        constr_ref = sub_face.construction
+        unless constr_ref.empty?
+          constr = constr_ref.get
+          constr_name_ref = constr.name
+          unless constr_name_ref.empty?
+            constr_name = constr_name_ref.get
+            unless $window_shade_hash[constr_name].nil?
+              window_shd_constr = $window_shade_hash[constr_name]
+              os_shd_control = window_shd_constr.to_openstudio_shading_control(@openstudio_model)
+              sub_face.setShadingControl(os_shd_control)
+            end
+          end
         end
-      end
-    end
-
-    def create_orphaned_faces
-      if @hash[:orphaned_faces]
-        raise "Orphaned Faces are not translatable to OpenStudio."
-      end
-    end
-
-    def create_orphaned_apertures
-      if @hash[:orphaned_apertures]
-        raise "Orphaned Apertures are not translatable to OpenStudio."
-      end
-    end
-    
-    def create_orphaned_doors
-      if @hash[:orphaned_doors]
-        raise "Orphaned Doors are not translatable to OpenStudio."
       end
     end
 
@@ -427,6 +434,36 @@ module FromHoneybee
         end
       end
     end 
+
+    def create_orphaned_shades
+      if @hash[:orphaned_shades]
+        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+        shading_surface_group.setShadingSurfaceType('Building')
+        @hash[:orphaned_shades].each do |shade|
+        shade_object = Shade.new(shade)
+        openstudio_shade = shade_object.to_openstudio(@openstudio_model)
+        openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+        end
+      end
+    end
+
+    def create_orphaned_faces
+      if @hash[:orphaned_faces]
+        raise "Orphaned Faces are not translatable to OpenStudio."
+      end
+    end
+
+    def create_orphaned_apertures
+      if @hash[:orphaned_apertures]
+        raise "Orphaned Apertures are not translatable to OpenStudio."
+      end
+    end
+    
+    def create_orphaned_doors
+      if @hash[:orphaned_doors]
+        raise "Orphaned Doors are not translatable to OpenStudio."
+      end
+    end
 
     #TODO: create runlog for errors. 
     

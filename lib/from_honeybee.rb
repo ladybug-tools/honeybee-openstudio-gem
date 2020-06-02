@@ -51,6 +51,7 @@ require 'from_honeybee/hvac/ideal_air'
 # import the construction objects
 require 'from_honeybee/construction/opaque'
 require 'from_honeybee/construction/window'
+require 'from_honeybee/construction/windowshade'
 require 'from_honeybee/construction/shade'
 require 'from_honeybee/construction/air'
 

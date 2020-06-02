@@ -74,10 +74,18 @@ RSpec.describe FromHoneybee do
     expect(object1).not_to be nil
   end
 
-  it 'can load construction window_blinds' do
+  it 'can load construction window construction with shade' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_shade.json')
+    construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
+    object1 = construction1.to_openstudio(openstudio_model)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load construction window construction with blinds' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_blinds.json')
-    construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
+    construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
   end
