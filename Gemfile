@@ -11,8 +11,4 @@ else  # get it from rubygems.org
 end
 
 # coveralls gem is used to generate coverage reports through CI
-gem 'coveralls', require: false
-
-# uncomment the following to run tests locally using `bundle exec rake`.
-# simplecov has an unneccesary dependency on native json gem, use fork that does not require this
-#gem 'simplecov', github: 'NREL/simplecov'
+gem 'coveralls_reborn', require: false
