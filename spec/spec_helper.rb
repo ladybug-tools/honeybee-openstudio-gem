@@ -29,11 +29,16 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# use coveralls to generate coverage reports; comment these two lines to get html report
-require 'coveralls'
-Coveralls.wear!
+# start coveralls if we are on a remote CI machine
+require 'rbconfig'
+host_os = RbConfig::CONFIG['host_os']
+case host_os
+when /linux/  # we are on the Travis remote machine; run coveralls
+  require 'coveralls'
+  Coveralls.wear!
+end
 
-# start simplecov so that we can track coverage when we run tests
+# simplecov actually computes the coverage
 require 'simplecov'
 SimpleCov.start
 SimpleCov.add_filter 'spec/tests' # will reject all test from coverage
