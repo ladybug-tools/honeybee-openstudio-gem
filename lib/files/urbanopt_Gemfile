@@ -1,17 +1,15 @@
 source 'http://rubygems.org'
 
-ruby '2.2.4'
+ruby '~> 2.5.0'
 
 allow_local = ENV['FAVOR_LOCAL_GEMS']
-
-gem 'urbanopt-reopt', '0.2.1'
 
 if allow_local && File.exist?('../urbanopt-scenario-gem')
   gem 'urbanopt-scenario', path: '../urbanopt-scenario-gem'
 elsif allow_local
   gem 'urbanopt-scenario', github: 'URBANopt/urbanopt-scenario-gem', branch: 'develop'
 else
-  gem 'urbanopt-scenario', '0.2.0'
+  gem 'urbanopt-scenario', '~> 0.3.0'
 end
 
 if allow_local && File.exist?('../urbanopt-geojson-gem')
@@ -19,14 +17,8 @@ if allow_local && File.exist?('../urbanopt-geojson-gem')
 elsif allow_local
   gem 'urbanopt-geojson', github: 'URBANopt/urbanopt-geojson-gem', branch: 'develop'
 else
-  gem 'urbanopt-geojson', '0.2.0'
+  gem 'urbanopt-geojson', '~> 0.3.0'
 end
 
 # include the honeybee-openstudio-gem
-gem 'honeybee-openstudio', '1.8.2'
-
-# simplecov has an unnecessary dependency on native json gem, use fork that does not require this
-gem 'simplecov', github: 'NREL/simplecov'
-
-# Specify exact rack version temporarily to work with Ruby 2.2.4
-gem 'rack', '2.1.2'
+gem 'honeybee-openstudio', '2.1.0'
