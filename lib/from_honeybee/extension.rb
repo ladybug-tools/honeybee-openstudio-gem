@@ -37,6 +37,7 @@ require 'openstudio/extension'
 module FromHoneybee
   class Extension < OpenStudio::Extension::Extension
     @@schema = nil
+    @@standards = nil
 
     # Override parent class
     def initialize
@@ -49,6 +50,7 @@ module FromHoneybee
 
       @instance_lock = Mutex.new
       @@schema ||= schema
+      @@standards ||= standards
     end
 
     # Return the absolute path of the measures or nil if there is none.
@@ -73,7 +75,12 @@ module FromHoneybee
 
     # return path to the model schema file
     def schema_file
-      File.join(@lib_dir, 'from_honeybee', '_openapi', 'model.json')
+      File.join(@lib_dir, 'from_honeybee', '_defaults', 'model.json')
+    end
+
+    # return path to the model standards file
+    def standards_file
+      File.join(@lib_dir, 'from_honeybee', '_defaults', 'energy_default.json')
     end
 
     # return the model schema
@@ -87,6 +94,19 @@ module FromHoneybee
       end
 
       @@schema
+    end
+
+    # return the JSON of default standards
+    def standards
+      @instance_lock.synchronize do
+        if @@standards.nil?
+          File.open(standards_file, 'r') do |f|
+            @@standards = JSON.parse(f.read, symbolize_names: true)
+          end
+        end
+      end
+
+      @@standards
     end
 
     # check if the model schema is valid

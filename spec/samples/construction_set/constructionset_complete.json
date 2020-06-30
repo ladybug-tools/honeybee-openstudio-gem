@@ -16,12 +16,12 @@
             "materials": [
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Wall Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.667,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -40,15 +40,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Gypsum Board",
-                    "roughness": "MediumSmooth",
-                    "thickness": 0.0127,
-                    "conductivity": 0.16,
-                    "density": 800.0,
-                    "specific_heat": 1090.0,
+                    "identifier": "Generic Wall Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.667,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.5,
-                    "visible_absorptance": 0.5
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
                 },
                 {
                     "type": "EnergyMaterial",
@@ -64,15 +64,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Gypsum Board",
+                    "roughness": "MediumSmooth",
+                    "thickness": 0.0127,
+                    "conductivity": 0.16,
+                    "density": 800.0,
+                    "specific_heat": 1090.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
+                    "solar_absorptance": 0.5,
+                    "visible_absorptance": 0.5
                 }
             ]
         },
@@ -89,12 +89,12 @@
             "materials": [
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Wall Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.667,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -113,15 +113,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Gypsum Board",
-                    "roughness": "MediumSmooth",
-                    "thickness": 0.0127,
-                    "conductivity": 0.16,
-                    "density": 800.0,
-                    "specific_heat": 1090.0,
+                    "identifier": "Generic Wall Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.667,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.5,
-                    "visible_absorptance": 0.5
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
                 },
                 {
                     "type": "EnergyMaterial",
@@ -137,15 +137,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Gypsum Board",
+                    "roughness": "MediumSmooth",
+                    "thickness": 0.0127,
+                    "conductivity": 0.16,
+                    "density": 800.0,
+                    "specific_heat": 1090.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
+                    "solar_absorptance": 0.5,
+                    "visible_absorptance": 0.5
                 }
             ]
         },
@@ -162,12 +162,12 @@
             "materials": [
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Wall Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.667,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -186,15 +186,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Gypsum Board",
-                    "roughness": "MediumSmooth",
-                    "thickness": 0.0127,
-                    "conductivity": 0.16,
-                    "density": 800.0,
-                    "specific_heat": 1090.0,
+                    "identifier": "Generic Wall Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.667,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.5,
-                    "visible_absorptance": 0.5
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
                 },
                 {
                     "type": "EnergyMaterial",
@@ -210,15 +210,15 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Gypsum Board",
+                    "roughness": "MediumSmooth",
+                    "thickness": 0.0127,
+                    "conductivity": 0.16,
+                    "density": 800.0,
+                    "specific_heat": 1090.0,
                     "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
+                    "solar_absorptance": 0.5,
+                    "visible_absorptance": 0.5
                 }
             ]
         }
@@ -249,12 +249,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Ceiling Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.556,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -273,12 +273,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Ceiling Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.556,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -309,12 +309,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Ceiling Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.556,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -333,12 +333,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Ceiling Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.556,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -369,12 +369,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
+                    "identifier": "Generic Ceiling Air Gap",
+                    "roughness": "Smooth",
+                    "thickness": 0.1,
+                    "conductivity": 0.556,
+                    "density": 1.28,
+                    "specific_heat": 1000.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -393,12 +393,12 @@
                 },
                 {
                     "type": "EnergyMaterial",
-                    "identifier": "Generic Ceiling Air Gap",
-                    "roughness": "Smooth",
-                    "thickness": 0.1,
-                    "conductivity": 0.556,
-                    "density": 1.28,
-                    "specific_heat": 1000.0,
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.7,
                     "visible_absorptance": 0.7
@@ -445,6 +445,18 @@
                 },
                 {
                     "type": "EnergyMaterial",
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
+                    "thermal_absorptance": 0.9,
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
+                },
+                {
+                    "type": "EnergyMaterial",
                     "identifier": "Generic LW Concrete",
                     "roughness": "MediumRough",
                     "thickness": 0.1,
@@ -466,18 +478,6 @@
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.2,
                     "visible_absorptance": 0.2
-                },
-                {
-                    "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
-                    "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
                 }
             ]
         },
@@ -518,6 +518,18 @@
                 },
                 {
                     "type": "EnergyMaterial",
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
+                    "thermal_absorptance": 0.9,
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
+                },
+                {
+                    "type": "EnergyMaterial",
                     "identifier": "Generic LW Concrete",
                     "roughness": "MediumRough",
                     "thickness": 0.1,
@@ -539,18 +551,6 @@
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.2,
                     "visible_absorptance": 0.2
-                },
-                {
-                    "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
-                    "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
                 }
             ]
         },
@@ -591,6 +591,18 @@
                 },
                 {
                     "type": "EnergyMaterial",
+                    "identifier": "Generic 50mm Insulation",
+                    "roughness": "MediumRough",
+                    "thickness": 0.05,
+                    "conductivity": 0.03,
+                    "density": 43.0,
+                    "specific_heat": 1210.0,
+                    "thermal_absorptance": 0.9,
+                    "solar_absorptance": 0.7,
+                    "visible_absorptance": 0.7
+                },
+                {
+                    "type": "EnergyMaterial",
                     "identifier": "Generic LW Concrete",
                     "roughness": "MediumRough",
                     "thickness": 0.1,
@@ -612,18 +624,6 @@
                     "thermal_absorptance": 0.9,
                     "solar_absorptance": 0.2,
                     "visible_absorptance": 0.2
-                },
-                {
-                    "type": "EnergyMaterial",
-                    "identifier": "Generic 50mm Insulation",
-                    "roughness": "MediumRough",
-                    "thickness": 0.05,
-                    "conductivity": 0.03,
-                    "density": 43.0,
-                    "specific_heat": 1210.0,
-                    "thermal_absorptance": 0.9,
-                    "solar_absorptance": 0.7,
-                    "visible_absorptance": 0.7
                 }
             ]
         }
@@ -639,23 +639,6 @@
                 "Generic Clear Glass"
             ],
             "materials": [
-                {
-                    "type": "EnergyWindowMaterialGlazing",
-                    "identifier": "Generic Clear Glass",
-                    "thickness": 0.006,
-                    "solar_transmittance": 0.77,
-                    "solar_reflectance": 0.07,
-                    "solar_reflectance_back": 0.07,
-                    "visible_transmittance": 0.88,
-                    "visible_reflectance": 0.08,
-                    "visible_reflectance_back": 0.08,
-                    "infrared_transmittance": 0.0,
-                    "emissivity": 0.84,
-                    "emissivity_back": 0.84,
-                    "conductivity": 1.0,
-                    "dirt_correction": 1.0,
-                    "solar_diffusing": false
-                },
                 {
                     "type": "EnergyWindowMaterialGlazing",
                     "identifier": "Generic Low-e Glass",
@@ -678,6 +661,23 @@
                     "identifier": "Generic Window Air Gap",
                     "thickness": 0.0127,
                     "gas_type": "Air"
+                },
+                {
+                    "type": "EnergyWindowMaterialGlazing",
+                    "identifier": "Generic Clear Glass",
+                    "thickness": 0.006,
+                    "solar_transmittance": 0.77,
+                    "solar_reflectance": 0.07,
+                    "solar_reflectance_back": 0.07,
+                    "visible_transmittance": 0.88,
+                    "visible_reflectance": 0.08,
+                    "visible_reflectance_back": 0.08,
+                    "infrared_transmittance": 0.0,
+                    "emissivity": 0.84,
+                    "emissivity_back": 0.84,
+                    "conductivity": 1.0,
+                    "dirt_correction": 1.0,
+                    "solar_diffusing": false
                 }
             ]
         },
@@ -718,23 +718,6 @@
             "materials": [
                 {
                     "type": "EnergyWindowMaterialGlazing",
-                    "identifier": "Generic Clear Glass",
-                    "thickness": 0.006,
-                    "solar_transmittance": 0.77,
-                    "solar_reflectance": 0.07,
-                    "solar_reflectance_back": 0.07,
-                    "visible_transmittance": 0.88,
-                    "visible_reflectance": 0.08,
-                    "visible_reflectance_back": 0.08,
-                    "infrared_transmittance": 0.0,
-                    "emissivity": 0.84,
-                    "emissivity_back": 0.84,
-                    "conductivity": 1.0,
-                    "dirt_correction": 1.0,
-                    "solar_diffusing": false
-                },
-                {
-                    "type": "EnergyWindowMaterialGlazing",
                     "identifier": "Generic Low-e Glass",
                     "thickness": 0.006,
                     "solar_transmittance": 0.45,
@@ -755,6 +738,23 @@
                     "identifier": "Generic Window Air Gap",
                     "thickness": 0.0127,
                     "gas_type": "Air"
+                },
+                {
+                    "type": "EnergyWindowMaterialGlazing",
+                    "identifier": "Generic Clear Glass",
+                    "thickness": 0.006,
+                    "solar_transmittance": 0.77,
+                    "solar_reflectance": 0.07,
+                    "solar_reflectance_back": 0.07,
+                    "visible_transmittance": 0.88,
+                    "visible_reflectance": 0.08,
+                    "visible_reflectance_back": 0.08,
+                    "infrared_transmittance": 0.0,
+                    "emissivity": 0.84,
+                    "emissivity_back": 0.84,
+                    "conductivity": 1.0,
+                    "dirt_correction": 1.0,
+                    "solar_diffusing": false
                 }
             ]
         },
@@ -769,23 +769,6 @@
             "materials": [
                 {
                     "type": "EnergyWindowMaterialGlazing",
-                    "identifier": "Generic Clear Glass",
-                    "thickness": 0.006,
-                    "solar_transmittance": 0.77,
-                    "solar_reflectance": 0.07,
-                    "solar_reflectance_back": 0.07,
-                    "visible_transmittance": 0.88,
-                    "visible_reflectance": 0.08,
-                    "visible_reflectance_back": 0.08,
-                    "infrared_transmittance": 0.0,
-                    "emissivity": 0.84,
-                    "emissivity_back": 0.84,
-                    "conductivity": 1.0,
-                    "dirt_correction": 1.0,
-                    "solar_diffusing": false
-                },
-                {
-                    "type": "EnergyWindowMaterialGlazing",
                     "identifier": "Generic Low-e Glass",
                     "thickness": 0.006,
                     "solar_transmittance": 0.45,
@@ -806,6 +789,23 @@
                     "identifier": "Generic Window Air Gap",
                     "thickness": 0.0127,
                     "gas_type": "Air"
+                },
+                {
+                    "type": "EnergyWindowMaterialGlazing",
+                    "identifier": "Generic Clear Glass",
+                    "thickness": 0.006,
+                    "solar_transmittance": 0.77,
+                    "solar_reflectance": 0.07,
+                    "solar_reflectance_back": 0.07,
+                    "visible_transmittance": 0.88,
+                    "visible_reflectance": 0.08,
+                    "visible_reflectance_back": 0.08,
+                    "infrared_transmittance": 0.0,
+                    "emissivity": 0.84,
+                    "emissivity_back": 0.84,
+                    "conductivity": 1.0,
+                    "dirt_correction": 1.0,
+                    "solar_diffusing": false
                 }
             ]
         }
@@ -879,23 +879,6 @@
             "materials": [
                 {
                     "type": "EnergyWindowMaterialGlazing",
-                    "identifier": "Generic Clear Glass",
-                    "thickness": 0.006,
-                    "solar_transmittance": 0.77,
-                    "solar_reflectance": 0.07,
-                    "solar_reflectance_back": 0.07,
-                    "visible_transmittance": 0.88,
-                    "visible_reflectance": 0.08,
-                    "visible_reflectance_back": 0.08,
-                    "infrared_transmittance": 0.0,
-                    "emissivity": 0.84,
-                    "emissivity_back": 0.84,
-                    "conductivity": 1.0,
-                    "dirt_correction": 1.0,
-                    "solar_diffusing": false
-                },
-                {
-                    "type": "EnergyWindowMaterialGlazing",
                     "identifier": "Generic Low-e Glass",
                     "thickness": 0.006,
                     "solar_transmittance": 0.45,
@@ -916,6 +899,23 @@
                     "identifier": "Generic Window Air Gap",
                     "thickness": 0.0127,
                     "gas_type": "Air"
+                },
+                {
+                    "type": "EnergyWindowMaterialGlazing",
+                    "identifier": "Generic Clear Glass",
+                    "thickness": 0.006,
+                    "solar_transmittance": 0.77,
+                    "solar_reflectance": 0.07,
+                    "solar_reflectance_back": 0.07,
+                    "visible_transmittance": 0.88,
+                    "visible_reflectance": 0.08,
+                    "visible_reflectance_back": 0.08,
+                    "infrared_transmittance": 0.0,
+                    "emissivity": 0.84,
+                    "emissivity_back": 0.84,
+                    "conductivity": 1.0,
+                    "dirt_correction": 1.0,
+                    "solar_diffusing": false
                 }
             ]
         },
