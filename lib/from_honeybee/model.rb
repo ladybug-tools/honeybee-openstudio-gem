@@ -95,12 +95,12 @@ module FromHoneybee
       # initialize class variable @@extension only once
       @@extension ||= Extension.new
       @@schema ||= @@extension.schema
+      @@standards ||= @@extension.standards
 
       @hash = hash
       @type = @hash[:type]
       raise 'Unknown model type' if @type.nil?
       raise "Incorrect model type '#{@type}'" unless @type == 'Model'
-
     end
 
     # check if the model is valid
@@ -157,34 +157,58 @@ module FromHoneybee
       building = @openstudio_model.getBuilding
       building.setStandardsBuildingType('MediumOffice')
 
+      # initialize global hashes for various model properties
+      $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
+      $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
+      $window_shade_hash = Hash.new  # hash to track any window constructions with shade
+      $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
+
       # create all of the non-geometric model elements
       if log_report
         puts 'Translating Materials'
       end
-      create_materials
+      if @hash[:properties][:energy][:materials]
+        create_materials(@hash[:properties][:energy][:materials])
+      end
 
       if log_report
         puts 'Translating Constructions'
       end
-      create_constructions
+      if @hash[:properties][:energy][:constructions]
+        create_constructions(@hash[:properties][:energy][:constructions])
+      end
       
       if log_report
         puts 'Translating ConstructionSets'
       end
-      create_construction_set
-      create_global_construction_set
+      if @hash[:properties][:energy][:construction_sets]
+        create_construction_sets(@hash[:properties][:energy][:construction_sets])
+      end
 
       if log_report
         puts 'Translating Schedules'
       end
-      create_schedule_type_limits
-      create_schedules
+      if @hash[:properties][:energy][:schedule_type_limits]
+        create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
+      end
+      if @hash[:properties][:energy][:schedules]
+        create_schedules(@hash[:properties][:energy][:schedules])
+      end
 
       if log_report
         puts 'Translating ProgramTypes'
       end
-      create_program_types
+      if @hash[:properties][:energy][:program_types]
+        create_program_types(@hash[:properties][:energy][:program_types])
+      end
 
+      # create the default construction set to catch any cases of unassigned constructions
+      if log_report
+        puts 'Translating Default ConstructionSet'
+      end
+      create_default_construction_set
+
+      # create the geometry and add any extra properties to it
       if log_report
         puts 'Translating Room Geometry'
       end
@@ -211,103 +235,139 @@ module FromHoneybee
       create_orphaned_doors
     end
 
-    def create_materials
-      $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
-
-      @hash[:properties][:energy][:materials].each do |material|
-        material_type = material[:type]
-
-        case material_type
-        when 'EnergyMaterial'
-          material_object = EnergyMaterial.new(material)
-        when 'EnergyMaterialNoMass'
-          material_object = EnergyMaterialNoMass.new(material)
-        when 'EnergyWindowMaterialGas'
-          material_object = EnergyWindowMaterialGas.new(material)
-          $gas_gap_hash[material[:identifier]] = material_object
-        when 'EnergyWindowMaterialGasMixture'
-          material_object = EnergyWindowMaterialGasMixture.new(material)
-          $gas_gap_hash[material[:identifier]] = material_object
-        when 'EnergyWindowMaterialGasCustom'
-          material_object = EnergyWindowMaterialGasCustom.new(material)
-          $gas_gap_hash[material[:identifier]] = material_object
-        when 'EnergyWindowMaterialSimpleGlazSys'
-          material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
-        when 'EnergyWindowMaterialBlind'
-          material_object = EnergyWindowMaterialBlind.new(material)
-        when 'EnergyWindowMaterialGlazing'
-          material_object = EnergyWindowMaterialGlazing.new(material)
-        when 'EnergyWindowMaterialShade'
-          material_object = EnergyWindowMaterialShade.new(material)
-        else
-          raise "Unknown material type #{material_type}"
+    def create_materials(material_dicts, check_existing=false)
+      material_dicts.each do |material|
+        # check if there's already a material in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getMaterialByName(material[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
         end
-        material_object.to_openstudio(@openstudio_model)
-      end
-    end
 
-    def create_constructions
-      $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
-      $window_shade_hash = Hash.new  # hash to track any window constructions with shade
-
-      @hash[:properties][:energy][:constructions].each do |construction|
-        identifier = construction[:identifier]
-        construction_type = construction[:type]
-        
-        case construction_type
-        when 'OpaqueConstructionAbridged'
-          construction_object = OpaqueConstructionAbridged.new(construction)
-        when 'WindowConstructionAbridged'
-          construction_object = WindowConstructionAbridged.new(construction)
-        when 'WindowConstructionShadeAbridged'
-          construction_object = WindowConstructionShadeAbridged.new(construction)
-          $window_shade_hash[construction[:identifier]] = construction_object
-        when 'ShadeConstruction'
-          construction_object = ShadeConstruction.new(construction)
-        when 'AirBoundaryConstructionAbridged'
-          construction_object = AirBoundaryConstructionAbridged.new(construction)
-          $air_boundary_hash[construction[:identifier]] = construction
-        else
-          raise "Unknown construction type #{construction_type}."
-        end
-        construction_object.to_openstudio(@openstudio_model)
-      end
-    end
-
-    def create_construction_set
-      if @hash[:properties][:energy][:construction_sets]
-        @hash[:properties][:energy][:construction_sets].each do |construction_set|
-        construction_set_object = ConstructionSetAbridged.new(construction_set)
-        construction_set_object.to_openstudio(@openstudio_model)
+        # add the material object to the Model
+        if add_obj
+          material_type = material[:type]
+          case material_type
+          when 'EnergyMaterial'
+            material_object = EnergyMaterial.new(material)
+          when 'EnergyMaterialNoMass'
+            material_object = EnergyMaterialNoMass.new(material)
+          when 'EnergyWindowMaterialGas'
+            material_object = EnergyWindowMaterialGas.new(material)
+            $gas_gap_hash[material[:identifier]] = material_object
+          when 'EnergyWindowMaterialGasMixture'
+            material_object = EnergyWindowMaterialGasMixture.new(material)
+            $gas_gap_hash[material[:identifier]] = material_object
+          when 'EnergyWindowMaterialGasCustom'
+            material_object = EnergyWindowMaterialGasCustom.new(material)
+            $gas_gap_hash[material[:identifier]] = material_object
+          when 'EnergyWindowMaterialSimpleGlazSys'
+            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
+          when 'EnergyWindowMaterialBlind'
+            material_object = EnergyWindowMaterialBlind.new(material)
+          when 'EnergyWindowMaterialGlazing'
+            material_object = EnergyWindowMaterialGlazing.new(material)
+          when 'EnergyWindowMaterialShade'
+            material_object = EnergyWindowMaterialShade.new(material)
+          else
+            raise "Unknown material type #{material_type}"
+          end
+          material_object.to_openstudio(@openstudio_model)
         end
       end
     end
 
-    def create_global_construction_set
-      if @hash[:properties][:energy][:global_construction_set]
-        construction_id = @hash[:properties][:energy][:global_construction_set]
-        construction = @openstudio_model.getDefaultConstructionSetByName(construction_id)
-        unless construction.empty?
-          openstudio_construction = construction.get
+    def create_constructions(construction_dicts, check_existing=false)
+      construction_dicts.each do |construction|
+        # check if there's already a construction in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getConstructionByName(construction[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
         end
-        @openstudio_model.getBuilding.setDefaultConstructionSet(openstudio_construction)
+
+        # add the construction object to the Model
+        if add_obj
+          construction_type = construction[:type]
+          case construction_type
+          when 'OpaqueConstructionAbridged'
+            construction_object = OpaqueConstructionAbridged.new(construction)
+          when 'WindowConstructionAbridged'
+            construction_object = WindowConstructionAbridged.new(construction)
+          when 'WindowConstructionShadeAbridged'
+            construction_object = WindowConstructionShadeAbridged.new(construction)
+            $window_shade_hash[construction[:identifier]] = construction_object
+          when 'ShadeConstruction'
+            construction_object = ShadeConstruction.new(construction)
+          when 'AirBoundaryConstructionAbridged'
+            construction_object = AirBoundaryConstructionAbridged.new(construction)
+            $air_boundary_hash[construction[:identifier]] = construction
+          else
+            raise "Unknown construction type #{construction_type}."
+          end
+          construction_object.to_openstudio(@openstudio_model)
+        end
       end
     end
 
-    def create_schedule_type_limits
-      if @hash[:properties][:energy][:schedule_type_limits]
-        @hash[:properties][:energy][:schedule_type_limits].each do |schedule_type_limit|
+    def create_construction_sets(construction_set_dicts, check_existing=false)
+      construction_set_dicts.each do |construction_set|
+        # check if there's already a construction set in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getDefaultConstructionSetByName(
+            construction_set[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
+        end
+
+        # add the construction set object to the Model
+        if add_obj
+          construction_set_object = ConstructionSetAbridged.new(construction_set)
+          construction_set_object.to_openstudio(@openstudio_model)
+        end
+      end
+    end
+
+    def create_schedule_type_limits(stl_dicts, check_existing=false)
+      stl_dicts.each do |schedule_type_limit|
+        # check if there's already a schedule type limit in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getScheduleTypeLimitsByName(
+            schedule_type_limit[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
+        end
+
+        # add the schedule type limit object to the Model
+        if add_obj
           schedule_type_limit_object = ScheduleTypeLimit.new(schedule_type_limit)
           schedule_type_limit_object.to_openstudio(@openstudio_model)
         end
       end
     end
 
-    def create_schedules
-      if @hash[:properties][:energy][:schedules]
-        @hash[:properties][:energy][:schedules].each do |schedule|
-          schedule_type = schedule[:type]
+    def create_schedules(schedule_dicts, check_existing=false)
+      schedule_dicts.each do |schedule|
+        # check if there's already a schedule in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getScheduleByName(schedule[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
+        end
 
+        # add the schedule object to the Model
+        if add_obj
+          schedule_type = schedule[:type]
           case schedule_type
           when 'ScheduleRulesetAbridged'
             schedule_object = ScheduleRulesetAbridged.new(schedule)
@@ -317,18 +377,53 @@ module FromHoneybee
             raise("Unknown schedule type #{schedule_type}.")
           end
           schedule_object.to_openstudio(@openstudio_model)
-        
         end
       end
     end
 
-    def create_program_types
-      if @hash[:properties][:energy][:program_types]
-        $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
-        @hash[:properties][:energy][:program_types].each do |space_type|
+    def create_program_types(program_dicts, check_existing=false)
+      program_dicts.each do |space_type|
+        # check if there's already a space type in the model with the identifier
+        add_obj = true
+        if check_existing
+          object = @openstudio_model.getSpaceTypeByName(space_type[:identifier])
+          if object.is_initialized
+            add_obj = false
+          end
+        end
+
+        # add the space type object to the Model
+        if add_obj
           space_type_object = ProgramTypeAbridged.new(space_type)
           space_type_object.to_openstudio(@openstudio_model)
         end
+      end
+    end
+
+    def create_default_construction_set
+      # create the materials, constructions and construction set
+      create_materials(@@standards[:materials], true)
+      create_constructions(@@standards[:constructions], true)
+      create_construction_sets(@@standards[:construction_sets], true)
+
+      # write the fractional schedule type and always on schedule if they are not there
+      @@standards[:schedule_type_limits].each do |sch_type_limit|
+        if sch_type_limit[:identifier] == 'Fractional'
+          create_schedule_type_limits([sch_type_limit], true)
+        end
+      end
+      @@standards[:schedules].each do |schedule|
+        if schedule[:identifier] == 'Always On'
+          create_schedules([schedule], true)
+        end
+      end
+
+      # set the default construction set to the building level of the Model
+      construction_id = 'Default Generic Construction Set'
+      construction = @openstudio_model.getDefaultConstructionSetByName(construction_id)
+      unless construction.empty?
+        os_constructionset = construction.get
+        @openstudio_model.getBuilding.setDefaultConstructionSet(os_constructionset)
       end
     end
 
