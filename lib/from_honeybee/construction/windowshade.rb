@@ -97,9 +97,10 @@ module FromHoneybee
       shd_mat_name = openstudio_model.getMaterialByName(@hash[:shade_material])
       unless shd_mat_name.empty?
         @shade_material = shd_mat_name.get
+        obj_type = @shade_material.iddObject.name
       end
       unless @shade_material.nil?
-        if @shade_material.is_a? OpenStudio::Model::StandardGlazing
+        if obj_type == 'OS:WindowMaterial:StandardGlazing'
           if @shade_location == 'Interior'
               os_materials[-1] = @shade_material
           elsif @shade_location == 'Exterior' | os_materials.length < 2
@@ -159,9 +160,12 @@ module FromHoneybee
       os_shade_control = OpenStudio::Model::ShadingControl.new(@shade_construction)
 
       # figure out the shading type
-      if @shade_material.is_a? OpenStudio::Model::StandardGlazing
+      unless @shade_material.nil?
+        obj_type = @shade_material.iddObject.name
+      end
+      if obj_type == 'OS:WindowMaterial:StandardGlazing'
         shd_type = 'SwitchableGlazing'
-      elsif @shade_material.is_a? OpenStudio::Model::Blind
+      elsif obj_type == 'OS:WindowMaterial:Blind'
         if @shade_location == 'Between'
           shd_type = 'BetweenGlassBlind'
         else

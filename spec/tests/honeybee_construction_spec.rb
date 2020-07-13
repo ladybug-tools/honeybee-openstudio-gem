@@ -80,14 +80,25 @@ RSpec.describe FromHoneybee do
     construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+    shd_cntrl = construction1.to_openstudio_shading_control(openstudio_model)
+    expect(shd_cntrl.shadingType).to eq('InteriorShade')
   end
 
   it 'can load construction window construction with blinds' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_blinds.json')
     construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
+
+    blind_mat_hash = Hash.new
+    blind_mat_hash[:type] = "EnergyWindowMaterialBlind"
+    blind_mat_hash[:identifier] = "Plastic Blind"
+    material1 = FromHoneybee::EnergyWindowMaterialBlind.new(blind_mat_hash)
+    blind_mat = material1.to_openstudio(openstudio_model)
+
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
+    shd_cntrl = construction1.to_openstudio_shading_control(openstudio_model)
+    expect(shd_cntrl.shadingType).to eq('InteriorBlind')
   end
 
   it 'can load construction window double' do
