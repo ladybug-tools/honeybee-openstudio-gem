@@ -201,6 +201,14 @@ RSpec.describe FromHoneybee do
     expect(object1).not_to be nil
   end
 
+  it 'can load model with wind ventilation' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ventilation.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
   it 'can triangulate 5vertex sub faces' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.json')
@@ -247,6 +255,22 @@ RSpec.describe FromHoneybee do
 
       expect(num_surfaces_with_subsurfaces).to eq 1
     end
+  end
+
+  it 'can load large model for a single-family home' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model_large/single_family_home.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load large model for a lab building' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model_large/lab_building.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
   end
 
 end
