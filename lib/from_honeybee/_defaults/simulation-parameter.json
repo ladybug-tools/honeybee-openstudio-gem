@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee energy simulation parameter schema.",
-    "version": "0.0.1",
+    "version": "1.34.3",
     "title": "Honeybee Energy Simulation Parameter Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -469,7 +469,7 @@
           },
           "dry_bulb_range": {
             "title": "Dry Bulb Range",
-            "description": "The difference between min and max temperatures on thedesign day [C].",
+            "description": "The difference between min and max temperatures on the design day [C].",
             "minimum": 0,
             "type": "number",
             "format": "double"
@@ -585,7 +585,7 @@
         "properties": {
           "date": {
             "title": "Date",
-            "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
+            "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs. A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
             "type": "array",
             "items": {
               "type": "integer",
@@ -629,7 +629,7 @@
         "properties": {
           "date": {
             "title": "Date",
-            "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs.A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
+            "description": "A list of two integers for [month, day], representing the date for the day of the year on which the design day occurs. A third integer may be added to denote whether the date should be re-serialized for a leap year (it should be a 1 in this case).",
             "type": "array",
             "items": {
               "type": "integer",

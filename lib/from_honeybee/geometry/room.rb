@@ -42,6 +42,7 @@ require 'from_honeybee/load/infiltration'
 require 'from_honeybee/load/ventilation'
 require 'from_honeybee/load/setpoint_thermostat'
 require 'from_honeybee/load/setpoint_humidistat'
+require 'from_honeybee/ventcool/opening'
 
 require 'openstudio'
 
@@ -117,6 +118,9 @@ module FromHoneybee
       end
       os_space.setBuildingStory(story)
       
+      # keep track of all window ventilation objects
+      window_vent = {}
+
       # assign all of the faces to the room
       @hash[:faces].each do |face|
         ladybug_face = Face.new(face)
@@ -134,6 +138,9 @@ module FromHoneybee
         # assign aperture-level shades if they exist
         if face[:apertures]
           face[:apertures].each do |aperture|
+            if aperture[:properties][:energy][:vent_opening]
+              window_vent[aperture[:identifier]] = aperture[:properties][:energy][:vent_opening]
+            end
             if aperture[:outdoor_shades]
               unless os_shd_group
                 os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
@@ -148,6 +155,9 @@ module FromHoneybee
         # assign door-level shades if they exist
         if face[:doors]
           face[:doors].each do |door|
+            if door[:properties][:energy][:vent_opening]
+              window_vent[door[:identifier]] = door[:properties][:energy][:vent_opening]
+            end
             if door[:outdoor_shades]
               unless os_shd_group
                 os_shd_group = make_shade_group(openstudio_model, os_surface, os_space)
@@ -284,18 +294,30 @@ module FromHoneybee
 
       # assign setpoint if it exists
       if @hash[:properties][:energy][:setpoint]
-        #thermostat object is created because heating and cooling schedule are required
-        #fields.
+        # thermostat object is created because heating and cooling schedule are required
         setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
         os_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
         #set thermostat to thermal zone
         os_thermal_zone.setThermostatSetpointDualSetpoint(os_setpoint_thermostat_space)
-        #humidistat object is created if humidifying or dehumidifying schedule is
-        #specified.
+        # humidistat object is created if humidifying or dehumidifying schedule is specified
         if @hash[:properties][:energy][:setpoint][:humidifying_schedule] or @hash[:properties][:energy][:setpoint][:dehumidifying_schedule]
           setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
           os_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
           os_thermal_zone.setZoneControlHumidistat(os_setpoint_humidistat_space)
+        end
+      end
+
+      # assign window ventilation objects if they exist
+      unless window_vent.empty?
+        window_vent.each do |sub_f_id, opening|
+          opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
+          unless opt_sub_f.empty?
+            sub_f = opt_sub_f.get
+            window_vent = VentilationOpening.new(opening)
+            os_window_vent = window_vent.to_openstudio(
+              openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
+            os_window_vent.addToThermalZone(os_thermal_zone)
+          end
         end
       end
 
