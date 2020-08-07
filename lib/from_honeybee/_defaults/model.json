@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "This is the documentation for Honeybee model schema.",
-    "version": "1.34.3",
+    "version": "1.36.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -38,6 +38,11 @@
       "name": "airboundaryconstructionabridged_model",
       "x-displayName": "AirBoundaryConstructionAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AirBoundaryConstructionAbridged\" />\n"
+    },
+    {
+      "name": "allaireconomizertype_model",
+      "x-displayName": "AllAirEconomizerType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AllAirEconomizerType\" />\n"
     },
     {
       "name": "aperture_model",
@@ -95,6 +100,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/BSDF\" />\n"
     },
     {
+      "name": "baseboard_model",
+      "x-displayName": "Baseboard",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Baseboard\" />\n"
+    },
+    {
+      "name": "baseboardequipmenttype_model",
+      "x-displayName": "BaseboardEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/BaseboardEquipmentType\" />\n"
+    },
+    {
       "name": "constructionset_model",
       "x-displayName": "ConstructionSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ConstructionSet\" />\n"
@@ -103,6 +118,11 @@
       "name": "constructionsetabridged_model",
       "x-displayName": "ConstructionSetAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ConstructionSetAbridged\" />\n"
+    },
+    {
+      "name": "controltype_model",
+      "x-displayName": "ControlType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ControlType\" />\n"
     },
     {
       "name": "door_model",
@@ -145,6 +165,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DoorRadiancePropertiesAbridged\" />\n"
     },
     {
+      "name": "economizertype_model",
+      "x-displayName": "EconomizerType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EconomizerType\" />\n"
+    },
+    {
       "name": "electricequipment_model",
       "x-displayName": "ElectricEquipment",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ElectricEquipment\" />\n"
@@ -160,11 +185,6 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterial\" />\n"
     },
     {
-      "name": "roughness_model",
-      "x-displayName": "Roughness",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Roughness\" />\n"
-    },
-    {
       "name": "energymaterialnomass_model",
       "x-displayName": "EnergyMaterialNoMass",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterialNoMass\" />\n"
@@ -175,19 +195,9 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialBlind\" />\n"
     },
     {
-      "name": "slatorientation_model",
-      "x-displayName": "SlatOrientation",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SlatOrientation\" />\n"
-    },
-    {
       "name": "energywindowmaterialgas_model",
       "x-displayName": "EnergyWindowMaterialGas",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialGas\" />\n"
-    },
-    {
-      "name": "gastype_model",
-      "x-displayName": "GasType",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasType\" />\n"
     },
     {
       "name": "energywindowmaterialgascustom_model",
@@ -215,14 +225,39 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyWindowMaterialSimpleGlazSys\" />\n"
     },
     {
+      "name": "evaporativecooler_model",
+      "x-displayName": "EvaporativeCooler",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EvaporativeCooler\" />\n"
+    },
+    {
+      "name": "evaporativecoolerequipmenttype_model",
+      "x-displayName": "EvaporativeCoolerEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EvaporativeCoolerEquipmentType\" />\n"
+    },
+    {
+      "name": "fcu_model",
+      "x-displayName": "FCU",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCU\" />\n"
+    },
+    {
+      "name": "fcuequipmenttype_model",
+      "x-displayName": "FCUEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUEquipmentType\" />\n"
+    },
+    {
+      "name": "fcuwithdoas_model",
+      "x-displayName": "FCUwithDOAS",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUwithDOAS\" />\n"
+    },
+    {
+      "name": "fcuwithdoasequipmenttype_model",
+      "x-displayName": "FCUwithDOASEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUwithDOASEquipmentType\" />\n"
+    },
+    {
       "name": "face_model",
       "x-displayName": "Face",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Face\" />\n"
-    },
-    {
-      "name": "facetype_model",
-      "x-displayName": "FaceType",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceType\" />\n"
     },
     {
       "name": "face3d_model",
@@ -245,6 +280,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceRadiancePropertiesAbridged\" />\n"
     },
     {
+      "name": "facetype_model",
+      "x-displayName": "FaceType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FaceType\" />\n"
+    },
+    {
       "name": "floorconstructionset_model",
       "x-displayName": "FloorConstructionSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorConstructionSet\" />\n"
@@ -265,6 +305,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FloorModifierSetAbridged\" />\n"
     },
     {
+      "name": "forcedairfurnace_model",
+      "x-displayName": "ForcedAirFurnace",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ForcedAirFurnace\" />\n"
+    },
+    {
+      "name": "furnaceequipmenttype_model",
+      "x-displayName": "FurnaceEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FurnaceEquipmentType\" />\n"
+    },
+    {
       "name": "gasequipment_model",
       "x-displayName": "GasEquipment",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasEquipment\" />\n"
@@ -273,6 +323,21 @@
       "name": "gasequipmentabridged_model",
       "x-displayName": "GasEquipmentAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasEquipmentAbridged\" />\n"
+    },
+    {
+      "name": "gastype_model",
+      "x-displayName": "GasType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasType\" />\n"
+    },
+    {
+      "name": "gasunitheater_model",
+      "x-displayName": "GasUnitHeater",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasUnitHeater\" />\n"
+    },
+    {
+      "name": "gasunitheaterequipmenttype_model",
+      "x-displayName": "GasUnitHeaterEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GasUnitHeaterEquipmentType\" />\n"
     },
     {
       "name": "glass_model",
@@ -293,11 +358,6 @@
       "name": "idealairsystemabridged_model",
       "x-displayName": "IdealAirSystemAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IdealAirSystemAbridged\" />\n"
-    },
-    {
-      "name": "economizertype_model",
-      "x-displayName": "EconomizerType",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EconomizerType\" />\n"
     },
     {
       "name": "infiltration_model",
@@ -338,11 +398,6 @@
       "name": "model_model",
       "x-displayName": "Model",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Model\" />\n"
-    },
-    {
-      "name": "units_model",
-      "x-displayName": "Units",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Units\" />\n"
     },
     {
       "name": "modelenergyproperties_model",
@@ -390,6 +445,36 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Outdoors\" />\n"
     },
     {
+      "name": "psz_model",
+      "x-displayName": "PSZ",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PSZ\" />\n"
+    },
+    {
+      "name": "pszequipmenttype_model",
+      "x-displayName": "PSZEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PSZEquipmentType\" />\n"
+    },
+    {
+      "name": "ptac_model",
+      "x-displayName": "PTAC",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PTAC\" />\n"
+    },
+    {
+      "name": "ptacequipmenttype_model",
+      "x-displayName": "PTACEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PTACEquipmentType\" />\n"
+    },
+    {
+      "name": "pvav_model",
+      "x-displayName": "PVAV",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PVAV\" />\n"
+    },
+    {
+      "name": "pvavequipmenttype_model",
+      "x-displayName": "PVAVEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PVAVEquipmentType\" />\n"
+    },
+    {
       "name": "people_model",
       "x-displayName": "People",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/People\" />\n"
@@ -428,6 +513,16 @@
       "name": "radiancesubfacestateabridged_model",
       "x-displayName": "RadianceSubFaceStateAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadianceSubFaceStateAbridged\" />\n"
+    },
+    {
+      "name": "residential_model",
+      "x-displayName": "Residential",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Residential\" />\n"
+    },
+    {
+      "name": "residentialequipmenttype_model",
+      "x-displayName": "ResidentialEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ResidentialEquipmentType\" />\n"
     },
     {
       "name": "roofceilingconstructionset_model",
@@ -470,6 +565,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RoomRadiancePropertiesAbridged\" />\n"
     },
     {
+      "name": "roughness_model",
+      "x-displayName": "Roughness",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Roughness\" />\n"
+    },
+    {
       "name": "scheduleday_model",
       "x-displayName": "ScheduleDay",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleDay\" />\n"
@@ -483,6 +583,11 @@
       "name": "schedulefixedintervalabridged_model",
       "x-displayName": "ScheduleFixedIntervalAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleFixedIntervalAbridged\" />\n"
+    },
+    {
+      "name": "schedulenumerictype_model",
+      "x-displayName": "ScheduleNumericType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleNumericType\" />\n"
     },
     {
       "name": "scheduleruleabridged_model",
@@ -503,11 +608,6 @@
       "name": "scheduletypelimit_model",
       "x-displayName": "ScheduleTypeLimit",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleTypeLimit\" />\n"
-    },
-    {
-      "name": "schedulenumerictype_model",
-      "x-displayName": "ScheduleNumericType",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleNumericType\" />\n"
     },
     {
       "name": "scheduleunittype_model",
@@ -540,6 +640,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeEnergyPropertiesAbridged\" />\n"
     },
     {
+      "name": "shadelocation_model",
+      "x-displayName": "ShadeLocation",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeLocation\" />\n"
+    },
+    {
       "name": "shademodifierset_model",
       "x-displayName": "ShadeModifierSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeModifierSet\" />\n"
@@ -560,6 +665,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeRadiancePropertiesAbridged\" />\n"
     },
     {
+      "name": "slatorientation_model",
+      "x-displayName": "SlatOrientation",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SlatOrientation\" />\n"
+    },
+    {
       "name": "stategeometryabridged_model",
       "x-displayName": "StateGeometryAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/StateGeometryAbridged\" />\n"
@@ -575,6 +685,41 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Trans\" />\n"
     },
     {
+      "name": "units_model",
+      "x-displayName": "Units",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Units\" />\n"
+    },
+    {
+      "name": "vav_model",
+      "x-displayName": "VAV",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VAV\" />\n"
+    },
+    {
+      "name": "vavequipmenttype_model",
+      "x-displayName": "VAVEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VAVEquipmentType\" />\n"
+    },
+    {
+      "name": "vrf_model",
+      "x-displayName": "VRF",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRF\" />\n"
+    },
+    {
+      "name": "vrfequipmenttype_model",
+      "x-displayName": "VRFEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFEquipmentType\" />\n"
+    },
+    {
+      "name": "vrfwithdoas_model",
+      "x-displayName": "VRFwithDOAS",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFwithDOAS\" />\n"
+    },
+    {
+      "name": "vrfwithdoasequipmenttype_model",
+      "x-displayName": "VRFwithDOASEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFwithDOASEquipmentType\" />\n"
+    },
+    {
       "name": "ventilation_model",
       "x-displayName": "Ventilation",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Ventilation\" />\n"
@@ -585,9 +730,44 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationAbridged\" />\n"
     },
     {
+      "name": "ventilationcontrolabridged_model",
+      "x-displayName": "VentilationControlAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationControlAbridged\" />\n"
+    },
+    {
+      "name": "ventilationopening_model",
+      "x-displayName": "VentilationOpening",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationOpening\" />\n"
+    },
+    {
+      "name": "vintages_model",
+      "x-displayName": "Vintages",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Vintages\" />\n"
+    },
+    {
       "name": "void_model",
       "x-displayName": "Void",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Void\" />\n"
+    },
+    {
+      "name": "wshp_model",
+      "x-displayName": "WSHP",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHP\" />\n"
+    },
+    {
+      "name": "wshpequipmenttype_model",
+      "x-displayName": "WSHPEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPEquipmentType\" />\n"
+    },
+    {
+      "name": "wshpwithdoas_model",
+      "x-displayName": "WSHPwithDOAS",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPwithDOAS\" />\n"
+    },
+    {
+      "name": "wshpwithdoasequipmenttype_model",
+      "x-displayName": "WSHPwithDOASEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPwithDOASEquipmentType\" />\n"
     },
     {
       "name": "wallconstructionset_model",
@@ -610,6 +790,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WallModifierSetAbridged\" />\n"
     },
     {
+      "name": "windowac_model",
+      "x-displayName": "WindowAC",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowAC\" />\n"
+    },
+    {
+      "name": "windowacequipmenttype_model",
+      "x-displayName": "WindowACEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowACEquipmentType\" />\n"
+    },
+    {
       "name": "windowconstruction_model",
       "x-displayName": "WindowConstruction",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstruction\" />\n"
@@ -625,16 +815,6 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionShade\" />\n"
     },
     {
-      "name": "shadelocation_model",
-      "x-displayName": "ShadeLocation",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeLocation\" />\n"
-    },
-    {
-      "name": "controltype_model",
-      "x-displayName": "ControlType",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ControlType\" />\n"
-    },
-    {
       "name": "windowconstructionshadeabridged_model",
       "x-displayName": "WindowConstructionShadeAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionShadeAbridged\" />\n"
@@ -647,6 +827,7 @@
         "adiabatic_model",
         "airboundaryconstruction_model",
         "airboundaryconstructionabridged_model",
+        "allaireconomizertype_model",
         "aperture_model",
         "apertureconstructionset_model",
         "apertureconstructionsetabridged_model",
@@ -657,6 +838,8 @@
         "apertureradiancepropertiesabridged_model",
         "autocalculate_model",
         "autosize_model",
+        "baseboard_model",
+        "baseboardequipmenttype_model",
         "bsdf_model",
         "constructionset_model",
         "constructionsetabridged_model",
@@ -681,19 +864,29 @@
         "energywindowmaterialglazing_model",
         "energywindowmaterialshade_model",
         "energywindowmaterialsimpleglazsys_model",
+        "evaporativecooler_model",
+        "evaporativecoolerequipmenttype_model",
         "face3d_model",
         "face_model",
         "faceenergypropertiesabridged_model",
         "facepropertiesabridged_model",
         "faceradiancepropertiesabridged_model",
         "facetype_model",
+        "fcu_model",
+        "fcuequipmenttype_model",
+        "fcuwithdoas_model",
+        "fcuwithdoasequipmenttype_model",
         "floorconstructionset_model",
         "floorconstructionsetabridged_model",
         "floormodifierset_model",
         "floormodifiersetabridged_model",
+        "forcedairfurnace_model",
+        "furnaceequipmenttype_model",
         "gasequipment_model",
         "gasequipmentabridged_model",
         "gastype_model",
+        "gasunitheater_model",
+        "gasunitheaterequipmenttype_model",
         "glass_model",
         "glow_model",
         "ground_model",
@@ -721,8 +914,16 @@
         "plastic_model",
         "programtype_model",
         "programtypeabridged_model",
+        "psz_model",
+        "pszequipmenttype_model",
+        "ptac_model",
+        "ptacequipmenttype_model",
+        "pvav_model",
+        "pvavequipmenttype_model",
         "radianceshadestateabridged_model",
         "radiancesubfacestateabridged_model",
+        "residential_model",
+        "residentialequipmenttype_model",
         "roofceilingconstructionset_model",
         "roofceilingconstructionsetabridged_model",
         "roofceilingmodifierset_model",
@@ -756,17 +957,32 @@
         "surface_model",
         "trans_model",
         "units_model",
+        "vav_model",
+        "vavequipmenttype_model",
         "ventilation_model",
         "ventilationabridged_model",
+        "ventilationcontrolabridged_model",
+        "ventilationopening_model",
+        "vintages_model",
         "void_model",
+        "vrf_model",
+        "vrfequipmenttype_model",
+        "vrfwithdoas_model",
+        "vrfwithdoasequipmenttype_model",
         "wallconstructionset_model",
         "wallconstructionsetabridged_model",
         "wallmodifierset_model",
         "wallmodifiersetabridged_model",
+        "windowac_model",
+        "windowacequipmenttype_model",
         "windowconstruction_model",
         "windowconstructionabridged_model",
         "windowconstructionshade_model",
-        "windowconstructionshadeabridged_model"
+        "windowconstructionshadeabridged_model",
+        "wshp_model",
+        "wshpequipmenttype_model",
+        "wshpwithdoas_model",
+        "wshpwithdoasequipmenttype_model"
       ]
     }
   ],
@@ -781,24 +997,24 @@
           "n": {
             "title": "N",
             "description": "Plane normal as 3 (x, y, z) values.",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           },
           "o": {
             "title": "O",
             "description": "Plane origin as 3 (x, y, z) values",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           },
           "type": {
             "title": "Type",
@@ -810,13 +1026,13 @@
           "x": {
             "title": "X",
             "description": "Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           }
         },
         "required": [
@@ -834,7 +1050,6 @@
             "title": "Boundary",
             "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
             "minItems": 3,
-            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "array",
@@ -856,7 +1071,6 @@
           "holes": {
             "title": "Holes",
             "description": "Optional list of lists with one list for each hole in the face.Each hole should be a list of at least 3 points and each point a list of 3 (x, y, z) values. If None, it will be assumed that there are no holes in the face.",
-            "minItems": 3,
             "type": "array",
             "items": {
               "type": "array",
@@ -886,6 +1100,17 @@
           "boundary"
         ],
         "additionalProperties": false
+      },
+      "FaceType": {
+        "title": "FaceType",
+        "description": "An enumeration.",
+        "enum": [
+          "Wall",
+          "Floor",
+          "RoofCeiling",
+          "AirBoundary"
+        ],
+        "type": "string"
       },
       "Ground": {
         "title": "Ground",
@@ -985,12 +1210,12 @@
           "boundary_condition_objects": {
             "title": "Boundary Condition Objects",
             "description": "A list of up to 3 object identifiers that are adjacent to this one. The first object is always the one that is immediately adjacent and is of the same object type (Face, Aperture, Door). When this boundary condition is applied to a Face, the second object in the tuple will be the parent Room of the adjacent object. When the boundary condition is applied to a sub-face (Door or Aperture), the second object will be the parent Face of the adjacent sub-face and the third object will be the parent Room of the adjacent sub-face.",
+            "minItems": 2,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "minItems": 2,
-            "maxItems": 3
+            }
           },
           "type": {
             "title": "Type",
@@ -1228,6 +1453,54 @@
         ],
         "additionalProperties": false
       },
+      "VentilationOpening": {
+        "title": "VentilationOpening",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "VentilationOpening",
+            "pattern": "^VentilationOpening$",
+            "type": "string",
+            "readOnly": true
+          },
+          "fraction_area_operable": {
+            "title": "Fraction Area Operable",
+            "description": "A number for the fraction of the window area that is operable.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "fraction_height_operable": {
+            "title": "Fraction Height Operable",
+            "description": "A number for the fraction of the distance from the bottom of the window to the top that is operable.",
+            "default": 1.0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "discharge_coefficient": {
+            "title": "Discharge Coefficient",
+            "description": "A number that will be multipled by the area of the window in the stack (buoyancy-driven) part of the equation to account for additional friction from window geometry, insect screens, etc. Typical values include 0.17, for unobstructed windows with insect screens and 0.25 for unobstructed windows without insect screens. This value should be lowered if windows are of an awning or casement type and not allowed to fully open.",
+            "default": 0.17,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "wind_cross_vent": {
+            "title": "Wind Cross Vent",
+            "description": "Boolean to indicate if there is an opening of roughly equal area on the opposite side of the Room such that wind-driven cross ventilation will be induced. If False, the assumption is that the operable area is primarily on one side of the Room and there is no wind-driven ventilation.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "ApertureEnergyPropertiesAbridged": {
         "title": "ApertureEnergyPropertiesAbridged",
         "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
@@ -1246,6 +1519,15 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "vent_opening": {
+            "title": "Vent Opening",
+            "description": "An optional VentilationOpening to specify the operable portion of the Aperture.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationOpening"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -1466,6 +1748,15 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "vent_opening": {
+            "title": "Vent Opening",
+            "description": "An optional VentilationOpening to specify the operable portion of the Door.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationOpening"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -1706,13 +1997,12 @@
             ]
           },
           "face_type": {
+            "title": "Face Type",
             "allOf": [
               {
                 "$ref": "#/components/schemas/FaceType"
               }
-            ],
-            "title": "Face Type",
-            "type": "string"
+            ]
           },
           "boundary_condition": {
             "title": "Boundary Condition",
@@ -2295,6 +2585,73 @@
         ],
         "additionalProperties": false
       },
+      "VentilationControlAbridged": {
+        "title": "VentilationControlAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "VentilationControlAbridged",
+            "pattern": "^VentilationControlAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "min_indoor_temperature": {
+            "title": "Min Indoor Temperature",
+            "description": "A number for the minimum indoor temperature at which to ventilate in Celsius. Typically, this variable is used to initiate ventilation.",
+            "default": -100,
+            "minimum": -100,
+            "maximum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "max_indoor_temperature": {
+            "title": "Max Indoor Temperature",
+            "description": "A number for the maximum indoor temperature at which to ventilate in Celsius. This can be used to set a maximum temperature at which point ventilation is stopped and a cooling system is turned on.",
+            "default": 100,
+            "minimum": -100,
+            "maximum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "min_outdoor_temperature": {
+            "title": "Min Outdoor Temperature",
+            "description": "A number for the minimum outdoor temperature at which to ventilate in Celsius. This can be used to ensure ventilative cooling does not happen during the winter even if the Room is above the min_indoor_temperature.",
+            "default": -100,
+            "minimum": -100,
+            "maximum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "max_outdoor_temperature": {
+            "title": "Max Outdoor Temperature",
+            "description": "A number for the maximum indoor temperature at which to ventilate in Celsius. This can be used to set a limit for when it is considered too hot outside for ventilative cooling.",
+            "default": 100,
+            "minimum": -100,
+            "maximum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "delta_temperature": {
+            "title": "Delta Temperature",
+            "description": "A number for the temperature differential in Celsius between indoor and outdoor below which ventilation is shut off.  This should usually be a negative number so that ventilation only occurs when the outdoors is cooler than the indoors. Positive numbers indicate how much hotter the outdoors can be than the indoors before ventilation is stopped.",
+            "default": -100,
+            "minimum": -100,
+            "maximum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Identifier of the schedule for the ventilation over the course of the year. Note that this is applied on top of any setpoints. The type of this schedule should be On/Off and values should be either 0 (no possibility of ventilation) or 1 (ventilation possible).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RoomEnergyPropertiesAbridged": {
         "title": "RoomEnergyPropertiesAbridged",
         "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
@@ -2390,6 +2747,15 @@
                 "$ref": "#/components/schemas/SetpointAbridged"
               }
             ]
+          },
+          "window_vent_control": {
+            "title": "Window Vent Control",
+            "description": "An optional VentilationControl object to dictate the opening of windows. If None, the windows will never open.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationControlAbridged"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -2449,11 +2815,11 @@
           "faces": {
             "title": "Faces",
             "description": "Faces that together form the closed volume of a room.",
+            "minItems": 4,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Face"
-            },
-            "minItems": 4
+            }
           },
           "properties": {
             "title": "Properties",
@@ -2520,6 +2886,18 @@
           "properties"
         ],
         "additionalProperties": false
+      },
+      "Units": {
+        "title": "Units",
+        "description": "An enumeration.",
+        "enum": [
+          "Meters",
+          "Millimeters",
+          "Feet",
+          "Inches",
+          "Centimeters"
+        ],
+        "type": "string"
       },
       "WallConstructionSetAbridged": {
         "title": "WallConstructionSetAbridged",
@@ -2811,6 +3189,19 @@
         ],
         "additionalProperties": false
       },
+      "Roughness": {
+        "title": "Roughness",
+        "description": "Relative roughness of a particular material layer.",
+        "enum": [
+          "VeryRough",
+          "Rough",
+          "MediumRough",
+          "MediumSmooth",
+          "Smooth",
+          "VerySmooth"
+        ],
+        "type": "string"
+      },
       "EnergyMaterial": {
         "title": "EnergyMaterial",
         "description": "Opaque material representing a layer within an opaque construction.",
@@ -2865,14 +3256,13 @@
             "readOnly": true
           },
           "roughness": {
+            "title": "Roughness",
+            "default": "MediumRough",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Roughness"
               }
-            ],
-            "title": "Roughness",
-            "default": "MediumRough",
-            "type": "string"
+            ]
           },
           "thermal_absorptance": {
             "title": "Thermal Absorptance",
@@ -2943,14 +3333,13 @@
             "readOnly": true
           },
           "roughness": {
+            "title": "Roughness",
+            "default": "MediumRough",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Roughness"
               }
-            ],
-            "title": "Roughness",
-            "default": "MediumRough",
-            "type": "string"
+            ]
           },
           "thermal_absorptance": {
             "title": "Thermal Absorptance",
@@ -3001,20 +3390,20 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
-            "minLength": 1,
-            "maxLength": 100,
+            "minItems": 1,
+            "maxItems": 10,
             "type": "array",
             "items": {
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            },
-            "minItems": 1,
-            "maxItems": 10
+            }
           },
           "materials": {
             "title": "Materials",
             "description": "List of opaque materials. The order of the materials is from outside to inside.",
+            "minItems": 1,
+            "maxItems": 10,
             "type": "array",
             "items": {
               "anyOf": [
@@ -3025,9 +3414,7 @@
                   "$ref": "#/components/schemas/EnergyMaterialNoMass"
                 }
               ]
-            },
-            "minItems": 1,
-            "maxItems": 10
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -3368,6 +3755,17 @@
         ],
         "additionalProperties": false
       },
+      "GasType": {
+        "title": "GasType",
+        "description": "An enumeration.",
+        "enum": [
+          "Air",
+          "Argon",
+          "Krypton",
+          "Xenon"
+        ],
+        "type": "string"
+      },
       "EnergyWindowMaterialGas": {
         "title": "EnergyWindowMaterialGas",
         "description": "Create single layer of gas in a window construction.\n\nCan be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
@@ -3401,14 +3799,13 @@
             "format": "double"
           },
           "gas_type": {
+            "title": "Gas Type",
+            "default": "Air",
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasType"
               }
-            ],
-            "title": "Gas Type",
-            "default": "Air",
-            "type": "string"
+            ]
           }
         },
         "required": [
@@ -3553,12 +3950,12 @@
             "description": "List of gases in the gas mixture.",
             "type": "array",
             "items": {
+              "title": " Gas Types",
               "allOf": [
                 {
                   "$ref": "#/components/schemas/GasType"
                 }
-              ],
-              "type": "string"
+              ]
             },
             "minItems": 2,
             "maxItems": 4
@@ -3566,13 +3963,13 @@
           "gas_fractions": {
             "title": "Gas Fractions",
             "description": "A list of fractional numbers describing the volumetric fractions of gas types in the mixture. This list must align with the gas_types list and must sum to 1.",
+            "minItems": 2,
+            "maxItems": 4,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 2,
-            "maxItems": 4
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -3617,20 +4014,20 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
-            "minLength": 1,
-            "maxLength": 100,
+            "minItems": 1,
+            "maxItems": 8,
             "type": "array",
             "items": {
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            },
-            "minItems": 1,
-            "maxItems": 8
+            }
           },
           "materials": {
             "title": "Materials",
             "description": "List of glazing and gas materials. The order of the materials is from outside to inside. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
+            "minItems": 1,
+            "maxItems": 8,
             "type": "array",
             "items": {
               "anyOf": [
@@ -3650,9 +4047,7 @@
                   "$ref": "#/components/schemas/EnergyWindowMaterialGasMixture"
                 }
               ]
-            },
-            "minItems": 1,
-            "maxItems": 8
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -3879,8 +4274,6 @@
               0,
               0
             ],
-            "minItems": 2,
-            "maxItems": 2,
             "type": "array",
             "items": {
               "type": "array",
@@ -3973,13 +4366,13 @@
               1,
               1
             ],
+            "minItems": 2,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int32"
-            },
-            "minItems": 2,
-            "maxItems": 3
+            }
           },
           "end_date": {
             "title": "End Date",
@@ -3988,13 +4381,13 @@
               12,
               31
             ],
+            "minItems": 2,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int32"
-            },
-            "minItems": 2,
-            "maxItems": 3
+            }
           }
         },
         "required": [
@@ -4016,6 +4409,36 @@
           }
         },
         "additionalProperties": false
+      },
+      "ScheduleNumericType": {
+        "title": "ScheduleNumericType",
+        "description": "Designates how the range values are validated.",
+        "enum": [
+          "Continuous",
+          "Discrete"
+        ],
+        "type": "string"
+      },
+      "ScheduleUnitType": {
+        "title": "ScheduleUnitType",
+        "description": "An enumeration.",
+        "enum": [
+          "Dimensionless",
+          "Temperature",
+          "DeltaTemperature",
+          "PrecipitationRate",
+          "Angle",
+          "ConvectionCoefficient",
+          "ActivityLevel",
+          "Velocity",
+          "Capacity",
+          "Power",
+          "Availability",
+          "Percent",
+          "Control",
+          "Mode"
+        ],
+        "type": "string"
       },
       "ScheduleTypeLimit": {
         "title": "ScheduleTypeLimit",
@@ -4074,24 +4497,22 @@
             ]
           },
           "numeric_type": {
+            "title": "Numeric Type",
+            "default": "Continuous",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ScheduleNumericType"
               }
-            ],
-            "title": "Numeric Type",
-            "default": "Continuous",
-            "type": "string"
+            ]
           },
           "unit_type": {
+            "title": "Unit Type",
+            "default": "Dimensionless",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ScheduleUnitType"
               }
-            ],
-            "title": "Unit Type",
-            "default": "Dimensionless",
-            "type": "string"
+            ]
           }
         },
         "required": [
@@ -4199,13 +4620,13 @@
           "values": {
             "title": "Values",
             "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
+            "minItems": 24,
+            "maxItems": 527040,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 24,
-            "maxItems": 527040
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -4242,13 +4663,13 @@
               1,
               1
             ],
+            "minItems": 2,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int32"
-            },
-            "minItems": 2,
-            "maxItems": 3
+            }
           },
           "placeholder_value": {
             "title": "Placeholder Value",
@@ -4429,16 +4850,14 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
-            "minLength": 1,
-            "maxLength": 100,
+            "minItems": 1,
+            "maxItems": 10,
             "type": "array",
             "items": {
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            },
-            "minItems": 1,
-            "maxItems": 10
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -4474,16 +4893,14 @@
           "layers": {
             "title": "Layers",
             "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
-            "minLength": 1,
-            "maxLength": 100,
+            "minItems": 1,
+            "maxItems": 8,
             "type": "array",
             "items": {
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            },
-            "minItems": 1,
-            "maxItems": 8
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -4503,6 +4920,32 @@
           "layers"
         ],
         "additionalProperties": false
+      },
+      "ShadeLocation": {
+        "title": "ShadeLocation",
+        "description": "Choices for where a shade material is located in a window assembly.",
+        "enum": [
+          "Interior",
+          "Between",
+          "Exterior"
+        ],
+        "type": "string"
+      },
+      "ControlType": {
+        "title": "ControlType",
+        "description": "Choices for how the shading device is controlled.",
+        "enum": [
+          "AlwaysOn",
+          "OnIfHighSolarOnWindow",
+          "OnIfHighHorizontalSolar",
+          "OnIfHighOutdoorAirTemperature",
+          "OnIfHighZoneAirTemperature",
+          "OnIfHighZoneCooling",
+          "OnNightIfLowOutdoorTempAndOffDay",
+          "OnNightIfLowInsideTempAndOffDay",
+          "OnNightIfHeatingAndOffDay"
+        ],
+        "type": "string"
       },
       "WindowConstructionShadeAbridged": {
         "title": "WindowConstructionShadeAbridged",
@@ -4545,26 +4988,24 @@
             "readOnly": true
           },
           "shade_location": {
+            "title": "Shade Location",
+            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+            "default": "Interior",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ShadeLocation"
               }
-            ],
-            "title": "Shade Location",
-            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
-            "default": "Interior",
-            "type": "string"
+            ]
           },
           "control_type": {
+            "title": "Control Type",
+            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+            "default": "AlwaysOn",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ControlType"
               }
-            ],
-            "title": "Control Type",
-            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
-            "default": "AlwaysOn",
-            "type": "string"
+            ]
           },
           "setpoint": {
             "title": "Setpoint",
@@ -4787,6 +5228,15 @@
         ],
         "additionalProperties": false
       },
+      "SlatOrientation": {
+        "title": "SlatOrientation",
+        "description": "An enumeration.",
+        "enum": [
+          "Horizontal",
+          "Vertical"
+        ],
+        "type": "string"
+      },
       "EnergyWindowMaterialBlind": {
         "title": "EnergyWindowMaterialBlind",
         "description": "Window blind material consisting of flat, equally-spaced slats.",
@@ -4812,14 +5262,13 @@
             "readOnly": true
           },
           "slat_orientation": {
+            "title": "Slat Orientation",
+            "default": "Horizontal",
             "allOf": [
               {
                 "$ref": "#/components/schemas/SlatOrientation"
               }
-            ],
-            "title": "Slat Orientation",
-            "default": "Horizontal",
-            "type": "string"
+            ]
           },
           "slat_width": {
             "title": "Slat Width",
@@ -5100,26 +5549,24 @@
             "readOnly": true
           },
           "shade_location": {
+            "title": "Shade Location",
+            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+            "default": "Interior",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ShadeLocation"
               }
-            ],
-            "title": "Shade Location",
-            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
-            "default": "Interior",
-            "type": "string"
+            ]
           },
           "control_type": {
+            "title": "Control Type",
+            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+            "default": "AlwaysOn",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ControlType"
               }
-            ],
-            "title": "Control Type",
-            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
-            "default": "AlwaysOn",
-            "type": "string"
+            ]
           },
           "setpoint": {
             "title": "Setpoint",
@@ -5146,6 +5593,16 @@
           "shade_material"
         ],
         "additionalProperties": false
+      },
+      "EconomizerType": {
+        "title": "EconomizerType",
+        "description": "An enumeration.",
+        "enum": [
+          "NoEconomizer",
+          "DifferentialDryBulb",
+          "DifferentialEnthalpy"
+        ],
+        "type": "string"
       },
       "Autosize": {
         "title": "Autosize",
@@ -5187,15 +5644,14 @@
             "readOnly": true
           },
           "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
+            "default": "DifferentialDryBulb",
             "allOf": [
               {
                 "$ref": "#/components/schemas/EconomizerType"
               }
-            ],
-            "title": "Economizer Type",
-            "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
-            "default": "DifferentialDryBulb",
-            "type": "string"
+            ]
           },
           "demand_controlled_ventilation": {
             "title": "Demand Controlled Ventilation",
@@ -5247,10 +5703,10 @@
             },
             "anyOf": [
               {
-                "$ref": "#/components/schemas/NoLimit"
+                "$ref": "#/components/schemas/Autosize"
               },
               {
-                "$ref": "#/components/schemas/Autosize"
+                "$ref": "#/components/schemas/NoLimit"
               },
               {
                 "type": "number",
@@ -5267,10 +5723,10 @@
             },
             "anyOf": [
               {
-                "$ref": "#/components/schemas/NoLimit"
+                "$ref": "#/components/schemas/Autosize"
               },
               {
-                "$ref": "#/components/schemas/Autosize"
+                "$ref": "#/components/schemas/NoLimit"
               },
               {
                 "type": "number",
@@ -5292,6 +5748,1416 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "Vintages": {
+        "title": "Vintages",
+        "description": "An enumeration.",
+        "enum": [
+          "90.1-2013",
+          "90.1-2010",
+          "90.1-2007",
+          "90.1-2004",
+          "DOE Ref 1980-2004",
+          "DOE Ref Pre-1980"
+        ],
+        "type": "string"
+      },
+      "AllAirEconomizerType": {
+        "title": "AllAirEconomizerType",
+        "description": "An enumeration.",
+        "enum": [
+          "Inferred",
+          "NoEconomizer",
+          "DifferentialDryBulb",
+          "DifferentialEnthalpy"
+        ],
+        "type": "string"
+      },
+      "VAVEquipmentType": {
+        "title": "VAVEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "VAV chiller with gas boiler reheat",
+          "VAV chiller with central air source heat pump reheat",
+          "VAV chiller with district hot water reheat",
+          "VAV chiller with PFP boxes",
+          "VAV chiller with gas coil reheat",
+          "VAV chiller with no reheat with baseboard electric",
+          "VAV chiller with no reheat with gas unit heaters",
+          "VAV chiller with no reheat with zone heat pump",
+          "VAV air-cooled chiller with gas boiler reheat",
+          "VAV air-cooled chiller with central air source heat pump reheat",
+          "VAV air-cooled chiller with district hot water reheat",
+          "VAV air-cooled chiller with PFP boxes",
+          "VAV air-cooled chiller with gas coil reheat",
+          "VAV air-cooled chiller with no reheat with baseboard electric",
+          "VAV air-cooled chiller with no reheat with gas unit heaters",
+          "VAV air-cooled chiller with no reheat with zone heat pump",
+          "VAV district chilled water with gas boiler reheat",
+          "VAV district chilled water with central air source heat pump reheat",
+          "VAV district chilled water with district hot water reheat",
+          "VAV district chilled water with PFP boxes",
+          "VAV district chilled water with gas coil reheat",
+          "VAV district chilled water with no reheat with baseboard electric",
+          "VAV district chilled water with no reheat with gas unit heaters",
+          "VAV district chilled water with no reheat with zone heat pump"
+        ],
+        "type": "string"
+      },
+      "VAV": {
+        "title": "VAV",
+        "description": "Variable Air Volume (VAV) HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
+            "default": "Inferred",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AllAirEconomizerType"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "VAV",
+            "pattern": "^VAV$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
+            "default": "VAV chiller with gas boiler reheat",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VAVEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "PVAVEquipmentType": {
+        "title": "PVAVEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "PVAV with gas boiler reheat",
+          "PVAV with central air source heat pump reheat",
+          "PVAV with district hot water reheat",
+          "PVAV with PFP boxes",
+          "PVAV with gas heat with electric reheat"
+        ],
+        "type": "string"
+      },
+      "PVAV": {
+        "title": "PVAV",
+        "description": "Packaged Variable Air Volume (PVAV) HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
+            "default": "Inferred",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AllAirEconomizerType"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "PVAV",
+            "pattern": "^PVAV$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
+            "default": "PVAV with gas boiler reheat",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PVAVEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "PSZEquipmentType": {
+        "title": "PSZEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "PSZ-AC with baseboard electric",
+          "PSZ-AC with baseboard gas boiler",
+          "PSZ-AC with baseboard district hot water",
+          "PSZ-AC with gas unit heaters",
+          "PSZ-AC with electric coil",
+          "PSZ-AC with gas coil",
+          "PSZ-AC with gas boiler",
+          "PSZ-AC with central air source heat pump",
+          "PSZ-AC with district hot water",
+          "PSZ-AC with no heat",
+          "PSZ-AC district chilled water with baseboard electric",
+          "PSZ-AC district chilled water with baseboard gas boiler",
+          "PSZ-AC district chilled water with baseboard district hot water",
+          "PSZ-AC district chilled water with gas unit heaters",
+          "PSZ-AC district chilled water with electric coil",
+          "PSZ-AC district chilled water with gas coil",
+          "PSZ-AC district chilled water with gas boiler",
+          "PSZ-AC district chilled water with central air source heat pump",
+          "PSZ-AC district chilled water with district hot water",
+          "PSZ-AC district chilled water with no heat",
+          "PSZ-HP"
+        ],
+        "type": "string"
+      },
+      "PSZ": {
+        "title": "PSZ",
+        "description": "Packaged Single-Zone (PSZ) HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
+            "default": "Inferred",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AllAirEconomizerType"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "PSZ",
+            "pattern": "^PSZ$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the PVAVEquipmentType enumeration.",
+            "default": "PSZ-AC with baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PSZEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "PTACEquipmentType": {
+        "title": "PTACEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "PTAC with baseboard electric",
+          "PTAC with baseboard gas boiler",
+          "PTAC with baseboard district hot water",
+          "PTAC with gas unit heaters",
+          "PTAC with electric coil",
+          "PTAC with gas coil",
+          "PTAC with gas boiler",
+          "PTAC with central air source heat pump",
+          "PTAC with district hot water",
+          "PTAC with no heat",
+          "PTHP"
+        ],
+        "type": "string"
+      },
+      "PTAC": {
+        "title": "PTAC",
+        "description": "Packaged Terminal Air Conditioning (PTAC) or Heat Pump (PTHP) HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
+            "default": "Inferred",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AllAirEconomizerType"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "PTAC",
+            "pattern": "^PTAC$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the PTACEquipmentType enumeration.",
+            "default": "PTAC with baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PTACEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "FurnaceEquipmentType": {
+        "title": "FurnaceEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Forced air furnace"
+        ],
+        "type": "string"
+      },
+      "ForcedAirFurnace": {
+        "title": "ForcedAirFurnace",
+        "description": "Forced Air Furnace HVAC system. Intended for spaces only requiring heating.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "economizer_type": {
+            "title": "Economizer Type",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
+            "default": "Inferred",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AllAirEconomizerType"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "ForcedAirFurnace",
+            "pattern": "^ForcedAirFurnace$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the FurnaceEquipmentType enumeration.",
+            "default": "Forced air furnace",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FurnaceEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "FCUwithDOASEquipmentType": {
+        "title": "FCUwithDOASEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "DOAS with fan coil chiller with boiler",
+          "DOAS with fan coil chiller with central air source heat pump",
+          "DOAS with fan coil chiller with district hot water",
+          "DOAS with fan coil chiller with baseboard electric",
+          "DOAS with fan coil chiller with gas unit heaters",
+          "DOAS with fan coil chiller with no heat",
+          "DOAS with fan coil air-cooled chiller with boiler",
+          "DOAS with fan coil air-cooled chiller with central air source heat pump",
+          "DOAS with fan coil air-cooled chiller with district hot water",
+          "DOAS with fan coil air-cooled chiller with baseboard electric",
+          "DOAS with fan coil air-cooled chiller with gas unit heaters",
+          "DOAS with fan coil air-cooled chiller with no heat",
+          "DOAS with fan coil district chilled water with boiler",
+          "DOAS with fan coil district chilled water with central air source heat pump",
+          "DOAS with fan coil district chilled water with district hot water",
+          "DOAS with fan coil district chilled water with baseboard electric",
+          "DOAS with fan coil district chilled water with gas unit heaters",
+          "DOAS with fan coil district chilled water with no heat"
+        ],
+        "type": "string"
+      },
+      "FCUwithDOAS": {
+        "title": "FCUwithDOAS",
+        "description": "Fan Coil Unit (FCU) with DOAS HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "FCUwithDOAS",
+            "pattern": "^FCUwithDOAS$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the FCUwithDOASEquipmentType enumeration.",
+            "default": "DOAS with fan coil chiller with boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FCUwithDOASEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WSHPwithDOASEquipmentType": {
+        "title": "WSHPwithDOASEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "DOAS with water source heat pumps fluid cooler with boiler",
+          "DOAS with water source heat pumps cooling tower with boiler",
+          "DOAS with water source heat pumps with ground source heat pump",
+          "DOAS with water source heat pumps district chilled water with district hot water"
+        ],
+        "type": "string"
+      },
+      "WSHPwithDOAS": {
+        "title": "WSHPwithDOAS",
+        "description": "Water Source Heat Pump (WSHP) with DOAS HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "WSHPwithDOAS",
+            "pattern": "^WSHPwithDOAS$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the WSHPwithDOASEquipmentType enumeration.",
+            "default": "DOAS with water source heat pumps fluid cooler with boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WSHPwithDOASEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "VRFwithDOASEquipmentType": {
+        "title": "VRFwithDOASEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "DOAS with VRF"
+        ],
+        "type": "string"
+      },
+      "VRFwithDOAS": {
+        "title": "VRFwithDOAS",
+        "description": "Variable Refrigerant Flow (VRF) with DOAS HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
+            "default": {
+              "type": "Autosize"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autosize"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "VRFwithDOAS",
+            "pattern": "^VRFwithDOAS$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the VRFwithDOASEquipmentType enumeration.",
+            "default": "DOAS with VRF",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VRFwithDOASEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "FCUEquipmentType": {
+        "title": "FCUEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Fan coil chiller with boiler",
+          "Fan coil chiller with central air source heat pump",
+          "Fan coil chiller with district hot water",
+          "Fan coil chiller with baseboard electric",
+          "Fan coil chiller with gas unit heaters",
+          "Fan coil chiller with no heat",
+          "Fan coil air-cooled chiller with boiler",
+          "Fan coil air-cooled chiller with central air source heat pump",
+          "Fan coil air-cooled chiller with district hot water",
+          "Fan coil air-cooled chiller with baseboard electric",
+          "Fan coil air-cooled chiller with gas unit heaters",
+          "Fan coil air-cooled chiller with no heat",
+          "Fan coil district chilled water with boiler",
+          "Fan coil district chilled water with central air source heat pump",
+          "Fan coil district chilled water with district hot water",
+          "Fan coil district chilled water with baseboard electric",
+          "Fan coil district chilled water with gas unit heaters",
+          "Fan coil district chilled water with no heat"
+        ],
+        "type": "string"
+      },
+      "FCU": {
+        "title": "FCU",
+        "description": "Fan Coil Unit (FCU) heating/cooling system (with no ventilation).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "FCU",
+            "pattern": "^FCU$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the FCUEquipmentType enumeration.",
+            "default": "Fan coil chiller with boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FCUEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WSHPEquipmentType": {
+        "title": "WSHPEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Water source heat pumps fluid cooler with boiler",
+          "Water source heat pumps cooling tower with boiler",
+          "Water source heat pumps with ground source heat pump",
+          "Water source heat pumps district chilled water with district hot water"
+        ],
+        "type": "string"
+      },
+      "WSHP": {
+        "title": "WSHP",
+        "description": "Direct evaporative cooling systems (with optional heating).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "WSHP",
+            "pattern": "^WSHP$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the WSHPEquipmentType enumeration.",
+            "default": "Water source heat pumps fluid cooler with boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WSHPEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "VRFEquipmentType": {
+        "title": "VRFEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "VRF"
+        ],
+        "type": "string"
+      },
+      "VRF": {
+        "title": "VRF",
+        "description": "Variable Refrigerant Flow (VRF) heating/cooling system (with no ventilation).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "VRF",
+            "pattern": "^VRF$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the VRFEquipmentType enumeration.",
+            "default": "VRF",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VRFEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "BaseboardEquipmentType": {
+        "title": "BaseboardEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Baseboard electric",
+          "Baseboard gas boiler",
+          "Baseboard central air source heat pump",
+          "Baseboard district hot water"
+        ],
+        "type": "string"
+      },
+      "Baseboard": {
+        "title": "Baseboard",
+        "description": "Baseboard heating system. Intended for spaces only requiring heating.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "Baseboard",
+            "pattern": "^Baseboard$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the BaseboardEquipmentType enumeration.",
+            "default": "Baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseboardEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "EvaporativeCoolerEquipmentType": {
+        "title": "EvaporativeCoolerEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Direct evap coolers with baseboard electric",
+          "Direct evap coolers with baseboard gas boiler",
+          "Direct evap coolers with baseboard central air source heat pump",
+          "Direct evap coolers with baseboard district hot water",
+          "Direct evap coolers with forced air furnace",
+          "Direct evap coolers with gas unit heaters",
+          "Direct evap coolers with no heat"
+        ],
+        "type": "string"
+      },
+      "EvaporativeCooler": {
+        "title": "EvaporativeCooler",
+        "description": "Direct evaporative cooling systems (with optional heating).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "EvaporativeCooler",
+            "pattern": "^EvaporativeCooler$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the EvaporativeCoolerEquipmentType enumeration.",
+            "default": "Direct evap coolers with baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EvaporativeCoolerEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "ResidentialEquipmentType": {
+        "title": "ResidentialEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Residential AC with baseboard electric",
+          "Residential AC with baseboard gas boiler",
+          "Residential AC with baseboard central air source heat pump",
+          "Residential AC with baseboard district hot water",
+          "Residential AC with residential forced air furnace",
+          "Residential AC with no heat",
+          "Residential heat pump",
+          "Residential heat pump with no cooling",
+          "Residential forced air furnace"
+        ],
+        "type": "string"
+      },
+      "Residential": {
+        "title": "Residential",
+        "description": "Residential Air Conditioning, Heat Pump or Furnace system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "Residential",
+            "pattern": "^Residential$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the ResidentialEquipmentType enumeration.",
+            "default": "Residential AC with baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResidentialEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "WindowACEquipmentType": {
+        "title": "WindowACEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Window AC with baseboard electric",
+          "Window AC with baseboard gas boiler",
+          "Window AC with baseboard central air source heat pump",
+          "Window AC with baseboard district hot water",
+          "Window AC with forced air furnace",
+          "Window AC with unit heaters",
+          "Window AC with no heat"
+        ],
+        "type": "string"
+      },
+      "WindowAC": {
+        "title": "WindowAC",
+        "description": "Window Air Conditioning cooling system (with optional heating).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowAC",
+            "pattern": "^WindowAC$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the WindowACEquipmentType enumeration.",
+            "default": "Window AC with baseboard electric",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WindowACEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "GasUnitHeaterEquipmentType": {
+        "title": "GasUnitHeaterEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Gas unit heaters"
+        ],
+        "type": "string"
+      },
+      "GasUnitHeater": {
+        "title": "GasUnitHeater",
+        "description": "Gas unit heating system. Intended for spaces only requiring heating.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "vintage": {
+            "title": "Vintage",
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "90.1-2013",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "GasUnitHeater",
+            "pattern": "^GasUnitHeater$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "title": "Equipment Type",
+            "description": "Text for the specific type of system equipment from the GasUnitHeaterEquipmentType enumeration.",
+            "default": "Gas unit heaters",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GasUnitHeaterEquipmentType"
+              }
+            ]
           }
         },
         "required": [
@@ -6134,13 +8000,13 @@
           "values": {
             "title": "Values",
             "description": "A list of timeseries values occuring at each timestep over the course of the simulation.",
+            "minItems": 24,
+            "maxItems": 527040,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 24,
-            "maxItems": 527040
+            }
           },
           "display_name": {
             "title": "Display Name",
@@ -6175,13 +8041,13 @@
               1,
               1
             ],
+            "minItems": 2,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int32"
-            },
-            "minItems": 2,
-            "maxItems": 3
+            }
           },
           "placeholder_value": {
             "title": "Placeholder Value",
@@ -6307,7 +8173,59 @@
             "description": "List of all unique HVAC systems in the Model.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IdealAirSystemAbridged"
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/IdealAirSystemAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/VAV"
+                },
+                {
+                  "$ref": "#/components/schemas/PVAV"
+                },
+                {
+                  "$ref": "#/components/schemas/PSZ"
+                },
+                {
+                  "$ref": "#/components/schemas/PTAC"
+                },
+                {
+                  "$ref": "#/components/schemas/ForcedAirFurnace"
+                },
+                {
+                  "$ref": "#/components/schemas/FCUwithDOAS"
+                },
+                {
+                  "$ref": "#/components/schemas/WSHPwithDOAS"
+                },
+                {
+                  "$ref": "#/components/schemas/VRFwithDOAS"
+                },
+                {
+                  "$ref": "#/components/schemas/FCU"
+                },
+                {
+                  "$ref": "#/components/schemas/WSHP"
+                },
+                {
+                  "$ref": "#/components/schemas/VRF"
+                },
+                {
+                  "$ref": "#/components/schemas/Baseboard"
+                },
+                {
+                  "$ref": "#/components/schemas/EvaporativeCooler"
+                },
+                {
+                  "$ref": "#/components/schemas/Residential"
+                },
+                {
+                  "$ref": "#/components/schemas/WindowAC"
+                },
+                {
+                  "$ref": "#/components/schemas/GasUnitHeater"
+                }
+              ]
             }
           },
           "program_types": {
@@ -7207,13 +9125,13 @@
               0.01,
               1.0
             ],
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           },
           "thickness": {
             "title": "Thickness",
@@ -7240,35 +9158,35 @@
           "front_diffuse_reflectance": {
             "title": "Front Diffuse Reflectance",
             "description": "Optional additional front diffuse reflectance as sequence of numbers (default: None).",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           },
           "back_diffuse_reflectance": {
             "title": "Back Diffuse Reflectance",
             "description": "Optional additional back diffuse reflectance as sequence of numbers (default: None).",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           },
           "diffuse_transmittance": {
             "title": "Diffuse Transmittance",
             "description": "Optional additional diffuse transmittance as sequence of numbers (default: None).",
+            "minItems": 3,
+            "maxItems": 3,
             "type": "array",
             "items": {
               "type": "number",
               "format": "double"
-            },
-            "minItems": 3,
-            "maxItems": 3
+            }
           }
         },
         "required": [
@@ -8712,7 +10630,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "0.0.0",
+            "default": "1.36.0",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string"
           },
@@ -8757,15 +10675,14 @@
             }
           },
           "units": {
+            "title": "Units",
+            "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
+            "default": "Meters",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Units"
               }
-            ],
-            "title": "Units",
-            "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
-            "default": "Meters",
-            "type": "string"
+            ]
           },
           "tolerance": {
             "title": "Tolerance",
@@ -8789,131 +10706,6 @@
           "properties"
         ],
         "additionalProperties": false
-      },
-      "Roughness": {
-        "title": "Roughness",
-        "default": "MediumRough",
-        "enum": [
-          "VeryRough",
-          "Rough",
-          "MediumRough",
-          "MediumSmooth",
-          "Smooth",
-          "VerySmooth"
-        ],
-        "type": "string"
-      },
-      "SlatOrientation": {
-        "title": "Slat Orientation",
-        "default": "Horizontal",
-        "enum": [
-          "Horizontal",
-          "Vertical"
-        ],
-        "type": "string"
-      },
-      "GasType": {
-        "title": "Gas Type",
-        "default": "Air",
-        "enum": [
-          "Air",
-          "Argon",
-          "Krypton",
-          "Xenon"
-        ],
-        "type": "string"
-      },
-      "FaceType": {
-        "title": "Face Type",
-        "enum": [
-          "Wall",
-          "Floor",
-          "RoofCeiling",
-          "AirBoundary"
-        ],
-        "type": "string"
-      },
-      "EconomizerType": {
-        "title": "Economizer Type",
-        "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
-        "default": "DifferentialDryBulb",
-        "enum": [
-          "NoEconomizer",
-          "DifferentialDryBulb",
-          "DifferentialEnthalpy"
-        ],
-        "type": "string"
-      },
-      "Units": {
-        "title": "Units",
-        "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
-        "default": "Meters",
-        "enum": [
-          "Meters",
-          "Millimeters",
-          "Feet",
-          "Inches",
-          "Centimeters"
-        ],
-        "type": "string"
-      },
-      "ScheduleNumericType": {
-        "title": "Numeric Type",
-        "default": "Continuous",
-        "enum": [
-          "Continuous",
-          "Discrete"
-        ],
-        "type": "string"
-      },
-      "ScheduleUnitType": {
-        "title": "Unit Type",
-        "default": "Dimensionless",
-        "enum": [
-          "Dimensionless",
-          "Temperature",
-          "DeltaTemperature",
-          "PrecipitationRate",
-          "Angle",
-          "ConvectionCoefficient",
-          "ActivityLevel",
-          "Velocity",
-          "Capacity",
-          "Power",
-          "Availability",
-          "Percent",
-          "Control",
-          "Mode"
-        ],
-        "type": "string"
-      },
-      "ShadeLocation": {
-        "title": "Shade Location",
-        "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
-        "default": "Interior",
-        "enum": [
-          "Interior",
-          "Between",
-          "Exterior"
-        ],
-        "type": "string"
-      },
-      "ControlType": {
-        "title": "Control Type",
-        "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
-        "default": "AlwaysOn",
-        "enum": [
-          "AlwaysOn",
-          "OnIfHighSolarOnWindow",
-          "OnIfHighHorizontalSolar",
-          "OnIfHighOutdoorAirTemperature",
-          "OnIfHighZoneAirTemperature",
-          "OnIfHighZoneCooling",
-          "OnNightIfLowOutdoorTempAndOffDay",
-          "OnNightIfLowInsideTempAndOffDay",
-          "OnNightIfHeatingAndOffDay"
-        ],
-        "type": "string"
       }
     }
   }
