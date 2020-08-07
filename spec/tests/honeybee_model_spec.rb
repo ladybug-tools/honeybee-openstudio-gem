@@ -201,7 +201,31 @@ RSpec.describe FromHoneybee do
     expect(object1).not_to be nil
   end
 
-  it 'can load model with wind ventilation' do
+  it 'can load model with all air template HVAC' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_allair_hvac.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load model with DOAS template HVAC' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_doas_hvac.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load model with heating/cooling template HVAC' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ac.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load model with window ventilation' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ventilation.json')
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)

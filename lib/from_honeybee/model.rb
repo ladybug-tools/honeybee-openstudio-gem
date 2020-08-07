@@ -46,6 +46,7 @@ require 'from_honeybee/geometry/room'
 
 # import the HVAC objects
 require 'from_honeybee/hvac/ideal_air'
+require 'from_honeybee/hvac/template'
 
 # import the construction objects
 require 'from_honeybee/construction/opaque'
@@ -503,7 +504,7 @@ module FromHoneybee
           hvac_hashes[hvac[:identifier]] = hvac
           hvac_hashes[hvac[:identifier]]['rooms'] = []
         end
-        # loop through the rooms and trach which are assigned to each HVAC
+        # loop through the rooms and track which are assigned to each HVAC
         if @hash[:rooms]
           @hash[:rooms].each do |room|
             if room[:properties][:energy][:hvac]
@@ -514,8 +515,7 @@ module FromHoneybee
 
         hvac_hashes.each_value do |hvac|
           system_type = hvac[:type]
-          case system_type
-          when 'IdealAirSystemAbridged'
+          if system_type == 'IdealAirSystemAbridged'
             ideal_air_system = IdealAirSystemAbridged.new(hvac)
             os_ideal_air_system = ideal_air_system.to_openstudio(@openstudio_model)
             hvac['rooms'].each do |room_id|
@@ -525,6 +525,9 @@ module FromHoneybee
                 os_ideal_air_system.addToThermalZone(os_thermal_zone)
               end
             end
+          elsif TemplateHVAC.types.include?(system_type)
+            template_system = TemplateHVAC.new(hvac)
+            os_template_system = template_system.to_openstudio(@openstudio_model, hvac['rooms'])
           end
         end
       end

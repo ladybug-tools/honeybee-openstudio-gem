@@ -57,4 +57,22 @@ RSpec.describe FromHoneybee do
     expect(object1.demandControlledVentilationType).to eq 'OccupancySchedule'
   end
 
+  it 'can load a VAV template system' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/hvac/vav_template.json')
+    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+  end
+
+  it 'can load a FCU with DOAS template system' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/hvac/fcu_with_doas_template.json')
+    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+  end
+
+  it 'can load a Window AC with Baseboard template system' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/hvac/window_ac_with_baseboard_template.json')
+    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+  end
+
 end
