@@ -498,6 +498,7 @@ module FromHoneybee
 
     def create_hvacs
       if @hash[:properties][:energy][:hvacs]
+        $air_loop_count = 0  # track the total number of air loops in the model
         # gather all of the hashes of the HVACs
         hvac_hashes = Hash.new
         @hash[:properties][:energy][:hvacs].each do |hvac|

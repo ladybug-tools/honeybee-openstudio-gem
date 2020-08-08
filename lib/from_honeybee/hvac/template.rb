@@ -101,15 +101,18 @@ module FromHoneybee
         end
       end
 
-      # create the HVAC system and assign the identifier to the air loop name if it exists
+      # create the HVAC system and assign the display name to the air loop name if it exists
       os_hvac = openstudio_model.add_cbecs_hvac_system(standard, equipment_type, zones)
       os_air_loop = nil
       air_loops = openstudio_model.getAirLoopHVACs
-      unless air_loops.length == 0
+      unless air_loops.length == $air_loop_count  # check if any new loops were added
+        $air_loop_count = air_loops.length
         os_air_loop = air_loops[-1]
         loop_name = os_air_loop.name
         unless loop_name.empty?
-            os_air_loop.setName(@hash[:identifier] + ' - ' + loop_name.get)
+          if @hash[:display_name]
+            os_air_loop.setName(@hash[:display_name] + ' - ' + loop_name.get)
+          end
         end
       end
 
