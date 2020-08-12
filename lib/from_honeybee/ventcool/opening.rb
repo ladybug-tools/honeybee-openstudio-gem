@@ -152,7 +152,8 @@ module FromHoneybee
           max_pt = v.z
         end
       end
-      max_pt - min_pt
+      # quarter the window height to get the height from midpoint of lower opening to neutral pressure level
+      (max_pt - min_pt) / 4
     end
 
   end #VentilationOpening
