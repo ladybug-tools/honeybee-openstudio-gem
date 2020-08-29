@@ -75,6 +75,9 @@ require 'from_honeybee/schedule/ruleset'
 require 'from_honeybee/load/setpoint_thermostat'
 require 'from_honeybee/load/setpoint_humidistat'
 
+# import the ventilative cooling objects
+require 'from_honeybee/ventcool/simulation'
+
 require 'openstudio'
 
 
@@ -158,11 +161,23 @@ module FromHoneybee
       building = @openstudio_model.getBuilding
       building.setStandardsBuildingType('MediumOffice')
 
+      # initialize a global variable for whether the AFN is used instead of simple ventilation
+      $use_simple_vent = true
+      if @hash[:properties][:energy][:ventilation_simulation_control]
+        vent_sim_control = @hash[:properties][:energy][:ventilation_simulation_control]
+        if vent_sim_control[:vent_control_type] && vent_sim_control[:vent_control_type] != 'SingleZone'
+          $use_simple_vent = false
+          vsim_cntrl = VentilationSimulationControl.new(vent_sim_control)
+          $afn_reference_crack = vsim_cntrl.to_openstudio(@openstudio_model)
+        end
+      end
+
       # initialize global hashes for various model properties
       $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
       $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
       $window_shade_hash = Hash.new  # hash to track any window constructions with shade
       $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
+      $interior_afn_srf_hash = Hash.new  # track whether an adjacent surface is already in the AFN
 
       # create all of the non-geometric model elements
       if log_report

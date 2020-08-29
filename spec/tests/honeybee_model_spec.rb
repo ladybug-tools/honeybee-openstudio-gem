@@ -101,6 +101,9 @@ RSpec.describe FromHoneybee do
     schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
     expect(schedule_ruleset).not_to be nil
 
+    infilt = openstudio_model.getSpaceInfiltrationDesignFlowRates
+    expect(infilt.size).to be 1
+
   end
 
   it 'can load and validate shoebox model' do
@@ -231,6 +234,37 @@ RSpec.describe FromHoneybee do
     honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
+
+    openstudio_vents = openstudio_model.getZoneVentilationWindandStackOpenAreas
+    expect(openstudio_vents.size).to be 2
+  end
+
+  it 'can load model with an Airflow Network' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_afn.json')
+    honeybee_obj_1 = FromHoneybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+
+    # make sure there are no single-zone ventilation objects in the model
+    infilt = openstudio_model.getSpaceInfiltrationDesignFlowRates
+    expect(infilt.size).to be 0
+    openstudio_vents = openstudio_model.getZoneVentilationWindandStackOpenAreas
+    expect(openstudio_vents.size).to be 0
+
+    # check to be sure the relevant AFN objects are there
+    openstudio_vents = openstudio_model.getAirflowNetworkSimpleOpenings
+    expect(openstudio_vents.size).to be 3
+    openstudio_cracks = openstudio_model.getAirflowNetworkCracks
+    expect(openstudio_cracks.size).to be 9
+    openstudio_cracks = openstudio_model.getEnergyManagementSystemSensors
+    expect(openstudio_cracks.size).to be 3
+    openstudio_cracks = openstudio_model.getEnergyManagementSystemActuators
+    expect(openstudio_cracks.size).to be 3
+    openstudio_cracks = openstudio_model.getEnergyManagementSystemPrograms
+    expect(openstudio_cracks.size).to be 2
+    openstudio_cracks = openstudio_model.getAirflowNetworkReferenceCrackConditionss
+    expect(openstudio_cracks.size).to be 1
   end
 
   it 'can triangulate 5vertex sub faces' do

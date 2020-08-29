@@ -43,6 +43,7 @@ require 'from_honeybee/load/ventilation'
 require 'from_honeybee/load/setpoint_thermostat'
 require 'from_honeybee/load/setpoint_humidistat'
 require 'from_honeybee/ventcool/opening'
+require 'from_honeybee/ventcool/control'
 
 require 'openstudio'
 
@@ -185,17 +186,19 @@ module FromHoneybee
               os_surface.setConstruction(air_construction)
             end
             # add air mixing properties to the global list that tracks them
-            air_hash = $air_boundary_hash[air_construction.name.to_s]
-            if air_hash[:air_mixing_per_area]
-              air_mix_area = air_hash[:air_mixing_per_area]
-            else
-              air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
-              air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
+            if $use_simple_vent  # only use air mixing objects when simple ventilation is requested
+              air_hash = $air_boundary_hash[air_construction.name.to_s]
+              if air_hash[:air_mixing_per_area]
+                air_mix_area = air_hash[:air_mixing_per_area]
+              else
+                air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
+                air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
+              end
+              flow_rate = os_surface.netArea * air_mix_area
+              flow_sch_id = air_hash[:air_mixing_schedule]
+              adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
+              $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
             end
-            flow_rate = os_surface.netArea * air_mix_area
-            flow_sch_id = air_hash[:air_mixing_schedule]
-            adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
-            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
           end
         end
       end
@@ -265,7 +268,7 @@ module FromHoneybee
       end
 
       # assign infiltration if it exists
-      if @hash[:properties][:energy][:infiltration]
+      if @hash[:properties][:energy][:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
         infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(
           @hash[:properties][:energy][:infiltration][:identifier])
         unless infiltration.empty?
@@ -308,7 +311,7 @@ module FromHoneybee
       end
 
       # assign window ventilation objects if they exist
-      unless window_vent.empty?
+      if $use_simple_vent && !window_vent.empty?  # write simple WindAndStack ventilation
         window_vent.each do |sub_f_id, opening|
           opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
           unless opt_sub_f.empty?
@@ -318,6 +321,31 @@ module FromHoneybee
               openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
             os_window_vent.addToThermalZone(os_thermal_zone)
           end
+        end
+      elsif !$use_simple_vent  # we're using the AFN!
+        # write an AirflowNetworkZone object in for the Room
+        os_afn_room_node = os_thermal_zone.getAirflowNetworkZone
+        os_afn_room_node.setVentilationControlMode('NoVent')
+        # write the opening objects for each Aperture / Door
+        operable_subfs = []  # collect the sub-face objects for the EMS
+        opening_factors = []  # collect the maximum opening factors for the EMS
+        window_vent.each do |sub_f_id, opening|
+          opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
+          unless opt_sub_f.empty?
+            sub_f = opt_sub_f.get
+            if sub_f.adjacentSubSurface.empty?  # not an interior window that's already in the AFN
+              window_vent = VentilationOpening.new(opening)
+              open_fac = window_vent.to_openstudio_afn(openstudio_model, sub_f)
+              operable_subfs << sub_f
+              opening_factors << open_fac
+            end
+          end
+        end
+        # add the control startegy of the ventilation openings using the EMS
+        if @hash[:properties][:energy][:window_vent_control]
+          vent_control = VentilationControl.new(@hash[:properties][:energy][:window_vent_control])
+          vent_control.to_openstudio(
+            openstudio_model, os_thermal_zone, operable_subfs, opening_factors)
         end
       end
 
