@@ -25,6 +25,11 @@
   },
   "tags": [
     {
+      "name": "afncrack_model",
+      "x-displayName": "AFNCrack",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/AFNCrack\" />\n"
+    },
+    {
       "name": "adiabatic_model",
       "x-displayName": "Adiabatic",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Adiabatic\" />\n"
@@ -108,6 +113,16 @@
       "name": "baseboardequipmenttype_model",
       "x-displayName": "BaseboardEquipmentType",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/BaseboardEquipmentType\" />\n"
+    },
+    {
+      "name": "buildingtype_model",
+      "x-displayName": "BuildingType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/BuildingType\" />\n"
+    },
+    {
+      "name": "color_model",
+      "x-displayName": "Color",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Color\" />\n"
     },
     {
       "name": "constructionset_model",
@@ -385,6 +400,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/LightingAbridged\" />\n"
     },
     {
+      "name": "mesh3d_model",
+      "x-displayName": "Mesh3D",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Mesh3D\" />\n"
+    },
+    {
       "name": "metal_model",
       "x-displayName": "Metal",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Metal\" />\n"
@@ -615,6 +635,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ScheduleUnitType\" />\n"
     },
     {
+      "name": "sensor_model",
+      "x-displayName": "Sensor",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Sensor\" />\n"
+    },
+    {
+      "name": "sensorgrid_model",
+      "x-displayName": "SensorGrid",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SensorGrid\" />\n"
+    },
+    {
       "name": "setpoint_model",
       "x-displayName": "Setpoint",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Setpoint\" />\n"
@@ -735,9 +765,29 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationControlAbridged\" />\n"
     },
     {
+      "name": "ventilationcontroltype_model",
+      "x-displayName": "VentilationControlType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationControlType\" />\n"
+    },
+    {
       "name": "ventilationopening_model",
       "x-displayName": "VentilationOpening",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationOpening\" />\n"
+    },
+    {
+      "name": "ventilationsimulationcontrol_model",
+      "x-displayName": "VentilationSimulationControl",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VentilationSimulationControl\" />\n"
+    },
+    {
+      "name": "view_model",
+      "x-displayName": "View",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/View\" />\n"
+    },
+    {
+      "name": "viewtype_model",
+      "x-displayName": "ViewType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ViewType\" />\n"
     },
     {
       "name": "vintages_model",
@@ -825,6 +875,7 @@
       "name": "Models",
       "tags": [
         "adiabatic_model",
+        "afncrack_model",
         "airboundaryconstruction_model",
         "airboundaryconstructionabridged_model",
         "allaireconomizertype_model",
@@ -841,6 +892,8 @@
         "baseboard_model",
         "baseboardequipmenttype_model",
         "bsdf_model",
+        "buildingtype_model",
+        "color_model",
         "constructionset_model",
         "constructionsetabridged_model",
         "controltype_model",
@@ -896,6 +949,7 @@
         "light_model",
         "lighting_model",
         "lightingabridged_model",
+        "mesh3d_model",
         "metal_model",
         "mirror_model",
         "model_model",
@@ -942,6 +996,8 @@
         "schedulerulesetabridged_model",
         "scheduletypelimit_model",
         "scheduleunittype_model",
+        "sensor_model",
+        "sensorgrid_model",
         "setpoint_model",
         "setpointabridged_model",
         "shade_model",
@@ -962,7 +1018,11 @@
         "ventilation_model",
         "ventilationabridged_model",
         "ventilationcontrolabridged_model",
+        "ventilationcontroltype_model",
         "ventilationopening_model",
+        "ventilationsimulationcontrol_model",
+        "view_model",
+        "viewtype_model",
         "vintages_model",
         "void_model",
         "vrf_model",
@@ -1476,7 +1536,7 @@
           },
           "fraction_height_operable": {
             "title": "Fraction Height Operable",
-            "description": "A number for the fraction of the distance from the bottom of the window to the top that is operable.",
+            "description": "A number for the fraction of the distance from the bottom of the window to the top that is operable",
             "default": 1.0,
             "minimum": 0,
             "maximum": 1,
@@ -1485,7 +1545,7 @@
           },
           "discharge_coefficient": {
             "title": "Discharge Coefficient",
-            "description": "A number that will be multipled by the area of the window in the stack (buoyancy-driven) part of the equation to account for additional friction from window geometry, insect screens, etc. Typical values include 0.45, for unobstructed windows WITH insect screens and 0.65 for unobstructed windows WITHOUT insect screens. This value should be lowered if windows are of an awning or casement type and not allowed to fully open.",
+            "description": "A number that will be multipled by the area of the window in the stack (buoyancy-driven) part of the equation to account for additional friction from window geometry, insect screens, etc. Typical values include 0.45, for unobstructed windows WITH insect screens and 0.65 for unobstructed windows WITHOUT insect screens. This value should be lowered if windows are of an awning or casement type and are not allowed to fully open.",
             "default": 0.45,
             "minimum": 0,
             "maximum": 1,
@@ -1497,6 +1557,30 @@
             "description": "Boolean to indicate if there is an opening of roughly equal area on the opposite side of the Room such that wind-driven cross ventilation will be induced. If False, the assumption is that the operable area is primarily on one side of the Room and there is no wind-driven ventilation.",
             "default": false,
             "type": "boolean"
+          },
+          "flow_coefficient_closed": {
+            "title": "Flow Coefficient Closed",
+            "description": "An optional number in kg/s-m, at 1 Pa per meter of crack length, used to calculate the mass flow rate when the opening is closed; required to run an AirflowNetwork simulation. The DesignBuilder Cracks template defines the flow coefficient for a tight, low-leakage closed external window to be 0.00001, and the flow coefficient for a very poor, high-leakage closed external window to be 0.003.",
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "flow_exponent_closed": {
+            "title": "Flow Exponent Closed",
+            "description": "An optional dimensionless number between 0.5 and 1 used to calculate the mass flow rate when the opening is closed; required to run an AirflowNetwork simulation. This value represents the leak geometry impact on airflow, with 0.5 generally corresponding to turbulent orifice flow and 1 generally corresponding to laminar flow. The default of 0.65 is representative of many cases of wall and window leakage, used when the exponent cannot be measured.",
+            "default": 0.65,
+            "minimum": 0.5,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "two_way_threshold": {
+            "title": "Two Way Threshold",
+            "description": "A number in kg/m3 indicating the minimum density difference above which two-way flow may occur due to stack effect, required to run an AirflowNetwork simulation. This value is required because the air density difference between two zones (which drives two-way air flow) will tend towards division by zero errors as the air density difference approaches zero. The default of 0.0001 is a typical default value used for AirflowNetwork openings.",
+            "default": 0.0001,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -1908,6 +1992,40 @@
         ],
         "additionalProperties": false
       },
+      "AFNCrack": {
+        "title": "AFNCrack",
+        "description": "Properties for airflow through a crack.",
+        "type": "object",
+        "properties": {
+          "flow_coefficient": {
+            "title": "Flow Coefficient",
+            "description": "A number in kg/s-m at 1 Pa per meter of crack length at the conditions defined in the ReferenceCrack condition; required to run an AirflowNetwork simulation. The DesignBuilder Cracks template defines the flow coefficient for a tight, low-leakage wall to be 0.00001 and 0.001 for external and internal constructions, respectively. Flow coefficients for a very poor, high-leakage wall are defined to be 0.0004 and 0.019 for external and internal constructions, respectively.",
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "type": {
+            "title": "Type",
+            "default": "AFNCrack",
+            "pattern": "^AFNCrack$",
+            "type": "string",
+            "readOnly": true
+          },
+          "flow_exponent": {
+            "title": "Flow Exponent",
+            "description": "An optional dimensionless number between 0.5 and 1 used to calculate the crack mass flow rate; required to run an AirflowNetwork simulation. This value represents the leak geometry impact on airflow, with 0.5 generally corresponding to turbulent orifice flow and 1 generally corresponding to laminar flow. The default of 0.65 is representative of many cases of wall and window leakage, used when the exponent cannot be measured.",
+            "default": 0.65,
+            "minimum": 0.5,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "flow_coefficient"
+        ],
+        "additionalProperties": false
+      },
       "FaceEnergyPropertiesAbridged": {
         "title": "FaceEnergyPropertiesAbridged",
         "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
@@ -1926,6 +2044,15 @@
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          },
+          "vent_crack": {
+            "title": "Vent Crack",
+            "description": "An optional AFNCrack to specify airflow through a surface crack used by the AirflowNetwork.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AFNCrack"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -8069,6 +8196,103 @@
         ],
         "additionalProperties": false
       },
+      "VentilationControlType": {
+        "title": "VentilationControlType",
+        "description": "An enumeration.",
+        "enum": [
+          "SingleZone",
+          "MultiZoneWithDistribution",
+          "MultiZoneWithoutDistribution"
+        ],
+        "type": "string"
+      },
+      "BuildingType": {
+        "title": "BuildingType",
+        "description": "An enumeration.",
+        "enum": [
+          "LowRise",
+          "HighRise"
+        ],
+        "type": "string"
+      },
+      "VentilationSimulationControl": {
+        "title": "VentilationSimulationControl",
+        "description": "The global parameters used in the ventilation simulation.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "VentilationSimulationControl",
+            "pattern": "^VentilationSimulationControl$",
+            "type": "string",
+            "readOnly": true
+          },
+          "vent_control_type": {
+            "title": "Vent Control Type",
+            "description": "Text indicating type of ventilation control. Choices are: SingleZone, MultiZoneWithDistribution, MultiZoneWithoutDistribution. The MultiZone options will model air flow with the AirflowNetwork model, which is generally more accurate then the SingleZone option, but will take considerably longer to simulate, and requires defining more ventilation parameters to explicitly account for weather and building-induced pressure differences, and the leakage geometry corresponding to specific windows, doors, and surface cracks.",
+            "default": "SingleZone",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationControlType"
+              }
+            ]
+          },
+          "reference_temperature": {
+            "title": "Reference Temperature",
+            "description": "Reference temperature measurement in Celsius under which the surface crack data were obtained.",
+            "default": 20,
+            "minimum": -273.15,
+            "type": "number",
+            "format": "double"
+          },
+          "reference_pressure": {
+            "title": "Reference Pressure",
+            "description": "Reference barometric pressure measurement in Pascals under which the surface crack data were obtained.",
+            "default": 101325,
+            "minimum": 31000,
+            "maximum": 120000,
+            "type": "number",
+            "format": "double"
+          },
+          "reference_humidity_ratio": {
+            "title": "Reference Humidity Ratio",
+            "description": "Reference humidity ratio measurement in kgWater/kgDryAir under which the surface crack data were obtained.",
+            "default": 0,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "building_type": {
+            "title": "Building Type",
+            "description": "Text indicating relationship between building footprint and height used to calculate the wind pressure coefficients for exterior surfaces.Choices are: LowRise and HighRise. LowRise corresponds to rectangular building whose height is less then three times the width and length of the footprint. HighRise corresponds to a rectangular building whose height is more than three times the width and length of the footprint. This parameter is required to automatically calculate wind pressure coefficients for the AirflowNetwork simulation. If used for complex building geometries that cannot be described as a highrise or lowrise rectangular mass, the resulting air flow and pressure simulated on the building surfaces may be inaccurate.",
+            "default": "LowRise",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BuildingType"
+              }
+            ]
+          },
+          "long_axis_angle": {
+            "title": "Long Axis Angle",
+            "description": "The clockwise rotation in degrees from true North of the long axis of the building. This parameter is required to automatically calculate wind pressure coefficients for the AirflowNetwork simulation. If used for complex building geometries that cannot be described as a highrise or lowrise rectangular mass, the resulting air flow and pressure simulated on the building surfaces may be inaccurate.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 180,
+            "type": "number",
+            "format": "double"
+          },
+          "aspect_ratio": {
+            "title": "Aspect Ratio",
+            "description": "Aspect ratio of a rectangular footprint, defined as the ratio of length of the short axis divided by the length of the long axis. This parameter is required to automatically calculate wind pressure coefficients for the AirflowNetwork simulation. If used for complex building geometries that cannot be described as a highrise or lowrise rectangular mass, the resulting air flow and pressure simulated on the building surfaces may be inaccurate.",
+            "default": 1,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "ModelEnergyProperties": {
         "title": "ModelEnergyProperties",
         "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
@@ -8271,6 +8495,15 @@
             "items": {
               "$ref": "#/components/schemas/ScheduleTypeLimit"
             }
+          },
+          "ventilation_simulation_control": {
+            "title": "Ventilation Simulation Control",
+            "description": "An optional parameter to define the global parameters for a ventilation cooling.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VentilationSimulationControl"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -10503,6 +10736,356 @@
         ],
         "additionalProperties": false
       },
+      "Sensor": {
+        "title": "Sensor",
+        "description": "A single Radiance of sensors.",
+        "type": "object",
+        "properties": {
+          "pos": {
+            "title": "Pos",
+            "description": "Position of sensor in space as an array of (x, y, z) values.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "dir": {
+            "title": "Dir",
+            "description": "Direction of sensor as an array of (x, y, z) values.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "type": {
+            "title": "Type",
+            "default": "Sensor",
+            "pattern": "^Sensor$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "pos",
+          "dir"
+        ],
+        "additionalProperties": false
+      },
+      "Color": {
+        "title": "Color",
+        "description": "A mesh in 3D space.",
+        "type": "object",
+        "properties": {
+          "r": {
+            "title": "R",
+            "description": "Integer for red value.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "g": {
+            "title": "G",
+            "description": "Integer for green value.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "b": {
+            "title": "B",
+            "description": "Integer for blue value.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Color",
+            "pattern": "^Color$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "r",
+          "g",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "Mesh3D": {
+        "title": "Mesh3D",
+        "description": "A mesh in 3D space.",
+        "type": "object",
+        "properties": {
+          "vertices": {
+            "title": "Vertices",
+            "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+            "minItems": 3,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "faces": {
+            "title": "Faces",
+            "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "minItems": 3,
+              "maxItems": 4
+            }
+          },
+          "type": {
+            "title": "Type",
+            "default": "Mesh3D",
+            "pattern": "^Mesh3D$",
+            "type": "string",
+            "readOnly": true
+          },
+          "colors": {
+            "title": "Colors",
+            "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Color"
+            }
+          }
+        },
+        "required": [
+          "vertices",
+          "faces"
+        ],
+        "additionalProperties": false
+      },
+      "SensorGrid": {
+        "title": "SensorGrid",
+        "description": "A grid of sensors.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "sensors": {
+            "title": "Sensors",
+            "description": "A list of sensors that belong to the grid.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Sensor"
+            }
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Text string for a unique display name, used to set the default file name that the radiance asset is written to within a radiance folder. Must not contain spaces or special characters.",
+            "type": "string"
+          },
+          "room_identifier": {
+            "title": "Room Identifier",
+            "description": "Optional text string for the Room identifier to which this object belongs. This will be used to narrow down the number of aperture groups that have to be run with this sensor grid. If None, the grid will be run with all aperture groups in the model.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "light_path": {
+            "title": "Light Path",
+            "description": "Get or set a list of lists for the light path from the object to the sky. Each sub-list contains identifiers of aperture groups through which light passes. (eg. [[\"SouthWindow1\"], [\"static_apertures\", \"NorthWindow2\"]]).Setting this property will override any auto-calculation of the light path from the model and room_identifier upon export to the simulation.",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "type": {
+            "title": "Type",
+            "default": "SensorGrid",
+            "pattern": "^SensorGrid$",
+            "type": "string",
+            "readOnly": true
+          },
+          "mesh": {
+            "title": "Mesh",
+            "description": "An optional Mesh3D that aligns with the sensors and can be used for visualization of the grid. Note that the number of sensors in the grid must match the number of faces or the number vertices within the Mesh3D.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Mesh3D"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "sensors"
+        ],
+        "additionalProperties": false
+      },
+      "ViewType": {
+        "title": "ViewType",
+        "description": "A single character for the view type (-vt).",
+        "enum": [
+          "v",
+          "h",
+          "l",
+          "c",
+          "a",
+          "s"
+        ],
+        "type": "string"
+      },
+      "View": {
+        "title": "View",
+        "description": "A single Radiance of sensors.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "description": "The view position (-vp) as an array of (x, y, z) values.This is the focal point of a perspective view or the center of a parallel projection.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "direction": {
+            "title": "Direction",
+            "description": "The view direction (-vd) as an array of (x, y, z) values.The length of this vector indicates the focal distance as needed by the pixel depth of field (-pd) in rpict.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "up_vector": {
+            "title": "Up Vector",
+            "description": "The view up (-vu) vector as an array of (x, y, z) values.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Text string for a unique display name, used to set the default file name that the radiance asset is written to within a radiance folder. Must not contain spaces or special characters.",
+            "type": "string"
+          },
+          "room_identifier": {
+            "title": "Room Identifier",
+            "description": "Optional text string for the Room identifier to which this object belongs. This will be used to narrow down the number of aperture groups that have to be run with this sensor grid. If None, the grid will be run with all aperture groups in the model.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9_-]",
+            "type": "string"
+          },
+          "light_path": {
+            "title": "Light Path",
+            "description": "Get or set a list of lists for the light path from the object to the sky. Each sub-list contains identifiers of aperture groups through which light passes. (eg. [[\"SouthWindow1\"], [\"static_apertures\", \"NorthWindow2\"]]).Setting this property will override any auto-calculation of the light path from the model and room_identifier upon export to the simulation.",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "type": {
+            "title": "Type",
+            "default": "View",
+            "pattern": "^View$",
+            "type": "string",
+            "readOnly": true
+          },
+          "view_type": {
+            "title": "View Type",
+            "default": "v",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ViewType"
+              }
+            ]
+          },
+          "h_size": {
+            "title": "H Size",
+            "description": "A number for the horizontal field of view in degrees (for all perspective projections including fisheye). For a parallel projection, this is the view width in world coordinates.",
+            "default": 60,
+            "type": "number",
+            "format": "double"
+          },
+          "v_size": {
+            "title": "V Size",
+            "description": "A number for the vertical field of view in degrees (for all perspective projections including fisheye). For a parallel projection, this is the view width in world coordinates.",
+            "default": 60,
+            "type": "number",
+            "format": "double"
+          },
+          "shift": {
+            "title": "Shift",
+            "description": "The view shift (-vs). This is the amount the actual image will be shifted to the right of the specified view. This option is useful for generating skewed perspectives or rendering an image a piece at a time. A value of 1 means that the rendered image starts just to the right of the normal view. A value of -1 would be to the left. Larger or fractional values are permitted as well.",
+            "type": "number",
+            "format": "double"
+          },
+          "lift": {
+            "title": "Lift",
+            "description": "The view lift (-vl). This is the amount the actual image will be lifted up from the specified view. This option is useful for generating skewed perspectives or rendering an image a piece at a time. A value of 1 means that the rendered image starts just to the right of the normal view. A value of -1 would be to the left. Larger or fractional values are permitted as well.",
+            "type": "number",
+            "format": "double"
+          },
+          "fore_clip": {
+            "title": "Fore Clip",
+            "description": "View fore clip (-vo) at a distance from the view point.The plane will be perpendicular to the view direction for perspective and parallel view types. For fisheye view types, the clipping plane is actually a clipping sphere, centered on the view point with fore_clip radius. Objects in front of this imaginary surface will not be visible.",
+            "type": "number",
+            "format": "double"
+          },
+          "aft_clip": {
+            "title": "Aft Clip",
+            "description": "View aft clip (-va) at a distance from the view point.Like the view fore plane, it will be perpendicular to the view direction for perspective and parallel view types. For fisheye view types, the clipping plane is actually a clipping sphere, centered on the view point with radius val.",
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "position",
+          "direction",
+          "up_vector"
+        ],
+        "additionalProperties": false
+      },
       "ModelRadianceProperties": {
         "title": "ModelRadianceProperties",
         "description": "Radiance Properties for Honeybee Model.",
@@ -10517,7 +11100,7 @@
           },
           "modifiers": {
             "title": "Modifiers",
-            "description": "A list of all unique modifiers in the model. This includes modifiers across all Faces, Apertures, Doors, Shades, Room ModifierSets, and the global_modifier_set (default: None).",
+            "description": "A list of all unique modifiers in the model. This includes modifiers across all Faces, Apertures, Doors, Shades, Room ModifierSets, and the global_modifier_set.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -10553,7 +11136,7 @@
           },
           "modifier_sets": {
             "title": "Modifier Sets",
-            "description": "A list of all unique Room-Assigned ModifierSets in the Model (default: None).",
+            "description": "A list of all unique Room-Assigned ModifierSets in the Model.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -10564,6 +11147,22 @@
                   "$ref": "#/components/schemas/ModifierSetAbridged"
                 }
               ]
+            }
+          },
+          "sensor_grids": {
+            "title": "Sensor Grids",
+            "description": "An array of SensorGrids that are associated with the model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorGrid"
+            }
+          },
+          "views": {
+            "title": "Views",
+            "description": "An array of Views that are associated with the model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/View"
             }
           }
         },

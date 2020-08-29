@@ -46,8 +46,8 @@ module FromHoneybee
     end
 
     def defaults_control
-        @@schema[:components][:schemas][:VentilationControlAbridged][:properties]
-      end
+      @@schema[:components][:schemas][:VentilationControlAbridged][:properties]
+    end
 
     def to_openstudio(openstudio_model, parent, vent_control_hash)
       # create wind and stack object and set identifier
@@ -138,6 +138,48 @@ module FromHoneybee
       end
 
       os_opening
+    end
+
+    def to_openstudio_afn(openstudio_model, parent)
+      # process the flow_coefficient_closed and set it to a very small number if it's 0
+      if @hash[:flow_coefficient_closed] and @hash[:flow_coefficient_closed] != 0
+        flow_coefficient = @hash[:flow_coefficient_closed]
+      else
+        flow_coefficient = 1.0e-09  # set it to a very small number
+      end
+
+      # create the simple opening object for the Aperture or Door using default values
+      flow_exponent = defaults[:flow_exponent_closed][:default].to_f
+      two_way_thresh= defaults[:two_way_threshold][:default].to_f
+      discharge_coeff = defaults[:discharge_coefficient][:default].to_f
+      os_opening = OpenStudio::Model::AirflowNetworkSimpleOpening.new(
+        openstudio_model, flow_coefficient, flow_exponent, two_way_thresh, discharge_coeff)
+
+      # assign the flow exponent when the opening is closed
+      if @hash[:flow_exponent_closed]
+        os_opening.setAirMassFlowExponentWhenOpeningisClosed(@hash[:flow_exponent_closed])
+      end
+      # assign the minimum difference for two-way flow
+      if @hash[:two_way_threshold]
+        os_opening.setMinimumDensityDifferenceforTwoWayFlow(@hash[:two_way_threshold])
+      end
+      # assign the discharge coefficient
+      if @hash[:discharge_coefficient]
+        os_opening.setDischargeCoefficient(@hash[:discharge_coefficient])
+      end
+
+      # create the AirflowNetworkSurface 
+      os_afn_srf = parent.getAirflowNetworkSurface(os_opening)
+
+      # assign the opening area
+      if @hash[:fraction_area_operable]
+        open_fac = @hash[:fraction_area_operable]
+      else
+        open_fac = defaults[:fraction_area_operable][:default]
+      end
+      os_afn_srf.setWindowDoorOpeningFactorOrCrackFactor(open_fac)
+
+      open_fac
     end
 
     def compute_height(surface)

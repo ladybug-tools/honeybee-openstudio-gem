@@ -49,6 +49,10 @@ module FromHoneybee
       @@schema[:components][:schemas][:FaceEnergyPropertiesAbridged][:properties]
     end
 
+    def crack_defaults
+      @@schema[:components][:schemas][:AFNCrack][:properties]
+    end
+
     def find_existing_openstudio_object(openstudio_model)
       model_surf = openstudio_model.getSurfaceByName(@hash[:identifier])
       return model_surf.get unless model_surf.empty?
@@ -56,16 +60,18 @@ module FromHoneybee
     end
 
     def to_openstudio(openstudio_model)
-      # create the openstudio surface
+      # reorder the vertices to ensure they start from the upper-left corner
       os_vertices = OpenStudio::Point3dVector.new
       @hash[:geometry][:boundary].each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
+      # create the openstudio surface and assign the type
       os_surface = OpenStudio::Model::Surface.new(reordered_vertices, openstudio_model)     
       os_surface.setName(@hash[:identifier])
       os_surface.setSurfaceType(@hash[:face_type])
+
       # assign the construction if it is present
       if @hash[:properties][:energy][:construction]
         construction_identifier = @hash[:properties][:energy][:construction]
@@ -73,6 +79,32 @@ module FromHoneybee
         unless construction.empty?
           os_construction = construction.get
           os_surface.setConstruction(os_construction)
+        end
+      end
+
+      # assign the AFN crack if it's specified and we are not using simple infiltration
+      if !$use_simple_vent && @hash[:properties][:energy][:vent_crack]
+        unless $interior_afn_srf_hash[@hash[:identifier]]  # interior crack that's been accounted for
+          vent_crack = @hash[:properties][:energy][:vent_crack]
+          # create the crack object for using default values
+          flow_exponent = crack_defaults[:flow_exponent][:default].to_f
+          os_crack = OpenStudio::Model::AirflowNetworkCrack.new(
+            openstudio_model, vent_crack[:flow_coefficient], flow_exponent,
+            $afn_reference_crack)
+
+          # assign the flow exponent if it's specified
+          if vent_crack[:flow_exponent]
+            os_crack.	setAirMassFlowExponent(vent_crack[:flow_exponent])
+          end
+          
+          # if it's a Surface boundary condition ensure the neighbor is not written as a duplicate
+          if @hash[:boundary_condition][:type] == 'Surface'
+            $interior_afn_srf_hash[@hash[:boundary_condition][:boundary_condition_objects][0]] = true
+          end
+
+          # create the AirflowNetworkSurface 
+          os_afn_srf = os_surface.getAirflowNetworkSurface(os_crack)
+          
         end
       end
 

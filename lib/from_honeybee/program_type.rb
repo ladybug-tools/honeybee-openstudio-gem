@@ -94,14 +94,14 @@ module FromHoneybee
         os_gas_equipment = gas_equipment.to_openstudio(openstudio_model)
         os_gas_equipment.setSpaceType(os_space_type)
       end
-        
+
       # assign infiltration
-      if @hash[:infiltration]
+      if @hash[:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
         infiltration = InfiltrationAbridged.new(@hash[:infiltration])
         os_infiltration = infiltration.to_openstudio(openstudio_model)
         os_infiltration.setSpaceType(os_space_type)
       end
-    
+
       # assign ventilation
       if @hash[:ventilation]
         ventilation = VentilationAbridged.new(@hash[:ventilation])
