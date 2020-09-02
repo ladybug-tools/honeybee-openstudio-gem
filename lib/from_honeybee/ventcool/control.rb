@@ -38,6 +38,9 @@ module FromHoneybee
     attr_reader :errors, :warnings
     @@outdoor_node = nil
     @@program_manager = nil
+    @@sensor_count = 1
+    @@actuator_count = 1
+    @@program_count = 1
 
     def initialize(hash = {})
       super(hash)
@@ -72,6 +75,13 @@ module FromHoneybee
       @@program_manager
       end
 
+    def replace_ems_special_characters(ems_variable_name)
+      # remove special characters from an name to be used as an EMS variable
+      new_name = ems_variable_name.to_s
+      new_name.gsub!(/[^A-Za-z]/, '')
+      new_name
+    end
+
     def to_openstudio(openstudio_model, parent_zone, vent_opening_surfaces, vent_opening_factors)
       # Get the outdoor temperature sensor and the room air temperature sensor
       out_air_temp = get_outdoor_node(openstudio_model)
@@ -84,7 +94,8 @@ module FromHoneybee
         in_var.setKeyValue(os_zone_name)
       end
       in_air_temp = OpenStudio::Model::EnergyManagementSystemSensor.new(openstudio_model, in_var)
-      in_sensor_name = os_zone_name.delete(' ').delete('.') + '_Sensor'
+      in_sensor_name = replace_ems_special_characters(os_zone_name) + '_Sensor' + @@sensor_count.to_s
+      @@sensor_count = @@sensor_count + 1
       in_air_temp.setName(in_sensor_name)
 
       # create the actuators for each of the operaable windows
@@ -94,7 +105,9 @@ module FromHoneybee
             vent_srf, 'AirFlow Network Window/Door Opening', 'Venting Opening Factor')
         vent_srf_name = vent_srf.name
         unless vent_srf_name.empty?
-          act_name = vent_srf_name.get.delete(' ').delete('.') + '_OpenFactor'
+          act_name = replace_ems_special_characters(vent_srf_name.get) + \
+            '_OpenFactor' + @@actuator_count.to_s
+            @@actuator_count = @@actuator_count + 1
           window_act.setName(act_name)
           actuator_names << act_name
         end
@@ -136,7 +149,9 @@ module FromHoneybee
 
       # initialize the program and add the complete logic
       ems_program = OpenStudio::Model::EnergyManagementSystemProgram.new(openstudio_model)
-      ems_program.setName(os_zone_name.delete(' ').delete('.') + '_WindowOpening')
+      prog_name = replace_ems_special_characters(os_zone_name) + '_WindowOpening' + @@program_count.to_s
+      @@program_count = @@program_count + 1
+      ems_program.setName(prog_name)
       ems_program.addLine(complete_logic)
 
       # loop through each of the actuators and open each window

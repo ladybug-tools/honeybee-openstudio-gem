@@ -140,7 +140,8 @@ module FromHoneybee
         if face[:apertures]
           face[:apertures].each do |aperture|
             if aperture[:properties][:energy][:vent_opening]
-              window_vent[aperture[:identifier]] = aperture[:properties][:energy][:vent_opening]
+              window_vent[aperture[:identifier]] = \
+                [aperture[:properties][:energy][:vent_opening], aperture[:boundary_condition][:type]]
             end
             if aperture[:outdoor_shades]
               unless os_shd_group
@@ -157,7 +158,8 @@ module FromHoneybee
         if face[:doors]
           face[:doors].each do |door|
             if door[:properties][:energy][:vent_opening]
-              window_vent[door[:identifier]] = door[:properties][:energy][:vent_opening]
+              window_vent[door[:identifier]] = \
+                [door[:properties][:energy][:vent_opening], door[:boundary_condition][:type]]
             end
             if door[:outdoor_shades]
               unless os_shd_group
@@ -312,14 +314,18 @@ module FromHoneybee
 
       # assign window ventilation objects if they exist
       if $use_simple_vent && !window_vent.empty?  # write simple WindAndStack ventilation
-        window_vent.each do |sub_f_id, opening|
-          opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
-          unless opt_sub_f.empty?
-            sub_f = opt_sub_f.get
-            window_vent = VentilationOpening.new(opening)
-            os_window_vent = window_vent.to_openstudio(
-              openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
-            os_window_vent.addToThermalZone(os_thermal_zone)
+        window_vent.each do |sub_f_id, open_prop|
+          opening = open_prop[0]
+          bc = open_prop[1]
+          if bc == 'Outdoors'
+            opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
+            unless opt_sub_f.empty?
+              sub_f = opt_sub_f.get
+              vent_open = VentilationOpening.new(opening)
+              os_vent_open = vent_open.to_openstudio(
+                openstudio_model, sub_f, @hash[:properties][:energy][:vent_open_control])
+              os_vent_open.addToThermalZone(os_thermal_zone)
+            end
           end
         end
       elsif !$use_simple_vent  # we're using the AFN!
@@ -329,13 +335,14 @@ module FromHoneybee
         # write the opening objects for each Aperture / Door
         operable_subfs = []  # collect the sub-face objects for the EMS
         opening_factors = []  # collect the maximum opening factors for the EMS
-        window_vent.each do |sub_f_id, opening|
+        window_vent.each do |sub_f_id, open_prop|
+          opening = open_prop[0]
           opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
           unless opt_sub_f.empty?
             sub_f = opt_sub_f.get
             if sub_f.adjacentSubSurface.empty?  # not an interior window that's already in the AFN
-              window_vent = VentilationOpening.new(opening)
-              open_fac = window_vent.to_openstudio_afn(openstudio_model, sub_f)
+              vent_open = VentilationOpening.new(opening)
+              open_fac = vent_open.to_openstudio_afn(openstudio_model, sub_f)
               operable_subfs << sub_f
               opening_factors << open_fac
             end
