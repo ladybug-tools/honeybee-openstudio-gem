@@ -323,7 +323,7 @@ module FromHoneybee
               sub_f = opt_sub_f.get
               vent_open = VentilationOpening.new(opening)
               os_vent_open = vent_open.to_openstudio(
-                openstudio_model, sub_f, @hash[:properties][:energy][:vent_open_control])
+                openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
               os_vent_open.addToThermalZone(os_thermal_zone)
             end
           end
