@@ -150,7 +150,7 @@ module FromHoneybee
 
       # create the simple opening object for the Aperture or Door using default values
       flow_exponent = defaults[:flow_exponent_closed][:default].to_f
-      two_way_thresh= defaults[:two_way_threshold][:default].to_f
+      two_way_thresh = defaults[:two_way_threshold][:default].to_f
       discharge_coeff = defaults[:discharge_coefficient][:default].to_f
       os_opening = OpenStudio::Model::AirflowNetworkSimpleOpening.new(
         openstudio_model, flow_coefficient, flow_exponent, two_way_thresh, discharge_coeff)
