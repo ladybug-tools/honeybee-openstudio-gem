@@ -138,7 +138,7 @@ module FromHoneybee
           openstudio_schedule_rule.setApplyFriday(rule[:apply_friday])
           openstudio_schedule_rule.setApplySaturday(rule[:apply_saturday])
           year_description = openstudio_model.getYearDescription
-          start_date = year_description.makeDate(rule[:start_date][0], rule[:start_date][1])         
+          start_date = year_description.makeDate(rule[:start_date][0], rule[:start_date][1])
           end_date = year_description.makeDate(rule[:end_date][0], rule[:end_date][1])
           openstudio_schedule_rule.setStartDate(start_date)
           openstudio_schedule_rule.setEndDate(end_date)

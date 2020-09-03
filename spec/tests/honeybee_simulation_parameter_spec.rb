@@ -84,6 +84,9 @@ RSpec.describe FromHoneybee do
     expect(shadow_calc.shadingCalculationMethod).to eq 'PixelCounting'
     expect(shadow_calc.shadingCalculationUpdateFrequencyMethod).to eq 'Timestep'
     expect(shadow_calc.shadingCalculationUpdateFrequency).to eq 30
+
+    holiday = openstudio_model.getRunPeriodControlSpecialDayss
+    expect(holiday.size).to eq 3
   end
 
 end

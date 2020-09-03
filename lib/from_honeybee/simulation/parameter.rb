@@ -288,7 +288,18 @@ module FromHoneybee
             @hash[:run_period][:daylight_saving_time][:end_date][1])
         end
 
-        # TODO: set the holidays once they are available in OpenStudio SDK
+        # Set the holidays
+        if @hash[:run_period][:holidays]
+          @hash[:run_period][:holidays].each do |hol|
+            begin
+              os_hol = OpenStudio::Model::RunPeriodControlSpecialDays.new(
+                OpenStudio::MonthOfYear.new(hol[0]), hol[1], @openstudio_model)
+              os_hol.setDuration(1)
+              os_hol.setSpecialDayType('Holiday')
+            rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
+            end
+          end
+        end
       end
 
       # set the simulation timestep
