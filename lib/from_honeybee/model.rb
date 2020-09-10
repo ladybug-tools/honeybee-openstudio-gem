@@ -533,12 +533,14 @@ module FromHoneybee
           system_type = hvac[:type]
           if system_type == 'IdealAirSystemAbridged'
             ideal_air_system = IdealAirSystemAbridged.new(hvac)
-            os_ideal_air_system = ideal_air_system.to_openstudio(@openstudio_model)
             hvac['rooms'].each do |room_id|
+              os_ideal_air = ideal_air_system.to_openstudio(@openstudio_model)
+              # enforce a strict naming system for each zone so results can be matched
+              os_ideal_air.setName(room_id + ' Ideal Loads Air System')
               zone_get = @openstudio_model.getThermalZoneByName(room_id)
               unless zone_get.empty?
                 os_thermal_zone = zone_get.get
-                os_ideal_air_system.addToThermalZone(os_thermal_zone)
+                os_ideal_air.addToThermalZone(os_thermal_zone)
               end
             end
           elsif TemplateHVAC.types.include?(system_type)
