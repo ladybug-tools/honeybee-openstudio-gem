@@ -21,4 +21,4 @@ else
 end
 
 # include the honeybee-openstudio-gem
-gem 'honeybee-openstudio', '2.5.3'
+gem 'honeybee-openstudio', '2.6.4'
