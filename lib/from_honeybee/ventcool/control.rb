@@ -98,6 +98,20 @@ module FromHoneybee
       @@sensor_count = @@sensor_count + 1
       in_air_temp.setName(in_sensor_name)
 
+      # set up a schedule sensor if there's a schedule specified
+      if @hash[:schedule]
+        vent_sch = openstudio_model.getScheduleByName(@hash[:schedule])
+        unless vent_sch.empty?  # schedule not specified
+          sch_var = OpenStudio::Model::OutputVariable.new('Schedule Value', openstudio_model)
+          sch_var.setReportingFrequency('Timestep')
+          sch_var.setKeyValue(@hash[:schedule])
+          sch_sens = OpenStudio::Model::EnergyManagementSystemSensor.new(openstudio_model, sch_var)
+          sch_sensor_name = replace_ems_special_characters(os_zone_name) + '_Sensor' + @@sensor_count.to_s
+          @@sensor_count = @@sensor_count + 1
+          sch_sens.setName(sch_sensor_name)
+        end
+      end
+
       # create the actuators for each of the operaable windows
       actuator_names = []
       vent_opening_surfaces.each do |vent_srf|
@@ -139,6 +153,10 @@ module FromHoneybee
       delta_in_out = @hash[:delta_temperature]
       if delta_in_out && delta_in_out != defaults[:delta_temperature][:default]
         logic_statements << '((' + in_sensor_name + ' - Outdoor_Sensor) > ' + delta_in_out.to_s + ')'
+      end
+      # check the schedule for ventilation
+      if sch_sensor_name
+        logic_statements << '(' + sch_sensor_name + ' > 0)'
       end
       # create the complete logic statement for opening windows
       if logic_statements.empty?
