@@ -54,6 +54,7 @@ module FromHoneybee
     def initialize(hash = {})
       super(hash)
       raise "Incorrect model type '#{@type}'" unless @type == 'Room'
+      @unique_space_type = nil
     end
 
     def defaults
@@ -64,6 +65,33 @@ module FromHoneybee
       model_space = openstudio_model.getSpaceByName(@hash[:identifier])
       return model_space.get unless model_space.empty?
       nil 
+    end
+
+    def get_unique_space_type(openstudio_model, os_space)
+      # get a space type that is unique to the room
+      if @unique_space_type.nil?
+        space_type = os_space.spaceType
+        unless space_type.empty?
+          # copy the space type that is already assigned to the room
+          space_type_object = space_type.get
+          space_type_mod_obj = space_type_object.clone(openstudio_model)
+          new_space_type = space_type_mod_obj.to_SpaceType.get
+        else
+          # create a new space type as there is currently none assigned to the room
+          new_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
+        end
+        # give the space type a new unique name and assign it to the room
+        st_name = space_type_object.name
+        unless space_type.empty?
+          st_name = st_name.get
+        else
+          st_name = 'CustomSpaceType'
+        end
+        new_space_type.setName(st_name + '_' + @hash[:identifier])
+        os_space.setSpaceType(new_space_type)
+        @unique_space_type = new_space_type
+      end
+      @unique_space_type
     end
 
     def to_openstudio(openstudio_model)
@@ -213,88 +241,75 @@ module FromHoneybee
         @hash[:outdoor_shades].each do |outdoor_shade|
           add_shade_to_group(openstudio_model, os_shd_group, outdoor_shade)
         end
-      end
+      end 
 
       #check whether there are any load objects on the room overriding the programtype
       if @hash[:properties][:energy][:people]
-        people = openstudio_model.getPeopleByName(@hash[:properties][:energy][:people][:identifier])
-        unless people.empty?
-          people_object = people.get
-          people_object.setSpace(os_space)
-        else
-          people_space = PeopleAbridged.new(@hash[:properties][:energy][:people])
-          os_people_space = people_space.to_openstudio(openstudio_model)
-          os_people_space.setSpace(os_space)
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program_ppl = unique_program.people
+        unless unique_program_ppl.empty?  # remove the previous load definition
+          unique_program_ppl[0].remove()
         end
+        custom_people = PeopleAbridged.new(@hash[:properties][:energy][:people])
+        os_custom_people = custom_people.to_openstudio(openstudio_model)
+        os_custom_people.setSpaceType(unique_program)  # assign the new load definition
       end
 
       # assign lighting if it exists
       if @hash[:properties][:energy][:lighting]
-        lighting = openstudio_model.getLightsByName(@hash[:properties][:energy][:lighting][:identifier])
-        unless lighting.empty?
-          lighting_object = lighting.get
-          lighting_object.setSpace(os_space)
-        else
-          lighting_space = LightingAbridged.new(@hash[:properties][:energy][:lighting])
-          os_lighting_space = lighting_space.to_openstudio(openstudio_model)
-          os_lighting_space.setSpace(os_space)
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program_lght = unique_program.lights
+        unless unique_program_lght.empty?  # remove the previous load definition
+          unique_program_lght[0].remove()
         end
+        custom_lighting = LightingAbridged.new(@hash[:properties][:energy][:lighting])
+        os_custom_lighting = custom_lighting.to_openstudio(openstudio_model)
+        os_custom_lighting.setSpaceType(unique_program)  # assign the new load definition
       end
 
       # assign electric equipment if it exists
       if @hash[:properties][:energy][:electric_equipment]
-        electric_equipment = openstudio_model.getElectricEquipmentByName(
-          @hash[:properties][:energy][:electric_equipment][:identifier])
-        unless electric_equipment.empty?
-          electric_equipment_object = electric_equipment.get
-          electric_equipment_object.setSpace(os_space)
-        else
-          electric_equipment_space = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
-          os_electric_equipment_space = electric_equipment_space.to_openstudio(openstudio_model)
-          os_electric_equipment_space.setSpace(os_space)
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program_ele = unique_program.electricEquipment
+        unless unique_program_ele.empty?  # remove the previous load definition
+          unique_program_ele[0].remove()
         end
+        custom_electric_equipment = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
+        os_custom_electric_equipment = custom_electric_equipment.to_openstudio(openstudio_model)
+        os_custom_electric_equipment.setSpaceType(unique_program)  # assign the new load definition
       end
-      
+
       # assign gas equipment if it exists
       if @hash[:properties][:energy][:gas_equipment]
-        gas_equipment = openstudio_model.getGasEquipmentByName(
-          @hash[:properties][:energy][:gas_equipment][:identifier])
-        unless gas_equipment.empty?
-          gas_equipment_object = gas_equipment.get
-          gas_equipment_object.setSpace(os_space)
-        else
-          gas_equipment_space = GasEquipmentAbridged.new(@hash[:properties][:energy][:gas_equipment])
-          os_gas_equipment_space = gas_equipment_space.to_openstudio(openstudio_model)
-          os_gas_equipment_space.setSpace(os_space)
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program_gas = unique_program.gasEquipment
+        unless unique_program_gas.empty?  # remove the previous load definition
+          unique_program_gas[0].remove()
         end
+        custom_gas_equipment = GasEquipmentAbridged.new(@hash[:properties][:energy][:gas_equipment])
+        os_custom_gas_equipment = custom_gas_equipment.to_openstudio(openstudio_model)
+        os_custom_gas_equipment.setSpaceType(unique_program)  # assign the new load definition
       end
 
       # assign infiltration if it exists
       if @hash[:properties][:energy][:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
-        infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(
-          @hash[:properties][:energy][:infiltration][:identifier])
-        unless infiltration.empty?
-          infiltration_object = infiltration.get
-          infiltration_object.setSpace(os_space)
-        else
-          infiltration_space = InfiltrationAbridged.new(@hash[:properties][:energy][:infiltration])
-          os_infiltration_space = infiltration_space.to_openstudio(openstudio_model)
-          os_infiltration_space.setSpace(os_space) 
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program_inf = unique_program.spaceInfiltrationDesignFlowRates
+        unless unique_program_inf.empty?  # remove the previous load definition
+          unique_program_inf[0].remove()
         end
+        custom_infiltration = InfiltrationAbridged.new(@hash[:properties][:energy][:infiltration])
+        os_custom_infiltration = custom_infiltration.to_openstudio(openstudio_model)
+        os_custom_infiltration.setSpaceType(unique_program)  # assign the new load definition
       end
-        
+
       # assign ventilation if it exists
       if @hash[:properties][:energy][:ventilation] 
-        ventilation = openstudio_model.getDesignSpecificationOutdoorAirByName(
-          @hash[:properties][:energy][:ventilation][:identifier])
-        unless ventilation.empty?
-          ventilation_object = ventilation.get
-          ventilation_object.setSpace(os_space)
-        else
-          ventilation_space = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
-          os_ventilation_space = ventilation_space.to_openstudio(openstudio_model)
-          os_space.setDesignSpecificationOutdoorAir(os_ventilation_space)
-        end
+        unique_program = get_unique_space_type(openstudio_model, os_space)
+        unique_program.resetDesignSpecificationOutdoorAir()
+        custom_ventilation = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
+        os_custom_ventilation = custom_ventilation.to_openstudio(openstudio_model)
+        unique_program.setDesignSpecificationOutdoorAir(os_custom_ventilation)
       end
 
       # assign setpoint if it exists
