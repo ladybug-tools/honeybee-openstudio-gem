@@ -180,6 +180,16 @@ module FromHoneybee
       $interior_afn_srf_hash = Hash.new  # track whether an adjacent surface is already in the AFN
 
       # create all of the non-geometric model elements
+      if log_report  # schedules are used by all other objects and come first
+        puts 'Translating Schedules'
+      end
+      if @hash[:properties][:energy][:schedule_type_limits]
+        create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
+      end
+      if @hash[:properties][:energy][:schedules]
+        create_schedules(@hash[:properties][:energy][:schedules])
+      end
+
       if log_report
         puts 'Translating Materials'
       end
@@ -199,16 +209,6 @@ module FromHoneybee
       end
       if @hash[:properties][:energy][:construction_sets]
         create_construction_sets(@hash[:properties][:energy][:construction_sets])
-      end
-
-      if log_report
-        puts 'Translating Schedules'
-      end
-      if @hash[:properties][:energy][:schedule_type_limits]
-        create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
-      end
-      if @hash[:properties][:energy][:schedules]
-        create_schedules(@hash[:properties][:energy][:schedules])
       end
 
       if log_report
