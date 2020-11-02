@@ -35,7 +35,7 @@
 require 'honeybee/model'
 
 # start the measure
-class HoneybeeModel < OpenStudio::Measure::ModelMeasure
+class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
   # human readable name
   def name
     return 'From Honeybee Model'
@@ -88,4 +88,4 @@ class HoneybeeModel < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-HoneybeeModel.new.registerWithApplication
+FromHoneybeeModel.new.registerWithApplication

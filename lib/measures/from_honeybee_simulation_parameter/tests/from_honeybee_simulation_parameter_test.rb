@@ -35,11 +35,11 @@ require 'minitest/autorun'
 require_relative '../measure.rb'
 require 'fileutils'
 
-class HoneybeeSimulationParameter_Test < Minitest::Test
+class FromHoneybeeSimulationParameter_Test < Minitest::Test
   # method to apply arguments, run measure, and assert results (only populate args hash with non-default argument values)
   def apply_measure_to_model(test_name, args, model_name = nil, result_value = 'Success', warnings_count = 0, info_count = nil)
     # create an instance of the measure
-    measure = HoneybeeSimulationParameter.new
+    measure = FromHoneybeeSimulationParameter.new
 
     # create an instance of a runner
     runner = OpenStudio::Measure::OSRunner.new(OpenStudio::WorkflowJSON.new)
@@ -95,7 +95,7 @@ class HoneybeeSimulationParameter_Test < Minitest::Test
 
   def test_simulation_par_simple
     args = {}
-    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) + 
+    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) +
     "/../../../../spec/samples/simulation_parameter/simulation_par_simple.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end

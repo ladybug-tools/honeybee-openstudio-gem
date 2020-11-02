@@ -35,11 +35,11 @@ require 'minitest/autorun'
 require_relative '../measure.rb'
 require 'fileutils'
 
-class HoneybeeModel_Test < Minitest::Test
+class FromHoneybeeModel_Test < Minitest::Test
   # method to apply arguments, run measure, and assert results (only populate args hash with non-default argument values)
   def apply_measure_to_model(test_name, args, model_name = nil, result_value = 'Success', warnings_count = 0, info_count = nil)
     # create an instance of the measure
-    measure = HoneybeeModel.new
+    measure = FromHoneybeeModel.new
 
     # create an instance of a runner
     runner = OpenStudio::Measure::OSRunner.new(OpenStudio::WorkflowJSON.new)

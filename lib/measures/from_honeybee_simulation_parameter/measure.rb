@@ -35,7 +35,7 @@
 require 'honeybee/simulation/parameter'
 
 # start the measure
-class HoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
+class FromHoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
   # human readable name
   def name
     return 'From Honeybee Simulation Parameter'
@@ -92,4 +92,4 @@ class HoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-HoneybeeSimulationParameter.new.registerWithApplication
+FromHoneybeeSimulationParameter.new.registerWithApplication

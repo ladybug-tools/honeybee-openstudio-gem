@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-#
+# 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -86,7 +86,7 @@ module URBANopt
         if feature_type == 'Building'
             # set the honeybee JSON key to the honeybee_model measure
             OpenStudio::Extension.set_measure_argument(
-                osw, 'honeybee_model', 'model_json', feature.detailed_model_filename)
+                osw, 'from_honeybee_model', 'model_json', feature.detailed_model_filename)
 
             # check if there is a HVAC key in the feature JSON properties
             building_hash = feature.to_hash
