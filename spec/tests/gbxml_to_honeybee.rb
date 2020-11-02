@@ -29,32 +29,13 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# start coveralls if we are on a remote CI machine
-require 'rbconfig'
-host_os = RbConfig::CONFIG['host_os']
-case host_os
-when /linux/  # we are on the Travis remote machine; run coveralls
-  require 'coveralls'
-  Coveralls.wear!
-end
+require_relative '../spec_helper'
 
-# simplecov actually computes the coverage
-require 'simplecov'
-SimpleCov.start
-SimpleCov.add_filter 'spec/tests' # will reject all test from coverage
+RSpec.describe ToHoneybee do
 
-require 'bundler/setup'
-require 'from_honeybee'
-require 'to_honeybee'
-
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
-
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
-
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
+  it 'can load a gbXML and translate to Honeybee' do
+    file = File.join(File.dirname(__FILE__), '../samples/gbxml/gbXML_TRK.xml')
+    honeybee = ToHoneybee::Model.read_from_gbxml(file)
   end
+
 end

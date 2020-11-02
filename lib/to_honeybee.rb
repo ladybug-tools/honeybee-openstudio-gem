@@ -29,32 +29,20 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# start coveralls if we are on a remote CI machine
-require 'rbconfig'
-host_os = RbConfig::CONFIG['host_os']
-case host_os
-when /linux/  # we are on the Travis remote machine; run coveralls
-  require 'coveralls'
-  Coveralls.wear!
-end
+# import the compound objects that house the other objects
+require 'to_honeybee/model'
 
-# simplecov actually computes the coverage
-require 'simplecov'
-SimpleCov.start
-SimpleCov.add_filter 'spec/tests' # will reject all test from coverage
+# import the geometry objects
+require 'to_honeybee/geometry/space'
 
-require 'bundler/setup'
-require 'from_honeybee'
-require 'to_honeybee'
+# import the HVAC objects
 
-RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = '.rspec_status'
+# import the construction objects
 
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
+# import the material objects
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
+# import the load objects
+
+# import the schedule objects
+
+# import the simulation objects
