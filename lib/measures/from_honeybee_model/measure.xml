@@ -1,11 +1,11 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>from_honeybee_model</name>
+  <name>honeybee_model</name>
   <uid>a5f500d5-97ff-4048-a6f4-6b0b0a92d0f0</uid>
   <version_id>ad76277e-d175-4f0d-a667-936d3aa65420</version_id>
   <version_modified>20190315T212648Z</version_modified>
   <xml_checksum>D8922A73</xml_checksum>
-  <class_name>FromHoneybeeModel</class_name>
+  <class_name>HoneybeeModel</class_name>
   <display_name>From Honeybee Model</display_name>
   <description>Translate a JSON file of a Honeybee Model into an OpenStudio Model.</description>
   <modeler_description>Translate a JSON file of a Honeybee Model into an OpenStudio Model.</modeler_description>
@@ -59,7 +59,7 @@
       <checksum>0004EA60</checksum>
     </file>
     <file>
-      <filename>from_honeybee_model_test.rb</filename>
+      <filename>honeybee_model_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
       <checksum>F6C13DE7</checksum>

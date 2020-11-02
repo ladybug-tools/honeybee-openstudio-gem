@@ -32,10 +32,10 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'from_honeybee/model'
+require 'honeybee/model'
 
 # start the measure
-class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
+class HoneybeeModel < OpenStudio::Measure::ModelMeasure
   # human readable name
   def name
     return 'From Honeybee Model'
@@ -78,7 +78,7 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-    honeybee_model = FromHoneybee::Model.read_from_disk(model_json)
+    honeybee_model = Honeybee::Model.read_from_disk(model_json)
 
     STDOUT.flush
     honeybee_model.to_openstudio_model(model)
@@ -88,4 +88,4 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-FromHoneybeeModel.new.registerWithApplication
+HoneybeeModel.new.registerWithApplication

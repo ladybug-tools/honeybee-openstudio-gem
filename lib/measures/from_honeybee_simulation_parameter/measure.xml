@@ -1,11 +1,11 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>from_honeybee_simulation_parameter</name>
+  <name>honeybee_simulation_parameter</name>
   <uid>a5f500d5-97ff-4048-a6f4-6b0b0a92d0f0</uid>
   <version_id>1e4bf088-594a-49b3-89c7-91acc7b10262</version_id>
   <version_modified>20191221T003153Z</version_modified>
   <xml_checksum>D8922A73</xml_checksum>
-  <class_name>FromHoneybeeSimulationParameter</class_name>
+  <class_name>HoneybeeSimulationParameter</class_name>
   <display_name>From Honeybee Simulation Parameter</display_name>
   <description>Add a JSON file of Honeybee Simulationtion Parameters to an OpenStudio Model.</description>
   <modeler_description>Add a JSON file of Honeybee Simulationtion Parameters to an OpenStudio Model.</modeler_description>
@@ -70,7 +70,7 @@
       <checksum>52EE8F57</checksum>
     </file>
     <file>
-      <filename>from_honeybee_simulation_parameter_test.rb</filename>
+      <filename>honeybee_simulation_parameter_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
       <checksum>F2F0C340</checksum>

@@ -23,11 +23,11 @@ should be replaced with specific file paths:
     "steps": [
         {
             "arguments": {"model_json": (PATH TO MODEL JSON)}, 
-            "measure_dir_name": "from_honeybee_model"
+            "measure_dir_name": "honeybee_model"
         }, 
         {
             "arguments": {"simulation_parameter_json": (PATH TO SIMULATION PARAMETER JSON)}, 
-            "measure_dir_name": "from_honeybee_simulation_parameter"
+            "measure_dir_name": "honeybee_simulation_parameter"
         }
     ]
 }
@@ -75,11 +75,11 @@ bundle exec rake
 
 4. Run Measure Tests:
 ```
-cd honeybee-openstudio-gem/lib/measures/from_honeybee_model/tests/
-bundle exec ruby from_honeybee_model_test.rb
+cd honeybee-openstudio-gem/lib/measures/honeybee_model/tests/
+bundle exec ruby honeybee_model_test.rb
 
-cd honeybee-openstudio-gem/lib/measures/from_honeybee_simulation_parameter/tests/
-bundle exec ruby from_honeybee_simulation_parameter_test.rb
+cd honeybee-openstudio-gem/lib/measures/honeybee_simulation_parameter/tests/
+bundle exec ruby honeybee_simulation_parameter_test.rb
 ```
 
 5. Update doc_templates:

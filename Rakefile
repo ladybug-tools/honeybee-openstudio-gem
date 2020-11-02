@@ -8,14 +8,14 @@ RuboCop::RakeTask.new
 
 # Load in the rake tasks from the base openstudio-extension gem
 require 'openstudio/extension/rake_task'
-require 'from_honeybee/extension'
-#require 'from_honeybee/simulation/extension'
+require 'honeybee/extension'
+#require 'honeybee/simulation/extension'
 
 os_extension = OpenStudio::Extension::RakeTask.new
-os_extension.set_extension_class(FromHoneybee::Extension)
+os_extension.set_extension_class(Honeybee::Extension)
 
 #TODO: Does this need to be implemented?
-#os_extension.set_extension_class(FromHoneybee::ExtensionSimulationParameter)
+#os_extension.set_extension_class(Honeybee::ExtensionSimulationParameter)
 
 task default: :spec
  

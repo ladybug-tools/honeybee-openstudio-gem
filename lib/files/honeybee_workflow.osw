@@ -6,12 +6,12 @@
   "run_directory": null,
   "steps": [
     {
-      "measure_dir_name": "from_honeybee_simulation_parameter",
+      "measure_dir_name": "honeybee_simulation_parameter",
       "arguments": {
         "simulation_parameter_json": "simulation_parameter.json"
       }
     },{
-      "measure_dir_name": "from_honeybee_model",
+      "measure_dir_name": "honeybee_model",
       "arguments": {
         "model_json": "multi_zone_model.json"
       }

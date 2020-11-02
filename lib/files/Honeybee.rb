@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -49,7 +49,7 @@ module URBANopt
         # do initialization of class variables in thread safe way
         @@instance_lock.synchronize do
             if @@osw.nil?
-  
+
               # load the OSW for this class
               osw_path = File.join(File.dirname(__FILE__), 'honeybee_workflow.osw')
               File.open(osw_path, 'r') do |file|
@@ -74,7 +74,7 @@ module URBANopt
         feature_name = feature.name
         if feature_names.size == 1
           feature_name = feature_names[0]
-        end        
+        end
 
         # deep clone of @@osw before we configure it
         osw = Marshal.load(Marshal.dump(@@osw))
@@ -84,9 +84,9 @@ module URBANopt
         osw[:description] = feature_name
 
         if feature_type == 'Building'
-            # set the honeybee JSON key to the from_honeybee_model measure
+            # set the honeybee JSON key to the honeybee_model measure
             OpenStudio::Extension.set_measure_argument(
-                osw, 'from_honeybee_model', 'model_json', feature.detailed_model_filename)
+                osw, 'honeybee_model', 'model_json', feature.detailed_model_filename)
 
             # check if there is a HVAC key in the feature JSON properties
             building_hash = feature.to_hash
@@ -95,7 +95,7 @@ module URBANopt
               OpenStudio::Extension.set_measure_argument(
                   osw, 'create_typical_building_from_model', 'system_type', system_type)
             end
-            
+
             # add the feature id and name to the reporting measure
             OpenStudio::Extension.set_measure_argument(
               osw, 'default_feature_reports', 'feature_id', feature_id)
@@ -107,7 +107,7 @@ module URBANopt
         end
         return osw
       end
-    
+
     end #HoneybeeMapper
   end #Scenario
 end #URBANopt

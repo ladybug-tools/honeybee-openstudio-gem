@@ -30,17 +30,17 @@
 # *******************************************************************************
 
 require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
+require 'honeybee/simulation/extension'
 
-RSpec.describe FromHoneybee do
+RSpec.describe Honeybee do
   it 'has a schema_file' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
+    extension = Honeybee::ExtensionSimulationParameter.new
     expect(File.exist?(extension.schema_file)).to be true
   end
 
   it 'can load simple simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_simple.json')
-    honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -49,7 +49,7 @@ RSpec.describe FromHoneybee do
 
   it 'can load detailed simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_detailed.json')
-    honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)

@@ -31,11 +31,11 @@
 
 require_relative '../spec_helper'
 
-RSpec.describe FromHoneybee do
+RSpec.describe Honeybee do
   it 'can load ideal air default' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_default.json')
-    honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1.coolingLimit).to eq 'LimitFlowRateAndCapacity'
     expect(object1.isMaximumCoolingAirFlowRateAutosized).to eq true
@@ -45,7 +45,7 @@ RSpec.describe FromHoneybee do
   it 'can load ideal air detailed' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_detailed.json')
-    honeybee_obj_1 = FromHoneybee::IdealAirSystemAbridged.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
     expect(object1.nameString).to eq 'Passive House HVAC System'
@@ -60,19 +60,19 @@ RSpec.describe FromHoneybee do
   it 'can load a VAV template system' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/vav_template.json')
-    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end
 
   it 'can load a FCU with DOAS template system' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/fcu_with_doas_template.json')
-    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end
 
   it 'can load a Window AC with Baseboard template system' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/hvac/window_ac_with_baseboard_template.json')
-    honeybee_obj_1 = FromHoneybee::TemplateHVAC.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end
 
 end

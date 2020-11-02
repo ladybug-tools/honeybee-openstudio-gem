@@ -44,8 +44,7 @@ SimpleCov.start
 SimpleCov.add_filter 'spec/tests' # will reject all test from coverage
 
 require 'bundler/setup'
-require 'from_honeybee'
-require 'to_honeybee'
+require 'honeybee'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
