@@ -31,11 +31,11 @@
 
 require_relative '../spec_helper'
 
-RSpec.describe ToHoneybee do
+RSpec.describe Honeybee do
 
   it 'can load a gbXML and translate to Honeybee' do
     file = File.join(File.dirname(__FILE__), '../samples/gbxml/gbXML_TRK.xml')
-    honeybee = ToHoneybee::Model.read_from_gbxml(file)
+    honeybee = Honeybee::Model.translate_from_gbxml(file)
   end
 
 end
