@@ -94,11 +94,27 @@ module Honeybee
       Model.new(hash)
     end
 
-    # Create Ladybug Energy Model JSON from gbXML
-    def self.translate_from_gbxml(file)
+    # Create Ladybug Energy Model JSON from OpenStudio Model
+    def self.translate_from_openstudio(openstudio_model)
       hash = {}
       hash[:type] = 'Model'
       Model.new(hash)
+    end
+
+    # Create Ladybug Energy Model JSON from OSM file
+    def self.translate_from_osm_file(file)
+      vt = OpenStudio::OSVersion::VersionTranslator.new
+      openstudio_model = vt.loadModel(file)
+      raise "Cannot load OSM file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    # Create Ladybug Energy Model JSON from gbXML file
+    def self.translate_from_gbxml_file(file)
+      translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
+      openstudio_model = translator.loadModel(file)
+      raise "Cannot load gbXML file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
     end
 
     # Load ModelObject from symbolized hash
