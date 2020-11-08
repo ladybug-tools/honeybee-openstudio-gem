@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class EnergyMaterial < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -45,50 +42,5 @@ module Honeybee
       @@schema[:components][:schemas][:EnergyMaterial][:properties]
     end
 
-    def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getStandardOpaqueMaterialByName(@hash[:identifier])
-      return object.get if object.is_initialized
-      nil
-    end
-
-    def to_openstudio(openstudio_model)
-      # create standard opaque OpenStudio material 
-      os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
-      os_opaque_mat.setName(@hash[:identifier])
-      os_opaque_mat.setThickness(@hash[:thickness])
-      os_opaque_mat.setConductivity(@hash[:conductivity])
-      os_opaque_mat.setDensity(@hash[:density])
-      os_opaque_mat.setSpecificHeat(@hash[:specific_heat])
-
-      # assign roughness if it exists
-      if @hash[:roughness]
-        os_opaque_mat.setRoughness(@hash[:roughness])
-      else
-        os_opaque_mat.setRoughness(defaults[:roughness][:default])
-      end
-
-      # assign thermal absorptance if it exists
-      if @hash[:thermal_absorptance]
-        os_opaque_mat.setThermalAbsorptance(@hash[:thermal_absorptance])
-      else
-        os_opaque_mat.setThermalAbsorptance(defaults[:thermal_absorptance][:default])
-      end
-
-      # assign solar absorptance if it exists
-      if @hash[:solar_absorptance]
-        os_opaque_mat.setSolarAbsorptance(@hash[:solar_absorptance])
-      else
-        os_opaque_mat.setSolarAbsorptance(defaults[:solar_absorptance][:default])
-      end
-
-      # assign visible absorptance if it exists
-      if @hash[:visible_absorptance]
-        os_opaque_mat.setVisibleAbsorptance(@hash[:visible_absorptance])
-      else
-        os_opaque_mat.setVisibleAbsorptance(defaults[:visible_absorptance][:default])
-      end
-
-      os_opaque_mat
-    end
   end # EnergyEnergyMaterial
 end # Honeybee

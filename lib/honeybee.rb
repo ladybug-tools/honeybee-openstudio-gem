@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -47,6 +47,7 @@ require 'honeybee/geometry/room'
 
 # import the HVAC objects
 require 'honeybee/hvac/ideal_air'
+require 'honeybee/hvac/template'
 
 # import the construction objects
 require 'honeybee/construction/opaque'
@@ -80,6 +81,11 @@ require 'honeybee/load/setpoint_humidistat'
 require 'honeybee/schedule/type_limit'
 require 'honeybee/schedule/fixed_interval'
 require 'honeybee/schedule/ruleset'
+
+# import the ventilation objects
+require 'honeybee/ventcool/control'
+require 'honeybee/ventcool/opening'
+require 'honeybee/ventcool/simulation'
 
 # import the simulation objects
 require 'honeybee/simulation/extension'

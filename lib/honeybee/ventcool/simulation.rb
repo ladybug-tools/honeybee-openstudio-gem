@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class VentilationSimulationControl < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -43,67 +40,6 @@ module Honeybee
 
     def defaults
       @@schema[:components][:schemas][:VentilationSimulationControl][:properties]
-    end
-
-    def to_openstudio(openstudio_model)
-      # create the AirflowNetworkSimulationControl object
-      os_vsim_control = openstudio_model.getAirflowNetworkSimulationControl
-      os_vsim_control.setName('Window Based Ventilative Cooling')
-
-      # assign the control type
-      if @hash[:vent_control_type]
-        os_vsim_control.setAirflowNetworkControl(@hash[:vent_control_type])
-      else
-        os_vsim_control.setAirflowNetworkControl('MultizoneWithoutDistribution')
-      end
-
-      # assign the building type
-      if @hash[:building_type]
-        os_vsim_control.setBuildingType(@hash[:building_type])
-      else
-        os_vsim_control.setBuildingType(defaults[:building_type][:default])
-      end
-
-      # assign the long axis azimth angle of the building
-      if @hash[:long_axis_angle]
-        os_vsim_control.setAzimuthAngleofLongAxisofBuilding(@hash[:long_axis_angle])
-      else
-        os_vsim_control.setAzimuthAngleofLongAxisofBuilding(defaults[:long_axis_angle][:default])
-      end
-
-      # assign the aspect ratio of the building
-      if @hash[:aspect_ratio]
-        os_vsim_control.setBuildingAspectRatio(@hash[:aspect_ratio])
-      else
-        os_vsim_control.setBuildingAspectRatio(defaults[:aspect_ratio][:default])
-      end
-
-      # create the AirflowNetworkReferenceCrackConditions object that all other cracks reference
-      os_ref_crack = OpenStudio::Model::AirflowNetworkReferenceCrackConditions.new(openstudio_model)
-      os_ref_crack.setName('Reference Crack Conditions')
-
-      # assign the reference temperature
-      if @hash[:reference_temperature]
-        os_ref_crack.setTemperature(@hash[:reference_temperature])
-      else
-        os_ref_crack.setTemperature(defaults[:reference_temperature][:default])
-      end
-
-      # assign the reference pressure
-      if @hash[:reference_pressure]
-        os_ref_crack.setBarometricPressure(@hash[:reference_pressure])
-      else
-        os_ref_crack.setBarometricPressure(defaults[:reference_pressure][:default])
-      end
-
-      # assign the reference humidity ratio
-      if @hash[:reference_humidity_ratio]
-        os_ref_crack.setHumidityRatio(@hash[:reference_humidity_ratio])
-      else
-        os_ref_crack.setHumidityRatio(defaults[:reference_humidity_ratio][:default])
-      end
-
-      os_ref_crack
     end
 
   end #VentilationSimulationControl

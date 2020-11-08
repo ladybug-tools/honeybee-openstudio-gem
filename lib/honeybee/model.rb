@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -29,57 +29,8 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the core objects from which everything inherits
 require 'honeybee/extension'
 require 'honeybee/model_object'
-
-# import the compound objects that house the other objects
-require 'honeybee/construction_set'
-require 'honeybee/program_type'
-
-# import the geometry objects
-require 'honeybee/geometry/shade'
-require 'honeybee/geometry/door'
-require 'honeybee/geometry/aperture'
-require 'honeybee/geometry/face'
-require 'honeybee/geometry/room'
-
-# import the HVAC objects
-require 'honeybee/hvac/ideal_air'
-require 'honeybee/hvac/template'
-
-# import the construction objects
-require 'honeybee/construction/opaque'
-require 'honeybee/construction/window'
-require 'honeybee/construction/windowshade'
-require 'honeybee/construction/shade'
-require 'honeybee/construction/air'
-
-# import the material objects
-require 'honeybee/material/opaque'
-require 'honeybee/material/opaque_no_mass'
-require 'honeybee/material/window_gas'
-require 'honeybee/material/window_gas_mixture'
-require 'honeybee/material/window_gas_custom'
-require 'honeybee/material/window_blind'
-require 'honeybee/material/window_glazing'
-require 'honeybee/material/window_shade'
-require 'honeybee/material/window_simpleglazsys'
-
-# import the schedule objects
-require 'honeybee/schedule/type_limit'
-require 'honeybee/schedule/fixed_interval'
-require 'honeybee/schedule/ruleset'
-
-# import the load objects
-require 'honeybee/load/setpoint_thermostat'
-require 'honeybee/load/setpoint_humidistat'
-
-# import the ventilative cooling objects
-require 'honeybee/ventcool/simulation'
-
-require 'openstudio'
-
 
 module Honeybee
   class Model
@@ -92,29 +43,6 @@ module Honeybee
         hash = JSON.parse(f.read, symbolize_names: true)
       end
       Model.new(hash)
-    end
-
-    # Create Ladybug Energy Model JSON from OpenStudio Model
-    def self.translate_from_openstudio(openstudio_model)
-      hash = {}
-      hash[:type] = 'Model'
-      Model.new(hash)
-    end
-
-    # Create Ladybug Energy Model JSON from OSM file
-    def self.translate_from_osm_file(file)
-      vt = OpenStudio::OSVersion::VersionTranslator.new
-      openstudio_model = vt.loadModel(file)
-      raise "Cannot load OSM file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
-    end
-
-    # Create Ladybug Energy Model JSON from gbXML file
-    def self.translate_from_gbxml_file(file)
-      translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
-      openstudio_model = translator.loadModel(file)
-      raise "Cannot load gbXML file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
     end
 
     # Load ModelObject from symbolized hash

@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class WindowConstructionAbridged < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -51,29 +48,8 @@ module Honeybee
       nil
     end
 
-    def to_openstudio(openstudio_model)
-      # create construction and set identifier      
-      os_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      os_construction.setName(@hash[:identifier])
-      
-      # create material vector       
-      os_materials = OpenStudio::Model::MaterialVector.new
-      # loop through each layer and add to material vector
-      @hash[:layers].each do |layer|
-        material_identifier = layer
-        material = openstudio_model.getMaterialByName(material_identifier)
-        unless material.empty?
-          os_material = material.get
-          os_materials << os_material
-        end
-      end
-      os_construction.setLayers(os_materials)
-
-      os_construction
-    end
-
   end #WindowConstructionAbridged
 end #Honeybee
 
-    
-    
+
+

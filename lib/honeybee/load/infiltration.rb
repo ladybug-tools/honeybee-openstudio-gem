@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -29,67 +29,19 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/extension'
 require 'honeybee/model_object'
 
 module Honeybee
   class InfiltrationAbridged < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
       raise "Incorrect model type '#{@type}'" unless @type == 'InfiltrationAbridged'
     end
-  
+
     def defaults
       @@schema[:components][:schemas][:InfiltrationAbridged][:properties]
     end
-  
-    def find_existing_openstudio_object(openstudio_model)
-      model_infiltration = openstudio_model.getSpaceInfiltrationDesignFlowRateByName(@hash[:identifier])
-      return model_infiltration.get unless model_infiltration.empty?
-      nil
-    end
-  
-    def to_openstudio(openstudio_model)    
-      
-      # create infiltration OpenStudio object and set identifier
-      os_infilt = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
-      os_infilt.setName(@hash[:identifier])
 
-      # assign flow per surface
-      os_infilt.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])
-
-      # assign schedule
-      infiltration_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
-      unless infiltration_schedule.empty?
-        infiltration_schedule_object = infiltration_schedule.get
-        os_infilt.setSchedule(infiltration_schedule_object)
-      end
-
-      # assign constant coefficient if it exists
-      if @hash[:constant_coefficient]
-        os_infilt.setConstantTermCoefficient(@hash[:constant_coefficient])
-      else 
-        os_infilt.setConstantTermCoefficient(defaults[:constant_coefficient][:default])
-      end
-      
-      # assign temperature coefficient
-      if @hash[:temperature_coefficient]
-        os_infilt.setTemperatureTermCoefficient(@hash[:temperature_coefficient])
-      else
-        os_infilt.setTemperatureTermCoefficient(defaults[:temperature_coefficient][:default])
-      end
-      
-      # assign velocity coefficient
-      if @hash[:velocity_coefficient]
-        os_infilt.setVelocityTermCoefficient(@hash[:velocity_coefficient])
-      else 
-        os_infilt.setVelocityTermCoefficient(defaults[:velocity_coefficient][:default])
-      end
-
-      os_infilt
-    end
-    
   end #InfiltrationAbridged
 end #Ladybug

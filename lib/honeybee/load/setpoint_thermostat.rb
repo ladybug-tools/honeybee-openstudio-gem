@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -29,42 +29,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/extension'
 require 'honeybee/model_object'
 
 module Honeybee
   class SetpointThermostat < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
       raise "Incorrect model type '#{@type}'" unless @type == 'SetpointAbridged'
     end
-  
+
     def defaults
       @@schema[:components][:schemas][:SetpointAbridged][:properties]
-    end
-  
-    def to_openstudio(openstudio_model)
-
-      # create thermostat openstudio object
-      os_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
-
-      # assign heating setpoint temperature schedule
-      heat_sch = openstudio_model.getScheduleByName(@hash[:heating_schedule])
-      unless heat_sch.empty?
-        heat_sch_object = heat_sch.get
-        os_thermostat.setHeatingSetpointTemperatureSchedule(heat_sch_object)
-      end
-      
-      # assign cooling setpoint schedule
-      cool_sch = openstudio_model.getScheduleByName(@hash[:cooling_schedule])
-      unless cool_sch.empty?
-        cool_sch_object = cool_sch.get
-        os_thermostat.setCoolingSetpointTemperatureSchedule(cool_sch_object)
-      end
-
-      os_thermostat
     end
 
   end #SetpointThermostat

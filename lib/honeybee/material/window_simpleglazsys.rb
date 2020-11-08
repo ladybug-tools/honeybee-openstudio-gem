@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class EnergyWindowMaterialSimpleGlazSys < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -44,30 +41,6 @@ module Honeybee
     def defaults
       @@schema[:components][:schemas][:EnergyWindowMaterialSimpleGlazSys][:properties]
     end
-
-    def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getSimpleGlazingByName(@hash[:identifier])
-      return object.get if object.is_initialized
-      nil
-    end
-
-    def to_openstudio(openstudio_model)
-      #  create simple glazing openstudio object
-      os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
-      os_simple_glazing.setName(@hash[:identifier])
-      os_simple_glazing.setUFactor(@hash[:u_factor])
-      os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
-
-      # assign visible transmittance
-      if @hash[:vt]
-        os_simple_glazing.setVisibleTransmittance(@hash[:vt])
-      else
-        os_simple_glazing.setVisibleTransmittance(defaults[:vt][:default])
-      end
-
-      os_simple_glazing
-    end
-
 
   end # EnergyWindowMaterialSimpleGlazSys
 end # Honeybee

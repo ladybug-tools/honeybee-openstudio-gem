@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class EnergyWindowMaterialGasMixture < ModelObject
-    attr_reader :erros, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -45,35 +42,5 @@ module Honeybee
       @@schema[:components][:schemas][:EnergyWindowMaterialGasMixture][:properties]
     end
 
-    def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasMixtureByName(@hash[:identifier])
-      return object.get if object.is_initialized
-      nil
-    end
-
-    def to_openstudio(openstudio_model)
-      # create the gas mixture
-      os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
-      os_gas_mixture.setName(@hash[:identifier])
-
-      # set the thickness
-      if @hash[:thickness]
-        os_gas_mixture.setThickness(@hash[:thickness])
-      else
-        os_gas_mixture.setThickness(defaults[:thickness][:default])
-      end
-      
-      # set the gas types
-      @hash[:gas_types].each_index do |i|
-        os_gas_mixture.setGasType(i, @hash[:gas_types][i])
-      end
-      
-      # set the gas fractions
-      @hash[:gas_fractions].each_index do |i|
-        os_gas_mixture.setGasFraction(i, @hash[:gas_fractions][i])
-      end
-
-      os_gas_mixture
-    end
   end # EnergyWindowMaterialGasMixture
 end # Honeybee

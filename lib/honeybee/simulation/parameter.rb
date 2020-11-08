@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -33,10 +33,8 @@ require 'honeybee/model_object'
 require 'honeybee/simulation/extension'
 require 'honeybee/simulation/designday'
 
-require 'openstudio'
-
 module Honeybee
-  class SimulationParameter 
+  class SimulationParameter
     attr_reader :errors, :warnings
 
     # Read Simulation Parameter JSON from disk
@@ -132,7 +130,7 @@ module Honeybee
           os_sim_control.setDoZoneSizingCalculation(@hash[:simulation_control][:do_zone_sizing])
         end
         unless @hash[:simulation_control][:do_system_sizing].nil?
-          os_sim_control.setDoSystemSizingCalculation(@hash[:simulation_control][:do_system_sizing])            
+          os_sim_control.setDoSystemSizingCalculation(@hash[:simulation_control][:do_system_sizing])
         end
         unless @hash[:simulation_control][:do_plant_sizing].nil?
           os_sim_control.setDoPlantSizingCalculation(@hash[:simulation_control][:do_plant_sizing])
@@ -205,7 +203,7 @@ module Honeybee
             @hash[:shadow_calculation][:solar_distribution])
         end
       end
-      
+
       # set defaults for the Model's SizingParameter object
       os_sizing_par = @openstudio_model.getSizingParameters
       os_sizing_par.setHeatingSizingFactor(siz_defaults[:heating_factor][:default])

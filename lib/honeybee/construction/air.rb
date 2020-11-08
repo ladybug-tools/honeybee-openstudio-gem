@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class AirBoundaryConstructionAbridged < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -43,27 +40,6 @@ module Honeybee
 
     def defaults
       @@schema[:components][:schemas][:AirBoundaryConstructionAbridged][:properties]
-    end
-
-    def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getConstructionByName(@hash[:identifier])
-      return object.get if object.is_initialized
-      nil
-    end
-
-    def to_openstudio(openstudio_model)
-      os_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
-      os_construction.setName(@hash[:identifier])
-      os_construction.setSolarAndDaylightingMethod('GroupedZones')
-      # REMOVE: Remove the use of IRTSurface once the AFN works with GroupedZone air walls
-      if !$use_simple_vent  # we're using the AFN!
-        os_construction.setRadiantExchangeMethod('IRTSurface')
-      else
-        os_construction.setRadiantExchangeMethod('GroupedZones')
-      end
-      os_construction.setAirExchangeMethod('None')
-
-      os_construction
     end
 
   end #AirBoundaryConstructionAbridged

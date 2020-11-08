@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,8 @@
 
 require 'honeybee/model_object'
 
-require 'openstudio'
-
 module Honeybee
   class EnergyWindowMaterialGas < ModelObject
-    attr_reader :errors, :warnings
 
     def initialize(hash = {})
       super(hash)
@@ -45,32 +42,5 @@ module Honeybee
       @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties]
     end
 
-    def find_existing_openstudio_object(openstudio_model)
-      object = openstudio_model.getGasByName(@hash[:identifier])
-      return object.get if object.is_initialized
-      nil
-    end
-
-    def to_openstudio(openstudio_model)
-      # create window gas OpenStudio object
-      os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
-      os_window_gas.setName(@hash[:identifier])
-
-      # assign thickness
-      if @hash[:thickness]
-        os_window_gas.setThickness(@hash[:thickness])
-      else
-        os_window_gas.setThickness(defaults[:thickness][:default])
-      end
-
-      # assign gas type
-      if @hash[:gas_type]
-        os_window_gas.setGasType(@hash[:gas_type])
-      else
-        os_window_gas.setGasType(defaults[:gas_type][:default])
-      end
-      
-      os_window_gas
-    end
   end # EnergyWindowMaterialGas
 end # Honeybee
