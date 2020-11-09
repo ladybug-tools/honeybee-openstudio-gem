@@ -37,5 +37,5 @@ require 'from_openstudio/model'
 require 'from_openstudio/model_object'
 
 # extend the geometry objects
-require 'from_openstudio/geometry/space'
-require 'from_openstudio/geometry/surface'
+require 'from_openstudio/geometry/face'
+require 'from_openstudio/geometry/room'

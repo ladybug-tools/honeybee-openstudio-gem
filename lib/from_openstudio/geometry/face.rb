@@ -32,16 +32,8 @@
 require 'honeybee/model_object'
 
 module Honeybee
-  class Shade < ModelObject
+  class Face < ModelObject
 
-    def initialize(hash)
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'Shade'
-    end
-
-    def defaults
-      @@schema[:components][:schemas][:ShadeEnergyPropertiesAbridged][:properties]
-    end
 
   end #Shade
 end #Honeybee

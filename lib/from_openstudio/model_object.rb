@@ -34,6 +34,10 @@ module Honeybee
     # Base class from which all other objects in this module inherit.
     # Attributes and methods of this class should be overwritten in each inheriting object.
 
-
+    # create a new object in the openstudio model and return it
+    def to_openstudio(openstudio_model)
+      raise 'to_openstudio is not yet implemented for this ModelObject.'
+    end
+    
   end # ModelObject
 end # Honeybee

@@ -32,15 +32,14 @@
 require 'honeybee/model_object'
 
 module Honeybee
-  class Aperture < ModelObject
+  class Room < ModelObject
 
-    def initialize(hash)
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'Aperture'
-    end
-
-    def defaults
-      @@schema[:components][:schemas][:ApertureEnergyPropertiesAbridged][:properties]
+    def self.from_space(space)
+      hash = {}
+      hash[:type] = 'Room'
+      hash[:identifier] = space.nameString
+      hash[:display_name] = space.nameString
+      hash
     end
 
   end # Aperture

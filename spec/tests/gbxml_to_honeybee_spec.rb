@@ -40,8 +40,8 @@ RSpec.describe Honeybee do
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
-    #expect(hash[:rooms]).not_to be_nil
-    #expect(hash[:rooms].size).to eq 15
+    expect(hash[:rooms]).not_to be_nil
+    expect(hash[:rooms].size).to eq 15
   end
 
 end

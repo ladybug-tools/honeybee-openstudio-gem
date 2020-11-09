@@ -31,6 +31,8 @@
 
 require 'honeybee/model'
 
+require 'from_openstudio/geometry/room'
+
 require 'openstudio'
 
 module Honeybee
@@ -40,11 +42,13 @@ module Honeybee
     def self.translate_from_openstudio(openstudio_model)
       hash = {}
       hash[:type] = 'Model'
-      result = Model.new(hash)
-      openstudio_model.getSpaces.each do |space|
 
+      hash[:rooms] = []
+      openstudio_model.getSpaces.each do |space|
+        hash[:rooms] << Room.from_space(space)
       end
-      result
+
+      Model.new(hash)
     end
 
     # Create Ladybug Energy Model JSON from OSM file
