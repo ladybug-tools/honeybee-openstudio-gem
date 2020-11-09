@@ -88,5 +88,5 @@ require 'honeybee/ventcool/opening'
 require 'honeybee/ventcool/simulation'
 
 # import the simulation objects
-require 'honeybee/simulation/extension'
-require 'honeybee/simulation/parameter'
+require 'honeybee/simulation/designday'
+require 'honeybee/simulation/parameter_model'

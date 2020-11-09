@@ -89,4 +89,4 @@ require 'to_openstudio/ventcool/simulation'
 
 # extend the simulation objects
 require 'to_openstudio/simulation/designday'
-require 'to_openstudio/simulation/parameter'
+require 'to_openstudio/simulation/parameter_model'

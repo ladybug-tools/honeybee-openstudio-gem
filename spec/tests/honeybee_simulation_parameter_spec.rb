@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -30,13 +30,8 @@
 # *******************************************************************************
 
 require_relative '../spec_helper'
-require 'honeybee/simulation/extension'
 
 RSpec.describe Honeybee do
-  it 'has a schema_file' do
-    extension = Honeybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.schema_file)).to be true
-  end
 
   it 'can load simple simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_simple.json')
@@ -45,7 +40,6 @@ RSpec.describe Honeybee do
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
   end
-
 
   it 'can load detailed simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_detailed.json')

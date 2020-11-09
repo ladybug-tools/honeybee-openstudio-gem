@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -29,18 +29,58 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'openstudio/extension'
-
-require 'honeybee/extension'
-
-
 module Honeybee
-  class ExtensionSimulationParameter < Honeybee::Extension
+
+  class SimulationParameter
+    attr_reader :errors, :warnings
+
     @@schema = nil
 
-    def schema_file
-      File.join(@lib_dir, 'honeybee', '_defaults', 'simulation-parameter.json')
+    # Read Simulation Parameter JSON from disk
+    def self.read_from_disk(file)
+      hash = nil
+      File.open(File.join(file), 'r') do |f|
+        hash = JSON.parse(f.read, symbolize_names: true)
+      end
+
+      SimulationParameter.new(hash)
     end
 
-  end
-end
+    # Load ModelObject from symbolized hash
+    def initialize(hash)
+      if @@schema.nil?
+        schema_path = File.join(File.dirname(__FILE__), '..', '_defaults', 'simulation-parameter.json')
+        File.open(schema_path) do |f|
+          @@schema = JSON.parse(f.read, symbolize_names: true)
+        end
+      end
+
+      @hash = hash
+      @type = @hash[:type]
+      raise 'Unknown model type' if @type.nil?
+      raise "Incorrect model type for SimulationParameter '#{@type}'" unless @type == 'SimulationParameter'
+    end
+
+    # check if the model is valid
+    def valid?
+      if Gem.loaded_specs.has_key?("json-schema")
+        return validation_errors.empty?
+      else
+        return true
+      end
+    end
+
+    # return detailed model validation errors
+    def validation_errors
+      if Gem.loaded_specs.has_key?("json-schema")
+        require 'json-schema'
+        JSON::Validator.fully_validate(@@schema, @hash)
+      end
+    end
+
+    def defaults
+      @@schema[:components][:schemas]
+    end
+
+  end #SimulationParameter
+end #Honeybee

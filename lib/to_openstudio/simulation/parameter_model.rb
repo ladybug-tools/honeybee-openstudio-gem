@@ -29,58 +29,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/simulation/parameter'
+require 'honeybee/simulation/parameter_model'
+
 require 'openstudio'
 
 module Honeybee
   class SimulationParameter
-    attr_reader :errors, :warnings
-
-    # Read Simulation Parameter JSON from disk
-    def self.read_from_disk(file)
-      hash = nil
-      File.open(File.join(file), 'r') do |f|
-        hash = JSON.parse(f.read, symbolize_names: true)
-      end
-
-      SimulationParameter.new(hash)
-    end
-
-    # Load ModelObject from symbolized hash
-    def initialize(hash)
-      # initialize class variable @@extension only once
-      @@extension = ExtensionSimulationParameter.new
-      @@schema = nil
-      File.open(@@extension.schema_file) do |f|
-      @@schema = JSON.parse(f.read, symbolize_names: true)
-      end
-
-      @hash = hash
-      @type = @hash[:type]
-      raise 'Unknown model type' if @type.nil?
-      raise "Incorrect model type for SimulationParameter '#{@type}'" unless @type == 'SimulationParameter'
-    end
-
-    # check if the model is valid
-    def valid?
-      if Gem.loaded_specs.has_key?("json-schema")
-        return validation_errors.empty?
-      else
-        return true
-      end
-    end
-
-    # return detailed model validation errors
-    def validation_errors
-      if Gem.loaded_specs.has_key?("json-schema")
-        require 'json-schema'
-        JSON::Validator.fully_validate(@@schema, @hash)
-      end
-    end
-
-    def defaults
-      @@schema[:components][:schemas]
-    end
 
     # convert to openstudio model, clears errors and warnings
     def to_openstudio_model(openstudio_model=nil, log_report=false)
