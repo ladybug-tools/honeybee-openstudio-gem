@@ -34,6 +34,48 @@ require 'honeybee/model_object'
 module Honeybee
   class Face < ModelObject
 
+    def self.from_surface(surface)
+      hash = {}
+      hash[:type] = 'Face'
+      hash[:identifier] = surface.nameString
+      hash[:display_name] = surface.nameString
+      hash[:properties] = self.properties_from_surface(surface)
+      hash[:geometry] = self.geometry_from_surface(surface)
+      hash[:face_type] = self.face_type_from_surface(surface)
+      hash[:boundary_condition] = self.boundary_condition_from_surface(surface)
+      hash
+    end
+
+    def self.properties_from_surface(surface)
+      hash = {}
+      hash[:type] = 'FacePropertiesAbridged'
+      hash[:energy] = self.energy_properties_from_surface(surface)
+      hash
+    end
+
+    def self.energy_properties_from_surface(surface)
+      hash = {}
+      hash[:type] = 'FaceEnergyPropertiesAbridged'
+      hash
+    end
+
+    def self.geometry_from_surface(surface)
+      result = []
+      # do we want these in absolute coordinates?
+      surface.vertices.each do |v|
+        result << [v.x, v.y, v.z]
+      end
+      result
+    end
+
+    def self.face_type_from_surface(surface)
+      # "Wall", "Floor", "RoofCeiling", "AirBoundary"
+      surface.surfaceType
+    end
+
+    def self.boundary_condition_from_surface(surface)
+      {}
+    end
 
   end #Shade
 end #Honeybee

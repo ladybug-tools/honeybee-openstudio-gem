@@ -42,6 +42,7 @@ RSpec.describe Honeybee do
     expect(hash[:type]).to eq 'Model'
     expect(hash[:rooms]).not_to be_nil
     expect(hash[:rooms].size).to eq 15
+    puts JSON::pretty_generate(hash)
   end
 
 end

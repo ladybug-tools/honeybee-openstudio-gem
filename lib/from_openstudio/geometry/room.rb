@@ -39,7 +39,30 @@ module Honeybee
       hash[:type] = 'Room'
       hash[:identifier] = space.nameString
       hash[:display_name] = space.nameString
+      hash[:properties] = self.properties_from_space(space)
+      hash[:faces] = faces_from_space(space)
       hash
+    end
+
+    def self.properties_from_space(space)
+      hash = {}
+      hash[:type] = 'RoomPropertiesAbridged'
+      hash[:energy] = self.energy_properties_from_space(space)
+      hash
+    end
+
+    def self.energy_properties_from_space(space)
+      hash = {}
+      hash[:type] = 'RoomEnergyPropertiesAbridged'
+      hash
+    end
+
+    def self.faces_from_space(space)
+      result = []
+      space.surfaces.each do |surface|
+        result << Face.from_surface(surface)
+      end
+      result
     end
 
   end # Aperture

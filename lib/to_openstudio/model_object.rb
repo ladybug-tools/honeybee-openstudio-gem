@@ -47,5 +47,6 @@ module Honeybee
     def to_openstudio(openstudio_model)
       raise 'to_openstudio is not yet implemented for this ModelObject.'
     end
+
   end # ModelObject
 end # Honeybee
