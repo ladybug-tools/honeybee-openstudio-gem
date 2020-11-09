@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class OpaqueConstructionAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:OpaqueConstructionAbridged][:properties]
     end

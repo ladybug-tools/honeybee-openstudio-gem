@@ -34,7 +34,7 @@ require 'honeybee/model_object'
 
 module Honeybee
   class Model
-    attr_reader :errors, :warnings
+    attr_reader :errors, :warnings, :hash
 
     # Read Ladybug Energy Model JSON from disk
     def self.read_from_disk(file)

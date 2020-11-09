@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class ElectricEquipmentAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'ElectricEquipmentAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:ElectricEquipmentAbridged][:properties]
     end

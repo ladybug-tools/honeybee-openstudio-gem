@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class VentilationSimulationControl < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:VentilationSimulationControl][:properties]
     end

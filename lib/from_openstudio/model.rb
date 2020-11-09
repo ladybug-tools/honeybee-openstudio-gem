@@ -40,7 +40,11 @@ module Honeybee
     def self.translate_from_openstudio(openstudio_model)
       hash = {}
       hash[:type] = 'Model'
-      Model.new(hash)
+      result = Model.new(hash)
+      openstudio_model.getSpaces.each do |space|
+
+      end
+      result
     end
 
     # Create Ladybug Energy Model JSON from OSM file

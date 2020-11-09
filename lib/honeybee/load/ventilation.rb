@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class VentilationAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'VentilationAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:VentilationAbridged][:properties]
     end

@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class IdealAirSystemAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'IdealAirSystemAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:IdealAirSystemAbridged][:properties]
     end

@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class EnergyWindowMaterialGas < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:EnergyWindowMaterialGas][:properties]
     end

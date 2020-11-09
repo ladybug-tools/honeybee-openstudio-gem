@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class Door < ModelObject
 
-    def initialize(hash)
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'Door'
-    end
-
     def defaults
       @@schema[:components][:schemas][:DoorEnergyPropertiesAbridged][:properties]
     end

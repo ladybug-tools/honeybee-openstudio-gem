@@ -35,10 +35,6 @@ require 'honeybee/construction/window'
 module Honeybee
   class WindowConstructionShadeAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:WindowConstructionShadeAbridged][:properties]
     end

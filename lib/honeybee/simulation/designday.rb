@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class DesignDay < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:DesignDay][:properties]
     end

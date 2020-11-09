@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class PeopleAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'PeopleAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:PeopleAbridged][:properties]
     end

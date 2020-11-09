@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -36,6 +36,7 @@ RSpec.describe Honeybee do
   it 'can load a gbXML and translate to Honeybee' do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
     honeybee = Honeybee::Model.translate_from_osm_file(file)
+    expect(honeybee.valid?).to be true
   end
 
 end

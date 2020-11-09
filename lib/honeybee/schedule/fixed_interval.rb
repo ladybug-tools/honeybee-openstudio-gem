@@ -34,12 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class ScheduleFixedIntervalAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-
-      raise "Incorrect model type '#{@type}'" unless @type == 'ScheduleFixedIntervalAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:ScheduleFixedIntervalAbridged][:properties]
     end

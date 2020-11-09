@@ -36,12 +36,6 @@ require 'honeybee/geometry/door'
 module Honeybee
   class Face < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-
-      raise "Incorrect model type '#{@type}'" unless @type == 'Face'
-    end
-
     def defaults
       @@schema[:components][:schemas][:FaceEnergyPropertiesAbridged][:properties]
     end

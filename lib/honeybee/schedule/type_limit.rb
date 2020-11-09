@@ -34,12 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class ScheduleTypeLimit < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-
-      raise "Incorrect model type '#{@type}'" unless @type == 'ScheduleTypeLimit'
-    end
-
     def defaults
       @@schema[:components][:schemas][:ScheduleTypeLimit][:properties]
     end

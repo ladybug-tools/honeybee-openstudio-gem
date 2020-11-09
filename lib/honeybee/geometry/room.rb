@@ -48,12 +48,6 @@ require 'honeybee/ventcool/control'
 module Honeybee
   class Room < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'Room'
-      @unique_space_type = nil
-    end
-
     def defaults
       @@schema[:components][:schemas][:RoomEnergyPropertiesAbridged][:properties]
     end

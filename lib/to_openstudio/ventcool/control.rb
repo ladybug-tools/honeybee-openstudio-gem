@@ -34,7 +34,7 @@ require 'honeybee/ventcool/opening'
 require 'to_openstudio/model_object'
 
 module Honeybee
-  class VentilationControl
+  class VentilationControlAbridged
     @@outdoor_node = nil
     @@program_manager = nil
     @@sensor_count = 1

@@ -34,9 +34,8 @@ require 'honeybee/model_object'
 module Honeybee
   class SetpointHumidistat < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'SetpointAbridged'
+    def allowable_types
+      ['SetpointAbridged']
     end
 
     def defaults

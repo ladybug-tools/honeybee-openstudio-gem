@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class EnergyMaterialNoMass < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties]
     end

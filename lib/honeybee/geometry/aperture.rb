@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class Aperture < ModelObject
 
-    def initialize(hash)
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'Aperture'
-    end
-
     def defaults
       @@schema[:components][:schemas][:ApertureEnergyPropertiesAbridged][:properties]
     end

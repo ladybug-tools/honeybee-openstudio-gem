@@ -41,8 +41,8 @@ module Honeybee
                          'Residential', 'WindowAC', 'GasUnitHeater']
     @@types = @@all_air_types + @@doas_types + @@heat_cool_types
 
-    def initialize(hash = {})
-      super(hash)
+    def allowable_types
+      @@types
     end
 
     def self.types

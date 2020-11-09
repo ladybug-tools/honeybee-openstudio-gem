@@ -34,10 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class ConstructionSetAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-    end
-
     def defaults
       @@schema[:components][:schemas][:ConstructionSetAbridged][:properties]
     end

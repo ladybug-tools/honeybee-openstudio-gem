@@ -71,7 +71,11 @@ module Honeybee
       @hash = hash
       @type = @hash[:type]
       raise 'Unknown type' if @type.nil?
-      raise "Incorrect model type '#{@type}'" unless @type == @hash[:type]
+      raise "Incorrect model object type '#{@type}' for '#{self.class.name}'" unless allowable_types.include?(@type)
+    end
+
+    def allowable_types
+      [self.class.name.split('::').last]
     end
 
     # hash containing the object defaults taken from the open API schema

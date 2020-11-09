@@ -36,11 +36,7 @@ require 'to_openstudio/model_object'
 module Honeybee
   class Room
 
-    alias initialize_original initialize
-    def initialize(hash = {})
-      initialize_original(hash)
-      @unique_space_type = nil
-    end
+    attr_reader :unique_space_type
 
     def find_existing_openstudio_object(openstudio_model)
       model_space = openstudio_model.getSpaceByName(@hash[:identifier])
@@ -346,7 +342,7 @@ module Honeybee
         end
         # add the control startegy of the ventilation openings using the EMS
         if @hash[:properties][:energy][:window_vent_control]
-          vent_control = VentilationControl.new(@hash[:properties][:energy][:window_vent_control])
+          vent_control = VentilationControlAbridged.new(@hash[:properties][:energy][:window_vent_control])
           vent_control.to_openstudio(
             openstudio_model, os_thermal_zone, operable_subfs, opening_factors)
         end

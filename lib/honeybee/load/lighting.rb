@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class LightingAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'LightingAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:LightingAbridged][:properties]
     end

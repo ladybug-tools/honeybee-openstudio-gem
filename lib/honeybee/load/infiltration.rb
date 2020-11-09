@@ -34,11 +34,6 @@ require 'honeybee/model_object'
 module Honeybee
   class InfiltrationAbridged < ModelObject
 
-    def initialize(hash = {})
-      super(hash)
-      raise "Incorrect model type '#{@type}'" unless @type == 'InfiltrationAbridged'
-    end
-
     def defaults
       @@schema[:components][:schemas][:InfiltrationAbridged][:properties]
     end

@@ -36,13 +36,6 @@ require 'to_openstudio/model_object'
 module Honeybee
   class ProgramTypeAbridged
 
-    alias initialize_original initialize
-    def initialize(hash = {})
-      initialize_original(hash)
-
-      raise "Incorrect model type '#{@type}'" unless @type == 'ProgramTypeAbridged'
-    end
-
     def find_existing_openstudio_object(openstudio_model)
       model_space_type = openstudio_model.getSpaceTypeByName(@hash[:identifier])
       return model_space_type.get unless model_space_type.empty?
