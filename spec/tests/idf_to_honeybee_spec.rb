@@ -29,54 +29,23 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/model'
+require_relative '../spec_helper'
 
-require 'from_openstudio/geometry/room'
+RSpec.describe Honeybee do
 
-require 'openstudio'
+  it 'can load a IDF and translate to Honeybee' do
+    file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
+    honeybee = Honeybee::Model.translate_from_idf_file(file)
+    expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'Model'
+    expect(hash[:rooms]).not_to be_nil
+    expect(hash[:rooms].size).to eq 5
 
-module Honeybee
-  class Model
-
-    # Create Ladybug Energy Model JSON from OpenStudio Model
-    def self.translate_from_openstudio(openstudio_model)
-      hash = {}
-      hash[:type] = 'Model'
-      hash[:identifier] = 'Model'
-      hash[:display_name] = 'Model'
-      hash[:units] = 'Meters'
-
-      hash[:rooms] = []
-      openstudio_model.getSpaces.each do |space|
-        hash[:rooms] << Room.from_space(space)
-      end
-
-      Model.new(hash)
+    File.open('5ZoneAirCooled.hbjson', 'w') do |f|
+      f.puts JSON::pretty_generate(hash)
     end
+  end
 
-    # Create Ladybug Energy Model JSON from OSM file
-    def self.translate_from_osm_file(file)
-      vt = OpenStudio::OSVersion::VersionTranslator.new
-      openstudio_model = vt.loadModel(file)
-      raise "Cannot load OSM file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
-    end
-
-    # Create Ladybug Energy Model JSON from gbXML file
-    def self.translate_from_gbxml_file(file)
-      translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
-      openstudio_model = translator.loadModel(file)
-      raise "Cannot load gbXML file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
-    end
-
-    # Create Ladybug Energy Model JSON from IDF file
-    def self.translate_from_idf_file(file)
-      translator = OpenStudio::EnergyPlus::EnergyPlusReverseTranslator.new
-      openstudio_model = translator.loadModel(file)
-      raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
-    end
-
-  end # Model
-end # Honeybee
+end
