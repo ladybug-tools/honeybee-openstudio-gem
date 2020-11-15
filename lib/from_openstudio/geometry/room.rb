@@ -45,10 +45,10 @@ module Honeybee
       site_transformation = space.siteTransformation
       hash[:faces] = faces_from_space(space, site_transformation)
 
-      indoor_shades = indoor_shades_from_space(space, site_transformation)
+      indoor_shades = indoor_shades_from_space(space)
       hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
 
-      outdoor_shades = outdoor_shades_from_space(space, site_transformation)
+      outdoor_shades = outdoor_shades_from_space(space)
       hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
 
       multipler = multiplier_from_space(space)
@@ -81,19 +81,35 @@ module Honeybee
       result
     end
 
-    def self.indoor_shades_from_space(space, site_transformation)
+    def self.indoor_shades_from_space(space)
       []
     end
 
-    def self.outdoor_shades_from_space(space, site_transformation)
-      []
+    def self.outdoor_shades_from_space(space)
+      result = []
+      space.shadingSurfaceGroups.each do |shading_surface_group|
+        # TODO: skip if attached to a surface
+        site_transformation = shading_surface_group.siteTransformation
+        shading_surface_group.shadingSurfaces.each do |shading_surface|
+          result << Shade.from_shading_surface(shading_surface, site_transformation)
+        end
+      end
+      result
     end
 
     def self.multiplier_from_space(space)
+      multiplier = space.multiplier
+      if multiplier != 1
+        return multiplier
+      end
       nil
     end
 
     def self.story_from_space(space)
+      story = space.buildingStory
+      if !story.empty?
+        return story.get.nameString
+      end
       nil
     end
 

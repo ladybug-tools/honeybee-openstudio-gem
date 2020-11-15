@@ -36,5 +36,44 @@ require 'to_openstudio/model_object'
 module Honeybee
   class Aperture < ModelObject
 
+    def self.from_sub_surface(sub_surface, site_transformation)
+      hash = {}
+      hash[:type] = 'Aperture'
+      hash[:identifier] = sub_surface.nameString
+      hash[:display_name] = sub_surface.nameString
+      hash[:user_data] = {handle: sub_surface.handle.to_s}
+      hash[:properties] = properties_from_sub_surface(sub_surface)
+      hash[:geometry] = geometry_from_sub_surface(sub_surface, site_transformation)
+
+      sub_surface_type = sub_surface.subSurfaceType
+      hash[:is_operable] = (sub_surface_type == 'OperableWindow')
+
+      hash
+    end
+
+    def self.properties_from_sub_surface(sub_surface)
+      hash = {}
+      hash[:type] = 'AperturePropertiesAbridged'
+      hash[:energy] = energy_properties_from_sub_surface(sub_surface)
+      hash
+    end
+
+    def self.energy_properties_from_sub_surface(sub_surface)
+      hash = {}
+      hash[:type] = 'ApertureFaceEnergyPropertiesAbridged'
+      hash
+    end
+
+    def self.geometry_from_sub_surface(sub_surface, site_transformation)
+      result = {}
+      result[:type] = 'Face3D'
+      result[:boundary] = []
+      vertices = site_transformation * sub_surface.vertices
+      vertices.each do |v|
+        result[:boundary] << [v.x, v.y, v.z]
+      end
+      result
+    end
+
   end # Aperture
 end # Honeybee

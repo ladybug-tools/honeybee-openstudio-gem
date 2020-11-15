@@ -86,19 +86,57 @@ module Honeybee
 
     def self.face_type_from_surface(surface)
       # "Wall", "Floor", "RoofCeiling", "AirBoundary"
+      if surface.isAirWall
+        return 'AirBoundary'
+      end
       surface.surfaceType
     end
 
     def self.boundary_condition_from_surface(surface)
-      {}
+      result = {}
+      surface_type = surface.surfaceType
+      adjacent_surface = surface.adjacentSurface
+      if !adjacent_surface.empty?
+        result = {type: 'Surface', boundary_condition_objects: [adjacent_surface.get.nameString]}
+      elsif surface.isGroundSurface
+        result = {type: 'Ground'}
+      elsif surface_type == 'Adiabatic'
+        result = {type: 'Adiabatic'}
+      else
+        sun_exposure = (surface.sunExposure == 'SunExposed')
+        wind_exposure = (surface.windExposure == 'WindExposed')
+        view_factor = surface.viewFactortoGround
+        if view_factor.empty?
+          view_factor = {type: 'Autocalculate'}
+        else
+          view_factor = view_factor.get
+        end
+        result = {type: 'Outdoors', sun_exposure: sun_exposure,
+                  wind_exposure: wind_exposure, view_factor: view_factor}
+      end
+      result
     end
 
     def self.apertures_from_surface(surface, site_transformation)
-      []
+      result = []
+      surface.subSurfaces.each do |sub_surface|
+        sub_surface_type = sub_surface.subSurfaceType
+        if !/Door/.match(sub_surface_type)
+          result << Aperture.from_sub_surface(sub_surface, site_transformation)
+        end
+      end
+      result
     end
 
     def self.doors_from_surface(surface, site_transformation)
-      []
+      result = []
+      surface.subSurfaces.each do |sub_surface|
+        sub_surface_type = sub_surface.subSurfaceType
+        if /Door/.match(sub_surface_type)
+          result << Aperture.from_sub_surface(sub_surface, site_transformation)
+        end
+      end
+      result
     end
 
     def self.indoor_shades_from_surface(surface, site_transformation)
