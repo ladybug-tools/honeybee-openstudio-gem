@@ -29,16 +29,48 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the honeybee objects which we will extend
-require 'honeybee'
+require 'honeybee/geometry/shade'
 
-# extend the compound objects that house the other objects
-require 'from_openstudio/model'
-require 'from_openstudio/model_object'
+require 'to_openstudio/model_object'
 
-# extend the geometry objects
-require 'from_openstudio/geometry/aperture'
-require 'from_openstudio/geometry/door'
-require 'from_openstudio/geometry/face'
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
+module Honeybee
+  class Shade
+
+    def self.from_shading_surface(shading_surface, site_transformation)
+      hash = {}
+      hash[:type] = 'Shade'
+      hash[:identifier] = shading_surface.nameString
+      hash[:display_name] = shading_surface.nameString
+      hash[:user_data] = {handle: shading_surface.handle.to_s}
+      hash[:properties] = properties_from_shading_surface(shading_surface)
+      hash[:geometry] = geometry_from_shading_surface(shading_surface, site_transformation)
+
+      hash
+    end
+
+    def self.properties_from_shading_surface(shading_surface)
+      hash = {}
+      hash[:type] = 'ShadePropertiesAbridged'
+      hash[:energy] = energy_properties_from_shading_surface(shading_surface)
+      hash
+    end
+
+    def self.energy_properties_from_shading_surface(shading_surface)
+      hash = {}
+      hash[:type] = 'ShadeEnergyPropertiesAbridged'
+      hash
+    end
+
+    def self.geometry_from_shading_surface(shading_surface, site_transformation)
+      result = {}
+      result[:type] = 'Face3D'
+      result[:boundary] = []
+      vertices = site_transformation * shading_surface.vertices
+      vertices.each do |v|
+        result[:boundary] << [v.x, v.y, v.z]
+      end
+      result
+    end
+
+  end #Shade
+end #Honeybee

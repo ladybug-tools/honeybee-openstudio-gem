@@ -32,6 +32,7 @@
 require 'honeybee/model'
 
 require 'from_openstudio/geometry/room'
+require 'from_openstudio/geometry/shade'
 
 require 'openstudio'
 
@@ -46,10 +47,11 @@ module Honeybee
       hash[:display_name] = 'Model'
       hash[:units] = 'Meters'
 
-      hash[:rooms] = []
-      openstudio_model.getSpaces.each do |space|
-        hash[:rooms] << Room.from_space(space)
-      end
+      rooms = rooms_from_model(openstudio_model)
+      hash[:rooms] = rooms if !rooms.empty?
+
+      orphaned_shades = orphaned_shades_from_model(openstudio_model)
+      hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
 
       Model.new(hash)
     end
@@ -76,6 +78,28 @@ module Honeybee
       openstudio_model = translator.loadModel(file)
       raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    def self.rooms_from_model(openstudio_model)
+      result = []
+      openstudio_model.getSpaces.each do |space|
+        result << Room.from_space(space)
+      end
+      result
+    end
+
+    def self.orphaned_shades_from_model(openstudio_model)
+      result = []
+      openstudio_model.getShadingSurfaceGroups.each do |shading_surface_group|
+        shading_surface_type = shading_surface_group.shadingSurfaceType
+        if shading_surface_type == 'Site' || shading_surface_type == 'Building'
+          site_transformation = shading_surface_group.siteTransformation
+          shading_surface_group.shadingSurfaces.each do |shading_surface|
+            result << Shade.from_shading_surface(shading_surface, site_transformation)
+          end
+        end
+      end
+      result
     end
 
   end # Model

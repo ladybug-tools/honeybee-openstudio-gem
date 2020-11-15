@@ -39,8 +39,24 @@ module Honeybee
       hash[:type] = 'Room'
       hash[:identifier] = space.nameString
       hash[:display_name] = space.nameString
-      hash[:properties] = self.properties_from_space(space)
-      hash[:faces] = faces_from_space(space)
+      hash[:user_data] = {space: space.handle.to_s}
+      hash[:properties] = properties_from_space(space)
+
+      site_transformation = space.siteTransformation
+      hash[:faces] = faces_from_space(space, site_transformation)
+
+      indoor_shades = indoor_shades_from_space(space, site_transformation)
+      hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
+
+      outdoor_shades = outdoor_shades_from_space(space, site_transformation)
+      hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
+
+      multipler = multiplier_from_space(space)
+      hash[:multipler] = multipler if multipler
+
+      story = story_from_space(space)
+      hash[:story] = story if story
+
       hash
     end
 
@@ -57,13 +73,28 @@ module Honeybee
       hash
     end
 
-    def self.faces_from_space(space)
+    def self.faces_from_space(space, site_transformation)
       result = []
-      site_transformation = space.siteTransformation
       space.surfaces.each do |surface|
         result << Face.from_surface(surface, site_transformation)
       end
       result
+    end
+
+    def self.indoor_shades_from_space(space, site_transformation)
+      []
+    end
+
+    def self.outdoor_shades_from_space(space, site_transformation)
+      []
+    end
+
+    def self.multiplier_from_space(space)
+      nil
+    end
+
+    def self.story_from_space(space)
+      nil
     end
 
   end # Aperture

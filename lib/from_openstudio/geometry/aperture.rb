@@ -29,16 +29,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the honeybee objects which we will extend
-require 'honeybee'
+require 'honeybee/geometry/aperture'
 
-# extend the compound objects that house the other objects
-require 'from_openstudio/model'
-require 'from_openstudio/model_object'
+require 'to_openstudio/model_object'
 
-# extend the geometry objects
-require 'from_openstudio/geometry/aperture'
-require 'from_openstudio/geometry/door'
-require 'from_openstudio/geometry/face'
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
+module Honeybee
+  class Aperture < ModelObject
+
+  end # Aperture
+end # Honeybee

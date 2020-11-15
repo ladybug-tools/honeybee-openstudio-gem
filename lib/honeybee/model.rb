@@ -56,6 +56,10 @@ module Honeybee
       @type = @hash[:type]
       raise 'Unknown model type' if @type.nil?
       raise "Incorrect model type '#{@type}'" unless @type == 'Model'
+
+      if @hash[:version].nil?
+        @hash[:version] = @@schema[:info][:version]
+      end
     end
 
     # check if the model is valid

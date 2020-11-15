@@ -39,17 +39,31 @@ module Honeybee
       hash[:type] = 'Face'
       hash[:identifier] = surface.nameString
       hash[:display_name] = surface.nameString
-      hash[:properties] = self.properties_from_surface(surface)
-      hash[:geometry] = self.geometry_from_surface(surface, site_transformation)
-      hash[:face_type] = self.face_type_from_surface(surface)
-      hash[:boundary_condition] = self.boundary_condition_from_surface(surface)
+      hash[:user_data] = {handle: surface.handle.to_s}
+      hash[:properties] = properties_from_surface(surface)
+      hash[:geometry] = geometry_from_surface(surface, site_transformation)
+      hash[:face_type] = face_type_from_surface(surface)
+      hash[:boundary_condition] = boundary_condition_from_surface(surface)
+
+      apertures = apertures_from_surface(surface, site_transformation)
+      hash[:apertures] = apertures if !apertures.empty?
+
+      doors = doors_from_surface(surface, site_transformation)
+      hash[:doors] = doors if !doors.empty?
+
+      indoor_shades = indoor_shades_from_surface(surface, site_transformation)
+      hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
+
+      outdoor_shades = outdoor_shades_from_surface(surface, site_transformation)
+      hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
+
       hash
     end
 
     def self.properties_from_surface(surface)
       hash = {}
       hash[:type] = 'FacePropertiesAbridged'
-      hash[:energy] = self.energy_properties_from_surface(surface)
+      hash[:energy] = energy_properties_from_surface(surface)
       hash
     end
 
@@ -79,5 +93,21 @@ module Honeybee
       {}
     end
 
-  end #Shade
+    def self.apertures_from_surface(surface, site_transformation)
+      []
+    end
+
+    def self.doors_from_surface(surface, site_transformation)
+      []
+    end
+
+    def self.indoor_shades_from_surface(surface, site_transformation)
+      []
+    end
+
+    def self.outdoor_shades_from_surface(surface, site_transformation)
+      []
+    end
+
+  end #Face
 end #Honeybee
