@@ -59,8 +59,9 @@ module Honeybee
 
     def self.faces_from_space(space)
       result = []
+      site_transformation = space.siteTransformation
       space.surfaces.each do |surface|
-        result << Face.from_surface(surface)
+        result << Face.from_surface(surface, site_transformation)
       end
       result
     end

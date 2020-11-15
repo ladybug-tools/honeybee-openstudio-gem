@@ -72,7 +72,7 @@ module Honeybee
 
     # Create Ladybug Energy Model JSON from IDF file
     def self.translate_from_idf_file(file)
-      translator = OpenStudio::EnergyPlus::EnergyPlusReverseTranslator.new
+      translator = OpenStudio::EnergyPlus::ReverseTranslator.new
       openstudio_model = translator.loadModel(file)
       raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)

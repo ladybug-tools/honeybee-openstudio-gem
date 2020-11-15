@@ -34,13 +34,13 @@ require 'honeybee/model_object'
 module Honeybee
   class Face < ModelObject
 
-    def self.from_surface(surface)
+    def self.from_surface(surface, site_transformation)
       hash = {}
       hash[:type] = 'Face'
       hash[:identifier] = surface.nameString
       hash[:display_name] = surface.nameString
       hash[:properties] = self.properties_from_surface(surface)
-      hash[:geometry] = self.geometry_from_surface(surface)
+      hash[:geometry] = self.geometry_from_surface(surface, site_transformation)
       hash[:face_type] = self.face_type_from_surface(surface)
       hash[:boundary_condition] = self.boundary_condition_from_surface(surface)
       hash
@@ -59,12 +59,12 @@ module Honeybee
       hash
     end
 
-    def self.geometry_from_surface(surface)
+    def self.geometry_from_surface(surface, site_transformation)
       result = {}
       result[:type] = 'Face3D'
       result[:boundary] = []
-      # do we want these in absolute coordinates?
-      surface.vertices.each do |v|
+      vertices = site_transformation * surface.vertices
+      vertices.each do |v|
         result[:boundary] << [v.x, v.y, v.z]
       end
       result

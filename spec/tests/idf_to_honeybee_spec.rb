@@ -41,7 +41,7 @@ RSpec.describe Honeybee do
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
     expect(hash[:rooms]).not_to be_nil
-    expect(hash[:rooms].size).to eq 5
+    expect(hash[:rooms].size).to eq 6 # plenum is being translated to a room
 
     File.open('5ZoneAirCooled.hbjson', 'w') do |f|
       f.puts JSON::pretty_generate(hash)
