@@ -60,10 +60,12 @@ module Honeybee
     end
 
     def self.geometry_from_surface(surface)
-      result = []
+      result = {}
+      result[:type] = 'Face3D'
+      result[:boundary] = []
       # do we want these in absolute coordinates?
       surface.vertices.each do |v|
-        result << [v.x, v.y, v.z]
+        result[:boundary] << [v.x, v.y, v.z]
       end
       result
     end

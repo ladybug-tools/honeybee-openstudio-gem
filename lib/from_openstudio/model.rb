@@ -42,6 +42,9 @@ module Honeybee
     def self.translate_from_openstudio(openstudio_model)
       hash = {}
       hash[:type] = 'Model'
+      hash[:identifier] = 'Model'
+      hash[:display_name] = 'Model'
+      hash[:units] = 'Meters'
 
       hash[:rooms] = []
       openstudio_model.getSpaces.each do |space|

@@ -37,6 +37,15 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
     honeybee = Honeybee::Model.translate_from_osm_file(file)
     expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'Model'
+    expect(hash[:rooms]).not_to be_nil
+    expect(hash[:rooms].size).to eq 4
+
+    File.open('exampleModel.hbjson', 'w') do |f|
+      f.puts JSON::pretty_generate(hash)
+    end
   end
 
 end
