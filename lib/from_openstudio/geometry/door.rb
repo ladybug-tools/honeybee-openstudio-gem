@@ -44,9 +44,16 @@ module Honeybee
       hash[:user_data] = {handle: sub_surface.handle.to_s}
       hash[:properties] = properties_from_sub_surface(sub_surface)
       hash[:geometry] = geometry_from_sub_surface(sub_surface, site_transformation)
+      hash[:boundary_condition] = boundary_condition_from_sub_surface(sub_surface)
 
       sub_surface_type = sub_surface.subSurfaceType
       hash[:is_glass] = (sub_surface_type == 'GlassDoor')
+
+      indoor_shades = indoor_shades_from_sub_surface(sub_surface, site_transformation)
+      hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
+
+      outdoor_shades = outdoor_shades_from_sub_surface(sub_surface, site_transformation)
+      hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
 
       hash
     end
@@ -61,6 +68,12 @@ module Honeybee
     def self.energy_properties_from_sub_surface(sub_surface)
       hash = {}
       hash[:type] = 'DoorFaceEnergyPropertiesAbridged'
+
+      construction = sub_surface.construction
+      if !construction.empty?
+        hash[:construction] = construction.get.nameString
+      end
+
       hash
     end
 
@@ -71,6 +84,50 @@ module Honeybee
       vertices = site_transformation * sub_surface.vertices
       vertices.each do |v|
         result[:boundary] << [v.x, v.y, v.z]
+      end
+      result
+    end
+
+    def self.boundary_condition_from_sub_surface(sub_surface)
+      result = {}
+      surface = sub_surface.surface.get
+      surface_type = surface.surfaceType
+      adjacent_sub_surface = sub_surface.adjacentSubSurface
+      if !adjacent_sub_surface.empty?
+        adjacent_space = adjacent_sub_surface.get.space.get.nameString
+        adjacent_surface = adjacent_sub_surface.get.surface.get.nameString
+        adjacent_sub_surface = adjacent_sub_surface.get.nameString
+        result = {type: 'Surface', boundary_condition_objects: [adjacent_sub_surface, adjacent_surface, adjacent_space]}
+      elsif surface.isGroundSurface
+        result = {type: 'Ground'}
+      elsif surface_type == 'Adiabatic'
+        result = {type: 'Adiabatic'}
+      else
+        sun_exposure = (surface.sunExposure == 'SunExposed')
+        wind_exposure = (surface.windExposure == 'WindExposed')
+        view_factor = sub_surface.viewFactortoGround
+        if view_factor.empty?
+          view_factor = {type: 'Autocalculate'}
+        else
+          view_factor = view_factor.get
+        end
+        result = {type: 'Outdoors', sun_exposure: sun_exposure,
+                  wind_exposure: wind_exposure, view_factor: view_factor}
+      end
+      result
+    end
+
+    def self.indoor_shades_from_sub_surface(sub_surface, site_transformation)
+      []
+    end
+
+    def self.outdoor_shades_from_sub_surface(sub_surface, site_transformation)
+      result = []
+      sub_surface.shadingSurfaceGroups.each do |shading_surface_group|
+        site_transformation = shading_surface_group.siteTransformation
+        shading_surface_group.shadingSurfaces.each do |shading_surface|
+          result << Shade.from_shading_surface(shading_surface, site_transformation)
+        end
       end
       result
     end

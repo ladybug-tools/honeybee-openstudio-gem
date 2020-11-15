@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -43,6 +43,13 @@ RSpec.describe Honeybee do
     expect(File.exist?(extension.schema_file)).to be true
   end
 
+  it 'can detect an invalid model' do
+    # missing required 'properties', includes unknown property 'ninja_turtles'
+    hash = {type: 'Model', ninja_turtles: []}
+    honeybee_model = Honeybee::Model.new(hash)
+    expect(honeybee_model.valid?).to be false
+  end
+
   it 'can load and validate complete single zone office' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.json')
@@ -70,7 +77,7 @@ RSpec.describe Honeybee do
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
 
-    openstudio_story = openstudio_space.buildingStory 
+    openstudio_story = openstudio_space.buildingStory
     expect(openstudio_story.empty?).to be false
     openstudio_story = openstudio_story.get
     expect(openstudio_story.nameString).to eq 'UndefiniedStory'
@@ -158,7 +165,7 @@ RSpec.describe Honeybee do
     expect(openstudio_default_construction.empty?).to be false
     openstudio_default_construction = openstudio_default_construction.get
     expect(openstudio_default_construction.nameString).to eq 'Default Generic Construction Set'
-    
+
     openstudio_surfaces = openstudio_model.getSurfaces
     expect(openstudio_surfaces.size).to eq 17
 

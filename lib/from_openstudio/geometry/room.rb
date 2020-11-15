@@ -88,7 +88,11 @@ module Honeybee
     def self.outdoor_shades_from_space(space)
       result = []
       space.shadingSurfaceGroups.each do |shading_surface_group|
-        # TODO: skip if attached to a surface
+        # skip if attached to a surface or sub_surface
+        if !shading_surface_group.shadedSurface.empty? || !shading_surface_group.shadedSubSurface.empty?
+          next
+        end
+
         site_transformation = shading_surface_group.siteTransformation
         shading_surface_group.shadingSurfaces.each do |shading_surface|
           result << Shade.from_shading_surface(shading_surface, site_transformation)

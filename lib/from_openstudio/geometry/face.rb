@@ -70,6 +70,12 @@ module Honeybee
     def self.energy_properties_from_surface(surface)
       hash = {}
       hash[:type] = 'FaceEnergyPropertiesAbridged'
+
+      construction = surface.construction
+      if !construction.empty?
+        hash[:construction] = construction.get.nameString
+      end
+
       hash
     end
 
@@ -97,7 +103,9 @@ module Honeybee
       surface_type = surface.surfaceType
       adjacent_surface = surface.adjacentSurface
       if !adjacent_surface.empty?
-        result = {type: 'Surface', boundary_condition_objects: [adjacent_surface.get.nameString]}
+        adjacent_space = adjacent_surface.get.space.get.nameString
+        adjacent_surface = adjacent_surface.get.nameString
+        result = {type: 'Surface', boundary_condition_objects: [adjacent_surface, adjacent_space]}
       elsif surface.isGroundSurface
         result = {type: 'Ground'}
       elsif surface_type == 'Adiabatic'
@@ -144,7 +152,14 @@ module Honeybee
     end
 
     def self.outdoor_shades_from_surface(surface, site_transformation)
-      []
+      result = []
+      surface.shadingSurfaceGroups.each do |shading_surface_group|
+        site_transformation = shading_surface_group.siteTransformation
+        shading_surface_group.shadingSurfaces.each do |shading_surface|
+          result << Shade.from_shading_surface(shading_surface, site_transformation)
+        end
+      end
+      result
     end
 
   end #Face

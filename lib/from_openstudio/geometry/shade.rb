@@ -58,6 +58,17 @@ module Honeybee
     def self.energy_properties_from_shading_surface(shading_surface)
       hash = {}
       hash[:type] = 'ShadeEnergyPropertiesAbridged'
+
+      construction = shading_surface.construction
+      if !construction.empty?
+        hash[:construction] = construction.get.nameString
+      end
+
+      transmittance_schedule = shading_surface.transmittanceSchedule
+      if !transmittance_schedule.empty?
+        hash[:transmittance_schedule] = transmittance_schedule.get.nameString
+      end
+
       hash
     end
 
