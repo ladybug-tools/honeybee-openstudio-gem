@@ -43,7 +43,9 @@ RSpec.describe Honeybee do
     expect(hash[:rooms]).not_to be_nil
     expect(hash[:rooms].size).to eq 15
 
-    File.open('gbXML_TRK.hbjson', 'w') do |f|
+    output_dir = File.join(File.dirname(__FILE__), '../output/gbxml/')
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'gbXML_TRK.hbjson'), 'w') do |f|
       f.puts JSON::pretty_generate(hash)
     end
   end

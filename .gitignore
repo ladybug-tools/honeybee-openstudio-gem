@@ -7,6 +7,7 @@
 /coverage/
 /doc/
 /pkg/
+/spec/output/
 /spec/reports/
 /spec/test/
 /tmp/
