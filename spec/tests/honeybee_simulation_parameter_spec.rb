@@ -33,9 +33,17 @@ require_relative '../spec_helper'
 
 RSpec.describe Honeybee do
 
+  it 'can detect an invalid simulation parameter' do
+    # includes unknown property 'ninja_turtles'
+    hash = {type: 'SimulationParameter', ninja_turtles: []}
+    simulation_parameter = Honeybee::SimulationParameter.new(hash)
+    expect(simulation_parameter.valid?).to be false
+  end
+
   it 'can load simple simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_simple.json')
     honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
+    expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -44,6 +52,7 @@ RSpec.describe Honeybee do
   it 'can load detailed simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_detailed.json')
     honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
+    expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
