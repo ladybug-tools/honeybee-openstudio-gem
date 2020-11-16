@@ -92,10 +92,18 @@ module Honeybee
 
     def self.face_type_from_surface(surface)
       # "Wall", "Floor", "RoofCeiling", "AirBoundary"
+      result = nil
+      surface_type = surface.surfaceType
       if surface.isAirWall
-        return 'AirBoundary'
+        result = 'AirBoundary'
+      elsif /Wall/i.match(surface_type)
+        result = 'Wall'
+      elsif /Floor/i.match(surface_type)
+        result = 'Floor'
+      elsif /RoofCeiling/i.match(surface_type)
+        result = 'RoofCeiling'
       end
-      surface.surfaceType
+      result
     end
 
     def self.boundary_condition_from_surface(surface)
@@ -141,7 +149,7 @@ module Honeybee
       surface.subSurfaces.each do |sub_surface|
         sub_surface_type = sub_surface.subSurfaceType
         if /Door/.match(sub_surface_type)
-          result << Aperture.from_sub_surface(sub_surface, site_transformation)
+          result << Door.from_sub_surface(sub_surface, site_transformation)
         end
       end
       result

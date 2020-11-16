@@ -33,9 +33,12 @@ require_relative '../spec_helper'
 
 RSpec.describe Honeybee do
 
-  it 'can load a gbXML and translate to Honeybee' do
+  it 'can load an OSM and translate to Honeybee' do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
     honeybee = Honeybee::Model.translate_from_osm_file(file)
+
+    honeybee.validation_errors.each {|error| puts error}
+
     expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil

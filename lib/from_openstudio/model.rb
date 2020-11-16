@@ -47,6 +47,8 @@ module Honeybee
       hash[:display_name] = 'Model'
       hash[:units] = 'Meters'
 
+      hash[:properties] = properties_from_model(openstudio_model)
+
       rooms = rooms_from_model(openstudio_model)
       hash[:rooms] = rooms if !rooms.empty?
 
@@ -78,6 +80,19 @@ module Honeybee
       openstudio_model = translator.loadModel(file)
       raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    def self.properties_from_model(openstudio_model)
+      hash = {}
+      hash[:type] = 'ModelProperties'
+      hash
+    end
+
+    def self.energy_properties_from_model(openstudio_model)
+      hash = {}
+      hash[:type] = 'ModelEnergyProperties'
+      hash[:energy] = energy_properties_from_model(openstudio_model)
+      hash
     end
 
     def self.rooms_from_model(openstudio_model)

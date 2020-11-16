@@ -67,7 +67,7 @@ module Honeybee
 
     def self.energy_properties_from_sub_surface(sub_surface)
       hash = {}
-      hash[:type] = 'DoorFaceEnergyPropertiesAbridged'
+      hash[:type] = 'DoorEnergyPropertiesAbridged'
 
       construction = sub_surface.construction
       if !construction.empty?
