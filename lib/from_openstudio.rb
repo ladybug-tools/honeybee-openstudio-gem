@@ -42,3 +42,8 @@ require 'from_openstudio/geometry/door'
 require 'from_openstudio/geometry/face'
 require 'from_openstudio/geometry/room'
 require 'from_openstudio/geometry/shade'
+
+# extend the simulation objects
+require 'from_openstudio/simulation/designday'
+require 'from_openstudio/simulation/parameter_model'
+require 'from_openstudio/simulation/simulation_output'

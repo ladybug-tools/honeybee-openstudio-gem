@@ -94,7 +94,7 @@ module Honeybee
         require 'json-schema'
         # if this raises a 'Invalid fragment resolution for :fragment option' it is because @type
         # does not correspond to a definition in the schema
-        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/definitions/#{@type}")
+        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/components/schemas/#{@type}")
       end
     end
 

@@ -53,4 +53,22 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load an OSM and translate to Honeybee SimulationParameter' do
+    file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
+    honeybee = Honeybee::SimulationParameter.translate_from_osm_file(file)
+
+    honeybee.validation_errors.each {|error| puts error}
+
+    expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'SimulationParameter'
+
+    output_dir = File.join(File.dirname(__FILE__), '../output/osm/')
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'exampleModel.sim.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(hash)
+    end
+  end
+
 end

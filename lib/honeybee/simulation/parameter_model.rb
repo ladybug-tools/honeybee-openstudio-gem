@@ -32,7 +32,7 @@
 module Honeybee
 
   class SimulationParameter
-    attr_reader :errors, :warnings
+    attr_reader :errors, :warnings, :hash
 
     @@schema = nil
 
@@ -74,7 +74,7 @@ module Honeybee
     def validation_errors
       if Gem.loaded_specs.has_key?("json-schema")
         require 'json-schema'
-        JSON::Validator.fully_validate(@@schema, @hash)
+        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/components/schemas/#{@type}")
       end
     end
 

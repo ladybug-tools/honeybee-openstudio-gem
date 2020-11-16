@@ -29,45 +29,49 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+module Honeybee
 
-RSpec.describe Honeybee do
+  class SimulationParameter
 
-  it 'can load an IDF and translate to Honeybee' do
-    file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
-    honeybee = Honeybee::Model.translate_from_idf_file(file)
+    # Create Ladybug SimulationParameter JSON from OpenStudio Model
+    def self.translate_from_openstudio(openstudio_model)
+      hash = {}
+      hash[:type] = 'SimulationParameter'
 
-    honeybee.validation_errors.each {|error| puts error}
+      hash[:output] = simulation_output_from_model(openstudio_model)
 
-    expect(honeybee.valid?).to be true
-    hash = honeybee.hash
-    expect(hash[:type]).not_to be_nil
-    expect(hash[:type]).to eq 'Model'
-    expect(hash[:rooms]).not_to be_nil
-    expect(hash[:rooms].size).to eq 6 # plenum is being translated to a room
-
-    output_dir = File.join(File.dirname(__FILE__), '../output/idf/')
-    FileUtils.mkdir_p(output_dir)
-    File.open(File.join(output_dir,'5ZoneAirCooled.hbjson'), 'w') do |f|
-      f.puts JSON::pretty_generate(hash)
+      SimulationParameter.new(hash)
     end
-  end
 
-  it 'can load an IDF and translate to Honeybee SimulationParameter' do
-    file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
-    honeybee = Honeybee::SimulationParameter.translate_from_idf_file(file)
-
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
-    hash = honeybee.hash
-    expect(hash[:type]).not_to be_nil
-    expect(hash[:type]).to eq 'SimulationParameter'
-
-    output_dir = File.join(File.dirname(__FILE__), '../output/idf/')
-    FileUtils.mkdir_p(output_dir)
-    File.open(File.join(output_dir,'5ZoneAirCooled.sim.hbjson'), 'w') do |f|
-      f.puts JSON::pretty_generate(hash)
+    # Create Ladybug Energy Model JSON from OSM file
+    def self.translate_from_osm_file(file)
+      vt = OpenStudio::OSVersion::VersionTranslator.new
+      openstudio_model = vt.loadModel(file)
+      raise "Cannot load OSM file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
     end
-  end
-end
+
+    # Create Ladybug Energy Model JSON from gbXML file
+    def self.translate_from_gbxml_file(file)
+      translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
+      openstudio_model = translator.loadModel(file)
+      raise "Cannot load gbXML file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    # Create Ladybug Energy Model JSON from IDF file
+    def self.translate_from_idf_file(file)
+      translator = OpenStudio::EnergyPlus::ReverseTranslator.new
+      openstudio_model = translator.loadModel(file)
+      raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    def self.simulation_output_from_model(openstudio_model)
+      hash = {}
+      hash[:type] = 'SimulationOutput'
+      hash
+    end
+
+  end #SimulationParameter
+end #Honeybee

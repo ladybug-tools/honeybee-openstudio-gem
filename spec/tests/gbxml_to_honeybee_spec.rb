@@ -53,4 +53,21 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load a gbXML and translate to Honeybee SimulationParameter' do
+    file = File.join(File.dirname(__FILE__), '../samples/gbxml/gbXML_TRK.xml')
+    honeybee = Honeybee::SimulationParameter.translate_from_gbxml_file(file)
+
+    honeybee.validation_errors.each {|error| puts error}
+
+    expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'SimulationParameter'
+
+    output_dir = File.join(File.dirname(__FILE__), '../output/gbxml/')
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'gbXML_TRK.sim.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(hash)
+    end
+  end
 end

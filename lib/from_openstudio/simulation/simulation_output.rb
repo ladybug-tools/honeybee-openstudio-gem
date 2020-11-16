@@ -29,45 +29,39 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+require 'honeybee/model_object'
 
-RSpec.describe Honeybee do
+module Honeybee
+  class SimulationOutput
 
-  it 'can load an IDF and translate to Honeybee' do
-    file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
-    honeybee = Honeybee::Model.translate_from_idf_file(file)
+    def self.from_sub_surface(sub_surface, site_transformation)
+      hash = {}
+      hash[:type] = 'Door'
+      hash[:identifier] = sub_surface.nameString
+      hash[:display_name] = sub_surface.nameString
+      hash[:user_data] = {handle: sub_surface.handle.to_s}
+      hash[:properties] = properties_from_sub_surface(sub_surface)
+      hash[:geometry] = geometry_from_sub_surface(sub_surface, site_transformation)
+      hash[:boundary_condition] = boundary_condition_from_sub_surface(sub_surface)
 
-    honeybee.validation_errors.each {|error| puts error}
+      sub_surface_type = sub_surface.subSurfaceType
+      hash[:is_glass] = (sub_surface_type == 'GlassDoor')
 
-    expect(honeybee.valid?).to be true
-    hash = honeybee.hash
-    expect(hash[:type]).not_to be_nil
-    expect(hash[:type]).to eq 'Model'
-    expect(hash[:rooms]).not_to be_nil
-    expect(hash[:rooms].size).to eq 6 # plenum is being translated to a room
+      indoor_shades = indoor_shades_from_sub_surface(sub_surface, site_transformation)
+      hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
 
-    output_dir = File.join(File.dirname(__FILE__), '../output/idf/')
-    FileUtils.mkdir_p(output_dir)
-    File.open(File.join(output_dir,'5ZoneAirCooled.hbjson'), 'w') do |f|
-      f.puts JSON::pretty_generate(hash)
+      outdoor_shades = outdoor_shades_from_sub_surface(sub_surface, site_transformation)
+      hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
+
+      hash
     end
-  end
 
-  it 'can load an IDF and translate to Honeybee SimulationParameter' do
-    file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
-    honeybee = Honeybee::SimulationParameter.translate_from_idf_file(file)
-
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
-    hash = honeybee.hash
-    expect(hash[:type]).not_to be_nil
-    expect(hash[:type]).to eq 'SimulationParameter'
-
-    output_dir = File.join(File.dirname(__FILE__), '../output/idf/')
-    FileUtils.mkdir_p(output_dir)
-    File.open(File.join(output_dir,'5ZoneAirCooled.sim.hbjson'), 'w') do |f|
-      f.puts JSON::pretty_generate(hash)
+    def self.properties_from_sub_surface(sub_surface)
+      hash = {}
+      hash[:type] = 'DoorPropertiesAbridged'
+      hash[:energy] = energy_properties_from_sub_surface(sub_surface)
+      hash
     end
-  end
-end
+
+  end # SimulationOutput
+end # Honeybee

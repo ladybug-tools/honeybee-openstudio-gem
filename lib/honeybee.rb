@@ -90,3 +90,4 @@ require 'honeybee/ventcool/simulation'
 # import the simulation objects
 require 'honeybee/simulation/designday'
 require 'honeybee/simulation/parameter_model'
+require 'honeybee/simulation/simulation_output'
