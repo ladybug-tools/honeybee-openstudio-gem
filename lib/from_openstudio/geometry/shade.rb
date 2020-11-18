@@ -39,7 +39,7 @@ module Honeybee
     def self.from_shading_surface(shading_surface, site_transformation)
       hash = {}
       hash[:type] = 'Shade'
-      hash[:identifier] = shading_surface.nameString
+      hash[:identifier] = clean_identifier(shading_surface.nameString)
       hash[:display_name] = shading_surface.nameString
       hash[:user_data] = {handle: shading_surface.handle.to_s}
       hash[:properties] = properties_from_shading_surface(shading_surface)
@@ -61,12 +61,12 @@ module Honeybee
 
       construction = shading_surface.construction
       if !construction.empty?
-        hash[:construction] = construction.get.nameString
+        hash[:construction] = clean_identifier(construction.get.nameString)
       end
 
       transmittance_schedule = shading_surface.transmittanceSchedule
       if !transmittance_schedule.empty?
-        hash[:transmittance_schedule] = transmittance_schedule.get.nameString
+        hash[:transmittance_schedule] = clean_identifier(transmittance_schedule.get.nameString)
       end
 
       hash

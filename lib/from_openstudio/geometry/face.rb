@@ -37,7 +37,7 @@ module Honeybee
     def self.from_surface(surface, site_transformation)
       hash = {}
       hash[:type] = 'Face'
-      hash[:identifier] = surface.nameString
+      hash[:identifier] = clean_identifier(surface.nameString)
       hash[:display_name] = surface.nameString
       hash[:user_data] = {handle: surface.handle.to_s}
       hash[:properties] = properties_from_surface(surface)
@@ -51,10 +51,10 @@ module Honeybee
       doors = doors_from_surface(surface, site_transformation)
       hash[:doors] = doors if !doors.empty?
 
-      indoor_shades = indoor_shades_from_surface(surface, site_transformation)
+      indoor_shades = indoor_shades_from_surface(surface)
       hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
 
-      outdoor_shades = outdoor_shades_from_surface(surface, site_transformation)
+      outdoor_shades = outdoor_shades_from_surface(surface)
       hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
 
       hash
@@ -73,7 +73,7 @@ module Honeybee
 
       construction = surface.construction
       if !construction.empty?
-        hash[:construction] = construction.get.nameString
+        hash[:construction] = clean_identifier(construction.get.nameString)
       end
 
       hash
@@ -111,8 +111,8 @@ module Honeybee
       surface_type = surface.surfaceType
       adjacent_surface = surface.adjacentSurface
       if !adjacent_surface.empty?
-        adjacent_space = adjacent_surface.get.space.get.nameString
-        adjacent_surface = adjacent_surface.get.nameString
+        adjacent_space = clean_identifier(adjacent_surface.get.space.get.nameString)
+        adjacent_surface = clean_identifier(adjacent_surface.get.nameString)
         result = {type: 'Surface', boundary_condition_objects: [adjacent_surface, adjacent_space]}
       elsif surface.isGroundSurface
         result = {type: 'Ground'}
@@ -137,7 +137,7 @@ module Honeybee
       result = []
       surface.subSurfaces.each do |sub_surface|
         sub_surface_type = sub_surface.subSurfaceType
-        if !/Door/.match(sub_surface_type)
+        if !/Door/i.match(sub_surface_type)
           result << Aperture.from_sub_surface(sub_surface, site_transformation)
         end
       end
@@ -148,18 +148,18 @@ module Honeybee
       result = []
       surface.subSurfaces.each do |sub_surface|
         sub_surface_type = sub_surface.subSurfaceType
-        if /Door/.match(sub_surface_type)
+        if /Door/i.match(sub_surface_type)
           result << Door.from_sub_surface(sub_surface, site_transformation)
         end
       end
       result
     end
 
-    def self.indoor_shades_from_surface(surface, site_transformation)
+    def self.indoor_shades_from_surface(surface)
       []
     end
 
-    def self.outdoor_shades_from_surface(surface, site_transformation)
+    def self.outdoor_shades_from_surface(surface)
       result = []
       surface.shadingSurfaceGroups.each do |shading_surface_group|
         site_transformation = shading_surface_group.siteTransformation

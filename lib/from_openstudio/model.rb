@@ -46,6 +46,8 @@ module Honeybee
       hash[:identifier] = 'Model'
       hash[:display_name] = 'Model'
       hash[:units] = 'Meters'
+      hash[:tolerance] = 0.01
+      hash[:angle_tolerance] = 1.0
 
       hash[:properties] = properties_from_model(openstudio_model)
 

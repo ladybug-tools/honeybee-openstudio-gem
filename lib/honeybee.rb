@@ -88,6 +88,6 @@ require 'honeybee/ventcool/opening'
 require 'honeybee/ventcool/simulation'
 
 # import the simulation objects
-require 'honeybee/simulation/designday'
+require 'honeybee/simulation/design_day'
 require 'honeybee/simulation/parameter_model'
 require 'honeybee/simulation/simulation_output'

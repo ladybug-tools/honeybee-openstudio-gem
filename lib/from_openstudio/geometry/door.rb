@@ -39,7 +39,7 @@ module Honeybee
   def self.from_sub_surface(sub_surface, site_transformation)
       hash = {}
       hash[:type] = 'Door'
-      hash[:identifier] = sub_surface.nameString
+      hash[:identifier] = clean_identifier(sub_surface.nameString)
       hash[:display_name] = sub_surface.nameString
       hash[:user_data] = {handle: sub_surface.handle.to_s}
       hash[:properties] = properties_from_sub_surface(sub_surface)
@@ -49,10 +49,10 @@ module Honeybee
       sub_surface_type = sub_surface.subSurfaceType
       hash[:is_glass] = (sub_surface_type == 'GlassDoor')
 
-      indoor_shades = indoor_shades_from_sub_surface(sub_surface, site_transformation)
+      indoor_shades = indoor_shades_from_sub_surface(sub_surface)
       hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
 
-      outdoor_shades = outdoor_shades_from_sub_surface(sub_surface, site_transformation)
+      outdoor_shades = outdoor_shades_from_sub_surface(sub_surface)
       hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
 
       hash
@@ -71,7 +71,7 @@ module Honeybee
 
       construction = sub_surface.construction
       if !construction.empty?
-        hash[:construction] = construction.get.nameString
+        hash[:construction] = clean_identifier(construction.get.nameString)
       end
 
       hash
@@ -94,9 +94,9 @@ module Honeybee
       surface_type = surface.surfaceType
       adjacent_sub_surface = sub_surface.adjacentSubSurface
       if !adjacent_sub_surface.empty?
-        adjacent_space = adjacent_sub_surface.get.space.get.nameString
-        adjacent_surface = adjacent_sub_surface.get.surface.get.nameString
-        adjacent_sub_surface = adjacent_sub_surface.get.nameString
+        adjacent_space = clean_identifier(adjacent_sub_surface.get.space.get.nameString)
+        adjacent_surface = clean_identifier(adjacent_sub_surface.get.surface.get.nameString)
+        adjacent_sub_surface = clean_identifier(adjacent_sub_surface.get.nameString)
         result = {type: 'Surface', boundary_condition_objects: [adjacent_sub_surface, adjacent_surface, adjacent_space]}
       elsif surface.isGroundSurface
         result = {type: 'Ground'}
@@ -117,11 +117,11 @@ module Honeybee
       result
     end
 
-    def self.indoor_shades_from_sub_surface(sub_surface, site_transformation)
+    def self.indoor_shades_from_sub_surface(sub_surface)
       []
     end
 
-    def self.outdoor_shades_from_sub_surface(sub_surface, site_transformation)
+    def self.outdoor_shades_from_sub_surface(sub_surface)
       result = []
       sub_surface.shadingSurfaceGroups.each do |shading_surface_group|
         site_transformation = shading_surface_group.siteTransformation

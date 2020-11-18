@@ -29,6 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
+require 'honeybee/simulation/parameter_model'
+
+require 'from_openstudio/simulation/design_day'
+
 module Honeybee
 
   class SimulationParameter
@@ -39,6 +43,7 @@ module Honeybee
       hash[:type] = 'SimulationParameter'
 
       hash[:output] = simulation_output_from_model(openstudio_model)
+      hash[:sizing_parameter] = sizing_parameter_from_model(openstudio_model)
 
       SimulationParameter.new(hash)
     end
@@ -70,6 +75,24 @@ module Honeybee
     def self.simulation_output_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'SimulationOutput'
+      hash
+    end
+
+
+    def self.sizing_parameter_from_model(openstudio_model)
+      hash = {}
+      hash[:type] = 'SizingParameter'
+      hash[:design_days] = []
+      openstudio_model.getDesignDays.each do |design_day|
+        begin
+          hash[:design_days] << DesignDay.from_design_day(design_day)
+        rescue
+        end
+      end
+
+      sizing_parameters = openstudio_model.getSizingParameters
+      hash[:heating_factor] = sizing_parameters.heatingSizingFactor
+      hash[:cooling_factor] = sizing_parameters.coolingSizingFactor
       hash
     end
 

@@ -98,5 +98,11 @@ module Honeybee
       end
     end
 
+    # remove illegal characters in identifier
+    def self.clean_identifier(str)
+      str.gsub(' ', '_')
+    end
+
+
   end # ModelObject
 end # Honeybee

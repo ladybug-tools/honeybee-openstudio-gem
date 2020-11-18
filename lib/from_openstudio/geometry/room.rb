@@ -37,7 +37,7 @@ module Honeybee
     def self.from_space(space)
       hash = {}
       hash[:type] = 'Room'
-      hash[:identifier] = space.nameString
+      hash[:identifier] = clean_identifier(space.nameString)
       hash[:display_name] = space.nameString
       hash[:user_data] = {space: space.handle.to_s}
       hash[:properties] = properties_from_space(space)
@@ -112,7 +112,7 @@ module Honeybee
     def self.story_from_space(space)
       story = space.buildingStory
       if !story.empty?
-        return story.get.nameString
+        return clean_identifier(story.get.nameString)
       end
       nil
     end

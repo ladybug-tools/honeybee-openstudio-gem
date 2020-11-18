@@ -37,7 +37,7 @@ module Honeybee
     def self.from_sub_surface(sub_surface, site_transformation)
       hash = {}
       hash[:type] = 'Door'
-      hash[:identifier] = sub_surface.nameString
+      hash[:identifier] = clean_identifier(sub_surface.nameString)
       hash[:display_name] = sub_surface.nameString
       hash[:user_data] = {handle: sub_surface.handle.to_s}
       hash[:properties] = properties_from_sub_surface(sub_surface)
