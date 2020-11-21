@@ -76,15 +76,16 @@ module FromHoneybee
           space_type_object = space_type.get
           space_type_mod_obj = space_type_object.clone(openstudio_model)
           new_space_type = space_type_mod_obj.to_SpaceType.get
+          # give the space type a new unique name and assign it to the room
+          st_name = space_type_object.name
+          unless space_type.empty?
+            st_name = st_name.get
+          else
+            st_name = 'CustomSpaceType'
+          end
         else
           # create a new space type as there is currently none assigned to the room
           new_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
-        end
-        # give the space type a new unique name and assign it to the room
-        st_name = space_type_object.name
-        unless space_type.empty?
-          st_name = st_name.get
-        else
           st_name = 'CustomSpaceType'
         end
         new_space_type.setName(st_name + '_' + @hash[:identifier])
