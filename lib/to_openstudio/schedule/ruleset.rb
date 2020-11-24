@@ -58,19 +58,25 @@ module Honeybee
       end
 
       # loop through day schedules and create openstudio schedule day object
+      def_day_id = @hash[:default_day_schedule]
+      def_day_hash = nil
       @hash[:day_schedules].each do |day_schedule|
-        day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
-        day_schedule_new.setName(day_schedule[:identifier])
-        unless sch_type_limit_obj.nil?
-          day_schedule_new.setScheduleTypeLimits(sch_type_limit_obj)
-        end
-        values_day_new = day_schedule[:values]
-        times_day_new = day_schedule[:times]
-        times_day_new.delete_at(0)  # Remove [0, 0] from array at index 0.
-        times_day_new.push([24, 0])  # Add [24, 0] at index 0
-        values_day_new.each_index do |i|
-          time_until = OpenStudio::Time.new(0, times_day_new[i][0], times_day_new[i][1], 0)
-          day_schedule_new.addValue(time_until, values_day_new[i])
+        if day_schedule[:identifier] != def_day_id
+          day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
+          day_schedule_new.setName(day_schedule[:identifier])
+          unless sch_type_limit_obj.nil?
+            day_schedule_new.setScheduleTypeLimits(sch_type_limit_obj)
+          end
+          values_day_new = day_schedule[:values]
+          times_day_new = day_schedule[:times]
+          times_day_new.delete_at(0)  # Remove [0, 0] from array at index 0.
+          times_day_new.push([24, 0])  # Add [24, 0] at index 0
+          values_day_new.each_index do |i|
+            time_until = OpenStudio::Time.new(0, times_day_new[i][0], times_day_new[i][1], 0)
+            day_schedule_new.addValue(time_until, values_day_new[i])
+          end
+        else
+          def_day_hash = day_schedule
         end
       end
 
@@ -105,14 +111,18 @@ module Honeybee
       end
 
       # assign default day schedule
-      default_day_schedule = openstudio_model.getScheduleDayByName(@hash[:default_day_schedule])
-      unless default_day_schedule.empty?
-        default_day_schedule_object = default_day_schedule.get
-        values = default_day_schedule_object.values
-        times = default_day_schedule_object.times
-        values.each_index do |i|
-          os_sch_ruleset.defaultDaySchedule.addValue(times[i], values[i])
-        end
+      def_day_sch = os_sch_ruleset.defaultDaySchedule
+      def_day_sch.setName(def_day_id)
+      unless sch_type_limit_obj.nil?
+        def_day_sch.setScheduleTypeLimits(sch_type_limit_obj)
+      end
+      values_day_new = def_day_hash[:values]
+      times_day_new = def_day_hash[:times]
+      times_day_new.delete_at(0)  # Remove [0, 0] from array at index 0.
+      times_day_new.push([24, 0])  # Add [24, 0] at index 0
+      values_day_new.each_index do |i|
+        time_until = OpenStudio::Time.new(0, times_day_new[i][0], times_day_new[i][1], 0)
+        def_day_sch.addValue(time_until, values_day_new[i])
       end
 
       # assign schedule rules
