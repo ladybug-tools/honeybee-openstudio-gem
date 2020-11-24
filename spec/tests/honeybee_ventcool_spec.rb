@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,18 +31,18 @@
 
 require_relative '../spec_helper'
 
-RSpec.describe FromHoneybee do
+RSpec.describe Honeybee do
 
   it 'can load a simple ventilation opening' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/ventcool/ventilation_opening_default.json')
-    honeybee_obj_1 = FromHoneybee::VentilationOpening.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::VentilationOpening.read_from_disk(file)
   end
 
   it 'can load ventilation simulation control' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/ventcool/ventilation_simulation_control.json')
-    honeybee_obj_1 = FromHoneybee::VentilationSimulationControl.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::VentilationSimulationControl.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 

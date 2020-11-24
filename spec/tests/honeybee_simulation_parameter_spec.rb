@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -30,26 +30,29 @@
 # *******************************************************************************
 
 require_relative '../spec_helper'
-require 'from_honeybee/simulation/extension'
 
-RSpec.describe FromHoneybee do
-  it 'has a schema_file' do
-    extension = FromHoneybee::ExtensionSimulationParameter.new
-    expect(File.exist?(extension.schema_file)).to be true
+RSpec.describe Honeybee do
+
+  it 'can detect an invalid simulation parameter' do
+    # includes unknown property 'ninja_turtles'
+    hash = {type: 'SimulationParameter', ninja_turtles: []}
+    simulation_parameter = Honeybee::SimulationParameter.new(hash)
+    expect(simulation_parameter.valid?).to be false
   end
 
   it 'can load simple simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_simple.json')
-    honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
+    expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
   end
 
-
   it 'can load detailed simulation parameter' do
     file = File.join(File.dirname(__FILE__), '../samples/simulation_parameter/simulation_par_detailed.json')
-    honeybee_obj_1 = FromHoneybee::SimulationParameter.read_from_disk(file)
+    honeybee_obj_1 = Honeybee::SimulationParameter.read_from_disk(file)
+    expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
