@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -32,7 +32,7 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'from_honeybee/model'
+require 'honeybee/model'
 
 # start the measure
 class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
@@ -78,7 +78,7 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-    honeybee_model = FromHoneybee::Model.read_from_disk(model_json)
+    honeybee_model = Honeybee::Model.read_from_disk(model_json)
 
     STDOUT.flush
     honeybee_model.to_openstudio_model(model)

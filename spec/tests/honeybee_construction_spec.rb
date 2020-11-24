@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -31,11 +31,11 @@
 
 require_relative '../spec_helper'
 
-RSpec.describe FromHoneybee do
+RSpec.describe Honeybee do
   it 'can load construction opaque door' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_door.json')
-    construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
+    construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
 
     # get and set existing hash key
     expect(construction1.respond_to?(:identifier)).to be false
@@ -56,7 +56,7 @@ RSpec.describe FromHoneybee do
   it 'can load construction opaque roof' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_roof.json')
-    construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
+    construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
 
@@ -69,7 +69,7 @@ RSpec.describe FromHoneybee do
   it 'can load construction opaque wall' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_wall.json')
-    construction1 = FromHoneybee::OpaqueConstructionAbridged.read_from_disk(file)
+    construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
   end
@@ -77,7 +77,7 @@ RSpec.describe FromHoneybee do
   it 'can load construction window construction with shade' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_shade.json')
-    construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
+    construction1 = Honeybee::WindowConstructionShadeAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
     shd_cntrl = construction1.to_openstudio_shading_control(openstudio_model)
@@ -87,12 +87,12 @@ RSpec.describe FromHoneybee do
   it 'can load construction window construction with blinds' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_blinds.json')
-    construction1 = FromHoneybee::WindowConstructionShadeAbridged.read_from_disk(file)
+    construction1 = Honeybee::WindowConstructionShadeAbridged.read_from_disk(file)
 
     blind_mat_hash = Hash.new
     blind_mat_hash[:type] = "EnergyWindowMaterialBlind"
     blind_mat_hash[:identifier] = "Plastic Blind"
-    material1 = FromHoneybee::EnergyWindowMaterialBlind.new(blind_mat_hash)
+    material1 = Honeybee::EnergyWindowMaterialBlind.new(blind_mat_hash)
     blind_mat = material1.to_openstudio(openstudio_model)
 
     object1 = construction1.to_openstudio(openstudio_model)
@@ -104,7 +104,7 @@ RSpec.describe FromHoneybee do
   it 'can load construction window double' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_double.json')
-    construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
+    construction1 = Honeybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
   end
@@ -112,7 +112,7 @@ RSpec.describe FromHoneybee do
   it 'can load construction window triple' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_triple.json')
-    construction1 = FromHoneybee::WindowConstructionAbridged.read_from_disk(file)
+    construction1 = Honeybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
   end
