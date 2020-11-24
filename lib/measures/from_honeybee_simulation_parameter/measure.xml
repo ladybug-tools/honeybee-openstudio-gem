@@ -3,8 +3,8 @@
   <schema_version>3.0</schema_version>
   <name>from_honeybee_simulation_parameter</name>
   <uid>a5f500d5-97ff-4048-a6f4-6b0b0a92d0f0</uid>
-  <version_id>74014135-f9ce-42fd-9a3c-d5fe585724f4</version_id>
-  <version_modified>20201102T212809Z</version_modified>
+  <version_id>2c88c158-3edc-4ac0-a816-6f5e094f2897</version_id>
+  <version_modified>20201124T031956Z</version_modified>
   <xml_checksum>D8922A73</xml_checksum>
   <class_name>FromHoneybeeSimulationParameter</class_name>
   <display_name>From Honeybee Simulation Parameter</display_name>
@@ -14,9 +14,14 @@
     <argument>
       <name>simulation_parameter_json</name>
       <display_name>Path to the Honeybee SimulationParameter JSON file</display_name>
+      <description></description>
       <type>String</type>
+      <units></units>
       <required>true</required>
       <model_dependent>false</model_dependent>
+      <default_value></default_value>
+      <min_value></min_value>
+      <max_value></max_value>
     </argument>
   </arguments>
   <outputs />
@@ -68,13 +73,14 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>39118538</checksum>
+      <checksum>10CC1F28</checksum>
     </file>
     <file>
       <filename>from_honeybee_simulation_parameter_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>1FDA32C9</checksum>
+      <checksum>D75503B1</checksum>
     </file>
   </files>
 </measure>
+<error>cannot load such file -- honeybee/simulation/parameter</error>

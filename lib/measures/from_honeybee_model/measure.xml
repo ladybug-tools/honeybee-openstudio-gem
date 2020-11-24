@@ -3,8 +3,8 @@
   <schema_version>3.0</schema_version>
   <name>from_honeybee_model</name>
   <uid>a5f500d5-97ff-4048-a6f4-6b0b0a92d0f0</uid>
-  <version_id>4ba0b4e6-cadf-423a-8c31-6e8ad50474ef</version_id>
-  <version_modified>20201102T212809Z</version_modified>
+  <version_id>1171d409-32be-4b94-baae-56d59a7e3b1d</version_id>
+  <version_modified>20201124T031956Z</version_modified>
   <xml_checksum>D8922A73</xml_checksum>
   <class_name>FromHoneybeeModel</class_name>
   <display_name>From Honeybee Model</display_name>
@@ -68,13 +68,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>65752900</checksum>
+      <checksum>8B48C43C</checksum>
     </file>
     <file>
       <filename>from_honeybee_model_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>EC27D90B</checksum>
+      <checksum>A800695A</checksum>
     </file>
   </files>
 </measure>
