@@ -32,7 +32,7 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'honeybee/simulation/parameter'
+require 'to_openstudio'
 
 # start the measure
 class FromHoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
