@@ -34,33 +34,33 @@ require 'honeybee/model_object'
 module Honeybee
   class SimulationOutput
 
-    def self.from_sub_surface(sub_surface, site_transformation)
+    def self.from_model(openstudio_model)
       hash = {}
-      hash[:type] = 'Door'
-      hash[:identifier] = clean_identifier(sub_surface.nameString)
-      hash[:display_name] = sub_surface.nameString
-      hash[:user_data] = {handle: sub_surface.handle.to_s}
-      hash[:properties] = properties_from_sub_surface(sub_surface)
-      hash[:geometry] = geometry_from_sub_surface(sub_surface, site_transformation)
-      hash[:boundary_condition] = boundary_condition_from_sub_surface(sub_surface)
-
-      sub_surface_type = sub_surface.subSurfaceType
-      hash[:is_glass] = (sub_surface_type == 'GlassDoor')
-
-      indoor_shades = indoor_shades_from_sub_surface(sub_surface, site_transformation)
-      hash[:indoor_shades] = indoor_shades if !indoor_shades.empty?
-
-      outdoor_shades = outdoor_shades_from_sub_surface(sub_surface, site_transformation)
-      hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
+      hash[:type] = 'SimulationOutput'
+      hash[:reporting_frequency] = 'Hourly'
+      hash[:include_sqlite] = true
+      hash[:include_html] = true
+      hash[:outputs] = outputs_from_model(openstudio_model)
+      hash[:summary_reports] = summary_reports_from_model(openstudio_model)
 
       hash
     end
 
-    def self.properties_from_sub_surface(sub_surface)
-      hash = {}
-      hash[:type] = 'DoorPropertiesAbridged'
-      hash[:energy] = energy_properties_from_sub_surface(sub_surface)
-      hash
+    def self.outputs_from_model(openstudio_model)
+      result = []
+      openstudio_model.getOutputVariables.each do |output|
+        result << output.variableName
+      end
+      result
+    end
+
+    def self.summary_reports_from_model(openstudio_model)
+      result = []
+      summary_reports = openstudio_model.getOutputTableSummaryReports
+      summary_reports.summaryReports.each do |summary_report|
+        result << summary_report
+      end
+      result
     end
 
   end # SimulationOutput

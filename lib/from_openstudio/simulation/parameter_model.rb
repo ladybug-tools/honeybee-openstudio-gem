@@ -42,7 +42,7 @@ module Honeybee
       hash = {}
       hash[:type] = 'SimulationParameter'
 
-      hash[:output] = simulation_output_from_model(openstudio_model)
+      hash[:output] = SimulationOutput.from_model(openstudio_model)
       hash[:sizing_parameter] = sizing_parameter_from_model(openstudio_model)
 
       SimulationParameter.new(hash)
@@ -71,13 +71,6 @@ module Honeybee
       raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)
     end
-
-    def self.simulation_output_from_model(openstudio_model)
-      hash = {}
-      hash[:type] = 'SimulationOutput'
-      hash
-    end
-
 
     def self.sizing_parameter_from_model(openstudio_model)
       hash = {}
