@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -32,7 +32,7 @@
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
-require 'from_honeybee/simulation/parameter'
+require 'honeybee/simulation/parameter'
 
 # start the measure
 class FromHoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
@@ -78,7 +78,7 @@ class FromHoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-    sim_par_object = FromHoneybee::SimulationParameter.read_from_disk(simulation_parameter_json)
+    sim_par_object = Honeybee::SimulationParameter.read_from_disk(simulation_parameter_json)
 
     if !sim_par_object.valid?
       # runner.registerError("File '#{simulation_parameter_json}' is not valid")

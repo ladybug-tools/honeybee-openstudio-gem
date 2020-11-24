@@ -1,7 +1,7 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable 
+# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -95,7 +95,7 @@ class FromHoneybeeSimulationParameter_Test < Minitest::Test
 
   def test_simulation_par_simple
     args = {}
-    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) + 
+    args['simulation_parameter_json'] = File.join(File.dirname(__FILE__) +
     "/../../../../spec/samples/simulation_parameter/simulation_par_simple.json")
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end

@@ -18,15 +18,15 @@ parameter JSON files to the measures. Here is a sample where the items in parent
 should be replaced with specific file paths:
 
 ```
-{ 
-    "measure_paths": [(PATH TO THIS REPOSITORY)/lib/measures"], 
+{
+    "measure_paths": [(PATH TO THIS REPOSITORY)/lib/measures"],
     "steps": [
         {
-            "arguments": {"model_json": (PATH TO MODEL JSON)}, 
+            "arguments": {"model_json": (PATH TO MODEL JSON)},
             "measure_dir_name": "from_honeybee_model"
-        }, 
+        },
         {
-            "arguments": {"simulation_parameter_json": (PATH TO SIMULATION PARAMETER JSON)}, 
+            "arguments": {"simulation_parameter_json": (PATH TO SIMULATION PARAMETER JSON)},
             "measure_dir_name": "from_honeybee_simulation_parameter"
         }
     ]
