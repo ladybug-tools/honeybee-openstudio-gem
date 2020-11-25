@@ -33,13 +33,15 @@ require 'honeybee/hvac/template'
 
 require 'to_openstudio/model_object'
 
-require 'openstudio-standards'
-require_relative 'Model.hvac'
-
 module Honeybee
   class TemplateHVAC
 
     def to_openstudio(openstudio_model, room_ids)
+
+      # only load openstudio-standards when needed
+      require 'openstudio-standards'
+      require_relative 'Model.hvac'
+
       # get the defaults for the specific system type
       hvac_defaults = defaults(@hash[:type])
 
@@ -128,6 +130,8 @@ module Honeybee
 
       os_hvac
     end
+
+  private
 
     def get_existing_erv(os_air_loop)
       # get an existing heat ecovery unit from an air loop; will be nil if there is none
