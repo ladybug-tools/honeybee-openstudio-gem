@@ -201,7 +201,7 @@ class OpenStudio::Model::Model
                                      zone_equipment_ventilation: false)
       standard.model_add_hvac_system(self, 'Unit Heaters', ht = 'NaturalGas', znht = nil, cl = nil, heated_zones)
 
-    when 'DOAS with fan coil district chilled water with no heat '
+    when 'DOAS with fan coil district chilled water with no heat'
       standard.model_add_hvac_system(self, 'DOAS', ht = nil, znht = nil, cl = 'DistrictCooling', zones,
                                      air_loop_heating_type: nil)
       standard.model_add_hvac_system(self, 'Fan Coil', ht = nil, znht = nil, cl = 'DistrictCooling', zones,
