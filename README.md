@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem.svg?branch=master)](https://travis-ci.org/ladybug-tools/honeybee-openstudio-gem)
+[![Build Status](https://github.com/ladybug-tools/honeybee-openstudio-gem/workflows/CI/badge.svg)](https://github.com/ladybug-tools/honeybee-openstudio-gem/actions)
 [![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-openstudio-gem/badge.svg?branch=master)](https://coveralls.io/github/ladybug-tools/honeybee-openstudio-gem)
 
 ![Ruby 2.5](https://img.shields.io/badge/ruby-2.5-blue.svg)
