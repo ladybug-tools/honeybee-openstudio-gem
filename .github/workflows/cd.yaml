@@ -1,0 +1,51 @@
+name: CD
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  dispatch_schema:
+    name: Dispatch Schema to Clients
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        client_repo:
+          - ladybug-tools/lbt-grasshopper
+
+    steps:
+    - name: Send repo dispatch to lbt-grasshopper
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
+        DISPATCH_URL: https://api.github.com/repos/${{ matrix.client_repo }}/dispatches
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        curl -X POST $DISPATCH_URL \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -d '{
+            "event_type": "honeybee_openstudio_gem_release",
+            "client_payload": {
+              "version" : "'$RELEASE_TAG'"
+            }
+          }' \
+          -u ladybugbot:$GH_TOKEN
+
+  deploy:
+    name: Deploy to Rubygems.org
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update gemspec
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          - export CLEAN_TAG=$(echo $RELEASE_TAG | sed 's/v//g')
+          - sed -i 's/"0.0.0"/'"'$CLEAN_TAG'"'/g' honeybee-openstudio.gemspec
+      - name: Release Gem
+        uses: cadwallion/publish-rubygems-action@master
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+          RELEASE_COMMAND: rake release
