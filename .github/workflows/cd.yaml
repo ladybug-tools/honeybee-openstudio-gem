@@ -41,8 +41,8 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
-          - export CLEAN_TAG=$(echo $RELEASE_TAG | sed 's/v//g')
-          - sed -i 's/"0.0.0"/'"'$CLEAN_TAG'"'/g' honeybee-openstudio.gemspec
+          export CLEAN_TAG=$(echo $RELEASE_TAG | sed 's/v//g')
+          sed -i 's/"0.0.0"/'"'$CLEAN_TAG'"'/g' honeybee-openstudio.gemspec
       - name: Release Gem
         uses: cadwallion/publish-rubygems-action@master
         env:
