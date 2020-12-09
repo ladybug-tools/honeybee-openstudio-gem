@@ -38,7 +38,9 @@ jobs:
         run:
           npm install @semantic-release/exec
       - name: run semantic release
-        run:
+        run: |
+          git config --global user.email "releases@ladybug.tools"
+          git config --global user.name "ladybugbot"
           npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

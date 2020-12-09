@@ -84,14 +84,6 @@ module Honeybee
         end
       end
 
-      # TODO: consider adding the ability to decentralize the plant by changing loop names
-      #os_hvac.each do |hvac_loop|
-      #  loop_name = hvac_loop.name
-      #  unless loop_name.empty?
-      #    hvac_loop.setName(@hash[:identifier] + ' - ' + loop_name.get)
-      #  end
-      #end
-
       # assign the economizer type if there's an air loop and the economizer is specified
       if @hash[:economizer_type] && @hash[:economizer_type] != 'Inferred' && os_air_loop
         oasys = os_air_loop.airLoopHVACOutdoorAirSystem
@@ -126,6 +118,12 @@ module Honeybee
         erv.setLatentEffectivenessat100HeatingAirFlow(eff_at_max)
         erv.setLatentEffectivenessat75CoolingAirFlow(@hash[:latent_heat_recovery])
         erv.setLatentEffectivenessat75HeatingAirFlow(@hash[:latent_heat_recovery])
+      end
+
+      # set all plants to non-coincident sizing to avoid simualtion control on design days
+      openstudio_model.getPlantLoops.each do |loop|
+        sizing = loop.sizingPlant
+        sizing.setSizingOption('NonCoincident')
       end
 
       os_hvac

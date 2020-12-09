@@ -46,12 +46,7 @@ module Honeybee
       os_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
       os_construction.setName(@hash[:identifier])
       os_construction.setSolarAndDaylightingMethod('GroupedZones')
-      # REMOVE: Remove the use of IRTSurface once the AFN works with GroupedZone air walls
-      if !$use_simple_vent  # we're using the AFN!
-        os_construction.setRadiantExchangeMethod('IRTSurface')
-      else
-        os_construction.setRadiantExchangeMethod('GroupedZones')
-      end
+      os_construction.setRadiantExchangeMethod('GroupedZones')
       os_construction.setAirExchangeMethod('None')
 
       os_construction

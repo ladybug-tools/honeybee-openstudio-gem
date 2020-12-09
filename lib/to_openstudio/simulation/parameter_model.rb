@@ -98,54 +98,28 @@ module Honeybee
 
       # set defaults for the Model's ShadowCalculation object
       os_shadow_calc = @openstudio_model.getShadowCalculation
-      begin
-        os_shadow_calc.setShadingCalculationMethod(
-          shdw_defaults[:calculation_method][:default])
-      rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-        os_shadow_calc.setCalculationMethod(
-          shdw_defaults[:calculation_method][:default])
-      end
-      begin
-        os_shadow_calc.setShadingCalculationUpdateFrequencyMethod(
-          shdw_defaults[:calculation_update_method][:default])
-      rescue  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-      end
-      begin
-        os_shadow_calc.setShadingCalculationUpdateFrequency(
-          shdw_defaults[:calculation_frequency][:default])
-      rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-        os_shadow_calc.setCalculationFrequency(
-          shdw_defaults[:calculation_frequency][:default])
-      end
+      os_shadow_calc.setShadingCalculationMethod(
+        shdw_defaults[:calculation_method][:default])
+      os_shadow_calc.setShadingCalculationUpdateFrequencyMethod(
+        shdw_defaults[:calculation_update_method][:default])
+      os_shadow_calc.setShadingCalculationUpdateFrequency(
+        shdw_defaults[:calculation_frequency][:default])
       os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(
         shdw_defaults[:maximum_figures][:default])
 
       # override any ShadowCalculation defaults with lodaded JSON
       if @hash[:shadow_calculation]
         if @hash[:shadow_calculation][:calculation_method]
-          begin
-            os_shadow_calc.setShadingCalculationMethod(
-              @hash[:shadow_calculation][:calculation_method])
-          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-            os_shadow_calc.setCalculationMethod(
-              @hash[:shadow_calculation][:calculation_method])
-          end
+          os_shadow_calc.setShadingCalculationMethod(
+            @hash[:shadow_calculation][:calculation_method])
         end
         if @hash[:shadow_calculation][:calculation_update_method]
-          begin
-            os_shadow_calc.setShadingCalculationUpdateFrequencyMethod(
-              @hash[:shadow_calculation][:calculation_update_method])
-          rescue  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-          end
+          os_shadow_calc.setShadingCalculationUpdateFrequencyMethod(
+            @hash[:shadow_calculation][:calculation_update_method])
         end
         if @hash[:shadow_calculation][:calculation_frequency]
-          begin
-            os_shadow_calc.setShadingCalculationUpdateFrequency(
-              @hash[:shadow_calculation][:calculation_frequency])
-          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-            os_shadow_calc.setCalculationFrequency(
-              @hash[:shadow_calculation][:calculation_frequency])
-          end
+          os_shadow_calc.setShadingCalculationUpdateFrequency(
+            @hash[:shadow_calculation][:calculation_frequency])
         end
         if @hash[:shadow_calculation][:maximum_figures]
           os_shadow_calc.setMaximumFiguresInShadowOverlapCalculations(
@@ -192,15 +166,9 @@ module Honeybee
           end
         end
         if @hash[:output][:summary_reports]
-          begin
-            os_report = @openstudio_model.getOutputTableSummaryReports
-          rescue  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-          end
+          os_report = @openstudio_model.getOutputTableSummaryReports
           @hash[:output][:summary_reports].each do |report|
-            begin
-              os_report.addSummaryReport(report)
-            rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-            end
+            os_report.addSummaryReport(report)
           end
         end
       end
@@ -242,13 +210,10 @@ module Honeybee
         # Set the holidays
         if @hash[:run_period][:holidays]
           @hash[:run_period][:holidays].each do |hol|
-            begin
-              os_hol = OpenStudio::Model::RunPeriodControlSpecialDays.new(
-                OpenStudio::MonthOfYear.new(hol[0]), hol[1], @openstudio_model)
-              os_hol.setDuration(1)
-              os_hol.setSpecialDayType('Holiday')
-            rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-            end
+            os_hol = OpenStudio::Model::RunPeriodControlSpecialDays.new(
+              OpenStudio::MonthOfYear.new(hol[0]), hol[1], @openstudio_model)
+            os_hol.setDuration(1)
+            os_hol.setSpecialDayType('Holiday')
           end
         end
       end
