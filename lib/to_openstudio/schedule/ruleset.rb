@@ -85,10 +85,7 @@ module Honeybee
         holiday_schedule = openstudio_model.getScheduleDayByName(@hash[:holiday_schedule])
         unless holiday_schedule.empty?
           holiday_schedule_object = holiday_schedule.get
-          begin
-            os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
-          rescue NoMethodError  # REMOVE: Once the upgrade to OpenStudio 3.0 is official
-          end
+          os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
         end
       end
 
