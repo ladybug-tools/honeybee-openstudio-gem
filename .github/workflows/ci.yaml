@@ -23,8 +23,8 @@ jobs:
         docker exec -t test bundle exec rake
         docker kill test
 
-  deploy_github:
-    name: Deploy to GitHub
+  deploy:
+    name: Deploy to GitHub and Rubygems.org
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'ladybug-tools'
@@ -38,51 +38,19 @@ jobs:
         run:
           npm install @semantic-release/exec
       - name: run semantic release
-        run: |
-          git config --global user.email "releases@ladybug.tools"
-          git config --global user.name "ladybugbot"
-          npx semantic-release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic   # Need an `id` for output variables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  deploy_rubygems:
-    name: Deploy to Rubygems.org
-    runs-on: ubuntu-latest
-    needs: deploy_github
-    steps:
-      - uses: actions/checkout@v2
       - name: Update gemspec
+        if: steps.semantic.outputs.new_release_published == 'true'
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ steps.semantic.outputs.new_release_version }}
         run: |
           export CLEAN_TAG=$(echo $RELEASE_TAG | sed 's/v//g')
           sed -i 's/"0.0.0"/'"'$CLEAN_TAG'"'/g' honeybee-openstudio.gemspec
       - name: Release Gem
+        if: steps.semantic.outputs.new_release_published == 'true'
         uses: dawidd6/action-publish-gem@v1
         with:
           api_key: ${{secrets.RUBYGEMS_API_KEY}}
-
-  dispatch_schema:
-    name: Dispatch Schema to Clients
-    runs-on: ubuntu-latest
-    needs: deploy_github
-    strategy:
-      matrix:
-        client_repo:
-          - ladybug-tools/lbt-grasshopper
-    steps:
-    - name: Send repo dispatch to lbt-grasshopper
-      env:
-        RELEASE_TAG: ${{ github.event.release.tag_name }}
-        DISPATCH_URL: https://api.github.com/repos/${{ matrix.client_repo }}/dispatches
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        curl -X POST $DISPATCH_URL \
-          -H "Accept: application/vnd.github.everest-preview+json" \
-          -d '{
-            "event_type": "honeybee_openstudio_gem_release",
-            "client_payload": {
-              "version" : "'$RELEASE_TAG'"
-            }
-          }' \
-          -u ladybugbot:$GH_TOKEN
