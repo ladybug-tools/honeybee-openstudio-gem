@@ -58,11 +58,9 @@ jobs:
           export CLEAN_TAG=$(echo $RELEASE_TAG | sed 's/v//g')
           sed -i 's/"0.0.0"/'"'$CLEAN_TAG'"'/g' honeybee-openstudio.gemspec
       - name: Release Gem
-        uses: cadwallion/publish-rubygems-action@master
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
-          RELEASE_COMMAND: rake release
+        uses: dawidd6/action-publish-gem@v1
+        with:
+          api_key: ${{secrets.RUBYGEMS_API_KEY}}
 
   dispatch_schema:
     name: Dispatch Schema to Clients
