@@ -451,6 +451,12 @@ module Honeybee
               unless zone_get.empty?
                 os_thermal_zone = zone_get.get
                 os_ideal_air.addToThermalZone(os_thermal_zone)
+                # set the humidistat if the zone has one
+                humid_get = os_thermal_zone.zoneControlHumidistat
+                unless humid_get.empty?
+                  os_ideal_air.setDehumidificationControlType('Humidistat')
+                  os_ideal_air.setHumidificationControlType('Humidistat')
+                end
               end
             end
           elsif TemplateHVAC.types.include?(system_type)
