@@ -72,6 +72,11 @@ module URBANopt
         feature_id = feature.id
         feature_type = feature.type
         feature_name = feature.name
+
+        # take the centroid of the vertices as the location of the building
+        feature_vertices_coordinates = feature.feature_json[:geometry][:coordinates][0]
+        feature_location = feature.find_feature_center(feature_vertices_coordinates).to_s
+
         if feature_names.size == 1
           feature_name = feature_names[0]
         end
@@ -103,6 +108,8 @@ module URBANopt
               osw, 'default_feature_reports', 'feature_name', feature_name)
             OpenStudio::Extension.set_measure_argument(
               osw, 'default_feature_reports', 'feature_type', feature_type)
+            OpenStudio::Extension.set_measure_argument(
+              osw, 'default_feature_reports', 'feature_location', feature_location)
 
         end
         return osw
