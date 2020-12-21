@@ -37,7 +37,7 @@ module Honeybee
   class ElectricEquipmentAbridged
 
     def find_existing_openstudio_object(openstudio_model)
-      model_electric_equipment = openstudio_model.getElectricEquipmentDefinitionByName(@hash[:identifier])
+      model_electric_equipment = openstudio_model.getElectricEquipmentByName(@hash[:identifier])
       return model_electric_equipment.get unless model_electric_equipment.empty?
       nil
     end

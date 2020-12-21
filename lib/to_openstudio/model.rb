@@ -86,8 +86,10 @@ module Honeybee
       $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
       $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
       $window_shade_hash = Hash.new  # hash to track any window constructions with shade
+      $programtype_shw_hash = Hash.new  # hash to track ServiceHotWater objects
       $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
       $interior_afn_srf_hash = Hash.new  # track whether an adjacent surface is already in the AFN
+      $shw_for_plant = nil  # track whether a hot water plant is needed
 
       # create all of the non-geometric model elements
       if log_report  # schedules are used by all other objects and come first
@@ -151,6 +153,7 @@ module Honeybee
         puts 'Translating HVAC Systems'
       end
       create_hvacs
+      create_hot_water_plant
 
       if log_report
         puts 'Translating Context Shade Geometry'
@@ -361,6 +364,17 @@ module Honeybee
           room_object = Room.new(room)
           openstudio_room = room_object.to_openstudio(@openstudio_model)
 
+          # for rooms with hot water objects definied in the ProgramType, make a new WaterUse:Equipment
+          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:service_hot_water]
+            program_type_id = room[:properties][:energy][:program_type]
+            shw_hash = $programtype_shw_hash[program_type_id]
+            unless shw_hash.nil?
+              shw_object = ServiceHotWaterAbridged.new(shw_hash)
+              openstudio_shw = shw_object.to_openstudio(@openstudio_model, openstudio_room)
+              $shw_for_plant = shw_object
+            end
+          end
+
           # for rooms with setpoint objects definied in the ProgramType, make a new thermostat
           if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
             thermal_zone = openstudio_room.thermalZone()
@@ -368,7 +382,7 @@ module Honeybee
               thermal_zone_object = thermal_zone.get
               program_type_id = room[:properties][:energy][:program_type]
               setpoint_hash = $programtype_setpoint_hash[program_type_id]
-              if not setpoint_hash.nil?  # program type has no setpoint
+              unless setpoint_hash.nil?  # program type has no setpoint
                 thermostat_object = SetpointThermostat.new(setpoint_hash)
                 openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
                 thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
@@ -464,6 +478,13 @@ module Honeybee
             os_template_system = template_system.to_openstudio(@openstudio_model, hvac['rooms'])
           end
         end
+      end
+    end
+
+    def create_hot_water_plant
+      # create a hot water plant if there's any service hot water in the model
+      unless $shw_for_plant.nil?
+        $shw_for_plant.add_district_hot_water_plant(@openstudio_model)
       end
     end
 

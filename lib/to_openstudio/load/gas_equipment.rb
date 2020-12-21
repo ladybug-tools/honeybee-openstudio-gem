@@ -37,7 +37,7 @@ module Honeybee
   class GasEquipmentAbridged
 
     def find_existing_openstudio_object(openstudio_model)
-      model_gas_equipment = openstudio_model.getGasEquipmentDefinitionByName(@hash[:identifier])
+      model_gas_equipment = openstudio_model.getGasEquipmentByName(@hash[:identifier])
       return model_gas_equipment.get unless model_gas_equipment.empty?
       nil
     end

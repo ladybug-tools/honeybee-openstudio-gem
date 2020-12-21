@@ -64,7 +64,7 @@ module Honeybee
         @@program_manager.setCallingPoint('BeginTimestepBeforePredictor')
       end
       @@program_manager
-      end
+    end
 
     def replace_ems_special_characters(ems_variable_name)
       # remove special characters from an name to be used as an EMS variable

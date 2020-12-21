@@ -37,7 +37,7 @@ module Honeybee
   class PeopleAbridged
 
     def find_existing_openstudio_object(openstudio_model)
-      model_people = openstudio_model.getPeopleDefinitionByName(@hash[:identifier])
+      model_people = openstudio_model.getPeopleByName(@hash[:identifier])
       return model_people.get unless model_people.empty?
       nil
     end
