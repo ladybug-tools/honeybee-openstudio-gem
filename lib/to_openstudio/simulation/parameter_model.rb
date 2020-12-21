@@ -237,6 +237,10 @@ module Honeybee
       if @hash[:terrain_type]
         os_site.setTerrain(@hash[:terrain_type])
       end
+
+      # ensure water mains temperatures are written
+      os_water_mains = @openstudio_model.getSiteWaterMainsTemperature 
+      os_water_mains.setCalculationMethod('CorrelationFromWeatherFile')
     end
 
   end #SimulationParameter

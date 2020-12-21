@@ -1,7 +1,7 @@
 {
     "type": "Model",
-    "identifier": "Model_Energy_Allair_HVAC",
-    "display_name": "Model_Energy_Allair_HVAC",
+    "identifier": "TinyHouse",
+    "display_name": "TinyHouse",
     "units": "Meters",
     "properties": {
         "type": "ModelProperties",
@@ -12,13 +12,20 @@
             "materials": [],
             "hvacs": [
                 {
-                    "type": "VAV",
-                    "identifier": "VAV System with Glycol Loop",
-                    "vintage": "90.1-2010",
-                    "equipment_type": "VAV chiller with gas boiler reheat",
+                    "type": "IdealAirSystemAbridged",
+                    "identifier": "TinyHouseZone Ideal Loads Air System",
                     "economizer_type": "DifferentialDryBulb",
-                    "sensible_heat_recovery": 0.55,
-                    "latent_heat_recovery": 0.0
+                    "demand_controlled_ventilation": false,
+                    "sensible_heat_recovery": 0.0,
+                    "latent_heat_recovery": 0.0,
+                    "heating_air_temperature": 50.0,
+                    "cooling_air_temperature": 13.0,
+                    "heating_limit": {
+                        "type": "Autosize"
+                    },
+                    "cooling_limit": {
+                        "type": "Autosize"
+                    }
                 }
             ],
             "program_types": [
@@ -75,6 +82,207 @@
                 }
             ],
             "schedules": [
+                {
+                    "type": "ScheduleRulesetAbridged",
+                    "identifier": "Generic Office Lighting",
+                    "day_schedules": [
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun",
+                            "values": [
+                                0.05,
+                                0.04311628,
+                                0.05
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    18,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn",
+                            "values": [
+                                1.0
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn",
+                            "values": [
+                                0.0
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
+                            "values": [
+                                0.05,
+                                0.08623256,
+                                0.25869768,
+                                0.12934884,
+                                0.04311628,
+                                0.05
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    8,
+                                    0
+                                ],
+                                [
+                                    12,
+                                    0
+                                ],
+                                [
+                                    17,
+                                    0
+                                ],
+                                [
+                                    19,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy",
+                            "values": [
+                                0.05,
+                                0.1,
+                                0.08623256,
+                                0.25869768,
+                                0.77609304,
+                                0.4311628,
+                                0.25869768,
+                                0.17246512,
+                                0.08623256,
+                                0.04311628
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    5,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    7,
+                                    0
+                                ],
+                                [
+                                    8,
+                                    0
+                                ],
+                                [
+                                    17,
+                                    0
+                                ],
+                                [
+                                    18,
+                                    0
+                                ],
+                                [
+                                    20,
+                                    0
+                                ],
+                                [
+                                    22,
+                                    0
+                                ],
+                                [
+                                    23,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        }
+                    ],
+                    "default_day_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun",
+                    "schedule_rules": [
+                        {
+                            "type": "ScheduleRuleAbridged",
+                            "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy",
+                            "apply_sunday": false,
+                            "apply_monday": true,
+                            "apply_tuesday": true,
+                            "apply_wednesday": true,
+                            "apply_thursday": true,
+                            "apply_friday": true,
+                            "apply_saturday": false,
+                            "start_date": [
+                                1,
+                                1
+                            ],
+                            "end_date": [
+                                12,
+                                31
+                            ]
+                        },
+                        {
+                            "type": "ScheduleRuleAbridged",
+                            "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
+                            "apply_sunday": false,
+                            "apply_monday": false,
+                            "apply_tuesday": false,
+                            "apply_wednesday": false,
+                            "apply_thursday": false,
+                            "apply_friday": false,
+                            "apply_saturday": true,
+                            "start_date": [
+                                1,
+                                1
+                            ],
+                            "end_date": [
+                                12,
+                                31
+                            ]
+                        }
+                    ],
+                    "holiday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
+                    "summer_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn",
+                    "winter_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn",
+                    "schedule_type_limit": "Fractional"
+                },
                 {
                     "type": "ScheduleRulesetAbridged",
                     "identifier": "Generic Office Heating",
@@ -255,209 +463,6 @@
                     "summer_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn",
                     "winter_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn",
                     "schedule_type_limit": "Temperature"
-                },
-                {
-                    "type": "ScheduleRulesetAbridged",
-                    "identifier": "Generic Office Cooling",
-                    "day_schedules": [
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
-                            "values": [
-                                26.7
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn",
-                            "values": [
-                                26.7,
-                                25.7,
-                                25.0,
-                                24.0,
-                                26.7
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    5,
-                                    0
-                                ],
-                                [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    7,
-                                    0
-                                ],
-                                [
-                                    22,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn",
-                            "values": [
-                                26.7
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy",
-                            "values": [
-                                26.7,
-                                25.6,
-                                25.0,
-                                24.0,
-                                26.7
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    5,
-                                    0
-                                ],
-                                [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    7,
-                                    0
-                                ],
-                                [
-                                    22,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat",
-                            "values": [
-                                26.7,
-                                25.7,
-                                25.0,
-                                24.0,
-                                26.7
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    5,
-                                    0
-                                ],
-                                [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    7,
-                                    0
-                                ],
-                                [
-                                    17,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        }
-                    ],
-                    "default_day_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
-                    "schedule_rules": [
-                        {
-                            "type": "ScheduleRuleAbridged",
-                            "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy",
-                            "apply_sunday": false,
-                            "apply_monday": true,
-                            "apply_tuesday": true,
-                            "apply_wednesday": true,
-                            "apply_thursday": true,
-                            "apply_friday": true,
-                            "apply_saturday": false,
-                            "start_date": [
-                                1,
-                                1
-                            ],
-                            "end_date": [
-                                12,
-                                31
-                            ]
-                        },
-                        {
-                            "type": "ScheduleRuleAbridged",
-                            "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat",
-                            "apply_sunday": false,
-                            "apply_monday": false,
-                            "apply_tuesday": false,
-                            "apply_wednesday": false,
-                            "apply_thursday": false,
-                            "apply_friday": false,
-                            "apply_saturday": true,
-                            "start_date": [
-                                1,
-                                1
-                            ],
-                            "end_date": [
-                                12,
-                                31
-                            ]
-                        }
-                    ],
-                    "holiday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
-                    "summer_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn",
-                    "winter_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn",
-                    "schedule_type_limit": "Temperature"
-                },
-                {
-                    "type": "ScheduleRulesetAbridged",
-                    "identifier": "Seated Adult Activity",
-                    "day_schedules": [
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "Seated Adult Activity_Day Schedule",
-                            "values": [
-                                120.0
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        }
-                    ],
-                    "default_day_schedule": "Seated Adult Activity_Day Schedule",
-                    "schedule_type_limit": "Activity Level"
                 },
                 {
                     "type": "ScheduleRulesetAbridged",
@@ -808,204 +813,57 @@
                 },
                 {
                     "type": "ScheduleRulesetAbridged",
-                    "identifier": "Generic Office Lighting",
+                    "identifier": "Office Water Use",
                     "day_schedules": [
                         {
                             "type": "ScheduleDay",
-                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun",
+                            "identifier": "Simple Weekday",
                             "values": [
-                                0.05,
-                                0.04311628,
-                                0.05
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    18,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn",
-                            "values": [
-                                1.0
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn",
-                            "values": [
+                                0.0,
+                                1.0,
                                 0.0
                             ],
                             "times": [
                                 [
                                     0,
                                     0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
-                            "values": [
-                                0.05,
-                                0.08623256,
-                                0.25869768,
-                                0.12934884,
-                                0.04311628,
-                                0.05
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
                                 ],
                                 [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    8,
-                                    0
-                                ],
-                                [
-                                    12,
+                                    9,
                                     0
                                 ],
                                 [
                                     17,
-                                    0
-                                ],
-                                [
-                                    19,
-                                    0
-                                ]
-                            ],
-                            "interpolate": false
-                        },
-                        {
-                            "type": "ScheduleDay",
-                            "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy",
-                            "values": [
-                                0.05,
-                                0.1,
-                                0.08623256,
-                                0.25869768,
-                                0.77609304,
-                                0.4311628,
-                                0.25869768,
-                                0.17246512,
-                                0.08623256,
-                                0.04311628
-                            ],
-                            "times": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    5,
-                                    0
-                                ],
-                                [
-                                    6,
-                                    0
-                                ],
-                                [
-                                    7,
-                                    0
-                                ],
-                                [
-                                    8,
-                                    0
-                                ],
-                                [
-                                    17,
-                                    0
-                                ],
-                                [
-                                    18,
-                                    0
-                                ],
-                                [
-                                    20,
-                                    0
-                                ],
-                                [
-                                    22,
-                                    0
-                                ],
-                                [
-                                    23,
                                     0
                                 ]
                             ],
                             "interpolate": false
                         }
                     ],
-                    "default_day_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun",
-                    "schedule_rules": [
-                        {
-                            "type": "ScheduleRuleAbridged",
-                            "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy",
-                            "apply_sunday": false,
-                            "apply_monday": true,
-                            "apply_tuesday": true,
-                            "apply_wednesday": true,
-                            "apply_thursday": true,
-                            "apply_friday": true,
-                            "apply_saturday": false,
-                            "start_date": [
-                                1,
-                                1
-                            ],
-                            "end_date": [
-                                12,
-                                31
-                            ]
-                        },
-                        {
-                            "type": "ScheduleRuleAbridged",
-                            "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
-                            "apply_sunday": false,
-                            "apply_monday": false,
-                            "apply_tuesday": false,
-                            "apply_wednesday": false,
-                            "apply_thursday": false,
-                            "apply_friday": false,
-                            "apply_saturday": true,
-                            "start_date": [
-                                1,
-                                1
-                            ],
-                            "end_date": [
-                                12,
-                                31
-                            ]
-                        }
-                    ],
-                    "holiday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat",
-                    "summer_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn",
-                    "winter_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn",
+                    "default_day_schedule": "Simple Weekday",
                     "schedule_type_limit": "Fractional"
+                },
+                {
+                    "type": "ScheduleRulesetAbridged",
+                    "identifier": "Seated Adult Activity",
+                    "day_schedules": [
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "Seated Adult Activity_Day Schedule",
+                            "values": [
+                                120.0
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        }
+                    ],
+                    "default_day_schedule": "Seated Adult Activity_Day Schedule",
+                    "schedule_type_limit": "Activity Level"
                 },
                 {
                     "type": "ScheduleRulesetAbridged",
@@ -1212,16 +1070,199 @@
                     "summer_designday_schedule": "OfficeMedium BLDG_OCC_SCH_SmrDsn",
                     "winter_designday_schedule": "OfficeMedium BLDG_OCC_SCH_WntrDsn",
                     "schedule_type_limit": "Fractional"
+                },
+                {
+                    "type": "ScheduleRulesetAbridged",
+                    "identifier": "Generic Office Cooling",
+                    "day_schedules": [
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
+                            "values": [
+                                26.7
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn",
+                            "values": [
+                                26.7,
+                                25.7,
+                                25.0,
+                                24.0,
+                                26.7
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    5,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    7,
+                                    0
+                                ],
+                                [
+                                    22,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn",
+                            "values": [
+                                26.7
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy",
+                            "values": [
+                                26.7,
+                                25.6,
+                                25.0,
+                                24.0,
+                                26.7
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    5,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    7,
+                                    0
+                                ],
+                                [
+                                    22,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        },
+                        {
+                            "type": "ScheduleDay",
+                            "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat",
+                            "values": [
+                                26.7,
+                                25.7,
+                                25.0,
+                                24.0,
+                                26.7
+                            ],
+                            "times": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    5,
+                                    0
+                                ],
+                                [
+                                    6,
+                                    0
+                                ],
+                                [
+                                    7,
+                                    0
+                                ],
+                                [
+                                    17,
+                                    0
+                                ]
+                            ],
+                            "interpolate": false
+                        }
+                    ],
+                    "default_day_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
+                    "schedule_rules": [
+                        {
+                            "type": "ScheduleRuleAbridged",
+                            "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy",
+                            "apply_sunday": false,
+                            "apply_monday": true,
+                            "apply_tuesday": true,
+                            "apply_wednesday": true,
+                            "apply_thursday": true,
+                            "apply_friday": true,
+                            "apply_saturday": false,
+                            "start_date": [
+                                1,
+                                1
+                            ],
+                            "end_date": [
+                                12,
+                                31
+                            ]
+                        },
+                        {
+                            "type": "ScheduleRuleAbridged",
+                            "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat",
+                            "apply_sunday": false,
+                            "apply_monday": false,
+                            "apply_tuesday": false,
+                            "apply_wednesday": false,
+                            "apply_thursday": false,
+                            "apply_friday": false,
+                            "apply_saturday": true,
+                            "start_date": [
+                                1,
+                                1
+                            ],
+                            "end_date": [
+                                12,
+                                31
+                            ]
+                        }
+                    ],
+                    "holiday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default",
+                    "summer_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn",
+                    "winter_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn",
+                    "schedule_type_limit": "Temperature"
                 }
             ],
             "schedule_type_limits": [
                 {
                     "type": "ScheduleTypeLimit",
-                    "identifier": "Fractional",
-                    "lower_limit": 0.0,
-                    "upper_limit": 1.0,
+                    "identifier": "Temperature",
+                    "lower_limit": -273.15,
+                    "upper_limit": {
+                        "type": "NoLimit"
+                    },
                     "numeric_type": "Continuous",
-                    "unit_type": "Dimensionless"
+                    "unit_type": "Temperature"
                 },
                 {
                     "type": "ScheduleTypeLimit",
@@ -1235,35 +1276,52 @@
                 },
                 {
                     "type": "ScheduleTypeLimit",
-                    "identifier": "Temperature",
-                    "lower_limit": -273.15,
-                    "upper_limit": {
-                        "type": "NoLimit"
-                    },
+                    "identifier": "Fractional",
+                    "lower_limit": 0.0,
+                    "upper_limit": 1.0,
                     "numeric_type": "Continuous",
-                    "unit_type": "Temperature"
+                    "unit_type": "Dimensionless"
                 }
-            ]
+            ],
+            "ventilation_simulation_control": {
+                "type": "VentilationSimulationControl",
+                "vent_control_type": "SingleZone",
+                "reference_temperature": 20.0,
+                "reference_pressure": 101325.0,
+                "reference_humidity_ratio": 0.0,
+                "building_type": "LowRise",
+                "long_axis_angle": 0.0,
+                "aspect_ratio": 1.0
+            }
         }
     },
     "rooms": [
         {
             "type": "Room",
-            "identifier": "First_Floor",
-            "display_name": "First_Floor",
+            "identifier": "TinyHouseZone",
+            "display_name": "TinyHouseZone",
             "properties": {
                 "type": "RoomPropertiesAbridged",
                 "energy": {
                     "type": "RoomEnergyPropertiesAbridged",
                     "program_type": "Generic Office Program",
-                    "hvac": "VAV System with Glycol Loop"
+                    "hvac": "TinyHouseZone Ideal Loads Air System",
+                    "service_hot_water": {
+                        "type": "ServiceHotWaterAbridged",
+                        "identifier": "Office Hot Water",
+                        "flow_per_area": 0.1,
+                        "target_temperature": 60.0,
+                        "sensible_fraction": 0.2,
+                        "latent_fraction": 0.05,
+                        "schedule": "Office Water Use"
+                    }
                 }
             },
             "faces": [
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Bottom",
-                    "display_name": "First_Floor_Bottom",
+                    "identifier": "TinyHouseZone_Bottom",
+                    "display_name": "TinyHouseZone_Bottom",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1284,12 +1342,12 @@
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 0.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 0.0,
                                 0.0
                             ]
@@ -1302,8 +1360,8 @@
                 },
                 {
                     "type": "Face",
-                    "identifier": "First_Floor_Front",
-                    "display_name": "First_Floor_Front",
+                    "identifier": "TinyHouseZone_Front",
+                    "display_name": "TinyHouseZone_Front",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1314,12 +1372,12 @@
                         "type": "Face3D",
                         "boundary": [
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 3.0
                             ],
                             [
-                                10.0,
+                                5.0,
                                 10.0,
                                 0.0
                             ],
@@ -1343,438 +1401,12 @@
                         "view_factor": {
                             "type": "Autocalculate"
                         }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Front_Glz0",
-                            "display_name": "First_Floor_Front_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "First_Floor_Right",
-                    "display_name": "First_Floor_Right",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                0.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                0.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Right_Glz0",
-                            "display_name": "First_Floor_Right_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "First_Floor_Back",
-                    "display_name": "First_Floor_Back",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                0.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Back_Glz0",
-                            "display_name": "First_Floor_Back_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "First_Floor_Left",
-                    "display_name": "First_Floor_Left",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                0.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "First_Floor_Left_Glz0",
-                            "display_name": "First_Floor_Left_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        2.170820393249937
-                                    ],
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        0.8291796067500631
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        2.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "First_Floor_Top",
-                    "display_name": "First_Floor_Top",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "RoofCeiling",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "Second_Floor_Bottom",
-                            "Second_Floor"
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "type": "Room",
-            "identifier": "Second_Floor",
-            "display_name": "Second_Floor",
-            "properties": {
-                "type": "RoomPropertiesAbridged",
-                "energy": {
-                    "type": "RoomEnergyPropertiesAbridged",
-                    "program_type": "Generic Office Program",
-                    "hvac": "VAV System with Glycol Loop"
-                }
-            },
-            "faces": [
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Bottom",
-                    "display_name": "Second_Floor_Bottom",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                0.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Floor",
-                    "boundary_condition": {
-                        "type": "Surface",
-                        "boundary_condition_objects": [
-                            "First_Floor_Top",
-                            "First_Floor"
-                        ]
                     }
                 },
                 {
                     "type": "Face",
-                    "identifier": "Second_Floor_Front",
-                    "display_name": "Second_Floor_Front",
+                    "identifier": "TinyHouseZone_Right",
+                    "display_name": "TinyHouseZone_Right",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1785,24 +1417,24 @@
                         "type": "Face3D",
                         "boundary": [
                             [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
+                                5.0,
+                                0.0,
                                 3.0
                             ],
                             [
+                                5.0,
                                 0.0,
-                                10.0,
-                                3.0
+                                0.0
                             ],
                             [
-                                0.0,
+                                5.0,
                                 10.0,
-                                6.0
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                10.0,
+                                3.0
                             ]
                         ]
                     },
@@ -1814,59 +1446,12 @@
                         "view_factor": {
                             "type": "Autocalculate"
                         }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Front_Glz0",
-                            "display_name": "Second_Floor_Front_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        10.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        10.0,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "type": "Face",
-                    "identifier": "Second_Floor_Right",
-                    "display_name": "Second_Floor_Right",
+                    "identifier": "TinyHouseZone_Back",
+                    "display_name": "TinyHouseZone_Back",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1877,24 +1462,24 @@
                         "type": "Face3D",
                         "boundary": [
                             [
-                                10.0,
                                 0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
                                 0.0,
                                 3.0
                             ],
                             [
-                                10.0,
-                                10.0,
-                                3.0
+                                0.0,
+                                0.0,
+                                0.0
                             ],
                             [
-                                10.0,
-                                10.0,
-                                6.0
+                                5.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                5.0,
+                                0.0,
+                                3.0
                             ]
                         ]
                     },
@@ -1906,59 +1491,12 @@
                         "view_factor": {
                             "type": "Autocalculate"
                         }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Right_Glz0",
-                            "display_name": "Second_Floor_Right_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        10.0,
-                                        2.76393202250021,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        10.0,
-                                        7.23606797749979,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "type": "Face",
-                    "identifier": "Second_Floor_Back",
-                    "display_name": "Second_Floor_Back",
+                    "identifier": "TinyHouseZone_Left",
+                    "display_name": "TinyHouseZone_Left",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -1970,23 +1508,23 @@
                         "boundary": [
                             [
                                 0.0,
+                                10.0,
+                                3.0
+                            ],
+                            [
                                 0.0,
-                                6.0
+                                10.0,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                0.0,
+                                0.0
                             ],
                             [
                                 0.0,
                                 0.0,
                                 3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                3.0
-                            ],
-                            [
-                                10.0,
-                                0.0,
-                                6.0
                             ]
                         ]
                     },
@@ -1998,59 +1536,12 @@
                         "view_factor": {
                             "type": "Autocalculate"
                         }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Back_Glz0",
-                            "display_name": "Second_Floor_Back_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        2.76393202250021,
-                                        0.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        7.23606797749979,
-                                        0.0,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "type": "Face",
-                    "identifier": "Second_Floor_Left",
-                    "display_name": "Second_Floor_Left",
+                    "identifier": "TinyHouseZone_Top",
+                    "display_name": "TinyHouseZone_Top",
                     "properties": {
                         "type": "FacePropertiesAbridged",
                         "energy": {
@@ -2061,9 +1552,14 @@
                         "type": "Face3D",
                         "boundary": [
                             [
+                                5.0,
                                 0.0,
+                                3.0
+                            ],
+                            [
+                                5.0,
                                 10.0,
-                                6.0
+                                3.0
                             ],
                             [
                                 0.0,
@@ -2074,103 +1570,6 @@
                                 0.0,
                                 0.0,
                                 3.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                6.0
-                            ]
-                        ]
-                    },
-                    "face_type": "Wall",
-                    "boundary_condition": {
-                        "type": "Outdoors",
-                        "sun_exposure": true,
-                        "wind_exposure": true,
-                        "view_factor": {
-                            "type": "Autocalculate"
-                        }
-                    },
-                    "apertures": [
-                        {
-                            "type": "Aperture",
-                            "identifier": "Second_Floor_Left_Glz0",
-                            "display_name": "Second_Floor_Left_Glz0",
-                            "properties": {
-                                "type": "AperturePropertiesAbridged",
-                                "energy": {
-                                    "type": "ApertureEnergyPropertiesAbridged"
-                                }
-                            },
-                            "geometry": {
-                                "type": "Face3D",
-                                "boundary": [
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        5.170820393249937
-                                    ],
-                                    [
-                                        0.0,
-                                        7.23606797749979,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        3.829179606750063
-                                    ],
-                                    [
-                                        0.0,
-                                        2.76393202250021,
-                                        5.170820393249937
-                                    ]
-                                ]
-                            },
-                            "is_operable": false,
-                            "boundary_condition": {
-                                "type": "Outdoors",
-                                "sun_exposure": true,
-                                "wind_exposure": true,
-                                "view_factor": {
-                                    "type": "Autocalculate"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "Face",
-                    "identifier": "Second_Floor_Top",
-                    "display_name": "Second_Floor_Top",
-                    "properties": {
-                        "type": "FacePropertiesAbridged",
-                        "energy": {
-                            "type": "FaceEnergyPropertiesAbridged"
-                        }
-                    },
-                    "geometry": {
-                        "type": "Face3D",
-                        "boundary": [
-                            [
-                                10.0,
-                                0.0,
-                                6.0
-                            ],
-                            [
-                                10.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                10.0,
-                                6.0
-                            ],
-                            [
-                                0.0,
-                                0.0,
-                                6.0
                             ]
                         ]
                     },
@@ -2187,5 +1586,7 @@
             ]
         }
     ],
-    "version": "1.35.1"
+    "tolerance": 0.01,
+    "angle_tolerance": 1.0,
+    "version": "1.39.12"
 }

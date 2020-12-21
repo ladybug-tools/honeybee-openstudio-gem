@@ -75,6 +75,11 @@ module Honeybee
         os_gas_equipment.setSpaceType(os_space_type)
       end
 
+      # add hot water from to a global hash that will be used to assign them to rooms
+      if @hash[:service_hot_water]
+        $programtype_shw_hash[@hash[:identifier]] = @hash[:service_hot_water]
+      end
+
       # assign infiltration
       if @hash[:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
         infiltration = InfiltrationAbridged.new(@hash[:infiltration])
