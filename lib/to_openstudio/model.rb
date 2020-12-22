@@ -36,7 +36,13 @@ require 'openstudio'
 module Honeybee
   class Model
 
-    attr_reader :openstudio_model
+    attr_reader :openstudio_model, :schedule_csv_dir, :schedule_csvs
+
+    # if a schedule csv dir is specified then ScheduleFixedIntervalAbridged objects
+    # will be translated to ScheduleFile objects instead of ScheduleFixedInterval
+    def set_schedule_csv_dir(schedule_csv_dir)
+      @schedule_csv_dir = schedule_csv_dir
+    end
 
     # convert to openstudio model, clears errors and warnings
     def to_openstudio_model(openstudio_model=nil, log_report=true)
@@ -97,7 +103,7 @@ module Honeybee
         create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
       end
       if @hash[:properties][:energy][:schedules]
-        create_schedules(@hash[:properties][:energy][:schedules])
+        create_schedules(@hash[:properties][:energy][:schedules], false, true)
       end
 
       if log_report
@@ -280,7 +286,32 @@ module Honeybee
       end
     end
 
-    def create_schedules(schedule_dicts, check_existing=false)
+    def create_schedules(schedule_dicts, check_existing=false, check_leap_year=true)
+
+      # clear out schedule_csvs
+      @schedule_csvs = {}
+
+      if check_leap_year
+        is_leap_year = :unknown
+        schedule_dicts.each do |schedule|
+          # set is leap year = true in case start date has 3 integers
+          this_leap_year = false
+          if schedule[:start_date] && schedule[:start_date][2]
+            this_leap_year = true
+          end
+          if is_leap_year == :unknown
+            is_leap_year = this_leap_year
+          elsif is_leap_year != this_leap_year
+            raise("Mixed leap year information.")
+          end
+        end
+
+        if is_leap_year != :unknown
+          year_description = openstudio_model.getYearDescription
+          year_description.setIsLeapYear(is_leap_year)
+        end
+      end
+
       schedule_dicts.each do |schedule|
         # check if there's already a schedule in the model with the identifier
         add_obj = true
@@ -302,9 +333,29 @@ module Honeybee
           else
             raise("Unknown schedule type #{schedule_type}.")
           end
-          schedule_object.to_openstudio(@openstudio_model)
+          schedule_object.to_openstudio(@openstudio_model, @schedule_csv_dir, @schedule_csvs)
         end
       end
+
+      # write schedule csvs
+      @schedule_csvs.each_value do |schedule_csv|
+        filename = schedule_csv[:filename]
+        columns = schedule_csv[:columns]
+        if !columns.empty?
+          n = columns[0].size
+          path = File.join(@schedule_csv_dir, filename)
+          File.open(path, 'w') do |file|
+            (0..n).each do |i|
+              row = []
+              columns.each do |column|
+                row << column[i]
+              end
+              file.puts row.join(',')
+            end
+          end
+        end
+      end
+
     end
 
     def create_program_types(program_dicts, check_existing=false)
@@ -340,7 +391,7 @@ module Honeybee
       end
       @@standards[:schedules].each do |schedule|
         if schedule[:identifier] == 'Always On'
-          create_schedules([schedule], true)
+          create_schedules([schedule], true, false)
         end
       end
 
