@@ -345,7 +345,7 @@ module Honeybee
           n = columns[0].size
           path = File.join(@schedule_csv_dir, filename)
           File.open(path, 'w') do |file|
-            (0..n).each do |i|
+            (0...n).each do |i|
               row = []
               columns.each do |column|
                 row << column[i]
