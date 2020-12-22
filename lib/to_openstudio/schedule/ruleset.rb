@@ -42,7 +42,7 @@ module Honeybee
       nil
     end
 
-    def to_openstudio(openstudio_model, schedule_csv_dir, schedule_csvs)
+    def to_openstudio(openstudio_model, schedule_csv_dir = nil, schedule_csvs = nil)
 
       # create openstudio schedule ruleset object
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)

@@ -63,6 +63,9 @@ RSpec.describe Honeybee do
 
   it 'can load schedule fixed interval 3' do
     openstudio_model = OpenStudio::Model::Model.new
+    year_description = openstudio_model.getYearDescription
+    year_description.setIsLeapYear(true)
+
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_leap_year.json')
     honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
@@ -112,7 +115,6 @@ RSpec.describe Honeybee do
 
   end
 
-  
   it 'can load schedule ruleset office occupancy' do
     openstudio_model = OpenStudio::Model::Model.new
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_office_occupancy.json')
@@ -140,4 +142,4 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
   end
 
-end 
+end

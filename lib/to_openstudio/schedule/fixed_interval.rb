@@ -42,7 +42,7 @@ module Honeybee
       nil
     end
 
-    def to_openstudio(openstudio_model, schedule_csv_dir, schedule_csvs)
+    def to_openstudio(openstudio_model, schedule_csv_dir = nil, schedule_csvs = nil)
       if schedule_csv_dir
         to_schedule_file(openstudio_model, schedule_csv_dir, schedule_csvs)
       else
