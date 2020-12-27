@@ -228,7 +228,7 @@ module Honeybee
 
       # assign the north
       if @hash[:north_angle]
-        @openstudio_model.getBuilding.setNorthAxis(-@hash[:north_angle])
+        @openstudio_model.getBuilding.setNorthAxis(@hash[:north_angle])
       end
 
       # assign the terrain
