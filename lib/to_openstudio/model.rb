@@ -362,7 +362,7 @@ module Honeybee
 
       # write schedule csvs
       @schedule_csvs.each_value do |schedule_csv|
-        write_schedule_csv(@schedule_csv_dir, schedule_csv)
+        Honeybee.write_schedule_csv(@schedule_csv_dir, schedule_csv)
       end
 
     end

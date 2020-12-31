@@ -108,8 +108,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(schedule_file_dir, 'Random Occupancy.csv'))).to be true
-    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal Tree Transmittance.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -147,8 +147,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir, true)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(schedule_file_dir, 'Random Occupancy.csv'))).to be true
-    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal Tree Transmittance.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -184,8 +184,7 @@ RSpec.describe Honeybee do
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(fixed_interval_dir, 'Random Occupancy.csv'))).to be false
-    expect(File.exists?(File.join(fixed_interval_dir, 'Seasonal Tree Transmittance.csv'))).to be false
+    expect(Dir.glob(File.join(fixed_interval_dir, '*.csv')).empty?).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 

@@ -165,7 +165,7 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
 
     externalFile = object1.externalFile
-    expect(externalFile.fileName).to eq 'Solstice Increasing.csv'
+    expect(externalFile.fileName).to eq 'Solstice_Increasing.csv'
 
     expect(object1.columnNumber).to eq 2
     expect(object1.rowstoSkipatTop).to eq 1
@@ -177,7 +177,7 @@ RSpec.describe Honeybee do
     schedule_csv = schedule_csvs['Solstice Increasing_6_21_6']
     expect(schedule_csv).not_to be nil
     filename = schedule_csv[:filename]
-    expect(filename).to eq 'Solstice Increasing.csv'
+    expect(filename).to eq 'Solstice_Increasing.csv'
     columns = schedule_csv[:columns]
     expect(columns.size).to eq 2
     expect(columns[0].size).to eq 8760*6 + 1
@@ -212,7 +212,7 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
 
     externalFile = object1.externalFile
-    expect(externalFile.fileName).to eq 'Weekly Temperature.csv'
+    expect(externalFile.fileName).to eq 'Weekly_Temperature.csv'
 
     expect(object1.columnNumber).to eq 2
     expect(object1.rowstoSkipatTop).to eq 1
@@ -224,7 +224,7 @@ RSpec.describe Honeybee do
     schedule_csv = schedule_csvs['Weekly Temperature_2_29_1']
     expect(schedule_csv).not_to be nil
     filename = schedule_csv[:filename]
-    expect(filename).to eq 'Weekly Temperature.csv'
+    expect(filename).to eq 'Weekly_Temperature.csv'
     columns = schedule_csv[:columns]
     expect(columns.size).to eq 2
     expect(columns[0].size).to eq 8784 + 1

@@ -168,7 +168,7 @@ module Honeybee
       schedule_csv = schedule_csvs[schedule_key]
       if schedule_csv.nil?
         # file name to write
-        filename = "#{@hash[:identifier]}.csv"
+        filename = "#{@hash[:identifier]}.csv".gsub(' ', '_')
 
         # columns of data
         columns = []
