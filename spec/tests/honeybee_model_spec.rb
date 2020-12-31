@@ -52,7 +52,7 @@ RSpec.describe Honeybee do
 
   it 'can load and validate complete single zone office' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -114,7 +114,7 @@ RSpec.describe Honeybee do
   end
 
   it 'can load and validate shoebox model' do
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_shoe_box.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_shoe_box.hbjson')
     model = Honeybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
@@ -156,7 +156,7 @@ RSpec.describe Honeybee do
 
   it 'can load and validate model complete multi zone office' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_multi_zone_office.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_multi_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -181,7 +181,7 @@ RSpec.describe Honeybee do
 
   it 'can load complete office floor' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_office_floor.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_office_floor.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -189,7 +189,7 @@ RSpec.describe Honeybee do
 
   it 'can load complete patient room' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_patient_room.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_patient_room.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -197,7 +197,7 @@ RSpec.describe Honeybee do
 
   it 'can load model energy fixed interval' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -205,7 +205,15 @@ RSpec.describe Honeybee do
 
   it 'can load model energy no program' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_no_program.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_no_program.hbjson')
+    honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load model energy with service hot water' do
+    openstudio_model = OpenStudio::Model::Model.new
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_service_hot_water.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -213,7 +221,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with all air template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_allair_hvac.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_allair_hvac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -221,7 +229,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with DOAS template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_doas_hvac.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_doas_hvac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -229,7 +237,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with heating/cooling template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ac.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -237,7 +245,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with window ventilation' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ventilation.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ventilation.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -248,7 +256,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with an Airflow Network' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_afn.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_afn.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -276,7 +284,7 @@ RSpec.describe Honeybee do
 
   it 'can triangulate 5vertex sub faces' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -287,7 +295,7 @@ RSpec.describe Honeybee do
 
   it 'can triangulate 5vertex sub faces with interior boundary conditions' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces_interior.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces_interior.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -324,7 +332,7 @@ RSpec.describe Honeybee do
 
   it 'can load large model for a single-family home' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model_large/single_family_home.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model_large/single_family_home.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
@@ -332,7 +340,7 @@ RSpec.describe Honeybee do
 
   it 'can load large model for a lab building' do
     openstudio_model = OpenStudio::Model::Model.new
-    file = File.join(File.dirname(__FILE__), '../samples/model_large/lab_building.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model_large/lab_building.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil

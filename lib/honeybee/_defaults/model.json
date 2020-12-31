@@ -2,8 +2,8 @@
   "openapi": "3.0.2",
   "servers": [],
   "info": {
-    "description": "This is the documentation for Honeybee model schema.",
-    "version": "1.36.0",
+    "description": "Honeybee model schema.",
+    "version": "1.39.12",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -645,6 +645,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SensorGrid\" />\n"
     },
     {
+      "name": "servicehotwater_model",
+      "x-displayName": "ServiceHotWater",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ServiceHotWater\" />\n"
+    },
+    {
+      "name": "servicehotwaterabridged_model",
+      "x-displayName": "ServiceHotWaterAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ServiceHotWaterAbridged\" />\n"
+    },
+    {
       "name": "setpoint_model",
       "x-displayName": "Setpoint",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Setpoint\" />\n"
@@ -998,6 +1008,8 @@
         "scheduleunittype_model",
         "sensor_model",
         "sensorgrid_model",
+        "servicehotwater_model",
+        "servicehotwaterabridged_model",
         "setpoint_model",
         "setpointabridged_model",
         "shade_model",
@@ -1504,6 +1516,12 @@
             "pattern": "^Shade$",
             "type": "string",
             "readOnly": true
+          },
+          "is_detached": {
+            "title": "Is Detached",
+            "description": "Boolean to note whether this shade is detached from any of the other geometry in the model. Cases where this should be True include shade representing surrounding buildings or context. Note that this should always be False for shades assigned to parent objects.",
+            "default": false,
+            "type": "boolean"
           }
         },
         "required": [
@@ -2124,12 +2142,7 @@
             ]
           },
           "face_type": {
-            "title": "Face Type",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FaceType"
-              }
-            ]
+            "$ref": "#/components/schemas/FaceType"
           },
           "boundary_condition": {
             "title": "Boundary Condition",
@@ -2361,6 +2374,14 @@
             "maximum": 1,
             "type": "number",
             "format": "double"
+          },
+          "baseline_watts_per_area": {
+            "title": "Baseline Watts Per Area",
+            "description": "The baseline lighting power density in [W/m2] of floor area. This baseline is useful to track how much better the installed lights are in comparison to a standard like ASHRAE 90.1. If set to None, it will default to 11.84029 W/m2, which is that ASHRAE 90.1-2004 baseline for an office.",
+            "default": 11.84029,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -2512,6 +2533,78 @@
         "required": [
           "identifier",
           "watts_per_area",
+          "schedule"
+        ],
+        "additionalProperties": false
+      },
+      "ServiceHotWaterAbridged": {
+        "title": "ServiceHotWaterAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "flow_per_area": {
+            "title": "Flow Per Area",
+            "description": "Number for the total volume flow rate of water per unit area of floor [L/h-m2].",
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Identifier of the schedule for the hot water use over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the flow_per_area to yield a complete water usage profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ServiceHotWaterAbridged",
+            "pattern": "^ServiceHotWaterAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "target_temperature": {
+            "title": "Target Temperature",
+            "description": "Number for the target temperature of water out of the tap (C). This the temperature after hot water has been mixed with cold water from the water mains. The default is 60C, which essentially assumes that the flow_per_area on this object is only for water straight out of the water heater.",
+            "default": 60,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "sensible_fraction": {
+            "title": "Sensible Fraction",
+            "description": "A number between 0 and 1 for the fraction of the total hot water load given off as sensible heat in the zone.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "A number between 0 and 1 for the fraction of the total hot water load that is latent.",
+            "default": 0.05,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "flow_per_area",
           "schedule"
         ],
         "additionalProperties": false
@@ -2762,7 +2855,7 @@
           },
           "delta_temperature": {
             "title": "Delta Temperature",
-            "description": "A number for the temperature differential in Celsius between indoor and outdoor below which ventilation is shut off.  This should usually be a negative number so that ventilation only occurs when the outdoors is cooler than the indoors. Positive numbers indicate how much hotter the outdoors can be than the indoors before ventilation is stopped.",
+            "description": "A number for the temperature differential in Celsius between indoor and outdoor below which ventilation is shut off.  This should usually be a positive number so that ventilation only occurs when the outdoors is cooler than the indoors. Negative numbers indicate how much hotter the outdoors can be than the indoors before ventilation is stopped.",
             "default": -100,
             "minimum": -100,
             "maximum": 100,
@@ -2845,6 +2938,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasEquipmentAbridged"
+              }
+            ]
+          },
+          "service_hot_water": {
+            "title": "Service Hot Water",
+            "description": "ServiceHotWater object to describe the hot water usage.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceHotWaterAbridged"
               }
             ]
           },
@@ -3366,7 +3468,7 @@
           "specific_heat": {
             "title": "Specific Heat",
             "description": "Specific heat of the material layer in J/(kg-K).",
-            "exclusiveMinimum": 0,
+            "minimum": 100,
             "type": "number",
             "format": "double"
           },
@@ -3383,7 +3485,6 @@
             "readOnly": true
           },
           "roughness": {
-            "title": "Roughness",
             "default": "MediumRough",
             "allOf": [
               {
@@ -3460,7 +3561,6 @@
             "readOnly": true
           },
           "roughness": {
-            "title": "Roughness",
             "default": "MediumRough",
             "allOf": [
               {
@@ -3926,7 +4026,6 @@
             "format": "double"
           },
           "gas_type": {
-            "title": "Gas Type",
             "default": "Air",
             "allOf": [
               {
@@ -4073,16 +4172,10 @@
             "type": "string"
           },
           "gas_types": {
-            "title": "Gas Types",
             "description": "List of gases in the gas mixture.",
             "type": "array",
             "items": {
-              "title": " Gas Types",
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/GasType"
-                }
-              ]
+              "$ref": "#/components/schemas/GasType"
             },
             "minItems": 2,
             "maxItems": 4
@@ -4624,7 +4717,6 @@
             ]
           },
           "numeric_type": {
-            "title": "Numeric Type",
             "default": "Continuous",
             "allOf": [
               {
@@ -4633,7 +4725,6 @@
             ]
           },
           "unit_type": {
-            "title": "Unit Type",
             "default": "Dimensionless",
             "allOf": [
               {
@@ -5115,7 +5206,6 @@
             "readOnly": true
           },
           "shade_location": {
-            "title": "Shade Location",
             "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
             "default": "Interior",
             "allOf": [
@@ -5125,7 +5215,6 @@
             ]
           },
           "control_type": {
-            "title": "Control Type",
             "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
             "default": "AlwaysOn",
             "allOf": [
@@ -5389,7 +5478,6 @@
             "readOnly": true
           },
           "slat_orientation": {
-            "title": "Slat Orientation",
             "default": "Horizontal",
             "allOf": [
               {
@@ -5676,7 +5764,6 @@
             "readOnly": true
           },
           "shade_location": {
-            "title": "Shade Location",
             "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
             "default": "Interior",
             "allOf": [
@@ -5686,7 +5773,6 @@
             ]
           },
           "control_type": {
-            "title": "Control Type",
             "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
             "default": "AlwaysOn",
             "allOf": [
@@ -5771,7 +5857,6 @@
             "readOnly": true
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
             "default": "DifferentialDryBulb",
             "allOf": [
@@ -5915,25 +6000,16 @@
           "VAV chiller with district hot water reheat",
           "VAV chiller with PFP boxes",
           "VAV chiller with gas coil reheat",
-          "VAV chiller with no reheat with baseboard electric",
-          "VAV chiller with no reheat with gas unit heaters",
-          "VAV chiller with no reheat with zone heat pump",
           "VAV air-cooled chiller with gas boiler reheat",
           "VAV air-cooled chiller with central air source heat pump reheat",
           "VAV air-cooled chiller with district hot water reheat",
           "VAV air-cooled chiller with PFP boxes",
           "VAV air-cooled chiller with gas coil reheat",
-          "VAV air-cooled chiller with no reheat with baseboard electric",
-          "VAV air-cooled chiller with no reheat with gas unit heaters",
-          "VAV air-cooled chiller with no reheat with zone heat pump",
           "VAV district chilled water with gas boiler reheat",
           "VAV district chilled water with central air source heat pump reheat",
           "VAV district chilled water with district hot water reheat",
           "VAV district chilled water with PFP boxes",
-          "VAV district chilled water with gas coil reheat",
-          "VAV district chilled water with no reheat with baseboard electric",
-          "VAV district chilled water with no reheat with gas unit heaters",
-          "VAV district chilled water with no reheat with zone heat pump"
+          "VAV district chilled water with gas coil reheat"
         ],
         "type": "string"
       },
@@ -5955,7 +6031,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -5965,7 +6040,6 @@
             ]
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
             "default": "Inferred",
             "allOf": [
@@ -6018,7 +6092,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
             "default": "VAV chiller with gas boiler reheat",
             "allOf": [
@@ -6063,7 +6136,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6073,7 +6145,6 @@
             ]
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
             "default": "Inferred",
             "allOf": [
@@ -6126,7 +6197,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
             "default": "PVAV with gas boiler reheat",
             "allOf": [
@@ -6157,7 +6227,6 @@
           "PSZ-AC with no heat",
           "PSZ-AC district chilled water with baseboard electric",
           "PSZ-AC district chilled water with baseboard gas boiler",
-          "PSZ-AC district chilled water with baseboard district hot water",
           "PSZ-AC district chilled water with gas unit heaters",
           "PSZ-AC district chilled water with electric coil",
           "PSZ-AC district chilled water with gas coil",
@@ -6187,7 +6256,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6197,7 +6265,6 @@
             ]
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
             "default": "Inferred",
             "allOf": [
@@ -6250,7 +6317,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the PVAVEquipmentType enumeration.",
             "default": "PSZ-AC with baseboard electric",
             "allOf": [
@@ -6301,7 +6367,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6311,7 +6376,6 @@
             ]
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
             "default": "Inferred",
             "allOf": [
@@ -6364,7 +6428,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the PTACEquipmentType enumeration.",
             "default": "PTAC with baseboard electric",
             "allOf": [
@@ -6405,7 +6468,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6415,7 +6477,6 @@
             ]
           },
           "economizer_type": {
-            "title": "Economizer Type",
             "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
             "default": "Inferred",
             "allOf": [
@@ -6468,7 +6529,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the FurnaceEquipmentType enumeration.",
             "default": "Forced air furnace",
             "allOf": [
@@ -6526,7 +6586,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6579,7 +6638,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the FCUwithDOASEquipmentType enumeration.",
             "default": "DOAS with fan coil chiller with boiler",
             "allOf": [
@@ -6623,7 +6681,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6676,7 +6733,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the WSHPwithDOASEquipmentType enumeration.",
             "default": "DOAS with water source heat pumps fluid cooler with boiler",
             "allOf": [
@@ -6717,7 +6773,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6770,7 +6825,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the VRFwithDOASEquipmentType enumeration.",
             "default": "DOAS with VRF",
             "allOf": [
@@ -6828,7 +6882,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6845,7 +6898,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the FCUEquipmentType enumeration.",
             "default": "Fan coil chiller with boiler",
             "allOf": [
@@ -6889,7 +6941,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6906,7 +6957,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the WSHPEquipmentType enumeration.",
             "default": "Water source heat pumps fluid cooler with boiler",
             "allOf": [
@@ -6947,7 +6997,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -6964,7 +7013,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the VRFEquipmentType enumeration.",
             "default": "VRF",
             "allOf": [
@@ -7008,7 +7056,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -7025,7 +7072,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the BaseboardEquipmentType enumeration.",
             "default": "Baseboard electric",
             "allOf": [
@@ -7072,7 +7118,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -7089,7 +7134,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the EvaporativeCoolerEquipmentType enumeration.",
             "default": "Direct evap coolers with baseboard electric",
             "allOf": [
@@ -7138,7 +7182,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -7155,7 +7198,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the ResidentialEquipmentType enumeration.",
             "default": "Residential AC with baseboard electric",
             "allOf": [
@@ -7202,7 +7244,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -7219,7 +7260,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the WindowACEquipmentType enumeration.",
             "default": "Window AC with baseboard electric",
             "allOf": [
@@ -7260,7 +7300,6 @@
             "type": "string"
           },
           "vintage": {
-            "title": "Vintage",
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "90.1-2013",
             "allOf": [
@@ -7277,7 +7316,6 @@
             "readOnly": true
           },
           "equipment_type": {
-            "title": "Equipment Type",
             "description": "Text for the specific type of system equipment from the GasUnitHeaterEquipmentType enumeration.",
             "default": "Gas unit heaters",
             "allOf": [
@@ -7349,6 +7387,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasEquipmentAbridged"
+              }
+            ]
+          },
+          "service_hot_water": {
+            "title": "Service Hot Water",
+            "description": "ServiceHotWater object to describe the usage of hot water within the program. If None, no hot water will be assumed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceHotWaterAbridged"
               }
             ]
           },
@@ -7545,6 +7592,14 @@
             "maximum": 1,
             "type": "number",
             "format": "double"
+          },
+          "baseline_watts_per_area": {
+            "title": "Baseline Watts Per Area",
+            "description": "The baseline lighting power density in [W/m2] of floor area. This baseline is useful to track how much better the installed lights are in comparison to a standard like ASHRAE 90.1. If set to None, it will default to 11.84029 W/m2, which is that ASHRAE 90.1-2004 baseline for an office.",
+            "default": 11.84029,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
@@ -7706,6 +7761,83 @@
         "required": [
           "identifier",
           "watts_per_area",
+          "schedule"
+        ],
+        "additionalProperties": false
+      },
+      "ServiceHotWater": {
+        "title": "ServiceHotWater",
+        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "flow_per_area": {
+            "title": "Flow Per Area",
+            "description": "Number for the total volume flow rate of water per unit area of floor [L/h-m2].",
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "The schedule for the use of hot water over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the flow_per_area to yield a complete water usage profile.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ServiceHotWater",
+            "pattern": "^ServiceHotWater$",
+            "type": "string",
+            "readOnly": true
+          },
+          "target_temperature": {
+            "title": "Target Temperature",
+            "description": "Number for the target temperature of water out of the tap (C). This the temperature after hot water has been mixed with cold water from the water mains. The default is 60C, which essentially assumes that the flow_per_area on this object is only for water straight out of the water heater.",
+            "default": 60,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "sensible_fraction": {
+            "title": "Sensible Fraction",
+            "description": "A number between 0 and 1 for the fraction of the total hot water load given off as sensible heat in the zone.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "A number between 0 and 1 for the fraction of the total hot water load that is latent.",
+            "default": 0.05,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "flow_per_area",
           "schedule"
         ],
         "additionalProperties": false
@@ -7996,6 +8128,15 @@
               }
             ]
           },
+          "service_hot_water": {
+            "title": "Service Hot Water",
+            "description": "ServiceHotWater object to describe the usage of hot water within the program. If None, no hot water will be assumed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceHotWater"
+              }
+            ]
+          },
           "infiltration": {
             "title": "Infiltration",
             "description": "Infiltration to describe the outdoor air leakage of the program. If None, no infiltration will be assumed for the program.",
@@ -8228,7 +8369,6 @@
             "readOnly": true
           },
           "vent_control_type": {
-            "title": "Vent Control Type",
             "description": "Text indicating type of ventilation control. Choices are: SingleZone, MultiZoneWithDistribution, MultiZoneWithoutDistribution. The MultiZone options will model air flow with the AirflowNetwork model, which is generally more accurate then the SingleZone option, but will take considerably longer to simulate, and requires defining more ventilation parameters to explicitly account for weather and building-induced pressure differences, and the leakage geometry corresponding to specific windows, doors, and surface cracks.",
             "default": "SingleZone",
             "allOf": [
@@ -8263,7 +8403,6 @@
             "format": "double"
           },
           "building_type": {
-            "title": "Building Type",
             "description": "Text indicating relationship between building footprint and height used to calculate the wind pressure coefficients for exterior surfaces.Choices are: LowRise and HighRise. LowRise corresponds to rectangular building whose height is less then three times the width and length of the footprint. HighRise corresponds to a rectangular building whose height is more than three times the width and length of the footprint. This parameter is required to automatically calculate wind pressure coefficients for the AirflowNetwork simulation. If used for complex building geometries that cannot be described as a highrise or lowrise rectangular mass, the resulting air flow and pressure simulated on the building surfaces may be inaccurate.",
             "default": "LowRise",
             "allOf": [
@@ -11031,7 +11170,6 @@
             "readOnly": true
           },
           "view_type": {
-            "title": "View Type",
             "default": "v",
             "allOf": [
               {
@@ -11229,9 +11367,10 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.36.0",
+            "default": "1.39.12",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
-            "type": "string"
+            "type": "string",
+            "readOnly": true
           },
           "rooms": {
             "title": "Rooms",
@@ -11274,7 +11413,6 @@
             }
           },
           "units": {
-            "title": "Units",
             "description": "Text indicating the units in which the model geometry exists. This is used to scale the geometry to the correct units for simulation engines like EnergyPlus, which requires all geometry be in meters.",
             "default": "Meters",
             "allOf": [
