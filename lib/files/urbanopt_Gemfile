@@ -9,7 +9,7 @@ if allow_local && File.exist?('../openstudio-model-articulation-gem')
 elsif allow_local
   gem 'openstudio-model-articulation', github: 'NREL/openstudio-model-articulation-gem', branch: 'develop'
 else
-  gem 'openstudio-model-articulation', '0.2.0'
+  gem 'openstudio-model-articulation', '0.3.1'
 end
 
 if allow_local && File.exist?('../urbanopt-geojson-gem')
@@ -17,7 +17,7 @@ if allow_local && File.exist?('../urbanopt-geojson-gem')
 elsif allow_local
   gem 'urbanopt-geojson', github: 'URBANopt/urbanopt-geojson-gem', branch: 'develop'
 else
-  gem 'urbanopt-geojson', '~> 0.4.0'
+  gem 'urbanopt-geojson', '~> 0.5.0'
 end
 
 if allow_local && File.exist?('../urbanopt-reporting-gem')
@@ -25,8 +25,8 @@ if allow_local && File.exist?('../urbanopt-reporting-gem')
 elsif allow_local
   gem 'urbanopt-reporting', github: 'URBANopt/urbanopt-reporting-gem', branch: 'develop'
 else
-  gem 'urbanopt-reporting', '~> 0.2.1'
+  gem 'urbanopt-reporting', '~> 0.3.2'
 end
 
 # include the honeybee-openstudio-gem
-gem 'honeybee-openstudio', '2.7.3'
+gem 'honeybee-openstudio', '2.10.3'
