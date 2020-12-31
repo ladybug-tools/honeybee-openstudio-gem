@@ -103,7 +103,7 @@ RSpec.describe Honeybee do
     workflow.saveAs(File.join(schedule_file_dir, 'in.osw'))
     openstudio_model.setWorkflowJSON(workflow)
 
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -142,7 +142,7 @@ RSpec.describe Honeybee do
     workflow.saveAs(File.join(schedule_file_dir, 'in.osw'))
     openstudio_model.setWorkflowJSON(workflow)
 
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir, true)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -180,7 +180,7 @@ RSpec.describe Honeybee do
     workflow.saveAs(File.join(fixed_interval_dir, 'in.osw'))
     openstudio_model.setWorkflowJSON(workflow)
 
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
