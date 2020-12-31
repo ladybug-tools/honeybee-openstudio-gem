@@ -60,6 +60,19 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
     model_json.setDisplayName('Path to the Honeybee Model JSON file')
     args << model_json
 
+    # Make an argument for schedule csv dir
+    schedule_csv_dir = OpenStudio::Measure::OSArgument.makeStringArgument('schedule_csv_dir', false)
+    schedule_csv_dir.setDisplayName('Directory for exported CSV Schedules')
+    schedule_csv_dir.setDescription('If set, Fixed Interval Schedules will be translated to CSV Schedules in this directory')
+    schedule_csv_dir.setDefaultValue('')
+    args << schedule_csv_dir
+
+    # Make an argument for include datetimes
+    include_datetimes = OpenStudio::Measure::OSArgument.makeBoolArgument('include_datetimes', false)
+    include_datetimes.setDisplayName('Include date time column in exported CSV Schedules')
+    include_datetimes.setDefaultValue(false)
+    args << include_datetimes
+
     return args
   end
 
@@ -72,6 +85,8 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
     end
 
     model_json = runner.getStringArgumentValue('model_json', user_arguments)
+    schedule_csv_dir = runner.getStringArgumentValue('schedule_csv_dir', user_arguments)
+    include_datetimes = runner.getBoolArgumentValue('include_datetimes', user_arguments)
 
     if !File.exist?(model_json)
       runner.registerError("Cannot find file '#{model_json}'")
@@ -79,6 +94,14 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
     end
 
     honeybee_model = Honeybee::Model.read_from_disk(model_json)
+
+    if schedule_csv_dir && !schedule_csv_dir.empty?
+      if !Dir.exist?(schedule_csv_dir)
+        runner.registerError("Directory for exported CSV Schedules does not exist '#{schedule_csv_dir}'")
+        return false
+      end
+      honeybee_model.set_schedule_csv_dir(schedule_csv_dir, include_datetimes)
+    end
 
     STDOUT.flush
     honeybee_model.to_openstudio_model(model)

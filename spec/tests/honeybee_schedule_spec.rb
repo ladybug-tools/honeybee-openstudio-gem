@@ -142,4 +142,95 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
   end
 
+  it 'can export a schedule csv starting mid year' do
+    schedule_dir = File.join(File.dirname(__FILE__), '..', 'output', 'schedule_osms')
+    schedule_file_dir = File.join(schedule_dir, 'schedule_fixedinterval_increasing_fine_timestep')
+
+    # translate to schedule file
+    if File.exists?(schedule_file_dir)
+      FileUtils.rm_rf(schedule_file_dir)
+    end
+    FileUtils.mkdir_p(schedule_file_dir)
+
+    openstudio_model = OpenStudio::Model::Model.new
+    workflow = openstudio_model.workflowJSON
+    workflow.addFilePath(schedule_file_dir)
+    openstudio_model.setWorkflowJSON(workflow)
+
+    schedule_csvs = {}
+
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_fine_timestep.json')
+    honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio(openstudio_model, schedule_file_dir, true, schedule_csvs)
+    expect(object1).not_to be nil
+
+    externalFile = object1.externalFile
+    expect(externalFile.fileName).to eq 'Solstice Increasing.csv'
+
+    expect(object1.columnNumber).to eq 2
+    expect(object1.rowstoSkipatTop).to eq 1
+    expect(object1.columnSeparator).to eq 'Comma'
+    expect(object1.interpolatetoTimestep).to eq false
+    expect(object1.minutesperItem.empty?).to eq false
+    expect(object1.minutesperItem.get).to eq '10' # 6 timesteps per hour -> 10 minutes per timestep
+
+    schedule_csv = schedule_csvs['Solstice Increasing_6_21_6']
+    expect(schedule_csv).not_to be nil
+    filename = schedule_csv[:filename]
+    expect(filename).to eq 'Solstice Increasing.csv'
+    columns = schedule_csv[:columns]
+    expect(columns.size).to eq 2
+    expect(columns[0].size).to eq 8760*6 + 1
+    expect(columns[1].size).to eq 8760*6 + 1
+
+    Honeybee.write_schedule_csv(schedule_file_dir, schedule_csv)
+  end
+
+  it 'can export a schedule csv for a leap year' do
+    schedule_dir = File.join(File.dirname(__FILE__), '..', 'output', 'schedule_osms')
+    schedule_file_dir = File.join(schedule_dir, 'schedule_fixedinterval_leap_year')
+
+    # translate to schedule file
+    if File.exists?(schedule_file_dir)
+      FileUtils.rm_rf(schedule_file_dir)
+    end
+    FileUtils.mkdir_p(schedule_file_dir)
+
+    openstudio_model = OpenStudio::Model::Model.new
+    workflow = openstudio_model.workflowJSON
+    workflow.addFilePath(schedule_file_dir)
+    openstudio_model.setWorkflowJSON(workflow)
+
+    year_description = openstudio_model.getYearDescription
+    year_description.setIsLeapYear(true)
+
+    schedule_csvs = {}
+
+    file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_leap_year.json')
+    honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio(openstudio_model, schedule_file_dir, true, schedule_csvs)
+    expect(object1).not_to be nil
+
+    externalFile = object1.externalFile
+    expect(externalFile.fileName).to eq 'Weekly Temperature.csv'
+
+    expect(object1.columnNumber).to eq 2
+    expect(object1.rowstoSkipatTop).to eq 1
+    expect(object1.columnSeparator).to eq 'Comma'
+    expect(object1.interpolatetoTimestep).to eq false
+    expect(object1.minutesperItem.empty?).to eq false
+    expect(object1.minutesperItem.get).to eq '60' # 1 timesteps per hour -> 60 minutes per timestep
+
+    schedule_csv = schedule_csvs['Weekly Temperature_2_29_1']
+    expect(schedule_csv).not_to be nil
+    filename = schedule_csv[:filename]
+    expect(filename).to eq 'Weekly Temperature.csv'
+    columns = schedule_csv[:columns]
+    expect(columns.size).to eq 2
+    expect(columns[0].size).to eq 8784 + 1
+    expect(columns[1].size).to eq 8784 + 1
+
+    Honeybee.write_schedule_csv(schedule_file_dir, schedule_csv)
+  end
+
 end

@@ -34,14 +34,37 @@ require 'honeybee/model'
 require 'openstudio'
 
 module Honeybee
+
+  def self.write_schedule_csv(schedule_csv_dir, schedule_csv)
+    filename = schedule_csv[:filename]
+    columns = schedule_csv[:columns]
+    if !columns.empty?
+      n = columns[0].size
+      path = File.join(schedule_csv_dir, filename)
+      File.open(path, 'w') do |file|
+        (0...n).each do |i|
+          row = []
+          columns.each do |column|
+            row << column[i]
+          end
+          file.puts row.join(',')
+        end
+      end
+    end
+  end
+
   class Model
 
-    attr_reader :openstudio_model, :schedule_csv_dir, :schedule_csvs
+    attr_reader :openstudio_model
+    attr_reader :schedule_csv_dir, :include_datetimes, :schedule_csvs
 
     # if a schedule csv dir is specified then ScheduleFixedIntervalAbridged objects
     # will be translated to ScheduleFile objects instead of ScheduleFixedInterval
-    def set_schedule_csv_dir(schedule_csv_dir)
+    # the optional schedule_csv_include_datetimes argument controls whether schedule csv
+    # files include a first column of date times for verification
+    def set_schedule_csv_dir(schedule_csv_dir, include_datetimes = false)
       @schedule_csv_dir = schedule_csv_dir
+      @include_datetimes = include_datetimes
     end
 
     # convert to openstudio model, clears errors and warnings
@@ -333,27 +356,13 @@ module Honeybee
           else
             raise("Unknown schedule type #{schedule_type}.")
           end
-          schedule_object.to_openstudio(@openstudio_model, @schedule_csv_dir, @schedule_csvs)
+          schedule_object.to_openstudio(@openstudio_model, @schedule_csv_dir, @include_datetimes, @schedule_csvs)
         end
       end
 
       # write schedule csvs
       @schedule_csvs.each_value do |schedule_csv|
-        filename = schedule_csv[:filename]
-        columns = schedule_csv[:columns]
-        if !columns.empty?
-          n = columns[0].size
-          path = File.join(@schedule_csv_dir, filename)
-          File.open(path, 'w') do |file|
-            (0...n).each do |i|
-              row = []
-              columns.each do |column|
-                row << column[i]
-              end
-              file.puts row.join(',')
-            end
-          end
-        end
+        write_schedule_csv(@schedule_csv_dir, schedule_csv)
       end
 
     end

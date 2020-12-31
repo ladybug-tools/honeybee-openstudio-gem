@@ -98,6 +98,7 @@ RSpec.describe Honeybee do
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(schedule_file_dir)
     workflow.addFilePath(epw_dir)
+    workflow.setSeedFile('in.osm')
     workflow.setWeatherFile(epw_name)
     workflow.saveAs(File.join(schedule_file_dir, 'in.osw'))
     openstudio_model.setWorkflowJSON(workflow)
@@ -107,7 +108,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(schedule_file_dir, '1_1_1.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Random Occupancy.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal Tree Transmittance.csv'))).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -115,6 +117,47 @@ RSpec.describe Honeybee do
 
     command = "#{OpenStudio::getOpenStudioCLI} run -w #{File.join(schedule_file_dir, 'in.osw')}"
     puts command
+    #result = system(command)
+    #expect(result).to be true
+  end
+
+  it 'can translate model energy fixed interval to schedule file with datetimes' do
+    epw_name = 'USA_CO_Golden-NREL.724666_TMY3.epw'
+    epw_dir = File.join(File.dirname(__FILE__), '..', 'samples', 'epw')
+    schedule_dir = File.join(File.dirname(__FILE__), '..', 'output', 'schedule_osms')
+    schedule_file_dir = File.join(schedule_dir, 'schedule_file_with_datetimes')
+
+    # translate to schedule file
+    if File.exists?(schedule_file_dir)
+      FileUtils.rm_rf(schedule_file_dir)
+    end
+    FileUtils.mkdir_p(schedule_file_dir)
+
+    openstudio_model = OpenStudio::Model::Model.new
+    workflow = openstudio_model.workflowJSON
+    workflow.addFilePath(schedule_file_dir)
+    workflow.addFilePath(epw_dir)
+    workflow.setSeedFile('in.osm')
+    workflow.setWeatherFile(epw_name)
+    workflow.saveAs(File.join(schedule_file_dir, 'in.osw'))
+    openstudio_model.setWorkflowJSON(workflow)
+
+    file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.json')
+    honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
+    honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir, true)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+    expect(File.exists?(File.join(schedule_file_dir, 'Random Occupancy.csv'))).to be true
+    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal Tree Transmittance.csv'))).to be true
+
+    set_simulation_parameters(openstudio_model, epw_name)
+
+    openstudio_model.save(File.join(schedule_file_dir, 'in.osm'), true)
+
+    command = "#{OpenStudio::getOpenStudioCLI} run -w #{File.join(schedule_file_dir, 'in.osw')}"
+    puts command
+    #result = system(command)
+    #expect(result).to be true
   end
 
   it 'can translate model energy fixed interval to schedule fixed interval' do
@@ -132,6 +175,7 @@ RSpec.describe Honeybee do
     openstudio_model = OpenStudio::Model::Model.new
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(epw_dir)
+    workflow.setSeedFile('in.osm')
     workflow.setWeatherFile(epw_name)
     workflow.saveAs(File.join(fixed_interval_dir, 'in.osw'))
     openstudio_model.setWorkflowJSON(workflow)
@@ -140,7 +184,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(fixed_interval_dir, '1_1_1.csv'))).to be false
+    expect(File.exists?(File.join(fixed_interval_dir, 'Random Occupancy.csv'))).to be false
+    expect(File.exists?(File.join(fixed_interval_dir, 'Seasonal Tree Transmittance.csv'))).to be false
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -148,6 +193,8 @@ RSpec.describe Honeybee do
 
     command = "#{OpenStudio::getOpenStudioCLI} run -w #{File.join(fixed_interval_dir, 'in.osw')}"
     puts command
+    #result = system(command)
+    #expect(result).to be true
   end
 
 end
