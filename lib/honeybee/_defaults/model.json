@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.39.12",
+    "version": "1.40.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -5971,12 +5971,12 @@
         "title": "Vintages",
         "description": "An enumeration.",
         "enum": [
-          "90.1-2013",
-          "90.1-2010",
-          "90.1-2007",
-          "90.1-2004",
-          "DOE Ref 1980-2004",
-          "DOE Ref Pre-1980"
+          "ASHRAE_2013",
+          "ASHRAE_2010",
+          "ASHRAE_2007",
+          "ASHRAE_2004",
+          "DOE_Ref_1980_2004",
+          "DOE_Ref_Pre_1980"
         ],
         "type": "string"
       },
@@ -5995,21 +5995,21 @@
         "title": "VAVEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "VAV chiller with gas boiler reheat",
-          "VAV chiller with central air source heat pump reheat",
-          "VAV chiller with district hot water reheat",
-          "VAV chiller with PFP boxes",
-          "VAV chiller with gas coil reheat",
-          "VAV air-cooled chiller with gas boiler reheat",
-          "VAV air-cooled chiller with central air source heat pump reheat",
-          "VAV air-cooled chiller with district hot water reheat",
-          "VAV air-cooled chiller with PFP boxes",
-          "VAV air-cooled chiller with gas coil reheat",
-          "VAV district chilled water with gas boiler reheat",
-          "VAV district chilled water with central air source heat pump reheat",
-          "VAV district chilled water with district hot water reheat",
-          "VAV district chilled water with PFP boxes",
-          "VAV district chilled water with gas coil reheat"
+          "VAV_Chiller_Boiler",
+          "VAV_Chiller_ASHP",
+          "VAV_Chiller_DHW",
+          "VAV_Chiller_PFP",
+          "VAV_Chiller_GasCoil",
+          "VAV_ACChiller_Boiler",
+          "VAV_ACChiller_ASHP",
+          "VAV_ACChiller_DHW",
+          "VAV_ACChiller_PFP",
+          "VAV_ACChiller_GasCoil",
+          "VAV_DCW_Boiler",
+          "VAV_DCW_ASHP",
+          "VAV_DCW_DHW",
+          "VAV_DCW_PFP",
+          "VAV_DCW_GasCoil"
         ],
         "type": "string"
       },
@@ -6032,7 +6032,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6093,7 +6093,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
-            "default": "VAV chiller with gas boiler reheat",
+            "default": "VAV_Chiller_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/VAVEquipmentType"
@@ -6110,11 +6110,11 @@
         "title": "PVAVEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "PVAV with gas boiler reheat",
-          "PVAV with central air source heat pump reheat",
-          "PVAV with district hot water reheat",
-          "PVAV with PFP boxes",
-          "PVAV with gas heat with electric reheat"
+          "PVAV_Boiler",
+          "PVAV_ASHP",
+          "PVAV_DHW",
+          "PVAV_PFP",
+          "PVAV_BoilerElectricReheat"
         ],
         "type": "string"
       },
@@ -6137,7 +6137,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6198,7 +6198,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the VAVEquipmentType enumeration.",
-            "default": "PVAV with gas boiler reheat",
+            "default": "PVAV_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/PVAVEquipmentType"
@@ -6215,26 +6215,26 @@
         "title": "PSZEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "PSZ-AC with baseboard electric",
-          "PSZ-AC with baseboard gas boiler",
-          "PSZ-AC with baseboard district hot water",
-          "PSZ-AC with gas unit heaters",
-          "PSZ-AC with electric coil",
-          "PSZ-AC with gas coil",
-          "PSZ-AC with gas boiler",
-          "PSZ-AC with central air source heat pump",
-          "PSZ-AC with district hot water",
-          "PSZ-AC with no heat",
-          "PSZ-AC district chilled water with baseboard electric",
-          "PSZ-AC district chilled water with baseboard gas boiler",
-          "PSZ-AC district chilled water with gas unit heaters",
-          "PSZ-AC district chilled water with electric coil",
-          "PSZ-AC district chilled water with gas coil",
-          "PSZ-AC district chilled water with gas boiler",
-          "PSZ-AC district chilled water with central air source heat pump",
-          "PSZ-AC district chilled water with district hot water",
-          "PSZ-AC district chilled water with no heat",
-          "PSZ-HP"
+          "PSZAC_ElectricBaseboard",
+          "PSZAC_BoilerBaseboard",
+          "PSZAC_DHWBaseboard",
+          "PSZAC_GasHeaters",
+          "PSZAC_ElectricCoil",
+          "PSZAC_GasCoil",
+          "PSZAC_Boiler",
+          "PSZAC_ASHP",
+          "PSZAC_DHW",
+          "PSZAC",
+          "PSZAC_DCW_ElectricBaseboard",
+          "PSZAC_DCW_BoilerBaseboard",
+          "PSZAC_DCW_GasHeaters",
+          "PSZAC_DCW_ElectricCoil",
+          "PSZAC_DCW_GasCoil",
+          "PSZAC_DCW_Boiler",
+          "PSZAC_DCW_ASHP",
+          "PSZAC_DCW_DHW",
+          "PSZAC_DCW",
+          "PSZHP"
         ],
         "type": "string"
       },
@@ -6257,7 +6257,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6318,7 +6318,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the PVAVEquipmentType enumeration.",
-            "default": "PSZ-AC with baseboard electric",
+            "default": "PSZAC_ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/PSZEquipmentType"
@@ -6335,16 +6335,16 @@
         "title": "PTACEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "PTAC with baseboard electric",
-          "PTAC with baseboard gas boiler",
-          "PTAC with baseboard district hot water",
-          "PTAC with gas unit heaters",
-          "PTAC with electric coil",
-          "PTAC with gas coil",
-          "PTAC with gas boiler",
-          "PTAC with central air source heat pump",
-          "PTAC with district hot water",
-          "PTAC with no heat",
+          "PTAC_ElectricBaseboard",
+          "PTAC_BoilerBaseboard",
+          "PTAC_DHWBaseboard",
+          "PTAC_GasHeaters",
+          "PTAC_ElectricCoil",
+          "PTAC_GasCoil",
+          "PTAC_Boiler",
+          "PTAC_ASHP",
+          "PTAC_DHW",
+          "PTAC",
           "PTHP"
         ],
         "type": "string"
@@ -6368,7 +6368,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6429,7 +6429,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the PTACEquipmentType enumeration.",
-            "default": "PTAC with baseboard electric",
+            "default": "PTAC_ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/PTACEquipmentType"
@@ -6446,7 +6446,7 @@
         "title": "FurnaceEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Forced air furnace"
+          "Furnace"
         ],
         "type": "string"
       },
@@ -6469,7 +6469,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6530,7 +6530,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the FurnaceEquipmentType enumeration.",
-            "default": "Forced air furnace",
+            "default": "Furnace",
             "allOf": [
               {
                 "$ref": "#/components/schemas/FurnaceEquipmentType"
@@ -6547,24 +6547,24 @@
         "title": "FCUwithDOASEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "DOAS with fan coil chiller with boiler",
-          "DOAS with fan coil chiller with central air source heat pump",
-          "DOAS with fan coil chiller with district hot water",
-          "DOAS with fan coil chiller with baseboard electric",
-          "DOAS with fan coil chiller with gas unit heaters",
-          "DOAS with fan coil chiller with no heat",
-          "DOAS with fan coil air-cooled chiller with boiler",
-          "DOAS with fan coil air-cooled chiller with central air source heat pump",
-          "DOAS with fan coil air-cooled chiller with district hot water",
-          "DOAS with fan coil air-cooled chiller with baseboard electric",
-          "DOAS with fan coil air-cooled chiller with gas unit heaters",
-          "DOAS with fan coil air-cooled chiller with no heat",
-          "DOAS with fan coil district chilled water with boiler",
-          "DOAS with fan coil district chilled water with central air source heat pump",
-          "DOAS with fan coil district chilled water with district hot water",
-          "DOAS with fan coil district chilled water with baseboard electric",
-          "DOAS with fan coil district chilled water with gas unit heaters",
-          "DOAS with fan coil district chilled water with no heat"
+          "DOAS_FCU_Chiller_Boiler",
+          "DOAS_FCU_Chiller_ASHP",
+          "DOAS_FCU_Chiller_DHW",
+          "DOAS_FCU_Chiller_ElectricBaseboard",
+          "DOAS_FCU_Chiller_GasHeaters",
+          "DOAS_FCU_Chiller",
+          "DOAS_FCU_ACChiller_Boiler",
+          "DOAS_FCU_ACChiller_ASHP",
+          "DOAS_FCU_ACChiller_DHW",
+          "DOAS_FCU_ACChiller_ElectricBaseboard",
+          "DOAS_FCU_ACChiller_GasHeaters",
+          "DOAS_FCU_ACChiller",
+          "DOAS_FCU_DCW_Boiler",
+          "DOAS_FCU_DCW_ASHP",
+          "DOAS_FCU_DCW_DHW",
+          "DOAS_FCU_DCW_ElectricBaseboard",
+          "DOAS_FCU_DCW_GasHeaters",
+          "DOAS_FCU_DCW"
         ],
         "type": "string"
       },
@@ -6587,7 +6587,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6639,7 +6639,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the FCUwithDOASEquipmentType enumeration.",
-            "default": "DOAS with fan coil chiller with boiler",
+            "default": "DOAS_FCU_Chiller_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/FCUwithDOASEquipmentType"
@@ -6656,10 +6656,10 @@
         "title": "WSHPwithDOASEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "DOAS with water source heat pumps fluid cooler with boiler",
-          "DOAS with water source heat pumps cooling tower with boiler",
-          "DOAS with water source heat pumps with ground source heat pump",
-          "DOAS with water source heat pumps district chilled water with district hot water"
+          "DOAS_WSHP_FluidCooler_Boiler",
+          "DOAS_WSHP_CoolingTower_Boiler",
+          "DOAS_WSHP_GSHP",
+          "DOAS_WSHP_DCW_DHW"
         ],
         "type": "string"
       },
@@ -6682,7 +6682,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6734,7 +6734,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the WSHPwithDOASEquipmentType enumeration.",
-            "default": "DOAS with water source heat pumps fluid cooler with boiler",
+            "default": "DOAS_WSHP_FluidCooler_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/WSHPwithDOASEquipmentType"
@@ -6751,7 +6751,7 @@
         "title": "VRFwithDOASEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "DOAS with VRF"
+          "DOAS_VRF"
         ],
         "type": "string"
       },
@@ -6774,7 +6774,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6826,7 +6826,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the VRFwithDOASEquipmentType enumeration.",
-            "default": "DOAS with VRF",
+            "default": "DOAS_VRF",
             "allOf": [
               {
                 "$ref": "#/components/schemas/VRFwithDOASEquipmentType"
@@ -6843,24 +6843,24 @@
         "title": "FCUEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Fan coil chiller with boiler",
-          "Fan coil chiller with central air source heat pump",
-          "Fan coil chiller with district hot water",
-          "Fan coil chiller with baseboard electric",
-          "Fan coil chiller with gas unit heaters",
-          "Fan coil chiller with no heat",
-          "Fan coil air-cooled chiller with boiler",
-          "Fan coil air-cooled chiller with central air source heat pump",
-          "Fan coil air-cooled chiller with district hot water",
-          "Fan coil air-cooled chiller with baseboard electric",
-          "Fan coil air-cooled chiller with gas unit heaters",
-          "Fan coil air-cooled chiller with no heat",
-          "Fan coil district chilled water with boiler",
-          "Fan coil district chilled water with central air source heat pump",
-          "Fan coil district chilled water with district hot water",
-          "Fan coil district chilled water with baseboard electric",
-          "Fan coil district chilled water with gas unit heaters",
-          "Fan coil district chilled water with no heat"
+          "FCU_Chiller_Boiler",
+          "FCU_Chiller_ASHP",
+          "FCU_Chiller_DHW",
+          "FCU_Chiller_ElectricBaseboard",
+          "FCU_Chiller_GasHeaters",
+          "FCU_Chiller",
+          "FCU_ACChiller_Boiler",
+          "FCU_ACChiller_ASHP",
+          "FCU_ACChiller_DHW",
+          "FCU_ACChiller_ElectricBaseboard",
+          "FCU_ACChiller_GasHeaters",
+          "FCU_ACChiller",
+          "FCU_DCW_Boiler",
+          "FCU_DCW_ASHP",
+          "FCU_DCW_DHW",
+          "FCU_DCW_ElectricBaseboard",
+          "FCU_DCW_GasHeaters",
+          "FCU_DCW"
         ],
         "type": "string"
       },
@@ -6883,7 +6883,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6899,7 +6899,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the FCUEquipmentType enumeration.",
-            "default": "Fan coil chiller with boiler",
+            "default": "FCU_Chiller_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/FCUEquipmentType"
@@ -6916,10 +6916,10 @@
         "title": "WSHPEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Water source heat pumps fluid cooler with boiler",
-          "Water source heat pumps cooling tower with boiler",
-          "Water source heat pumps with ground source heat pump",
-          "Water source heat pumps district chilled water with district hot water"
+          "WSHP_FluidCooler_Boiler",
+          "WSHP_CoolingTower_Boiler",
+          "WSHP_GSHP",
+          "WSHP_DCW_DHW"
         ],
         "type": "string"
       },
@@ -6942,7 +6942,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6958,7 +6958,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the WSHPEquipmentType enumeration.",
-            "default": "Water source heat pumps fluid cooler with boiler",
+            "default": "WSHP_FluidCooler_Boiler",
             "allOf": [
               {
                 "$ref": "#/components/schemas/WSHPEquipmentType"
@@ -6998,7 +6998,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7031,10 +7031,10 @@
         "title": "BaseboardEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Baseboard electric",
-          "Baseboard gas boiler",
-          "Baseboard central air source heat pump",
-          "Baseboard district hot water"
+          "ElectricBaseboard",
+          "BoilerBaseboard",
+          "ASHPBaseboard",
+          "DHWBaseboard"
         ],
         "type": "string"
       },
@@ -7057,7 +7057,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7073,7 +7073,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the BaseboardEquipmentType enumeration.",
-            "default": "Baseboard electric",
+            "default": "ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/BaseboardEquipmentType"
@@ -7090,13 +7090,13 @@
         "title": "EvaporativeCoolerEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Direct evap coolers with baseboard electric",
-          "Direct evap coolers with baseboard gas boiler",
-          "Direct evap coolers with baseboard central air source heat pump",
-          "Direct evap coolers with baseboard district hot water",
-          "Direct evap coolers with forced air furnace",
-          "Direct evap coolers with gas unit heaters",
-          "Direct evap coolers with no heat"
+          "EvapCoolers_ElectricBaseboard",
+          "EvapCoolers_BoilerBaseboard",
+          "EvapCoolers_ASHPBaseboard",
+          "EvapCoolers_DHWBaseboard",
+          "EvapCoolers_Furnace",
+          "EvapCoolers_UnitHeaters",
+          "EvapCoolers"
         ],
         "type": "string"
       },
@@ -7119,7 +7119,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7135,7 +7135,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the EvaporativeCoolerEquipmentType enumeration.",
-            "default": "Direct evap coolers with baseboard electric",
+            "default": "EvapCoolers_ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/EvaporativeCoolerEquipmentType"
@@ -7152,15 +7152,15 @@
         "title": "ResidentialEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Residential AC with baseboard electric",
-          "Residential AC with baseboard gas boiler",
-          "Residential AC with baseboard central air source heat pump",
-          "Residential AC with baseboard district hot water",
-          "Residential AC with residential forced air furnace",
-          "Residential AC with no heat",
-          "Residential heat pump",
-          "Residential heat pump with no cooling",
-          "Residential forced air furnace"
+          "ResidentialAC_ElectricBaseboard",
+          "ResidentialAC_BoilerBaseboard",
+          "ResidentialAC_ASHPBaseboard",
+          "ResidentialAC_DHWBaseboard",
+          "ResidentialAC_ResidentialFurnace",
+          "ResidentialAC",
+          "ResidentialHP",
+          "ResidentialHPNoCool",
+          "ResidentialFurnace"
         ],
         "type": "string"
       },
@@ -7183,7 +7183,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7199,7 +7199,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the ResidentialEquipmentType enumeration.",
-            "default": "Residential AC with baseboard electric",
+            "default": "ResidentialAC_ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ResidentialEquipmentType"
@@ -7216,13 +7216,13 @@
         "title": "WindowACEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Window AC with baseboard electric",
-          "Window AC with baseboard gas boiler",
-          "Window AC with baseboard central air source heat pump",
-          "Window AC with baseboard district hot water",
-          "Window AC with forced air furnace",
-          "Window AC with unit heaters",
-          "Window AC with no heat"
+          "WindowAC_ElectricBaseboard",
+          "WindowAC_BoilerBaseboard",
+          "WindowAC_ASHPBaseboard",
+          "WindowAC_DHWBaseboard",
+          "WindowAC_Furnace",
+          "WindowAC_GasHeaters",
+          "WindowAC"
         ],
         "type": "string"
       },
@@ -7245,7 +7245,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7261,7 +7261,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the WindowACEquipmentType enumeration.",
-            "default": "Window AC with baseboard electric",
+            "default": "WindowAC_ElectricBaseboard",
             "allOf": [
               {
                 "$ref": "#/components/schemas/WindowACEquipmentType"
@@ -7278,7 +7278,7 @@
         "title": "GasUnitHeaterEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Gas unit heaters"
+          "GasHeaters"
         ],
         "type": "string"
       },
@@ -7301,7 +7301,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "90.1-2013",
+            "default": "ASHRAE_2013",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7317,7 +7317,7 @@
           },
           "equipment_type": {
             "description": "Text for the specific type of system equipment from the GasUnitHeaterEquipmentType enumeration.",
-            "default": "Gas unit heaters",
+            "default": "GasHeaters",
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasUnitHeaterEquipmentType"
@@ -11367,7 +11367,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.39.12",
+            "default": "1.40.0",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

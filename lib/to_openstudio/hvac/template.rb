@@ -35,6 +35,14 @@ require 'to_openstudio/model_object'
 
 module Honeybee
   class TemplateHVAC
+    @@vintage_mapper = {
+      DOE_Ref_Pre_1980: 'DOE Ref Pre-1980',
+      DOE_Ref_1980_2004: 'DOE Ref 1980-2004',
+      ASHRAE_2004: '90.1-2004',
+      ASHRAE_2007: '90.1-2007',
+      ASHRAE_2010: '90.1-2010',
+      ASHRAE_2013: '90.1-2013'
+    }
 
     def to_openstudio(openstudio_model, room_ids)
 
@@ -47,9 +55,9 @@ module Honeybee
 
       # make the standard applier
       if @hash[:vintage]
-        standard = Standard.build(@hash[:vintage])
+        standard = Standard.build(@@vintage_mapper[@hash[:vintage].to_sym])
       else
-        standard = Standard.build(hvac_defaults[:vintage][:default])
+        standard = Standard.build(@@vintage_mapper[hvac_defaults[:vintage][:default].to_sym])
       end
 
       # get the default equipment type
