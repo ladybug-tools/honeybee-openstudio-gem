@@ -42,25 +42,34 @@ module URBANopt
       # class level variables
       @@instance_lock = Mutex.new
       @@osw = nil
+      @@mapper_measures = nil
       @@geometry = nil
 
       def initialize()
-
         # do initialization of class variables in thread safe way
         @@instance_lock.synchronize do
-            if @@osw.nil?
+          # load the OSW for this class
+          if @@osw.nil?
+            osw_path = File.join(File.dirname(__FILE__), 'honeybee_workflow.osw')
+            File.open(osw_path, 'r') do |file|
+              @@osw = JSON.parse(file.read, symbolize_names: true)
+            end
+          # configure OSW with extension gem paths for measures and files
+          # all extension gems must be required before this line
+          @@osw = OpenStudio::Extension.configure_osw(@@osw)
+          end
 
-              # load the OSW for this class
-              osw_path = File.join(File.dirname(__FILE__), 'honeybee_workflow.osw')
-              File.open(osw_path, 'r') do |file|
-                @@osw = JSON.parse(file.read, symbolize_names: true)
+          # load the mapper measure variables if the file exists
+          if @@mapper_measures.nil?
+            map_meas_path = File.join(File.dirname(__FILE__), 'mapper_measures.json')
+            if File.file?(map_meas_path)
+              File.open(map_meas_path, 'r') do |file|
+                @@mapper_measures = JSON.parse(file.read)
               end
-
-            # configure OSW with extension gem paths for measures and files
-            # all extension gems must be required before this line
-            @@osw = OpenStudio::Extension.configure_osw(@@osw)
             end
           end
+
+        end
       end
 
       def create_osw(scenario, features, feature_names)
@@ -76,7 +85,6 @@ module URBANopt
         # take the centroid of the vertices as the location of the building
         feature_vertices_coordinates = feature.feature_json[:geometry][:coordinates][0]
         feature_location = feature.find_feature_center(feature_vertices_coordinates).to_s
-
         if feature_names.size == 1
           feature_name = feature_names[0]
         end
@@ -93,12 +101,15 @@ module URBANopt
             OpenStudio::Extension.set_measure_argument(
                 osw, 'from_honeybee_model', 'model_json', feature.detailed_model_filename)
 
-            # check if there is a HVAC key in the feature JSON properties
-            building_hash = feature.to_hash
-            if building_hash.key?(:system_type)
-              # assume the typical building measure is in the OSW and add the system type
-              OpenStudio::Extension.set_measure_argument(
-                  osw, 'create_typical_building_from_model', 'system_type', system_type)
+            # add any of the mapper measure variables
+            if not @@mapper_measures.nil?
+              @@mapper_measures.each do |map_measure_param|
+                # get the attribute from the feature
+                feature_param = feature.send(map_measure_param[2])
+                # set the measure argument
+                OpenStudio::Extension.set_measure_argument(
+                  osw, map_measure_param[0], map_measure_param[1], feature_param)
+              end
             end
 
             # add the feature id and name to the reporting measure
