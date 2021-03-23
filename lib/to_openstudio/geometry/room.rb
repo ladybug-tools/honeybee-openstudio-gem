@@ -312,6 +312,12 @@ module Honeybee
         end
       end
 
+      # assign daylight control if it exists
+      if @hash[:properties][:energy][:daylighting_control]
+        dl_control = DaylightingControl.new(@hash[:properties][:energy][:daylighting_control])
+        os_dl_control = dl_control.to_openstudio(openstudio_model, os_thermal_zone, os_space)
+      end
+
       # assign window ventilation objects if they exist
       if $use_simple_vent && !window_vent.empty?  # write simple WindAndStack ventilation
         window_vent.each do |sub_f_id, open_prop|
