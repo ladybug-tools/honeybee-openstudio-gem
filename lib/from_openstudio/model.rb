@@ -33,6 +33,10 @@ require 'honeybee/model'
 
 require 'from_openstudio/geometry/room'
 require 'from_openstudio/geometry/shade'
+require 'from_openstudio/material/opaque'
+require 'from_openstudio/material/opaque_no_mass'
+require 'from_openstudio/material/window_simpleglazsys'
+
 
 require 'openstudio'
 
@@ -115,6 +119,24 @@ module Honeybee
             result << Shade.from_shading_surface(shading_surface, site_transformation)
           end
         end
+      end
+      result
+    end
+
+    # Create HB Material from OpenStudio Materials
+    def self.materials_from_model(openstudio_model)
+      result = []
+      # Create HB EnergyMaterial from OpenStudio Material
+      openstudio_model.getStandardOpaqueMaterials.each do |material|
+        result << EnergyMaterial.from_material(material)
+      end
+      # Create HB EnergyMaterialNoMass from OpenStudio Material
+      openstudio_model.getMasslessOpaqueMaterials.each do |material|
+        result << EnergyMaterialNoMass.from_material(material)
+      end
+      # Create HB WindowMaterialSimpleGlazSys from OpenStudio Material
+      openstudio_model.getSimpleGlazings.each do |material|
+        result << EnergyWindowMaterialSimpleGlazSys.from_material(material)
       end
       result
     end
