@@ -128,7 +128,43 @@ module Honeybee
         erv.setLatentEffectivenessat75HeatingAirFlow(@hash[:latent_heat_recovery])
       end
 
-      # set all plants to non-coincident sizing to avoid simualtion control on design days
+      # if the systems are PTAC and there is ventilation, ensure the system includes it
+      if equipment_type.include?('PTAC') || equipment_type.include?('PTHP')
+        always_on = openstudio_model.getScheduleByName('Always On').get
+        zones.each do |zone|
+          # check if the space type has ventilation assigned to it
+          out_air = zone.spaces[0].designSpecificationOutdoorAir
+          unless out_air.empty?
+            # get any ventilation schedules
+            vent_sched = always_on
+            out_air = out_air.get
+            air_sch = out_air.outdoorAirFlowRateFractionSchedule
+            unless air_sch.empty?
+              vent_sched = air_sch.get
+            end
+            # get the PTAC object
+            ptac = nil
+            zone.equipment.each do |equip|
+              e_name = equip.name
+              unless e_name.empty?
+                e_name = e_name.get
+                if e_name.include? 'PTAC'
+                  ptac = openstudio_model.getZoneHVACPackagedTerminalAirConditioner(equip.handle)
+                elsif e_name.include? 'PTHP'
+                  ptac = openstudio_model.getZoneHVACPackagedTerminalHeatPump(equip.handle)
+                end
+              end
+            end
+            # assign the schedule to the PTAC object
+            unless ptac.nil? || ptac.empty?
+              ptac = ptac.get
+              ptac.setSupplyAirFanOperatingModeSchedule(vent_sched)
+            end
+          end
+        end
+      end
+
+      # set all plants to non-coincident sizing to avoid simualtion control issues on design days
       openstudio_model.getPlantLoops.each do |loop|
         sizing = loop.sizingPlant
         sizing.setSizingOption('NonCoincident')
