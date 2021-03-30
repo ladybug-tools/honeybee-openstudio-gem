@@ -40,9 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyMaterialNoMass'
         # set hash values from OpenStudio Object
-        hash[:identifier] = clean_identifier(material.nameString)
         hash[:display_name] = material.nameString
-        hash[:user_data] = {handle: material.handle.to_s}
         hash[:r_value] = material.thermalResistance
         hash[:roughness] = material.roughness
         hash[:thermal_absorptance] = material.thermalAbsorptance

@@ -126,6 +126,9 @@ module Honeybee
     # Create HB Material from OpenStudio Materials
     def self.materials_from_model(openstudio_model)
       result = []
+
+      # TODO: Loop through all materials and add puts statement for unsupported materials.
+      
       # Create HB EnergyMaterial from OpenStudio Material
       openstudio_model.getStandardOpaqueMaterials.each do |material|
         result << EnergyMaterial.from_material(material)

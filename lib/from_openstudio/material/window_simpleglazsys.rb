@@ -40,9 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyWindowMaterialSimpleGlazSys'
         # set hash values from OpenStudio Object
-        hash[:identifier] = clean_identifier(material.nameString)
         hash[:display_name] = material.nameString
-        hash[:user_data] = {handle: material.handle.to_s}
         hash[:u_factor] = material.uFactor
         hash[:shgc] = material.solarHeatGainCoefficient
         hash[:vt] = material.visibleTransmittance
