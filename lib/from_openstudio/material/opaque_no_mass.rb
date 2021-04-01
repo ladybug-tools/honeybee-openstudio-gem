@@ -40,12 +40,21 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyMaterialNoMass'
         # set hash values from OpenStudio Object
-        hash[:display_name] = material.nameString
+        hash[:identifier] = material.nameString
         hash[:r_value] = material.thermalResistance
         hash[:roughness] = material.roughness
-        hash[:thermal_absorptance] = material.thermalAbsorptance
-        hash[:solar_absorptance] = material.solarAbsorptance
-        hash[:visible_absorptance] = material.visibleAbsorptance
+        # check if boost optional object is empty
+        unless material.thermalAbsorptance.empty?
+          hash[:thermal_absorptance] = material.thermalAbsorptance.get
+        end
+        # check if boost optional object is empty
+        unless material.solarAbsorptance.empty?
+          hash[:solar_absorptance] = material.solarAbsorptance.get
+        end
+        # check if boost optional object is empty
+        unless material.visibleAbsorptance.empty?
+          hash[:visible_absorptance] = material.visibleAbsorptance.get
+        end
 
         hash
     end
