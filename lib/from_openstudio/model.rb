@@ -36,7 +36,8 @@ require 'from_openstudio/geometry/shade'
 require 'from_openstudio/material/opaque'
 require 'from_openstudio/material/opaque_no_mass'
 require 'from_openstudio/material/window_simpleglazsys'
-
+require 'from_openstudio/material/window_glazing'
+require 'from_openstudio/material/window_blind'
 
 require 'openstudio'
 
@@ -140,6 +141,14 @@ module Honeybee
       # Create HB WindowMaterialSimpleGlazSys from OpenStudio Material
       openstudio_model.getSimpleGlazings.each do |material|
         result << EnergyWindowMaterialSimpleGlazSys.from_material(material)
+      end
+      # Create HB EnergyWindowMaterialGlazing from OpenStudio Material
+      openstudio_model.getStandardGlazings.each do |material|
+        result << EnergyWindowMaterialGlazing.from_material(material)
+      end
+      # Create HB EnergyWindowMaterialBlind from OpenStudio Material
+      openstudio_model.getBlinds.each do |material|
+        result << EnergyWindowMaterialBlind.from_material(material)
       end
       result
     end

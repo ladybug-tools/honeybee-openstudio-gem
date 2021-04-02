@@ -103,4 +103,44 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load OSM and translate WindowMaterialGlazing to Honeybee' do
+    openstudio_model = load_file('winMatGlaz.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGlazing'
+    expect(honeybee[0][:identifier]).to eq 'Clear 3mm'
+    expect(honeybee[0][:solar_transmittance]).to eq 0.837
+    expect(honeybee[0][:emissivity]).to eq 0.84
+    expect(honeybee[0][:dirt_correction]).to eq 1
+
+    File.open(File.join(output_dir,'winMatGlaz.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
+  it 'can load OSM and translate WindowMaterialBlind to Honeybee' do
+    openstudio_model = load_file('winMatBlind.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialBlind'
+    expect(honeybee[0][:identifier]).to eq 'Window Material Blind 1'
+    expect(honeybee[0][:slat_width]).to eq 0.025
+    expect(honeybee[0][:slat_separation]).to eq 0.01875
+    expect(honeybee[0][:beam_solar_reflectance]).to eq 0.5
+
+    File.open(File.join(output_dir,'winMatBlind.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
 end
