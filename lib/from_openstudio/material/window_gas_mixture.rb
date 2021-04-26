@@ -44,22 +44,18 @@ module Honeybee
         hash[:thickness] = material.thickness
         hash[:gas_types] = []
         hash[:gas_fractions] = []
-        hash[:gas_types] << material.gas1Type
-        hash[:gas_fractions] << material.gas1Fraction
         number_of_gases = material.numberofGasesinMixture
-        # Check and add if more than 1 gas is present
         if number_of_gases > 1
-            hash[:gas_types] << material.gas2Type
+            (1..number_of_gases).each do |n|
+                hash[:gas_types] << material.send('gas' + n.to_s + 'Type')
+            end
+            hash[:gas_fractions] << material.gas1Fraction
             hash[:gas_fractions] << material.gas2Fraction
-            # Check and add if more than 2 gases are present
             if number_of_gases > 2
-                hash[:gas_types] << material.gas3Type
                 unless material.gas3Fraction.empty?
                     hash[:gas_fractions] << material.gas3Fraction.get
                 end
-                # Check and add 4th gas if present
                 if number_of_gases > 3
-                    hash[:gas_types] << material.gas4Type
                     unless material.gas4Fraction.empty?
                         hash[:gas_fractions] << material.gas4Fraction.get
                     end
