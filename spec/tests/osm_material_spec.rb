@@ -143,4 +143,68 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load OSM and translate WindowMaterialGas to Honeybee' do
+    openstudio_model = load_file('winMatGas.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGas'
+    expect(honeybee[0][:identifier]).to eq 'Window Material Gas 1'
+    expect(honeybee[0][:thickness]).to eq 0.003
+    expect(honeybee[0][:gas_type]).to eq 'Air'
+
+    File.open(File.join(output_dir,'winMatGas.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
+  it 'can load OSM and translate WindowMaterialGasCustom to Honeybee' do
+    openstudio_model = load_file('winMatGasCustom.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGasCustom'
+    expect(honeybee[0][:identifier]).to eq 'Window Material Gas Custom'
+    expect(honeybee[0][:thickness]).to eq 0.003
+    expect(honeybee[0][:conductivity_coeff_a]).to eq 0.0146
+    expect(honeybee[0][:specific_heat_coeff_a]).to eq 827.73
+    expect(honeybee[0][:molecular_weight]).to eq 44
+
+    File.open(File.join(output_dir,'winMatGasCustom.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
+  it 'can load OSM and translate WindowMaterialGasMixture to Honeybee' do
+    openstudio_model = load_file('winMatGasMixture.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGasMixture'
+    expect(honeybee[0][:identifier]).to eq 'Window Material Gas Mixture 1'
+    expect(honeybee[0][:thickness]).to eq 0.003
+
+    expect(honeybee[0][:gas_types][0]).to eq 'Air'
+    expect(honeybee[0][:gas_fractions][0]).to eq 0.96
+    expect(honeybee[0][:gas_types][2]).to eq 'Krypton'
+    expect(honeybee[0][:gas_fractions][2]).to eq 0.03
+
+
+    File.open(File.join(output_dir,'winMatGasMixture.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
 end

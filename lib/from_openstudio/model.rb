@@ -38,6 +38,9 @@ require 'from_openstudio/material/opaque_no_mass'
 require 'from_openstudio/material/window_simpleglazsys'
 require 'from_openstudio/material/window_glazing'
 require 'from_openstudio/material/window_blind'
+require 'from_openstudio/material/window_gas'
+require 'from_openstudio/material/window_gas_custom'
+require 'from_openstudio/material/window_gas_mixture'
 
 require 'openstudio'
 
@@ -150,6 +153,20 @@ module Honeybee
       openstudio_model.getBlinds.each do |material|
         result << EnergyWindowMaterialBlind.from_material(material)
       end
+      openstudio_model.getGass.each do |material|
+        # Create HB WindowGasCustom from OpenStudio Material
+        if material.gasType == 'Custom'
+          result << EnergyWindowMaterialGasCustom.from_material(material)
+        else
+        # Create HB WindowGas from OpenStudio Material
+          result << EnergyWindowMaterialGas.from_material(material)
+        end
+      end
+      # Create HB EnergyWindowMaterialGasMixture from OpenStudio Material
+      openstudio_model.getGasMixtures.each do |material|
+        result << EnergyWindowMaterialGasMixture.from_material(material)
+      end
+
       result
     end
 
