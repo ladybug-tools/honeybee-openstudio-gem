@@ -91,10 +91,16 @@ class FromGbxmlModel_Test < Minitest::Test
 
   end
 
-  def test_example_model
+  def test_example_model_with_output_path
     args = {}
     args['gbxml_model'] = File.join(File.dirname(__FILE__) + '/../../../../spec/samples/gbxml/gbXML_TRK.xml')
-    args['output_file_path'] = File.join(File.dirname(__FILE__) + '/output/')
+    args['output_file_path'] = File.join(File.dirname(__FILE__) + '/output/gbXML_TRK.hbjson')
+    apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
+  end
+
+  def test_example_model_without_output_path
+    args = {}
+    args['gbxml_model'] = File.join(File.dirname(__FILE__) + '/../../../../spec/samples/gbxml/gbXML_TRK.xml')
     apply_measure_to_model(__method__.to_s.gsub('test_',''),args, nil)
   end
 

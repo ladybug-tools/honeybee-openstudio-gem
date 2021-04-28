@@ -63,7 +63,8 @@ class FromOpenstudioModel < OpenStudio::Measure::ModelMeasure
     # Make an argument for the output file path
     output_file_path = OpenStudio::Measure::OSArgument.makeStringArgument('output_file_path', true)
     output_file_path.setDisplayName('Output file path')
-    output_file_path.setDescription('The output Honeybee JSON file will be exported to this path.')
+    output_file_path.setDescription('If set, the output Honeybee JSON file will be exported to this path. Othervise The file will be exported to the same path as the OpenStudio model.')
+    output_file_path.setDefaultValue('')
     args << output_file_path
 
     return args
@@ -79,8 +80,8 @@ class FromOpenstudioModel < OpenStudio::Measure::ModelMeasure
 
     openstudio_model = runner.getStringArgumentValue('openstudio_model', user_arguments)
 
-    openstudio_model_name = File.split(openstudio_model)[-1]
-    honeybee_model_name = openstudio_model_name.split('.')[0] + '.json'
+    openstudio_model_path, openstudio_model_name = File.split(openstudio_model)
+    honeybee_model_name = openstudio_model_name.split('.')[0] + '.hbjson'
 
     if !File.exist?(openstudio_model)
       runner.registerError("Cannot find file '#{openstudio_model}'")
@@ -92,11 +93,16 @@ class FromOpenstudioModel < OpenStudio::Measure::ModelMeasure
 
     output_file_path = runner.getStringArgumentValue('output_file_path', user_arguments)
 
-    unless File.exist?(output_file_path)
-      FileUtils.mkdir_p(output_file_path)
+    if output_file_path && !output_file_path.empty?
+      unless File.exist?(output_file_path)
+        output_folder = File.split(output_file_path)[0]
+        FileUtils.mkdir_p(output_folder)
+      end
+    else
+      output_file_path = File.join(openstudio_model_path, honeybee_model_name)
     end
 
-    File.open(File.join(output_file_path, honeybee_model_name), 'w') do |f|
+    File.open(output_file_path, 'w') do |f|
       f.puts JSON::pretty_generate(honeybee_hash)
     end
 
