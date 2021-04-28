@@ -100,7 +100,7 @@ module Honeybee
 
     # remove illegal characters in identifier
     def self.clean_identifier(str)
-      str.gsub(' ', '_')
+      str.gsub(/[^.A-Za-z0-9_-] /, '_')
     end
 
 

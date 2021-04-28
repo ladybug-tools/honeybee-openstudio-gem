@@ -83,11 +83,19 @@ module Honeybee
       air_loops = openstudio_model.getAirLoopHVACs
       unless air_loops.length == $air_loop_count  # check if any new loops were added
         $air_loop_count = air_loops.length
-        os_air_loop = air_loops[-1]
-        loop_name = os_air_loop.name
-        unless loop_name.empty?
-          if @hash[:display_name]
-            os_air_loop.setName(@hash[:display_name] + ' - ' + loop_name.get)
+        os_air_terminal = zones[0].airLoopHVACTerminal
+        unless os_air_terminal.empty?
+          os_air_terminal = os_air_terminal.get
+          os_air_loop_opt = os_air_terminal.airLoopHVAC
+          unless os_air_loop_opt.empty?
+            os_air_loop = os_air_loop_opt.get
+            loop_name = os_air_loop.name
+            unless loop_name.empty?
+              if @hash[:display_name]
+                clean_name = @hash[:display_name].to_s.gsub(/[^.A-Za-z0-9_-] /, " ")
+                os_air_loop.setName(clean_name + ' - ' + loop_name.get)
+              end
+            end
           end
         end
       end
