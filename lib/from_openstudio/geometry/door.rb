@@ -71,7 +71,7 @@ module Honeybee
 
       construction = sub_surface.construction
       if !construction.empty?
-        hash[:construction] = clean_identifier(construction.get.nameString)
+        hash[:construction] = construction.get.nameString
       end
 
       hash

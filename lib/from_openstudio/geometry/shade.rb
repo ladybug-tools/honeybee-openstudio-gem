@@ -61,12 +61,12 @@ module Honeybee
 
       construction = shading_surface.construction
       if !construction.empty?
-        hash[:construction] = clean_identifier(construction.get.nameString)
+        hash[:construction] = construction.get.nameString
       end
 
       transmittance_schedule = shading_surface.transmittanceSchedule
       if !transmittance_schedule.empty?
-        hash[:transmittance_schedule] = clean_identifier(transmittance_schedule.get.nameString)
+        hash[:transmittance_schedule] = transmittance_schedule.get.nameString
       end
 
       hash
