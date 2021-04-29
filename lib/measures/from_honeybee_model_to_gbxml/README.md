@@ -2,13 +2,13 @@
 
 ###### (Automatically generated documentation)
 
-# From Honeybee Model
+# From Honeybee Model To gbXML
 
 ## Description
-Translate a JSON file of a Honeybee Model into an OpenStudio Model.
+Translate a JSON file of a Honeybee Model into a gbXML Model.
 
 ## Modeler Description
-Translate a JSON file of a Honeybee Model into an OpenStudio Model.
+Translate a JSON file of a Honeybee Model into a gbXML Model.
 
 ## Measure Type
 ModelMeasure
