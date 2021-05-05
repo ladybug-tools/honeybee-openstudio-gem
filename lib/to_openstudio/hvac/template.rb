@@ -91,6 +91,7 @@ module Honeybee
             os_air_loop = os_air_loop_opt.get
             loop_name = os_air_loop.name
             unless loop_name.empty?
+              # set the name of the air loop to align with the HVAC name
               if @hash[:display_name]
                 clean_name = @hash[:display_name].to_s.gsub(/[^.A-Za-z0-9_-] /, " ")
                 os_air_loop.setName(clean_name + ' - ' + loop_name.get)
@@ -101,17 +102,17 @@ module Honeybee
       end
 
       # assign the economizer type if there's an air loop and the economizer is specified
-      if @hash[:economizer_type] && @hash[:economizer_type] != 'Inferred' && os_air_loop
+      if @hash[:economizer_type] && os_air_loop
         oasys = os_air_loop.airLoopHVACOutdoorAirSystem
         unless oasys.empty?
-            os_oasys = oasys.get
-            oactrl = os_oasys.getControllerOutdoorAir
-            oactrl.setEconomizerControlType(@hash[:economizer_type])
+          os_oasys = oasys.get
+          oactrl = os_oasys.getControllerOutdoorAir
+          oactrl.setEconomizerControlType(@hash[:economizer_type])
         end
       end
 
       # set the sensible heat recovery if there's an air loop and the heat recovery is specified
-      if @hash[:sensible_heat_recovery] && @hash[:sensible_heat_recovery] != {:type => 'Autosize'} && os_air_loop
+      if @hash[:sensible_heat_recovery] && @hash[:sensible_heat_recovery] != 0 && os_air_loop
         erv = get_existing_erv(os_air_loop)
         unless erv
           erv = create_erv(openstudio_model, os_air_loop)
@@ -124,7 +125,7 @@ module Honeybee
       end
 
       # set the latent heat recovery if there's an air loop and the heat recovery is specified
-      if @hash[:latent_heat_recovery] && @hash[:latent_heat_recovery] != {:type => 'Autosize'} && os_air_loop
+      if @hash[:latent_heat_recovery] && @hash[:latent_heat_recovery] != 0 && os_air_loop
         erv = get_existing_erv(os_air_loop)
         unless erv
           erv = create_erv(openstudio_model, os_air_loop)
@@ -134,6 +135,60 @@ module Honeybee
         erv.setLatentEffectivenessat100HeatingAirFlow(eff_at_max)
         erv.setLatentEffectivenessat75CoolingAirFlow(@hash[:latent_heat_recovery])
         erv.setLatentEffectivenessat75HeatingAirFlow(@hash[:latent_heat_recovery])
+      end
+
+      # assign demand controlled ventilation if there's an air loop
+      if @hash[:demand_controlled_ventilation] && os_air_loop
+        oasys = os_air_loop.airLoopHVACOutdoorAirSystem
+        unless oasys.empty?
+          os_oasys = oasys.get
+          oactrl = os_oasys.getControllerOutdoorAir
+          vent_ctrl = oactrl.controllerMechanicalVentilation
+          vent_ctrl.setDemandControlledVentilationNoFail(true)
+          oactrl.resetMinimumFractionofOutdoorAirSchedule
+        end
+      end
+
+      # assign the DOAS availability schedule if there's an air loop and it is specified
+      if @hash[:doas_availability_schedule] && os_air_loop
+        schedule = openstudio_model.getScheduleByName(@hash[:doas_availability_schedule])
+        unless schedule.empty?
+          avail_sch = schedule.get
+          os_air_loop.setAvailabilitySchedule(avail_sch)
+        end
+      end
+
+      # set the outdoor air controller to respect room-level ventilation schedules if they exist
+      if os_air_loop
+        oasys = os_air_loop.airLoopHVACOutdoorAirSystem
+        unless oasys.empty?
+          os_oasys = oasys.get
+          oactrl = os_oasys.getControllerOutdoorAir
+          oa_sch, oa_sch_name = nil, nil
+          zones.each do |zone|
+            oa_spec = zone.spaces[0].designSpecificationOutdoorAir
+            unless oa_spec.empty?
+              oa_spec = oa_spec.get
+              space_oa_sch = oa_spec.outdoorAirFlowRateFractionSchedule
+              unless space_oa_sch.empty?
+                space_oa_sch = space_oa_sch.get
+                space_oa_sch_name = space_oa_sch.name
+                unless space_oa_sch_name.empty?
+                  space_oa_sch_name = space_oa_sch_name.get
+                  if oa_sch_name.nil? || space_oa_sch_name == oa_sch_name
+                    oa_sch, oa_sch_name = space_oa_sch, space_oa_sch_name
+                  else
+                    oa_sch = nil
+                  end
+                end
+              end
+            end
+          end
+          if oa_sch
+            oactrl.resetMinimumFractionofOutdoorAirSchedule
+            oactrl.setMinimumOutdoorAirSchedule(oa_sch)
+          end
+        end
       end
 
       # if the systems are PTAC and there is ventilation, ensure the system includes it
@@ -169,6 +224,20 @@ module Honeybee
               ptac.setSupplyAirFanOperatingModeSchedule(vent_sched)
             end
           end
+        end
+      end
+
+      # assign an electric humidifier if there's an air loop and the zones have a humidistat
+      if os_air_loop
+        humidistat_exists = false
+        zones.each do |zone|
+          h_stat = zone.zoneControlHumidistat
+          unless h_stat.empty?
+            humidistat_exists = true
+          end
+        end
+        if humidistat_exists
+          humidifier = create_humidifier(openstudio_model, os_air_loop)
         end
       end
 
@@ -215,6 +284,21 @@ module Honeybee
         heat_ex.addToNode(os_outdoor_node)
       end
       heat_ex
+    end
+
+    def create_humidifier(model, os_air_loop)
+      # create an electric humidifier
+      humidifier = OpenStudio::Model::HumidifierSteamElectric.new(model)
+      humidifier.setName(@hash[:identifier] + '_Humidifier Unit')
+      humid_controller = OpenStudio::Model::SetpointManagerMultiZoneHumidityMinimum.new(model)
+      humid_controller.setName(@hash[:identifier] + '_Humidifier Controller')
+
+      # add the humidifier to the air loop
+      supply_node = os_air_loop.supplyOutletNode
+      humidifier.addToNode(supply_node)
+      humid_controller.addToNode(supply_node)
+
+      humidifier
     end
 
   end #TemplateHVAC

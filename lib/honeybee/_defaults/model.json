@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.42.2",
+    "version": "1.43.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -265,9 +265,9 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUEquipmentType\" />\n"
     },
     {
-      "name": "fcuwithdoas_model",
-      "x-displayName": "FCUwithDOAS",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUwithDOAS\" />\n"
+      "name": "fcuwithdoasabridged_model",
+      "x-displayName": "FCUwithDOASAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FCUwithDOASAbridged\" />\n"
     },
     {
       "name": "fcuwithdoasequipmenttype_model",
@@ -755,9 +755,9 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFEquipmentType\" />\n"
     },
     {
-      "name": "vrfwithdoas_model",
-      "x-displayName": "VRFwithDOAS",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFwithDOAS\" />\n"
+      "name": "vrfwithdoasabridged_model",
+      "x-displayName": "VRFwithDOASAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VRFwithDOASAbridged\" />\n"
     },
     {
       "name": "vrfwithdoasequipmenttype_model",
@@ -825,9 +825,9 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPEquipmentType\" />\n"
     },
     {
-      "name": "wshpwithdoas_model",
-      "x-displayName": "WSHPwithDOAS",
-      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPwithDOAS\" />\n"
+      "name": "wshpwithdoasabridged_model",
+      "x-displayName": "WSHPwithDOASAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WSHPwithDOASAbridged\" />\n"
     },
     {
       "name": "wshpwithdoasequipmenttype_model",
@@ -943,7 +943,7 @@
         "facetype_model",
         "fcu_model",
         "fcuequipmenttype_model",
-        "fcuwithdoas_model",
+        "fcuwithdoasabridged_model",
         "fcuwithdoasequipmenttype_model",
         "floorconstructionset_model",
         "floorconstructionsetabridged_model",
@@ -1045,7 +1045,7 @@
         "void_model",
         "vrf_model",
         "vrfequipmenttype_model",
-        "vrfwithdoas_model",
+        "vrfwithdoasabridged_model",
         "vrfwithdoasequipmenttype_model",
         "wallconstructionset_model",
         "wallconstructionsetabridged_model",
@@ -1059,7 +1059,7 @@
         "windowconstructionshadeabridged_model",
         "wshp_model",
         "wshpequipmenttype_model",
-        "wshpwithdoas_model",
+        "wshpwithdoasabridged_model",
         "wshpwithdoasequipmenttype_model"
       ]
     }
@@ -6069,10 +6069,13 @@
         "title": "AllAirEconomizerType",
         "description": "An enumeration.",
         "enum": [
-          "Inferred",
           "NoEconomizer",
           "DifferentialDryBulb",
-          "DifferentialEnthalpy"
+          "DifferentialEnthalpy",
+          "DifferentialDryBulbAndEnthalpy",
+          "FixedDryBulb",
+          "FixedEnthalpy",
+          "ElectronicEnthalpy"
         ],
         "type": "string"
       },
@@ -6125,8 +6128,8 @@
             ]
           },
           "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
-            "default": "Inferred",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration).",
+            "default": "NoEconomizer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AllAirEconomizerType"
@@ -6135,39 +6138,27 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
           },
           "type": {
             "title": "Type",
@@ -6230,8 +6221,8 @@
             ]
           },
           "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
-            "default": "Inferred",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration).",
+            "default": "NoEconomizer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AllAirEconomizerType"
@@ -6240,39 +6231,27 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
           },
           "type": {
             "title": "Type",
@@ -6350,8 +6329,8 @@
             ]
           },
           "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
-            "default": "Inferred",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration).",
+            "default": "NoEconomizer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AllAirEconomizerType"
@@ -6360,39 +6339,27 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
           },
           "type": {
             "title": "Type",
@@ -6460,51 +6427,6 @@
               }
             ]
           },
-          "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
-            "default": "Inferred",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AllAirEconomizerType"
-              }
-            ]
-          },
-          "sensible_heat_recovery": {
-            "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
-          },
-          "latent_heat_recovery": {
-            "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
-          },
           "type": {
             "title": "Type",
             "default": "PTAC",
@@ -6562,8 +6484,8 @@
             ]
           },
           "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration). If Inferred, the economizer will be set to whatever is recommended for the given vintage.",
-            "default": "Inferred",
+            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration).",
+            "default": "NoEconomizer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AllAirEconomizerType"
@@ -6572,39 +6494,27 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
           },
           "type": {
             "title": "Type",
@@ -6653,8 +6563,8 @@
         ],
         "type": "string"
       },
-      "FCUwithDOAS": {
-        "title": "FCUwithDOAS",
+      "FCUwithDOASAbridged": {
+        "title": "FCUwithDOASAbridged",
         "description": "Fan Coil Unit (FCU) with DOAS HVAC system.",
         "type": "object",
         "properties": {
@@ -6681,44 +6591,39 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
+          },
+          "doas_availability_schedule": {
+            "title": "Doas Availability Schedule",
+            "description": "An optional On/Off discrete schedule to set when the dedicated outdoor air system (DOAS) shuts off. This will not only prevent any outdoor air from flowing thorough the system but will also shut off the fans, which can result in more energy savings when spaces served by the DOAS are completely unoccupied. If None, the DOAS will be always on.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "type": {
             "title": "Type",
-            "default": "FCUwithDOAS",
-            "pattern": "^FCUwithDOAS$",
+            "default": "FCUwithDOASAbridged",
+            "pattern": "^FCUwithDOASAbridged$",
             "type": "string",
             "readOnly": true
           },
@@ -6748,8 +6653,8 @@
         ],
         "type": "string"
       },
-      "WSHPwithDOAS": {
-        "title": "WSHPwithDOAS",
+      "WSHPwithDOASAbridged": {
+        "title": "WSHPwithDOASAbridged",
         "description": "Water Source Heat Pump (WSHP) with DOAS HVAC system.",
         "type": "object",
         "properties": {
@@ -6776,44 +6681,39 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
+          },
+          "doas_availability_schedule": {
+            "title": "Doas Availability Schedule",
+            "description": "An optional On/Off discrete schedule to set when the dedicated outdoor air system (DOAS) shuts off. This will not only prevent any outdoor air from flowing thorough the system but will also shut off the fans, which can result in more energy savings when spaces served by the DOAS are completely unoccupied. If None, the DOAS will be always on.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "type": {
             "title": "Type",
-            "default": "WSHPwithDOAS",
-            "pattern": "^WSHPwithDOAS$",
+            "default": "WSHPwithDOASAbridged",
+            "pattern": "^WSHPwithDOASAbridged$",
             "type": "string",
             "readOnly": true
           },
@@ -6840,8 +6740,8 @@
         ],
         "type": "string"
       },
-      "VRFwithDOAS": {
-        "title": "VRFwithDOAS",
+      "VRFwithDOASAbridged": {
+        "title": "VRFwithDOASAbridged",
         "description": "Variable Refrigerant Flow (VRF) with DOAS HVAC system.",
         "type": "object",
         "properties": {
@@ -6868,44 +6768,39 @@
           },
           "sensible_heat_recovery": {
             "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
           },
           "latent_heat_recovery": {
             "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system. If None or Autosize, it will be whatever is recommended for the given vintage.",
-            "default": {
-              "type": "Autosize"
-            },
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Autosize"
-              },
-              {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "format": "double"
-              }
-            ]
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
+          },
+          "doas_availability_schedule": {
+            "title": "Doas Availability Schedule",
+            "description": "An optional On/Off discrete schedule to set when the dedicated outdoor air system (DOAS) shuts off. This will not only prevent any outdoor air from flowing thorough the system but will also shut off the fans, which can result in more energy savings when spaces served by the DOAS are completely unoccupied. If None, the DOAS will be always on.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "type": {
             "title": "Type",
-            "default": "VRFwithDOAS",
-            "pattern": "^VRFwithDOAS$",
+            "default": "VRFwithDOASAbridged",
+            "pattern": "^VRFwithDOASAbridged$",
             "type": "string",
             "readOnly": true
           },
@@ -8641,13 +8536,13 @@
                   "$ref": "#/components/schemas/ForcedAirFurnace"
                 },
                 {
-                  "$ref": "#/components/schemas/FCUwithDOAS"
+                  "$ref": "#/components/schemas/FCUwithDOASAbridged"
                 },
                 {
-                  "$ref": "#/components/schemas/WSHPwithDOAS"
+                  "$ref": "#/components/schemas/WSHPwithDOASAbridged"
                 },
                 {
-                  "$ref": "#/components/schemas/VRFwithDOAS"
+                  "$ref": "#/components/schemas/VRFwithDOASAbridged"
                 },
                 {
                   "$ref": "#/components/schemas/FCU"
@@ -11470,7 +11365,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.42.2",
+            "default": "1.43.0",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true
