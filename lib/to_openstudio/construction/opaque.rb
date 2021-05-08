@@ -50,8 +50,12 @@ module Honeybee
       # create material vector
       os_materials = OpenStudio::Model::MaterialVector.new
       # loop through each layer and add to material vector
-      @hash[:layers].each do |layer|
-        material_identifier = layer
+      if @hash.key?(:layers)
+        mat_key = :layers
+      else
+        mat_key = :materials
+      end
+      @hash[mat_key].each do |material_identifier|
         material = openstudio_model.getMaterialByName(material_identifier)
         unless material.empty?
           os_material = material.get

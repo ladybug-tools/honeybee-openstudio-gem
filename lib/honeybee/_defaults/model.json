@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.43.0",
+    "version": "1.43.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -3699,21 +3699,9 @@
             "minLength": 1,
             "type": "string"
           },
-          "layers": {
-            "title": "Layers",
-            "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
-            "minItems": 1,
-            "maxItems": 10,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          },
           "materials": {
             "title": "Materials",
-            "description": "List of opaque material definitions that are referenced in the layers. Note that the order of materials does not matter and there is no need to specify duplicated materials in this list.",
+            "description": "List of opaque material definitions. The order of the materials is from exterior to interior.",
             "minItems": 1,
             "maxItems": 10,
             "type": "array",
@@ -3743,7 +3731,6 @@
         },
         "required": [
           "identifier",
-          "layers",
           "materials"
         ],
         "additionalProperties": false
@@ -4316,21 +4303,9 @@
             "minLength": 1,
             "type": "string"
           },
-          "layers": {
-            "title": "Layers",
-            "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
-            "minItems": 1,
-            "maxItems": 8,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          },
           "materials": {
             "title": "Materials",
-            "description": "List of glazing and gas material definitions that are referenced in the layers. Note that the order of materials does not matter and there is no need to specify duplicated materials in this list.",
+            "description": "List of glazing and gas material definitions. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
             "minItems": 1,
             "maxItems": 8,
             "type": "array",
@@ -4369,7 +4344,6 @@
         },
         "required": [
           "identifier",
-          "layers",
           "materials"
         ],
         "additionalProperties": false
@@ -5150,8 +5124,8 @@
             "minLength": 1,
             "type": "string"
           },
-          "layers": {
-            "title": "Layers",
+          "materials": {
+            "title": "Materials",
             "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
             "minItems": 1,
             "maxItems": 10,
@@ -5177,7 +5151,7 @@
         },
         "required": [
           "identifier",
-          "layers"
+          "materials"
         ],
         "additionalProperties": false
       },
@@ -5193,8 +5167,8 @@
             "minLength": 1,
             "type": "string"
           },
-          "layers": {
-            "title": "Layers",
+          "materials": {
+            "title": "Materials",
             "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
             "minItems": 1,
             "maxItems": 8,
@@ -5220,7 +5194,7 @@
         },
         "required": [
           "identifier",
-          "layers"
+          "materials"
         ],
         "additionalProperties": false
       },
@@ -11365,7 +11339,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.43.0",
+            "default": "1.43.1",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

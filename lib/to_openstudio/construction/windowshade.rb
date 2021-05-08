@@ -62,8 +62,12 @@ module Honeybee
 
       # create the layers of the unshaded construction into which we will insert the shade
       os_materials = []
-      @hash[:window_construction][:layers].each do |layer|
-        material_identifier = layer
+      if @hash.key?(:layers)
+        mat_key = :layers
+      else
+        mat_key = :materials
+      end
+      @hash[:window_construction][mat_key].each do |material_identifier|
         material = openstudio_model.getMaterialByName(material_identifier)
         unless material.empty?
           os_material = material.get
