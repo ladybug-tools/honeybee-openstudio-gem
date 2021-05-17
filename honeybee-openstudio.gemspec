@@ -21,8 +21,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  if /^2.5/.match(RUBY_VERSION)
-    spec.required_ruby_version = "~> 2.5.0"
+  if /^2.7/.match(RUBY_VERSION)
+    spec.required_ruby_version = "~> 2.7.0"
 
     spec.add_development_dependency "bundler",        "~> 2.1"
     spec.add_development_dependency "public_suffix",  "~> 3.1.1"
@@ -33,6 +33,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency 'json_pure'
-  spec.add_dependency 'openstudio-extension', '0.3.2'
-  spec.add_dependency 'openstudio-standards', '~> 0.2.12'
+  spec.add_dependency 'openstudio-extension', '0.4.2'
+  spec.add_dependency 'openstudio-standards', '~> 0.2.13'
 end

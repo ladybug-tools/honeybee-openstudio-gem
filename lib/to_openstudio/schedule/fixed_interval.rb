@@ -203,7 +203,7 @@ module Honeybee
       os_schedule_file = OpenStudio::Model::ScheduleFile.new(os_external_file, column, rowsToSkip)
       os_schedule_file.setName(@hash[:identifier])
       os_schedule_file.setInterpolatetoTimestep(interpolate)
-      os_schedule_file.setMinutesperItem(interval_length.to_s)
+      os_schedule_file.setMinutesperItem(interval_length)
 
       # assign the schedule type limit
       if @hash[:schedule_type_limit]
