@@ -90,6 +90,13 @@ class FromHoneybeeModelToGbxml < OpenStudio::Measure::ModelMeasure
     os_model = honeybee_model.to_openstudio_model(model)
     STDOUT.flush
 
+    # make sure the zone name is different from the space name to comply with gbXML
+    zones = os_model.getThermalZones()
+    zones.each do |zone|
+      zone_name = zone.name.to_s + '_Zone'
+      zone.setName(zone_name)
+    end
+
     # convert the OpenStudio model into a gbXML Model
     output_file_path = runner.getStringArgumentValue('output_file_path', user_arguments)
     if output_file_path && !output_file_path.empty?
