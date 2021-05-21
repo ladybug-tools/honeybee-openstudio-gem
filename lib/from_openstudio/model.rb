@@ -81,7 +81,15 @@ module Honeybee
       translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
       openstudio_model = translator.loadModel(file)
       raise "Cannot load gbXML file at '#{}'" if openstudio_model.empty?
-      self.translate_from_openstudio(openstudio_model.get)
+      # remove any shade groups that were translated as spaces
+      os_model = openstudio_model.get
+      spaces = os_model.getSpaces()
+      spaces.each do |space|
+        if space.surfaces.length() == 0
+          space.remove()
+        end
+      end
+      self.translate_from_openstudio(os_model)
     end
 
     # Create Ladybug Energy Model JSON from IDF file
