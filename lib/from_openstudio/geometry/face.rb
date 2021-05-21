@@ -108,7 +108,7 @@ module Honeybee
 
     def self.boundary_condition_from_surface(surface)
       result = {}
-      surface_type = surface.surfaceType
+      surface_bc = surface.outsideBoundaryCondition
       adjacent_surface = surface.adjacentSurface
       if !adjacent_surface.empty?
         adjacent_space = clean_identifier(adjacent_surface.get.space.get.nameString)
@@ -116,7 +116,7 @@ module Honeybee
         result = {type: 'Surface', boundary_condition_objects: [adjacent_surface, adjacent_space]}
       elsif surface.isGroundSurface
         result = {type: 'Ground'}
-      elsif surface_type == 'Adiabatic'
+      elsif surface_bc == 'Adiabatic'
         result = {type: 'Adiabatic'}
       else
         sun_exposure = (surface.sunExposure == 'SunExposed')
