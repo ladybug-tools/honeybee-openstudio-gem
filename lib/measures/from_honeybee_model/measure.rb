@@ -34,6 +34,8 @@
 
 require 'to_openstudio'
 
+require 'fileutils'
+
 # start the measure
 class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
   # human readable name
@@ -106,6 +108,18 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
     STDOUT.flush
     honeybee_model.to_openstudio_model(model)
     STDOUT.flush
+
+    generated_files_dir = "#{runner.workflow.absoluteRootDir}/generated_files"
+    if schedule_csv_dir && !schedule_csv_dir.empty?
+      if Dir.exist?(schedule_csv_dir)
+        runner.registerInfo("Copying exported schedules from '#{schedule_csv_dir}' to '#{generated_files_dir}'")
+        FileUtils.mkdir_p(generated_files_dir)
+        Dir.glob("#{schedule_csv_dir}/*.csv").each do |file|
+          FileUtils.cp(file, generated_files_dir)
+        end
+      end
+    end
+
     return true
   end
 end
