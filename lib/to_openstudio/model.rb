@@ -51,7 +51,6 @@ module Honeybee
         end
 
         # make sure data is written to the disk one way or the other
-        STDOUT.flush
         begin
           file.fsync
         rescue
