@@ -49,6 +49,14 @@ module Honeybee
           end
           file.puts row.join(',')
         end
+
+        # make sure data is written to the disk one way or the other
+        STDOUT.flush
+        begin
+          file.fsync
+        rescue
+          file.flush
+        end
       end
     end
   end
