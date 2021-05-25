@@ -35,6 +35,7 @@
 require 'to_openstudio'
 
 require 'fileutils'
+require 'pathname'
 
 # start the measure
 class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
@@ -98,6 +99,7 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
     honeybee_model = Honeybee::Model.read_from_disk(model_json)
 
     if schedule_csv_dir && !schedule_csv_dir.empty?
+      schedule_csv_dir = Pathname.new(schedule_csv_dir).cleanpath
       if !Dir.exist?(schedule_csv_dir)
         runner.registerError("Directory for exported CSV Schedules does not exist '#{schedule_csv_dir}'")
         return false
