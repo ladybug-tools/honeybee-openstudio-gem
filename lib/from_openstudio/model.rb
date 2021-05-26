@@ -41,6 +41,8 @@ require 'from_openstudio/material/window_blind'
 require 'from_openstudio/material/window_gas'
 require 'from_openstudio/material/window_gas_custom'
 require 'from_openstudio/material/window_gas_mixture'
+require 'from_openstudio/construction/air'
+require 'from_openstudio/construction/opaque'
 
 require 'openstudio'
 
@@ -173,6 +175,37 @@ module Honeybee
       # Create HB EnergyWindowMaterialGasMixture from OpenStudio Material
       openstudio_model.getGasMixtures.each do |material|
         result << EnergyWindowMaterialGasMixture.from_material(material)
+      end
+
+      result
+    end
+
+    # Create HB Construction from OpenStudio Materials
+    def self.constructions_from_model(openstudio_model)
+      result = []
+
+      # Create HB AirConstruction from OpenStudio Construction
+      openstudio_model.getConstructionAirBoundarys.each do |construction|
+        result << AirBoundaryConstructionAbridged.from_construction(construction)
+      end
+
+      # Create HB WindowConstruction from OpenStudio Construction
+      openstudio_model.getConstructions.each do |construction|
+        if construction.isFenestration
+          result << WindowConstructionAbridged.from_construction(construction)
+        else
+          opaque_construction = false
+          construction.layers.each do |material|
+            # check whether construction has Opaque Material
+            if material.to_StandardOpaqueMaterial.is_initialized
+              # TODO: Could alse be ShadeConstruction
+              opaque_construction = true
+            end
+          end
+          if opaque_construction = true
+            result << OpaqueConstructionAbridged.from_construction(construction)
+          end
+        end
       end
 
       result
