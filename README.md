@@ -7,7 +7,6 @@
 
 Library and measures for translating between Honeybee JSON schema and OpenStudio Model schema (OSM).
 
-
 ## Run the measures of this repo using OpenStudio CLI
 
 Running the measures using OpenStudio CLI requires no installation other than cloning
@@ -42,8 +41,8 @@ where the items in parentheses should be replaced with specific file paths:
 
 ```
 
-
 ## Local Development
+
 1. Clone this repo locally
 ```
 git clone git@github.com:ladybug-tools/honeybee-openstudio-gem
