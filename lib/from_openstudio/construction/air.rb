@@ -33,7 +33,7 @@ require 'honeybee/construction/air'
 require 'to_openstudio/model_object'
 
 module Honeybee
-  class AirBoundaryConstructionAbridged
+  class AirBoundaryConstructionAbridged < ModelObject
 
     def self.from_construction(construction)
         # create an empty hash
@@ -46,6 +46,7 @@ module Honeybee
           schedule = construction.simpleMixingSchedule.get
           hash[:air_mixing_schedule] = schedule.nameString
         end
+        #TODO: Add air_mixing_per_area
 
         hash
     end

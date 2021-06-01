@@ -43,6 +43,8 @@ require 'from_openstudio/material/window_gas_custom'
 require 'from_openstudio/material/window_gas_mixture'
 require 'from_openstudio/construction/air'
 require 'from_openstudio/construction/opaque'
+require 'from_openstudio/construction/window'
+require 'from_openstudio/construction/shade'
 
 require 'openstudio'
 
@@ -59,6 +61,7 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
+      $shade_construction = [] # Array for all shade construction
       hash[:properties] = properties_from_model(openstudio_model)
 
       rooms = rooms_from_model(openstudio_model)
@@ -105,13 +108,17 @@ module Honeybee
     def self.properties_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'ModelProperties'
+      hash[:energy] = energy_properties_from_model(openstudio_model)
       hash
     end
 
     def self.energy_properties_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'ModelEnergyProperties'
-      hash[:energy] = energy_properties_from_model(openstudio_model)
+      hash[:constructions] = []
+      hash[:constructions] = constructions_from_model(openstudio_model)
+      hash[:materials] = materials_from_model(openstudio_model)
+      
       hash
     end
 
@@ -131,6 +138,13 @@ module Honeybee
           site_transformation = shading_surface_group.siteTransformation
           shading_surface_group.shadingSurfaces.each do |shading_surface|
             result << Shade.from_shading_surface(shading_surface, site_transformation)
+            # Get shade construction if specified
+            shade_const_base = shading_surface.construction
+            unless shade_const_base.empty?
+              shade_const_obj = shade_const_base.get
+              shade_const = shade_const_obj.to_LayeredConstruction.get
+              $shade_construction << shade_const
+            end
           end
         end
       end
@@ -147,10 +161,17 @@ module Honeybee
       openstudio_model.getStandardOpaqueMaterials.each do |material|
         result << EnergyMaterial.from_material(material)
       end
-      # Create HB EnergyMaterialNoMass from OpenStudio Material
+
+      # Create HB EnergyMaterialNoMass from OpenStudio MasslessOpaque Materials
       openstudio_model.getMasslessOpaqueMaterials.each do |material|
         result << EnergyMaterialNoMass.from_material(material)
       end
+
+      # Create HB EnergyMaterialNoMass from OpenStudio AirGap materials
+      openstudio_model.getAirGaps.each do|material|
+        result << EnergyMaterialNoMass.from_material(material)
+      end
+
       # Create HB WindowMaterialSimpleGlazSys from OpenStudio Material
       openstudio_model.getSimpleGlazings.each do |material|
         result << EnergyWindowMaterialSimpleGlazSys.from_material(material)
@@ -192,19 +213,32 @@ module Honeybee
       # Create HB WindowConstruction from OpenStudio Construction
       openstudio_model.getConstructions.each do |construction|
         if construction.isFenestration
-          result << WindowConstructionAbridged.from_construction(construction)
+          window_construction = false
+          construction.layers.each do |material|
+            if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized or material.to_Gas.is_initialized or material.to_GasMixture
+              window_construction = true
+            end
+          end
+          if window_construction == true
+            result << WindowConstructionAbridged.from_construction(construction)
+          end
         else
           opaque_construction = false
           construction.layers.each do |material|
             # check whether construction has Opaque Material
             if material.to_StandardOpaqueMaterial.is_initialized
-              # TODO: Could alse be ShadeConstruction
               opaque_construction = true
             end
           end
-          if opaque_construction = true
+          if opaque_construction == true
             result << OpaqueConstructionAbridged.from_construction(construction)
           end
+        end
+      end
+
+      unless $shade_construction.empty?
+        $shade_construction.each do |shade_construction|
+          result << ShadeConstruction.from_construction(shade_construction)
         end
       end
 

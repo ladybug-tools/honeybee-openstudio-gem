@@ -1,0 +1,215 @@
+
+OS:Version,
+  {aa017f44-90d4-4550-b6d7-1402190ba010}, !- Handle
+  3.2.0;                                  !- Version Identifier
+
+OS:Site,
+  {c18c5be5-77ca-4e02-af0f-4cd91bced083}, !- Handle
+  Site 1,                                 !- Name
+  ,                                       !- Latitude {deg}
+  ,                                       !- Longitude {deg}
+  ,                                       !- Time Zone {hr}
+  ,                                       !- Elevation {m}
+  ;                                       !- Terrain
+
+OS:YearDescription,
+  {f288c4c4-f0ed-4acd-8d37-91775963e19b}; !- Handle
+
+OS:ClimateZones,
+  {4a1134ac-b0b2-4313-92a5-718e5dca4780}, !- Handle
+  ASHRAE,                                 !- Climate Zone Institution Name 1
+  ANSI/ASHRAE Standard 169,               !- Climate Zone Document Name 1
+  2006,                                   !- Climate Zone Document Year 1
+  ,                                       !- Climate Zone Value 1
+  CEC,                                    !- Climate Zone Institution Name 2
+  California Climate Zone Descriptions,   !- Climate Zone Document Name 2
+  1995,                                   !- Climate Zone Document Year 2
+  ;                                       !- Climate Zone Value 2
+
+OS:Building,
+  {93685679-f4b2-440e-aa4c-d741b398392c}, !- Handle
+  Building 1,                             !- Name
+  ,                                       !- Building Sector Type
+  ,                                       !- North Axis {deg}
+  ,                                       !- Nominal Floor to Floor Height {m}
+  ,                                       !- Space Type Name
+  ,                                       !- Default Construction Set Name
+  ;                                       !- Default Schedule Set Name
+
+OS:Facility,
+  {20af7a7b-63cd-48d6-ae1d-9407527c9cdb}; !- Handle
+
+OS:SimulationControl,
+  {8b622eda-66ef-486e-8c59-b1109f242626}; !- Handle
+
+OS:Sizing:Parameters,
+  {01761493-17a8-4e32-9959-0e44dd10ea20}, !- Handle
+  1.25,                                   !- Heating Sizing Factor
+  1.15;                                   !- Cooling Sizing Factor
+
+OS:Timestep,
+  {cd90e577-2202-42b2-9eb1-c31f58371afa}, !- Handle
+  6;                                      !- Number of Timesteps per Hour
+
+OS:ShadowCalculation,
+  {7c58f471-ac89-41b6-9bfb-5f0385467d53}, !- Handle
+  PolygonClipping,                        !- Shading Calculation Method
+  ,                                       !- Shading Calculation Update Frequency Method
+  20,                                     !- Shading Calculation Update Frequency
+  15000,                                  !- Maximum Figures in Shadow Overlap Calculations
+  ,                                       !- Polygon Clipping Algorithm
+  512,                                    !- Pixel Counting Resolution
+  ,                                       !- Sky Diffuse Modeling Algorithm
+  No,                                     !- Output External Shading Calculation Results
+  No,                                     !- Disable Self-Shading Within Shading Zone Groups
+  No;                                     !- Disable Self-Shading From Shading Zone Groups to Other Zones
+
+OS:HeatBalanceAlgorithm,
+  {46dd8bf1-8a49-4dce-bb87-e9ca15023571}, !- Handle
+  ConductionTransferFunction,             !- Algorithm
+  200;                                    !- Surface Temperature Upper Limit {C}
+
+OS:RunPeriod,
+  {56b408ac-f91e-413b-aff1-bfce5b241fa0}, !- Handle
+  Run Period 1,                           !- Name
+  1,                                      !- Begin Month
+  1,                                      !- Begin Day of Month
+  12,                                     !- End Month
+  31,                                     !- End Day of Month
+  ,                                       !- Use Weather File Holidays and Special Days
+  ,                                       !- Use Weather File Daylight Saving Period
+  ,                                       !- Apply Weekend Holiday Rule
+  ,                                       !- Use Weather File Rain Indicators
+  ,                                       !- Use Weather File Snow Indicators
+  ;                                       !- Number of Times Runperiod to be Repeated
+
+OS:LifeCycleCost:Parameters,
+  {1e22a9fd-2cc2-488c-9f21-023081ca3d22}, !- Handle
+  ,                                       !- Analysis Type
+  ,                                       !- Discounting Convention
+  ,                                       !- Inflation Approach
+  ,                                       !- Real Discount Rate
+  ,                                       !- Nominal Discount Rate
+  ,                                       !- Inflation
+  ,                                       !- Base Date Month
+  ,                                       !- Base Date Year
+  ,                                       !- Service Date Month
+  ,                                       !- Service Date Year
+  ;                                       !- Length of Study Period in Years
+
+OS:DefaultConstructionSet,
+  {401bd20c-d435-4284-b874-f3166ca1513a}, !- Handle
+  Default Construction Set 1,             !- Name
+  {56b4cfa4-c4b2-44ae-830e-6e8718c37636}, !- Default Exterior Surface Constructions Name
+  {e69e8ca5-a9b3-4824-9e95-29ed4d717495}, !- Default Interior Surface Constructions Name
+  {dbb3dc5e-a6ff-4221-8794-ead93c51c738}, !- Default Ground Contact Surface Constructions Name
+  {76d8df42-e51e-4877-8f7c-15bb3455c4df}, !- Default Exterior SubSurface Constructions Name
+  {1e04649f-4f36-49e1-8e3c-18db6468d442}, !- Default Interior SubSurface Constructions Name
+  ,                                       !- Interior Partition Construction Name
+  ,                                       !- Space Shading Construction Name
+  ,                                       !- Building Shading Construction Name
+  {ed9939b8-1ed0-4101-9551-eefa50792193}, !- Site Shading Construction Name
+  ;                                       !- Adiabatic Surface Construction Name
+
+OS:DefaultSurfaceConstructions,
+  {56b4cfa4-c4b2-44ae-830e-6e8718c37636}, !- Handle
+  Default Surface Constructions 1,        !- Name
+  ,                                       !- Floor Construction Name
+  ,                                       !- Wall Construction Name
+  ;                                       !- Roof Ceiling Construction Name
+
+OS:DefaultSurfaceConstructions,
+  {e69e8ca5-a9b3-4824-9e95-29ed4d717495}, !- Handle
+  Default Surface Constructions 2,        !- Name
+  ,                                       !- Floor Construction Name
+  ,                                       !- Wall Construction Name
+  ;                                       !- Roof Ceiling Construction Name
+
+OS:DefaultSurfaceConstructions,
+  {dbb3dc5e-a6ff-4221-8794-ead93c51c738}, !- Handle
+  Default Surface Constructions 3,        !- Name
+  ,                                       !- Floor Construction Name
+  ,                                       !- Wall Construction Name
+  ;                                       !- Roof Ceiling Construction Name
+
+OS:DefaultSubSurfaceConstructions,
+  {76d8df42-e51e-4877-8f7c-15bb3455c4df}, !- Handle
+  Default Sub Surface Constructions 1,    !- Name
+  ,                                       !- Fixed Window Construction Name
+  ,                                       !- Operable Window Construction Name
+  ,                                       !- Door Construction Name
+  ,                                       !- Glass Door Construction Name
+  ,                                       !- Overhead Door Construction Name
+  ,                                       !- Skylight Construction Name
+  ,                                       !- Tubular Daylight Dome Construction Name
+  ;                                       !- Tubular Daylight Diffuser Construction Name
+
+OS:DefaultSubSurfaceConstructions,
+  {1e04649f-4f36-49e1-8e3c-18db6468d442}, !- Handle
+  Default Sub Surface Constructions 2,    !- Name
+  ,                                       !- Fixed Window Construction Name
+  ,                                       !- Operable Window Construction Name
+  ,                                       !- Door Construction Name
+  ,                                       !- Glass Door Construction Name
+  ,                                       !- Overhead Door Construction Name
+  ,                                       !- Skylight Construction Name
+  ,                                       !- Tubular Daylight Dome Construction Name
+  ;                                       !- Tubular Daylight Diffuser Construction Name
+
+OS:Construction,
+  {ed9939b8-1ed0-4101-9551-eefa50792193}, !- Handle
+  Exterior Shade - Site - StandardGlazing, !- Name
+  ,                                       !- Surface Rendering Name
+  {7bca15e6-87a4-4e9b-ab53-910f59cb14b8}, !- Layer 1
+  {a1e0f153-d2fe-4530-bd79-11d9c5ec8a45}; !- Layer 2
+
+OS:StandardsInformation:Construction,
+  {cca3e1d7-473f-4e28-a9e1-634fc5efb4e7}, !- Handle
+  {ed9939b8-1ed0-4101-9551-eefa50792193}; !- Construction Name
+
+OS:WindowMaterial:Glazing,
+  {7bca15e6-87a4-4e9b-ab53-910f59cb14b8}, !- Handle
+  Theoretical Glass [167],                !- Name
+  SpectralAverage,                        !- Optical Data Type
+  ,                                       !- Window Glass Spectral Data Set Name
+  0.00299999999999999,                    !- Thickness {m}
+  0.2374,                                 !- Solar Transmittance at Normal Incidence
+  0.7126,                                 !- Front Side Solar Reflectance at Normal Incidence
+  0,                                      !- Back Side Solar Reflectance at Normal Incidence
+  0.2512,                                 !- Visible Transmittance at Normal Incidence
+  0.6988,                                 !- Front Side Visible Reflectance at Normal Incidence
+  0,                                      !- Back Side Visible Reflectance at Normal Incidence
+  0,                                      !- Infrared Transmittance at Normal Incidence
+  0.985,                                  !- Front Side Infrared Hemispherical Emissivity
+  0.985,                                  !- Back Side Infrared Hemispherical Emissivity
+  2.1073,                                 !- Conductivity {W/m-K}
+  1,                                      !- Dirt Correction Factor for Solar and Visible Transmittance
+  No;                                     !- Solar Diffusing
+
+OS:StandardsInformation:Material,
+  {633d1eb9-8302-4d56-a73e-9a20aff5e7bc}, !- Handle
+  {7bca15e6-87a4-4e9b-ab53-910f59cb14b8}; !- Material Name
+
+OS:WindowMaterial:Glazing,
+  {a1e0f153-d2fe-4530-bd79-11d9c5ec8a45}, !- Handle
+  Theoretical Glass [197],                !- Name
+  SpectralAverage,                        !- Optical Data Type
+  ,                                       !- Window Glass Spectral Data Set Name
+  0.00299999999999999,                    !- Thickness {m}
+  0.2349,                                 !- Solar Transmittance at Normal Incidence
+  0.7151,                                 !- Front Side Solar Reflectance at Normal Incidence
+  0,                                      !- Back Side Solar Reflectance at Normal Incidence
+  0.2512,                                 !- Visible Transmittance at Normal Incidence
+  0.6988,                                 !- Front Side Visible Reflectance at Normal Incidence
+  0,                                      !- Back Side Visible Reflectance at Normal Incidence
+  0,                                      !- Infrared Transmittance at Normal Incidence
+  0.9,                                    !- Front Side Infrared Hemispherical Emissivity
+  0.9,                                    !- Back Side Infrared Hemispherical Emissivity
+  0.0415,                                 !- Conductivity {W/m-K}
+  1,                                      !- Dirt Correction Factor for Solar and Visible Transmittance
+  No;                                     !- Solar Diffusing
+
+OS:StandardsInformation:Material,
+  {f1c8a936-8b8e-49a6-9ae5-4980c8077a59}, !- Handle
+  {a1e0f153-d2fe-4530-bd79-11d9c5ec8a45}; !- Material Name
+

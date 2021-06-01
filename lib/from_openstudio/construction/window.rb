@@ -29,14 +29,28 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/model_object'
+require 'honeybee/construction/window'
+require 'to_openstudio/model_object'
 
 module Honeybee
-  class EnergyMaterialNoMass < ModelObject
+  class WindowConstructionAbridged
 
-    def self.defaults
-      @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties]
+    def self.from_construction(construction)
+        # create an empty hash
+        hash = {}
+        hash[:type] = 'WindowConstructionAbridged'
+        # set hash values from OpenStudio Object
+        hash[:identifier] = construction.nameString
+        hash[:materials] = []
+        # get construction layers
+        layers = construction.layers
+        layers.each do |layer|
+          name = layer.nameString
+          hash[:materials] << name
+        end
+
+        hash
     end
 
-  end # EnergyMaterialNoMass
+  end # WindowConstructionAbridged
 end # Honeybee

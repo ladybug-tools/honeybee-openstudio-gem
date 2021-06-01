@@ -165,6 +165,11 @@ module Honeybee
         site_transformation = shading_surface_group.siteTransformation
         shading_surface_group.shadingSurfaces.each do |shading_surface|
           result << Shade.from_shading_surface(shading_surface, site_transformation)
+          shade_const_base = shading_surface.construction
+          unless shade_const_base.empty?
+            shade_const_obj = shade_const_base.get
+            shade_const = shade_const_obj.to_LayeredConstruction.get
+            $shade_construction << shade_const
         end
       end
       result

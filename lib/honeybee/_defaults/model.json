@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.43.1",
+    "version": "1.43.5",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -2261,13 +2261,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "activity_schedule": {
-            "title": "Activity Schedule",
-            "description": "Identifier of a schedule for the activity of the occupants over the course of the year. The type of this schedule should be Power and the values of the schedule equal to the number of Watts given off by an individual person in the room.",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
           "display_name": {
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
@@ -2279,6 +2272,13 @@
             "pattern": "^PeopleAbridged$",
             "type": "string",
             "readOnly": true
+          },
+          "activity_schedule": {
+            "title": "Activity Schedule",
+            "description": "Identifier of a schedule for the activity of the occupants over the course of the year. The type of this schedule should be ActivityLevel and the values of the schedule equal to the number of Watts given off by an individual person in the room. If None, a default constant schedule with 120 Watts per person will be used, which is typical of awake, adult humans who are seated.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -2311,8 +2311,7 @@
         "required": [
           "identifier",
           "people_per_area",
-          "occupancy_schedule",
-          "activity_schedule"
+          "occupancy_schedule"
         ],
         "additionalProperties": false
       },
@@ -4980,18 +4979,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "air_mixing_schedule": {
-            "title": "Air Mixing Schedule",
-            "description": "A fractional schedule as a ScheduleRuleset or ScheduleFixedInterval for the air mixing schedule across the construction.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ScheduleRuleset"
-              },
-              {
-                "$ref": "#/components/schemas/ScheduleFixedInterval"
-              }
-            ]
-          },
           "display_name": {
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
@@ -5011,11 +4998,22 @@
             "minimum": 0,
             "type": "number",
             "format": "double"
+          },
+          "air_mixing_schedule": {
+            "title": "Air Mixing Schedule",
+            "description": "A fractional schedule as a ScheduleRuleset or ScheduleFixedInterval for the air mixing schedule across the construction. If unspecified, an Always On schedule will be assumed.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
           }
         },
         "required": [
-          "identifier",
-          "air_mixing_schedule"
+          "identifier"
         ],
         "additionalProperties": false
       },
@@ -5315,13 +5313,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "air_mixing_schedule": {
-            "title": "Air Mixing Schedule",
-            "description": "Identifier of a fractional schedule for the air mixing schedule across the construction.",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
           "display_name": {
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
@@ -5341,11 +5332,17 @@
             "minimum": 0,
             "type": "number",
             "format": "double"
+          },
+          "air_mixing_schedule": {
+            "title": "Air Mixing Schedule",
+            "description": "Identifier of a fractional schedule for the air mixing schedule across the construction. If unspecified, an Always On schedule will be assumed.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           }
         },
         "required": [
-          "identifier",
-          "air_mixing_schedule"
+          "identifier"
         ],
         "additionalProperties": false
       },
@@ -7417,18 +7414,6 @@
               }
             ]
           },
-          "activity_schedule": {
-            "title": "Activity Schedule",
-            "description": "A schedule for the activity of the occupants over the course of the year. The type of this schedule should be Power and the values of the schedule equal to the number of Watts given off by an individual person in the room.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ScheduleRuleset"
-              },
-              {
-                "$ref": "#/components/schemas/ScheduleFixedInterval"
-              }
-            ]
-          },
           "display_name": {
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
@@ -7440,6 +7425,18 @@
             "pattern": "^People$",
             "type": "string",
             "readOnly": true
+          },
+          "activity_schedule": {
+            "title": "Activity Schedule",
+            "description": "A schedule for the activity of the occupants over the course of the year. The type of this schedule should be ActivityLevel and the values of the schedule equal to the number of Watts given off by an individual person in the room. If None, a default constant schedule with 120 Watts per person will be used, which is typical of awake, adult humans who are seated.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
           },
           "radiant_fraction": {
             "title": "Radiant Fraction",
@@ -7472,8 +7469,7 @@
         "required": [
           "identifier",
           "people_per_area",
-          "occupancy_schedule",
-          "activity_schedule"
+          "occupancy_schedule"
         ],
         "additionalProperties": false
       },
@@ -8608,8 +8604,8 @@
         "properties": {
           "type": {
             "title": "Type",
-            "default": "void",
-            "pattern": "^void$",
+            "default": "Void",
+            "pattern": "^Void$",
             "type": "string",
             "readOnly": true
           }
@@ -8632,16 +8628,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "mirror",
-            "pattern": "^mirror$",
+            "default": "Mirror",
+            "pattern": "^Mirror$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -8675,7 +8671,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -8711,7 +8707,7 @@
           },
           "r_reflectance": {
             "title": "R Reflectance",
-            "description": "A value between 0 and 1 for the red channel reflectance (default: 1).",
+            "description": "A value between 0 and 1 for the red channel reflectance.",
             "default": 1,
             "minimum": 0,
             "maximum": 1,
@@ -8720,7 +8716,7 @@
           },
           "g_reflectance": {
             "title": "G Reflectance",
-            "description": "A value between 0 and 1 for the green channel reflectance (default: 1).",
+            "description": "A value between 0 and 1 for the green channel reflectance.",
             "default": 1,
             "minimum": 0,
             "maximum": 1,
@@ -8729,7 +8725,7 @@
           },
           "b_reflectance": {
             "title": "B Reflectance",
-            "description": "A value between 0 and 1 for the blue channel reflectance (default: 1).",
+            "description": "A value between 0 and 1 for the blue channel reflectance.",
             "default": 1,
             "minimum": 0,
             "maximum": 1,
@@ -8738,7 +8734,7 @@
           },
           "alternate_material": {
             "title": "Alternate Material",
-            "description": "An optional material that may be used like the illum type to specify a different material to be used for shading non-source rays. If None, this will keep the alternat_material as mirror. If this alternate material is given as Void, then the mirror surface will be invisible. Using Void is only appropriate if the surface hides other (more detailed) geometry with the same overall reflectance (default: None).",
+            "description": "An optional material (like the illum type) that may be used to specify a different material to be used for shading non-source rays. If None, this will keep the alternat_material as mirror. If this alternate material is given as Void, then the mirror surface will be invisible. Using Void is only appropriate if the surface hides other (more detailed) geometry with the same overall reflectance.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Plastic"
@@ -8792,16 +8788,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "metal",
-            "pattern": "^metal$",
+            "default": "Metal",
+            "pattern": "^Metal$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -8835,7 +8831,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -8871,7 +8867,7 @@
           },
           "r_reflectance": {
             "title": "R Reflectance",
-            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the red channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -8880,7 +8876,7 @@
           },
           "g_reflectance": {
             "title": "G Reflectance",
-            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the green channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -8889,7 +8885,7 @@
           },
           "b_reflectance": {
             "title": "B Reflectance",
-            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -8898,7 +8894,7 @@
           },
           "specularity": {
             "title": "Specularity",
-            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions lower than 0.9 are not realistic for metallic materials. (default: 0.9).",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions lower than 0.9 are not realistic for metallic materials.",
             "default": 0.9,
             "minimum": 0,
             "maximum": 1,
@@ -8907,7 +8903,7 @@
           },
           "roughness": {
             "title": "Roughness",
-            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "description": "A value between 0 and 1 for the roughness, specified as the RMS slope of surface facets. Roughness greater than 0.2 are not realistic.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -8937,16 +8933,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "trans",
-            "pattern": "^trans$",
+            "default": "Trans",
+            "pattern": "^Trans$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -8980,7 +8976,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9016,7 +9012,7 @@
           },
           "r_reflectance": {
             "title": "R Reflectance",
-            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the red channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9025,7 +9021,7 @@
           },
           "g_reflectance": {
             "title": "G Reflectance",
-            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the green channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9034,7 +9030,7 @@
           },
           "b_reflectance": {
             "title": "B Reflectance",
-            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9043,7 +9039,7 @@
           },
           "specularity": {
             "title": "Specularity",
-            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials. (default: 0).",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -9052,7 +9048,7 @@
           },
           "roughness": {
             "title": "Roughness",
-            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "description": "A value between 0 and 1 for the roughness, specified as the RMS slope of surface facets. Roughness greater than 0.2 are not realistic.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -9061,7 +9057,7 @@
           },
           "transmitted_diff": {
             "title": "Transmitted Diff",
-            "description": "The fraction of transmitted light that is transmitted diffusely in a scattering fashion (default: 0).",
+            "description": "The fraction of transmitted light that is transmitted diffusely in a scattering fashion.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -9070,7 +9066,7 @@
           },
           "transmitted_spec": {
             "title": "Transmitted Spec",
-            "description": "The fraction of transmitted light that is not diffusely scattered (default: 0).",
+            "description": "The fraction of transmitted light that is not diffusely scattered.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -9100,16 +9096,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "light",
-            "pattern": "^light$",
+            "default": "Light",
+            "pattern": "^Light$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -9143,7 +9139,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9179,7 +9175,7 @@
           },
           "r_emittance": {
             "title": "R Emittance",
-            "description": "A value between 0 and 1 for the red channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the red channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9188,7 +9184,7 @@
           },
           "g_emittance": {
             "title": "G Emittance",
-            "description": "A value between 0 and 1 for the green channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the green channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9197,7 +9193,7 @@
           },
           "b_emittance": {
             "title": "B Emittance",
-            "description": "A value between 0 and 1 for the blue channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9227,16 +9223,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "glow",
-            "pattern": "^glow$",
+            "default": "Glow",
+            "pattern": "^Glow$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -9270,7 +9266,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9306,7 +9302,7 @@
           },
           "r_emittance": {
             "title": "R Emittance",
-            "description": "A value between 0 and 1 for the red channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the red channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9315,7 +9311,7 @@
           },
           "g_emittance": {
             "title": "G Emittance",
-            "description": "A value between 0 and 1 for the green channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the green channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9324,7 +9320,7 @@
           },
           "b_emittance": {
             "title": "B Emittance",
-            "description": "A value between 0 and 1 for the blue channel of the modifier (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel of the modifier.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9333,7 +9329,7 @@
           },
           "max_radius": {
             "title": "Max Radius",
-            "description": "Maximum radius for shadow testing (default: 0). Surfaces with zero will never be tested for zero, although it may participate in interreflection calculation. Negative values will never contribute to scene illumination.",
+            "description": "Maximum radius for shadow testing. Objects with zero radius are permissable and may participate in interreflection calculation (though they are not representative of real light sources). Negative values will never contribute to scene illumination.",
             "default": 0,
             "type": "number",
             "format": "double"
@@ -9373,9 +9369,9 @@
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -9409,7 +9405,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9445,7 +9441,7 @@
           },
           "up_orientation": {
             "title": "Up Orientation",
-            "description": "Vector as sequence that sets the hemisphere that the BSDF material faces. (default: (0.01, 0.01, 1.00).",
+            "description": "Vector as sequence that sets the hemisphere that the BSDF material faces.",
             "default": [
               0.01,
               0.01,
@@ -9461,14 +9457,14 @@
           },
           "thickness": {
             "title": "Thickness",
-            "description": "Optional number to set the thickness of the BSDF material Sign of thickness indicates whether proxied geometry is behind the BSDF surface (when thickness is positive) or in front (when thickness is negative)(default: 0).",
+            "description": "Optional number to set the thickness of the BSDF material Sign of thickness indicates whether proxied geometry is behind the BSDF surface (when thickness is positive) or in front (when thickness is negative).",
             "default": 0,
             "type": "number",
             "format": "double"
           },
           "function_file": {
             "title": "Function File",
-            "description": "Optional input for function file (default: \".\").",
+            "description": "Optional input for function file. Using \".\" will ensure that BSDF data is written to the root of wherever a given study is run.",
             "default": ".",
             "maxLength": 100,
             "minLength": 1,
@@ -9476,14 +9472,14 @@
           },
           "transform": {
             "title": "Transform",
-            "description": "Optional transform input to scale the thickness and reorient the up vector (default: None).",
+            "description": "Optional transform input to scale the thickness and reorient the up vector.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
           },
           "front_diffuse_reflectance": {
             "title": "Front Diffuse Reflectance",
-            "description": "Optional additional front diffuse reflectance as sequence of numbers (default: None).",
+            "description": "Optional additional front diffuse reflectance as sequence of three RGB numbers.",
             "minItems": 3,
             "maxItems": 3,
             "type": "array",
@@ -9494,7 +9490,7 @@
           },
           "back_diffuse_reflectance": {
             "title": "Back Diffuse Reflectance",
-            "description": "Optional additional back diffuse reflectance as sequence of numbers (default: None).",
+            "description": "Optional additional back diffuse reflectance as sequence of three RGB numbers.",
             "minItems": 3,
             "maxItems": 3,
             "type": "array",
@@ -9505,7 +9501,7 @@
           },
           "diffuse_transmittance": {
             "title": "Diffuse Transmittance",
-            "description": "Optional additional diffuse transmittance as sequence of numbers (default: None).",
+            "description": "Optional additional diffuse transmittance as sequence of three RGB numbers.",
             "minItems": 3,
             "maxItems": 3,
             "type": "array",
@@ -9538,16 +9534,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "glass",
-            "pattern": "^glass$",
+            "default": "Glass",
+            "pattern": "^Glass$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -9581,7 +9577,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9617,7 +9613,7 @@
           },
           "r_transmissivity": {
             "title": "R Transmissivity",
-            "description": "A value between 0 and 1 for the red channel transmissivity (default: 0).",
+            "description": "A value between 0 and 1 for the red channel transmissivity.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9626,7 +9622,7 @@
           },
           "g_transmissivity": {
             "title": "G Transmissivity",
-            "description": "A value between 0 and 1 for the green channel transmissivity (default: 0).",
+            "description": "A value between 0 and 1 for the green channel transmissivity.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9635,7 +9631,7 @@
           },
           "b_transmissivity": {
             "title": "B Transmissivity",
-            "description": "A value between 0 and 1 for the blue channel transmissivity (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel transmissivity.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9644,7 +9640,7 @@
           },
           "refraction_index": {
             "title": "Refraction Index",
-            "description": "A value between 0 and 1 for the index of refraction (default: 1.52).",
+            "description": "A value between 0 and 1 for the index of refraction.",
             "default": 1.52,
             "minimum": 0,
             "type": "number",
@@ -9673,16 +9669,16 @@
           },
           "type": {
             "title": "Type",
-            "default": "plastic",
-            "pattern": "^plastic$",
+            "default": "Plastic",
+            "pattern": "^Plastic$",
             "type": "string",
             "readOnly": true
           },
           "modifier": {
             "title": "Modifier",
-            "description": "Material modifier (default: Void).",
+            "description": "Material modifier.",
             "default": {
-              "type": "void"
+              "type": "Void"
             },
             "anyOf": [
               {
@@ -9716,7 +9712,7 @@
           },
           "dependencies": {
             "title": "Dependencies",
-            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers (default: None).",
+            "description": "List of modifiers that this modifier depends on. This argument is only useful for defining advanced modifiers where the modifier is defined based on other modifiers.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -9752,7 +9748,7 @@
           },
           "r_reflectance": {
             "title": "R Reflectance",
-            "description": "A value between 0 and 1 for the red channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the red channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9761,7 +9757,7 @@
           },
           "g_reflectance": {
             "title": "G Reflectance",
-            "description": "A value between 0 and 1 for the green channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the green channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9770,7 +9766,7 @@
           },
           "b_reflectance": {
             "title": "B Reflectance",
-            "description": "A value between 0 and 1 for the blue channel reflectance (default: 0).",
+            "description": "A value between 0 and 1 for the blue channel reflectance.",
             "default": 0.0,
             "minimum": 0,
             "maximum": 1,
@@ -9779,7 +9775,7 @@
           },
           "specularity": {
             "title": "Specularity",
-            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials. (default: 0).",
+            "description": "A value between 0 and 1 for the fraction of specularity. Specularity fractions greater than 0.1 are not realistic for non-metallic materials.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -9788,7 +9784,7 @@
           },
           "roughness": {
             "title": "Roughness",
-            "description": "A value between 0 and 1 for the roughness, specified as the rms slope of surface facets. Roughness greater than 0.2 are not realistic (default: 0).",
+            "description": "A value between 0 and 1 for the roughness, specified as the RMS slope of surface facets. Roughness greater than 0.2 are not realistic.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -11339,7 +11335,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.43.1",
+            "default": "1.43.5",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

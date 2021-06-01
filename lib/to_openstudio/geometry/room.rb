@@ -180,7 +180,7 @@ module Honeybee
 
         if !face[:properties][:energy][:construction]
           if face[:boundary_condition][:type] == 'Adiabatic'
-            # assign default interior construciton for Adiabatic Faces
+            # assign default interior construction for Adiabatic Faces
             if face[:face_type] != 'Wall'
               interior_construction = closest_interior_construction(openstudio_model, os_space, face[:face_type])
               unless interior_construction.nil?
@@ -188,7 +188,7 @@ module Honeybee
               end
             end
           elsif face[:face_type] == 'AirBoundary'
-            # assign default air boundary construciton for AirBoundary face types
+            # assign default air boundary construction for AirBoundary face types
             air_construction = closest_air_construction(openstudio_model, os_space)
             unless air_construction.nil?
               os_surface.setConstruction(air_construction)

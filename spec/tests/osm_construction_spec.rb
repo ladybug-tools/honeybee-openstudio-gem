@@ -78,4 +78,24 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load OSM and translate Window Construction to Honeybee' do
+    file = File.join(File.dirname(__FILE__), '../samples/osm_construction/window.osm')
+    vt = OpenStudio::OSVersion::VersionTranslator.new
+    openstudio_model = vt.loadModel(file)
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
+  
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'WindowConstructionAbridged'
+    expect(honeybee[0][:identifier]).to eq 'ASHRAE 189.1-2009 ExtWindow ClimateZone 2'
+      
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'windowConstruction.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
 end

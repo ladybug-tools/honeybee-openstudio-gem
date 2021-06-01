@@ -29,14 +29,47 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/model_object'
+require 'honeybee/construction/shade'
+
+require 'from_openstudio/model_object'
 
 module Honeybee
-  class EnergyMaterialNoMass < ModelObject
+  class ShadeConstruction < ModelObject
 
-    def self.defaults
-      @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties]
+    def self.from_construction(construction)
+        # create an empty hash
+        hash = {}
+        hash[:type] = 'ShadeConstruction'
+        # set hash values from OpenStudio Object
+        hash[:identifier] = construction.nameString
+        hash[:materials] = []
+        # get construction layers
+        layers = construction.layers
+        i = 0
+        layers.each do |layer|
+            i += 1
+            hash[:materials] << layer.nameString
+          if layer.to_StandardGlazing.is_initialized
+            is_specular = true
+            # get outermost layer and set reflectance properties
+            if i == 1
+                hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence
+                hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence
+            end
+          elsif layer.to_StandardOpaqueMaterial.is_initialized
+            is_specular = false
+            # get outermost layer and set reflectance properties
+            if i == 1
+                #TODO: these properties were giving an OS error
+                hash[:solar_reflectance] = layer.solarReflectance
+                hash[:visible_reflectance] = layer.visibleReflectance
+            end
+          end
+
+          end
+
+        hash
     end
 
-  end # EnergyMaterialNoMass
+  end # ShadeConstruction
 end # Honeybee
