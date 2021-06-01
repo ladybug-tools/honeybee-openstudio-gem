@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 require 'honeybee/construction/shade'
-
 require 'from_openstudio/model_object'
 
 module Honeybee
@@ -50,14 +49,18 @@ module Honeybee
           i += 1
           hash[:materials] << layer.nameString
           if layer.to_StandardGlazing.is_initialized
-            is_specular = true
+            hash[:is_specular] = true
             # get outermost layer and set reflectance properties
             if i == 1
-                hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence
-                hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence
+              unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
+                hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
+              end
+              unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
+                hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
+              end
             end
           elsif layer.to_StandardOpaqueMaterial.is_initialized
-            is_specular = false
+            hash[:is_specular] = false
             # get outermost layer and set reflectance properties
             if i == 1
                 #TODO: these properties were giving an OS error

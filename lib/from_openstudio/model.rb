@@ -70,6 +70,10 @@ module Honeybee
       orphaned_shades = orphaned_shades_from_model(openstudio_model)
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
 
+      unless $shade_construction.empty?
+        hash[:properties][:energy][:constructions] << shade_constructions_from_model($shade_construction)
+      end
+
       Model.new(hash)
     end
 
@@ -236,12 +240,16 @@ module Honeybee
         end
       end
 
-      unless $shade_construction.empty?
-        $shade_construction.each do |shade_construction|
+      result
+    end
+
+    def self.shade_constructions_from_model(shade_constructions)
+      result = []
+
+        shade_constructions.each do |shade_construction|
           result << ShadeConstruction.from_construction(shade_construction)
         end
-      end
-
+      
       result
     end
 
