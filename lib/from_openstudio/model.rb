@@ -215,7 +215,7 @@ module Honeybee
         if construction.isFenestration
           window_construction = false
           construction.layers.each do |material|
-            if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized or material.to_Gas.is_initialized or material.to_GasMixture
+            if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized or material.to_Gas.is_initialized or material.to_GasMixture.is_initialized
               window_construction = true
             end
           end

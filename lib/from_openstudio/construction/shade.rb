@@ -47,8 +47,8 @@ module Honeybee
         layers = construction.layers
         i = 0
         layers.each do |layer|
-            i += 1
-            hash[:materials] << layer.nameString
+          i += 1
+          hash[:materials] << layer.nameString
           if layer.to_StandardGlazing.is_initialized
             is_specular = true
             # get outermost layer and set reflectance properties
@@ -65,8 +65,7 @@ module Honeybee
                 hash[:visible_reflectance] = layer.visibleReflectance
             end
           end
-
-          end
+        end
 
         hash
     end

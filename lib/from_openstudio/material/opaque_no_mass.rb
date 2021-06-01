@@ -30,6 +30,7 @@
 # *******************************************************************************
 
 require 'honeybee/material/opaque_no_mass.rb'
+require 'to_openstudio/model_object'
 
 module Honeybee
   class EnergyMaterialNoMass < ModelObject
