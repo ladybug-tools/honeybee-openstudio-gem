@@ -41,38 +41,28 @@ module Honeybee
         hash[:type] = 'ShadeConstruction'
         # set hash values from OpenStudio Object
         hash[:identifier] = construction.nameString
-        hash[:materials] = []
-        # get construction layers
-        layers = construction.layers
-        i = 0
-        layers.each do |layer|
-          i += 1
-          hash[:materials] << layer.nameString
-          if layer.to_StandardGlazing.is_initialized
-            hash[:is_specular] = true
-            # get outermost layer and set reflectance properties
-            if i == 1
-              #TODO: these properties are giving an `undefined method` OS error
-              #unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
-              #  hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
-              #end
-              #unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
-              #  hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
-              #end
-            end
-          elsif layer.to_StandardOpaqueMaterial.is_initialized
-            hash[:is_specular] = false
-            # get outermost layer and set reflectance properties
-            if i == 1
-              #TODO: these properties are giving an `undefined method` OS error
-              #unless layer.solarReflectance.empty?
-              #  hash[:solar_reflectance] = layer.solarReflectance.get
-              #end
-              #unless layer.visibleReflectance.empty?
-              #  hash[:visible_reflectance] = layer.visibleReflectance
-              #end
-            end
-          end
+        # get outermost construction layers
+        layer = construction.layers[0]
+        if layer.to_StandardGlazing.is_initialized
+          hash[:is_specular] = true
+          # set reflectance properties from outermost layer
+          #TODO: these properties are giving an `undefined method` OS error
+          #unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
+          #  hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
+          #end
+          #unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
+          #  hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
+          #end
+        elsif layer.to_StandardOpaqueMaterial.is_initialized or layer.to_MasslessOpaqueMaterial.is_initialized
+          hash[:is_specular] = false
+          # set reflectance properties from outermost layer
+          #TODO: these properties are giving an `undefined method` OS error
+          #unless layer.solarReflectance.empty?
+          #  hash[:solar_reflectance] = layer.solarReflectance.get
+          #end
+          #unless layer.visibleReflectance.empty?
+          #  hash[:visible_reflectance] = layer.visibleReflectance
+          #end
         end
 
         hash
