@@ -219,10 +219,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyMaterialNoMass'
     expect(honeybee[0][:identifier]).to eq 'Material Air Gap 1'
-
-    expect(honeybee[0][:roughness]).to eq 'MediumRough'
-    expect(honeybee[0][:thermal_absorptance]).to eq 0.9
-    expect(honeybee[0][:visible_absorptance]).to eq 0.7
+    expect(honeybee[0][:r_value]).to eq 0.1
 
     File.open(File.join(output_dir,'airGap.hbjson'), 'w') do |f|
       f.puts JSON::pretty_generate(honeybee[0])

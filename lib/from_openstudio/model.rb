@@ -61,7 +61,8 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
-      $shade_construction = [] # Array for all shade construction
+      # Hash for all shade constructions in the model
+      $shade_construction = {}
       hash[:properties] = properties_from_model(openstudio_model)
 
       rooms = rooms_from_model(openstudio_model)
@@ -71,7 +72,9 @@ module Honeybee
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
 
       unless $shade_construction.empty?
-        hash[:properties][:energy][:constructions] << shade_constructions_from_model($shade_construction)
+        shade_constructions_from_model($shade_construction).each do |shade_const|
+          hash[:properties][:energy][:constructions] << shade_const
+        end
       end
 
       Model.new(hash)
@@ -142,13 +145,6 @@ module Honeybee
           site_transformation = shading_surface_group.siteTransformation
           shading_surface_group.shadingSurfaces.each do |shading_surface|
             result << Shade.from_shading_surface(shading_surface, site_transformation)
-            # Get shade construction if specified
-            shade_const_base = shading_surface.construction
-            unless shade_const_base.empty?
-              shade_const_obj = shade_const_base.get
-              shade_const = shade_const_obj.to_LayeredConstruction.get
-              $shade_construction << shade_const
-            end
           end
         end
       end
@@ -216,27 +212,19 @@ module Honeybee
 
       # Create HB WindowConstruction from OpenStudio Construction
       openstudio_model.getConstructions.each do |construction|
-        if construction.isFenestration
-          window_construction = false
-          construction.layers.each do |material|
-            if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized or material.to_Gas.is_initialized or material.to_GasMixture.is_initialized
-              window_construction = true
-            end
-          end
-          if window_construction == true
-            result << WindowConstructionAbridged.from_construction(construction)
-          end
-        else
-          opaque_construction = false
-          construction.layers.each do |material|
-            # check whether construction has Opaque Material
-            if material.to_StandardOpaqueMaterial.is_initialized
-              opaque_construction = true
-            end
-          end
-          if opaque_construction == true
-            result << OpaqueConstructionAbridged.from_construction(construction)
-          end
+        window_construction = false
+        opaque_construction = false
+        material = construction.layers[0]
+        if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized
+          window_construction = true
+        elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized
+          opaque_construction = true
+        end
+        if window_construction == true
+          result << WindowConstructionAbridged.from_construction(construction)
+        end
+        if opaque_construction == true
+          result << OpaqueConstructionAbridged.from_construction(construction)
         end
       end
 
@@ -246,10 +234,10 @@ module Honeybee
     def self.shade_constructions_from_model(shade_constructions)
       result = []
 
-        shade_constructions.each do |shade_construction|
-          result << ShadeConstruction.from_construction(shade_construction)
+        shade_constructions.each do |key, value|
+          result << ShadeConstruction.from_construction(value)
         end
-      
+
       result
     end
 

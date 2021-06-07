@@ -42,51 +42,23 @@ module Honeybee
         # set hash values from OpenStudio Object
         hash[:identifier] = material.nameString
         hash[:r_value] = material.thermalResistance
-        # Roughness is a required property for OS MasslessOpaqueMaterial but isn't a listed property
-        # for OS AirGap
-        begin
+
+        if material.to_MasslessOpaqueMaterial.is_initialized
+          # Roughness is a required property for OS MasslessOpaqueMaterial but isn't a listed
+          # property for OS AirGap
           hash[:roughness] = material.roughness
-        rescue
-        end
-        if hash[:roughness].nil?
-          # If property doesn't exist, use default value from schema
-          hash[:roughness] = defaults[:roughness][:default]
-        end
-        # check if boost optional object is empty
-        begin
           # check if boost optional object is empty
-          if !material.thermal_absorptance.empty? hash[:thermal_absorptance] = material.thermalAbsorptance.get
+          unless material.thermalAbsorptance.empty?
+            hash[:thermal_absorptance] = material.thermalAbsorptance.get
           end
-        rescue
-        end
-        
-        # if property doesn't exist use default value from schema
-        if hash[:thermal_absorptance].nil?
-          hash[:thermal_absorptance] = defaults[:thermal_absorptance][:default]
-        end
-
-        begin
           # check if boost optional object is empty
-          if !material.solar_absorptance.empty? hash[:solar_absorptance] = material.solarAbsorptance.get
+          unless material.solarAbsorptance.empty?
+            hash[:solar_absorptance] = material.solarAbsorptance.get
           end
-        rescue
-        end
-        
-        # if property doesn't exist use default value from schema
-        if hash[:solar_absorptance].nil?
-          hash[:solar_absorptance] = defaults[:solar_absorptance][:default]
-        end
-
-        begin
           # check if boost optional object is empty
-          if !material.visible_absorptance.empty? hash[:visible_absorptance] = material.visibleAbsorptance.get
+          unless material.visibleAbsorptance.empty?
+            hash[:visible_absorptance] = material.visibleAbsorptance.get
           end
-        rescue
-        end
-
-        # if property doesn't exist use default value from schema
-        if hash[:visible_absorptance].nil?
-          hash[:visible_absorptance] = defaults[:visible_absorptance][:default]
         end
 
         hash
