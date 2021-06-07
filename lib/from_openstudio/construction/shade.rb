@@ -42,7 +42,7 @@ module Honeybee
         # set hash values from OpenStudio Object
         hash[:identifier] = construction.nameString
         # get outermost construction layers
-        layer = construction.layers[0]
+        layer = construction.layers[0].get
         if layer.to_StandardGlazing.is_initialized
           hash[:is_specular] = true
           # set reflectance properties from outermost layer
@@ -53,7 +53,7 @@ module Honeybee
           #unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
           #  hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
           #end
-        elsif layer.to_StandardOpaqueMaterial.is_initialized or layer.to_MasslessOpaqueMaterial.is_initialized
+        elsif layer.to_StandardOpaqueMaterial.is_initialized
           hash[:is_specular] = false
           # set reflectance properties from outermost layer
           #TODO: these properties are giving an `undefined method` OS error
