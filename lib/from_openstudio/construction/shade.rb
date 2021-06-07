@@ -42,7 +42,7 @@ module Honeybee
         # set hash values from OpenStudio Object
         hash[:identifier] = construction.nameString
         # get outermost construction layers
-        layer = construction.layers[0].get
+        layer = construction.layers[0]
         if layer.to_StandardGlazing.is_initialized
           hash[:is_specular] = true
           # set reflectance properties from outermost layer
