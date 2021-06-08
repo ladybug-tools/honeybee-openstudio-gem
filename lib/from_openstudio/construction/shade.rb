@@ -44,25 +44,27 @@ module Honeybee
         # get outermost construction layers
         layer = construction.layers[0]
         if layer.to_StandardGlazing.is_initialized
+          layer = layer.to_StandardGlazing.get
           hash[:is_specular] = true
           # set reflectance properties from outermost layer
           #TODO: these properties are giving an `undefined method` OS error
-          #unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
-          #  hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
-          #end
-          #unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
-          #  hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
-          #end
+          unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
+            hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
+          end
+          unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
+            hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
+          end
         elsif layer.to_StandardOpaqueMaterial.is_initialized
+          layer = layer.to_StandardOpaqueMaterial.get
           hash[:is_specular] = false
           # set reflectance properties from outermost layer
           #TODO: these properties are giving an `undefined method` OS error
-          #unless layer.solarReflectance.empty?
-          #  hash[:solar_reflectance] = layer.solarReflectance.get
-          #end
-          #unless layer.visibleReflectance.empty?
-          #  hash[:visible_reflectance] = layer.visibleReflectance
-          #end
+          unless layer.solarReflectance.empty?
+            hash[:solar_reflectance] = layer.solarReflectance.get
+          end
+          unless layer.visibleReflectance.empty?
+            hash[:visible_reflectance] = layer.visibleReflectance
+          end
         end
 
         hash
