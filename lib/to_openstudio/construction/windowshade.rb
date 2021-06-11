@@ -45,7 +45,7 @@ module Honeybee
     end
 
     def to_openstudio(openstudio_model)
-      # write the shaded and unsaded versions of the construciton into the model
+      # write the shaded and unsaded versions of the construction into the model
       # reverse the shaded and unshaded identifiers so unshaded one is assigned to apertures
       unshd_id = @hash[:identifier]
       shd_id = @hash[:window_construction][:identifier]

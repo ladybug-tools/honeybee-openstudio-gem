@@ -29,14 +29,27 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/model_object'
+require 'honeybee/construction/air'
+require 'to_openstudio/model_object'
 
 module Honeybee
-  class EnergyMaterialNoMass < ModelObject
+  class AirBoundaryConstructionAbridged < ModelObject
 
-    def self.defaults
-      @@schema[:components][:schemas][:EnergyMaterialNoMass][:properties]
+    def self.from_construction(construction)
+        # create an empty hash
+        hash = {}
+        hash[:type] = 'AirBoundaryConstructionAbridged'
+        # set hash values from OpenStudio Object
+        hash[:identifier] = construction.nameString
+        # check if boost optional object is empty
+        unless construction.simpleMixingSchedule.empty?
+          schedule = construction.simpleMixingSchedule.get
+          hash[:air_mixing_schedule] = schedule.nameString
+        end
+        #TODO: Add air_mixing_per_area
+
+        hash
     end
 
-  end # EnergyMaterialNoMass
+  end # AirBoundaryConstructionAbridged
 end # Honeybee

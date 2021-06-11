@@ -207,4 +207,23 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load AirGap OS Material and translate to EnergyMaterialNoMass Honeybee material' do
+
+    openstudio_model = load_file('airGap.osm')
+
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'EnergyMaterialNoMass'
+    expect(honeybee[0][:identifier]).to eq 'Material Air Gap 1'
+    expect(honeybee[0][:r_value]).to eq 0.1
+
+    File.open(File.join(output_dir,'airGap.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
+
 end

@@ -29,40 +29,54 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/material/opaque_no_mass.rb'
-require 'to_openstudio/model_object'
+require 'honeybee/construction/shade'
+require 'from_openstudio/model_object'
 
 module Honeybee
-  class EnergyMaterialNoMass < ModelObject
+  class ShadeConstruction < ModelObject
 
-    def self.from_material(material)
+    def self.from_construction(construction)
         # create an empty hash
         hash = {}
-        hash[:type] = 'EnergyMaterialNoMass'
+        hash[:type] = 'ShadeConstruction'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
-        hash[:r_value] = material.thermalResistance
-
-        if material.to_MasslessOpaqueMaterial.is_initialized
-          # Roughness is a required property for OS MasslessOpaqueMaterial but isn't a listed
-          # property for OS AirGap
-          hash[:roughness] = material.roughness
-          # check if boost optional object is empty
-          unless material.thermalAbsorptance.empty?
-            hash[:thermal_absorptance] = material.thermalAbsorptance.get
+        hash[:identifier] = construction.nameString
+        # get outermost construction layers
+        layer = construction.layers[0]
+        if layer.to_StandardGlazing.is_initialized
+          layer = layer.to_StandardGlazing.get
+          hash[:is_specular] = true
+          # set reflectance properties from outermost layer
+          unless layer.frontSideSolarReflectanceatNormalIncidence.empty?
+            hash[:solar_reflectance] = layer.frontSideSolarReflectanceatNormalIncidence.get
           end
-          # check if boost optional object is empty
-          unless material.solarAbsorptance.empty?
-            hash[:solar_absorptance] = material.solarAbsorptance.get
+          unless layer.frontSideVisibleReflectanceatNormalIncidence.empty?
+            hash[:visible_reflectance] = layer.frontSideVisibleReflectanceatNormalIncidence.get
           end
-          # check if boost optional object is empty
-          unless material.visibleAbsorptance.empty?
-            hash[:visible_absorptance] = material.visibleAbsorptance.get
+        elsif layer.to_StandardOpaqueMaterial.is_initialized
+          layer = layer.to_StandardOpaqueMaterial.get
+          hash[:is_specular] = false
+          # set reflectance properties from outermost layer
+          unless layer.solarReflectance.empty?
+            hash[:solar_reflectance] = layer.solarReflectance.get
+          end
+          unless layer.visibleReflectance.empty?
+            hash[:visible_reflectance] = layer.visibleReflectance
+          end
+        elsif layer.to_MasslessOpaqueMaterial.is_initialized
+          layer = layer.to_MasslessOpaqueMaterial.get
+          hash[:is_specular] = false
+          # set reflectance properties from outermost layer
+          unless layer.solarAbsorptance.empty?
+            hash[:solar_reflectance] = 1 - layer.solarAbsorptance.get
+          end
+          unless layer.visibleAbsorptance.empty?
+            hash[:visible_reflectance] = 1 - layer.visibleAbsorptance.get
           end
         end
 
         hash
     end
 
-  end #EnergyMaterialNoMass
+  end # ShadeConstruction
 end # Honeybee

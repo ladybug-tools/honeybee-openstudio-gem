@@ -41,6 +41,10 @@ require 'from_openstudio/material/window_blind'
 require 'from_openstudio/material/window_gas'
 require 'from_openstudio/material/window_gas_custom'
 require 'from_openstudio/material/window_gas_mixture'
+require 'from_openstudio/construction/air'
+require 'from_openstudio/construction/opaque'
+require 'from_openstudio/construction/window'
+require 'from_openstudio/construction/shade'
 
 require 'openstudio'
 
@@ -57,6 +61,8 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
+      # Hash for all shade constructions in the model
+      $shade_construction = {}
       hash[:properties] = properties_from_model(openstudio_model)
 
       rooms = rooms_from_model(openstudio_model)
@@ -64,6 +70,12 @@ module Honeybee
 
       orphaned_shades = orphaned_shades_from_model(openstudio_model)
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
+
+      unless $shade_construction.empty?
+        shade_constructions_from_model($shade_construction).each do |shade_const|
+          hash[:properties][:energy][:constructions] << shade_const
+        end
+      end
 
       Model.new(hash)
     end
@@ -103,13 +115,17 @@ module Honeybee
     def self.properties_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'ModelProperties'
+      hash[:energy] = energy_properties_from_model(openstudio_model)
       hash
     end
 
     def self.energy_properties_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'ModelEnergyProperties'
-      hash[:energy] = energy_properties_from_model(openstudio_model)
+      hash[:constructions] = []
+      hash[:constructions] = constructions_from_model(openstudio_model)
+      hash[:materials] = materials_from_model(openstudio_model)
+      
       hash
     end
 
@@ -145,10 +161,17 @@ module Honeybee
       openstudio_model.getStandardOpaqueMaterials.each do |material|
         result << EnergyMaterial.from_material(material)
       end
-      # Create HB EnergyMaterialNoMass from OpenStudio Material
+
+      # Create HB EnergyMaterialNoMass from OpenStudio MasslessOpaque Materials
       openstudio_model.getMasslessOpaqueMaterials.each do |material|
         result << EnergyMaterialNoMass.from_material(material)
       end
+
+      # Create HB EnergyMaterialNoMass from OpenStudio AirGap materials
+      openstudio_model.getAirGaps.each do|material|
+        result << EnergyMaterialNoMass.from_material(material)
+      end
+
       # Create HB WindowMaterialSimpleGlazSys from OpenStudio Material
       openstudio_model.getSimpleGlazings.each do |material|
         result << EnergyWindowMaterialSimpleGlazSys.from_material(material)
@@ -174,6 +197,46 @@ module Honeybee
       openstudio_model.getGasMixtures.each do |material|
         result << EnergyWindowMaterialGasMixture.from_material(material)
       end
+
+      result
+    end
+
+    # Create HB Construction from OpenStudio Materials
+    def self.constructions_from_model(openstudio_model)
+      result = []
+
+      # Create HB AirConstruction from OpenStudio Construction
+      openstudio_model.getConstructionAirBoundarys.each do |construction|
+        result << AirBoundaryConstructionAbridged.from_construction(construction)
+      end
+
+      # Create HB WindowConstruction from OpenStudio Construction
+      openstudio_model.getConstructions.each do |construction|
+        window_construction = false
+        opaque_construction = false
+        material = construction.layers[0]
+        if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized
+          window_construction = true
+        elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized
+          opaque_construction = true
+        end
+        if window_construction == true
+          result << WindowConstructionAbridged.from_construction(construction)
+        end
+        if opaque_construction == true
+          result << OpaqueConstructionAbridged.from_construction(construction)
+        end
+      end
+
+      result
+    end
+
+    def self.shade_constructions_from_model(shade_constructions)
+      result = []
+
+        shade_constructions.each do |key, value|
+          result << ShadeConstruction.from_construction(value)
+        end
 
       result
     end

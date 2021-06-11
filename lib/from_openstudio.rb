@@ -43,6 +43,22 @@ require 'from_openstudio/geometry/face'
 require 'from_openstudio/geometry/room'
 require 'from_openstudio/geometry/shade'
 
+# extend the construction objects
+require 'from_openstudio/construction/opaque'
+require 'from_openstudio/construction/window'
+require 'from_openstudio/construction/shade'
+require 'from_openstudio/construction/air'
+
+# import the material objects
+require 'from_openstudio/material/opaque'
+require 'from_openstudio/material/opaque_no_mass'
+require 'from_openstudio/material/window_gas'
+require 'from_openstudio/material/window_gas_mixture'
+require 'from_openstudio/material/window_gas_custom'
+require 'from_openstudio/material/window_blind'
+require 'from_openstudio/material/window_glazing'
+require 'from_openstudio/material/window_simpleglazsys'
+
 # extend the simulation objects
 require 'from_openstudio/simulation/design_day'
 require 'from_openstudio/simulation/parameter_model'

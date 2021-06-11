@@ -61,7 +61,13 @@ module Honeybee
 
       construction = shading_surface.construction
       if !construction.empty?
-        hash[:construction] = construction.get.nameString
+        const_name = construction.get.nameString
+        hash[:construction] = const_name
+        unless $shade_construction.has_key?(const_name)
+          const_obj = construction.get
+          const = const_obj.to_LayeredConstruction.get
+          $shade_construction[const_name] = const
+        end
       end
 
       transmittance_schedule = shading_surface.transmittanceSchedule

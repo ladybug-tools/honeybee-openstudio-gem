@@ -1,0 +1,111 @@
+
+OS:Version,
+  {fb57bb1d-ebf3-4c07-bf48-06be62e95dc0}, !- Handle
+  3.0.0;                                  !- Version Identifier
+
+OS:Site,
+  {d560c6b6-992b-4adf-ab65-b07e85b0a342}, !- Handle
+  Site 1,                                 !- Name
+  ,                                       !- Latitude {deg}
+  ,                                       !- Longitude {deg}
+  ,                                       !- Time Zone {hr}
+  ,                                       !- Elevation {m}
+  ;                                       !- Terrain
+
+OS:YearDescription,
+  {edc6cd52-3882-4a5f-87af-10e54d31773b}; !- Handle
+
+OS:ClimateZones,
+  {0289fc57-4ce8-476a-99fa-33888aaa8ac7}, !- Handle
+  ASHRAE,                                 !- Climate Zone Institution Name 1
+  ANSI/ASHRAE Standard 169,               !- Climate Zone Document Name 1
+  2006,                                   !- Climate Zone Document Year 1
+  ,                                       !- Climate Zone Value 1
+  CEC,                                    !- Climate Zone Institution Name 2
+  California Climate Zone Descriptions,   !- Climate Zone Document Name 2
+  1995,                                   !- Climate Zone Document Year 2
+  ;                                       !- Climate Zone Value 2
+
+OS:Building,
+  {07f3a89a-4a6a-4889-95f0-8d94fcbbcf60}, !- Handle
+  Building 1,                             !- Name
+  ,                                       !- Building Sector Type
+  ,                                       !- North Axis {deg}
+  ,                                       !- Nominal Floor to Floor Height {m}
+  ,                                       !- Space Type Name
+  ,                                       !- Default Construction Set Name
+  ;                                       !- Default Schedule Set Name
+
+OS:Facility,
+  {6ab6fd98-267b-47b3-a183-5837771e988e}; !- Handle
+
+OS:SimulationControl,
+  {c52d625d-b0c7-497a-805a-7422af58bb06}; !- Handle
+
+OS:Sizing:Parameters,
+  {e002409c-2aa0-4efa-bec4-1681a8081c26}, !- Handle
+  1.25,                                   !- Heating Sizing Factor
+  1.15;                                   !- Cooling Sizing Factor
+
+OS:Timestep,
+  {30278acc-79c7-49c5-9e32-3a5ca6fc8707}, !- Handle
+  6;                                      !- Number of Timesteps per Hour
+
+OS:ShadowCalculation,
+  {c631fd86-476b-4bca-9a75-ecdf757624e3}, !- Handle
+  PolygonClipping,                        !- Shading Calculation Method
+  ,                                       !- Shading Calculation Update Frequency Method
+  20,                                     !- Shading Calculation Update Frequency
+  15000,                                  !- Maximum Figures in Shadow Overlap Calculations
+  ,                                       !- Polygon Clipping Algorithm
+  512,                                    !- Pixel Counting Resolution
+  ,                                       !- Sky Diffuse Modeling Algorithm
+  No,                                     !- Output External Shading Calculation Results
+  No,                                     !- Disable Self-Shading Within Shading Zone Groups
+  No;                                     !- Disable Self-Shading From Shading Zone Groups to Other Zones
+
+OS:HeatBalanceAlgorithm,
+  {1cf94c4f-4895-4c1d-a17d-586501dd4fee}, !- Handle
+  ConductionTransferFunction,             !- Algorithm
+  200;                                    !- Surface Temperature Upper Limit {C}
+
+OS:RunPeriod,
+  {83d7189a-cef1-47eb-8b40-971e3fc6a972}, !- Handle
+  Run Period 1,                           !- Name
+  1,                                      !- Begin Month
+  1,                                      !- Begin Day of Month
+  12,                                     !- End Month
+  31,                                     !- End Day of Month
+  ,                                       !- Use Weather File Holidays and Special Days
+  ,                                       !- Use Weather File Daylight Saving Period
+  ,                                       !- Apply Weekend Holiday Rule
+  ,                                       !- Use Weather File Rain Indicators
+  ,                                       !- Use Weather File Snow Indicators
+  ;                                       !- Number of Times Runperiod to be Repeated
+
+OS:LifeCycleCost:Parameters,
+  {af343cce-2526-4dc2-a9ba-5fff834dfe46}, !- Handle
+  ,                                       !- Analysis Type
+  ,                                       !- Discounting Convention
+  ,                                       !- Inflation Approach
+  ,                                       !- Real Discount Rate
+  ,                                       !- Nominal Discount Rate
+  ,                                       !- Inflation
+  ,                                       !- Base Date Month
+  ,                                       !- Base Date Year
+  ,                                       !- Service Date Month
+  ,                                       !- Service Date Year
+  ;                                       !- Length of Study Period in Years
+
+OS:Construction:AirBoundary,
+  {56806193-80f1-4cce-9eac-5b23d6908bc9}, !- Handle
+  Construction Air Boundary 1,            !- Name
+  ,                                       !- Solar and Daylighting Method
+  ,                                       !- Radiant Exchange Method
+  ,                                       !- Air Exchange Method
+  0;                                      !- Simple Mixing Air Changes per Hour {1/hr}
+
+OS:StandardsInformation:Construction,
+  {00c5267d-5f7e-4be6-a582-c9c0fa2de6fb}, !- Handle
+  {56806193-80f1-4cce-9eac-5b23d6908bc9}; !- Construction Name
+
