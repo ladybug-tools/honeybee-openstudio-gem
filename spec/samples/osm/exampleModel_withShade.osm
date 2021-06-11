@@ -1,7 +1,7 @@
 
 OS:Version,
-  {b7889745-8dd6-4e98-86ef-cdb79361341b}, !- Handle
-  3.1.0;                                  !- Version Identifier
+  {3db9c14b-4608-4bb4-aad4-8c5ecedef9a1}, !- Handle
+  3.2.0;                                  !- Version Identifier
 
 OS:SimulationControl,
   {c1f25074-dfe8-478a-a3a0-760203ea42a4}, !- Handle
@@ -1508,7 +1508,7 @@ OS:DefaultConstructionSet,
   {8935d015-501f-4307-81e0-4fb235ba58a1}, !- Interior Partition Construction Name
   {298c60b8-20e6-41f3-8deb-56324edb7337}, !- Space Shading Construction Name
   {2baa635c-bee4-42ac-ab5e-0fea9ba98ca6}, !- Building Shading Construction Name
-  ,                                       !- Site Shading Construction Name
+  {f38c0c08-27e4-47ef-b419-f09df39eeca6}, !- Site Shading Construction Name
   ;                                       !- Adiabatic Surface Construction Name
 
 OS:DefaultSurfaceConstructions,
@@ -1658,8 +1658,6 @@ OS:Construction,
 OS:Construction:AirBoundary,
   {213e6392-d3be-4478-a2ec-843d004b74fe}, !- Handle
   Air Wall,                               !- Name
-  ,                                       !- Solar and Daylighting Method
-  ,                                       !- Radiant Exchange Method
   ,                                       !- Air Exchange Method
   0;                                      !- Simple Mixing Air Changes per Hour {1/hr}
 
@@ -1888,7 +1886,6 @@ OS:Node,
 
 OS:Connection,
   {4ca56d2a-11f5-4efd-a68b-5dc259855f9b}, !- Handle
-  {931c55f9-e210-4106-a0f9-985d1c1bdc11}, !- Name
   {97e21759-5564-4db3-9eb6-b5f60effa49f}, !- Source Object
   11,                                     !- Outlet Port
   {5836f585-9469-4559-8afe-14da6e286cd6}, !- Target Object
@@ -1896,18 +1893,15 @@ OS:Connection,
 
 OS:PortList,
   {648c0e27-ba18-4465-b5c0-8d06c20f4f80}, !- Handle
-  {eaba27e5-3a4f-4e88-900e-623920e6dc94}, !- Name
   {97e21759-5564-4db3-9eb6-b5f60effa49f}, !- HVAC Component
   {06c46629-c100-4872-a9f2-d72de50f14fe}; !- Port 1
 
 OS:PortList,
   {0233dd8e-33c2-4806-9f73-eef4ba754978}, !- Handle
-  {a1ce3f68-9327-4c1a-a421-60eef88c8ef0}, !- Name
   {97e21759-5564-4db3-9eb6-b5f60effa49f}; !- HVAC Component
 
 OS:PortList,
   {4c9cc735-0de4-4418-ab93-b73f7243c11a}, !- Handle
-  {de1b2f59-91b9-4bc4-ba94-0faf7aa4eba2}, !- Name
   {97e21759-5564-4db3-9eb6-b5f60effa49f}, !- HVAC Component
   {12b7f341-98f4-45fe-9a8f-ef3ed0a05642}; !- Port 1
 
@@ -2823,7 +2817,6 @@ OS:Node,
 
 OS:Connection,
   {6aeb9247-910c-4b7f-829b-ffed80ed55c4}, !- Handle
-  {19294a7b-25da-4cf7-8c7e-8baff70c9415}, !- Name
   {cd28d0f2-049f-4363-8342-44d8f71eaa89}, !- Source Object
   7,                                      !- Outlet Port
   {57a41ab9-f342-4b30-84f7-ccff98ed9f36}, !- Target Object
@@ -2865,7 +2858,6 @@ OS:Node,
 
 OS:Connection,
   {6577e2f5-d118-4838-9ad5-9c99dabb08ee}, !- Handle
-  {e1fb983b-4d0b-45d3-897a-4999ab24b398}, !- Name
   {bac8243d-2c06-4d68-ab9d-828736c419ff}, !- Source Object
   8,                                      !- Outlet Port
   {fa8bdc9d-3465-4767-a34e-62a56762b7b4}, !- Target Object
@@ -2873,7 +2865,6 @@ OS:Connection,
 
 OS:Connection,
   {c572acbd-2233-4621-8293-895ea11bc2cf}, !- Handle
-  {d3290246-02f6-479e-8a8a-ca2a54f0f1fc}, !- Name
   {6f2de637-12dc-4b56-b0d3-0ca820b97ed7}, !- Source Object
   3,                                      !- Outlet Port
   {bac8243d-2c06-4d68-ab9d-828736c419ff}, !- Target Object
@@ -2899,7 +2890,6 @@ OS:Node,
 
 OS:Connection,
   {65205631-c345-4339-936c-7686353a3058}, !- Handle
-  {22f4190e-c243-469b-a464-b4aa32367f20}, !- Name
   {bac8243d-2c06-4d68-ab9d-828736c419ff}, !- Source Object
   10,                                     !- Outlet Port
   {4f5938f8-2e07-48f7-9f48-3796e8056a6d}, !- Target Object
@@ -2907,7 +2897,6 @@ OS:Connection,
 
 OS:Connection,
   {e466762a-860a-45bf-a41e-eeb58235fcc5}, !- Handle
-  {0e83c4a7-7040-43d8-a67d-8e9dcae6a5fb}, !- Name
   {ae954ef7-ee71-4e18-938a-9a9679e2471f}, !- Source Object
   3,                                      !- Outlet Port
   {bac8243d-2c06-4d68-ab9d-828736c419ff}, !- Target Object
@@ -2927,7 +2916,6 @@ OS:AirLoopHVAC:ZoneMixer,
 
 OS:Connection,
   {e685faab-649b-4aaf-9b05-7116fdf26316}, !- Handle
-  {70598173-5e3b-47a6-a63d-cb00017ae862}, !- Name
   {4f5938f8-2e07-48f7-9f48-3796e8056a6d}, !- Source Object
   3,                                      !- Outlet Port
   {db8c9a4b-ffc6-46fd-b8ff-27895995194a}, !- Target Object
@@ -2935,7 +2923,6 @@ OS:Connection,
 
 OS:Connection,
   {45c83bb6-2318-4443-abe2-76940d7c93ea}, !- Handle
-  {84cca1a8-7959-464c-b834-6e7a6eb1158d}, !- Name
   {7386994c-861b-4e46-adc6-a9c753133afc}, !- Source Object
   2,                                      !- Outlet Port
   {ae954ef7-ee71-4e18-938a-9a9679e2471f}, !- Target Object
@@ -2993,7 +2980,6 @@ OS:Node,
 
 OS:Connection,
   {06c46629-c100-4872-a9f2-d72de50f14fe}, !- Handle
-  {9a939dcd-2006-4206-9f3b-a18c721e9923}, !- Name
   {f0e3efbf-2dfa-4cd6-80c4-b6a1ca4bde80}, !- Source Object
   3,                                      !- Outlet Port
   {648c0e27-ba18-4465-b5c0-8d06c20f4f80}, !- Target Object
@@ -3001,7 +2987,6 @@ OS:Connection,
 
 OS:Connection,
   {12b7f341-98f4-45fe-9a8f-ef3ed0a05642}, !- Handle
-  {62d51061-67e2-409d-bbd3-afd89ebf2add}, !- Name
   {4c9cc735-0de4-4418-ab93-b73f7243c11a}, !- Source Object
   3,                                      !- Outlet Port
   {e1191945-e229-47b7-9a85-2f5dcc1691fa}, !- Target Object
@@ -3009,7 +2994,6 @@ OS:Connection,
 
 OS:Connection,
   {99eebea2-576f-4bcb-bb4c-22427a64495a}, !- Handle
-  {c105b196-9c43-43c3-90d2-130b44c57d30}, !- Name
   {e1191945-e229-47b7-9a85-2f5dcc1691fa}, !- Source Object
   3,                                      !- Outlet Port
   {7386994c-861b-4e46-adc6-a9c753133afc}, !- Target Object
@@ -3023,7 +3007,6 @@ OS:Node,
 
 OS:Connection,
   {52c58b7d-7db0-4db1-96c9-84640229f02e}, !- Handle
-  {dfa4b203-e096-4072-9521-cb3324375779}, !- Name
   {db8c9a4b-ffc6-46fd-b8ff-27895995194a}, !- Source Object
   3,                                      !- Outlet Port
   {c2a09287-caab-4070-9741-31d3ae3326ce}, !- Target Object
@@ -3031,7 +3014,6 @@ OS:Connection,
 
 OS:Connection,
   {145efe41-d71e-4506-a1cd-97d358775b8d}, !- Handle
-  {9a92c507-e9e4-4adc-9ae5-e46437e06d9a}, !- Name
   {c2a09287-caab-4070-9741-31d3ae3326ce}, !- Source Object
   3,                                      !- Outlet Port
   {fb148e47-05b9-4cb3-9a5d-7ef8316defb7}, !- Target Object
@@ -3039,7 +3021,6 @@ OS:Connection,
 
 OS:Connection,
   {784dc625-d6a9-4715-baae-63d2a4a3f2cf}, !- Handle
-  {88b83e8c-8cb1-48f1-ab2b-3106b19e3ef5}, !- Name
   {fb148e47-05b9-4cb3-9a5d-7ef8316defb7}, !- Source Object
   4,                                      !- Outlet Port
   {f0e3efbf-2dfa-4cd6-80c4-b6a1ca4bde80}, !- Target Object
@@ -3047,7 +3028,6 @@ OS:Connection,
 
 OS:Connection,
   {e436a38d-3d4d-416b-87cf-6c2fbecfc103}, !- Handle
-  {d380e1fc-9967-4a17-9067-dc427955b4a1}, !- Name
   {2b31aaf7-b4c2-4c62-99e1-25a4185e8eb0}, !- Source Object
   9,                                      !- Outlet Port
   {6f2de637-12dc-4b56-b0d3-0ca820b97ed7}, !- Target Object
@@ -3061,7 +3041,6 @@ OS:Node,
 
 OS:Connection,
   {f08bf4db-5b49-4030-b898-b2b17a8e5de8}, !- Handle
-  {e072a5ba-e7d9-4fdf-89b2-e040c412baa6}, !- Name
   {e1428228-7a95-4804-9119-cf4449a997db}, !- Source Object
   6,                                      !- Outlet Port
   {60a23ee0-4e00-4c53-b355-7a249da752be}, !- Target Object
@@ -3069,7 +3048,6 @@ OS:Connection,
 
 OS:Connection,
   {27221780-471a-46fa-943a-3d4d6c8c54a0}, !- Handle
-  {c1427737-bb6f-478b-96b7-0da8651d8b53}, !- Name
   {60a23ee0-4e00-4c53-b355-7a249da752be}, !- Source Object
   3,                                      !- Outlet Port
   {2b31aaf7-b4c2-4c62-99e1-25a4185e8eb0}, !- Target Object
@@ -3083,7 +3061,6 @@ OS:Node,
 
 OS:Connection,
   {fdcd6266-be1f-4291-8980-7a900420d57a}, !- Handle
-  {b56f69b4-6c25-463a-943f-f73daec906b3}, !- Name
   {49f882e6-22d5-4086-b179-21185549169d}, !- Source Object
   9,                                      !- Outlet Port
   {d7d71482-b634-4996-8c45-9370406bd2e0}, !- Target Object
@@ -3091,7 +3068,6 @@ OS:Connection,
 
 OS:Connection,
   {43b642be-4b13-4b01-9860-b08fe1135352}, !- Handle
-  {6ef8e0e9-dd63-4102-90f0-b02cf9cbac05}, !- Name
   {d7d71482-b634-4996-8c45-9370406bd2e0}, !- Source Object
   3,                                      !- Outlet Port
   {e1428228-7a95-4804-9119-cf4449a997db}, !- Target Object
@@ -3105,7 +3081,6 @@ OS:Node,
 
 OS:Connection,
   {6deb7bcd-5fd8-4095-a0c0-4a3088b0197a}, !- Handle
-  {7837362d-2044-4af5-b6cb-717f37ce7465}, !- Name
   {fa8bdc9d-3465-4767-a34e-62a56762b7b4}, !- Source Object
   3,                                      !- Outlet Port
   {cd28d0f2-049f-4363-8342-44d8f71eaa89}, !- Target Object
@@ -3113,7 +3088,6 @@ OS:Connection,
 
 OS:Connection,
   {903544ac-777e-4871-aed9-2d3bd1d251c6}, !- Handle
-  {17aff822-4f7e-4a34-8856-5406ecc7a641}, !- Name
   {cd28d0f2-049f-4363-8342-44d8f71eaa89}, !- Source Object
   5,                                      !- Outlet Port
   {fab10055-4596-46ce-ab03-adb3bd1c409b}, !- Target Object
@@ -3121,7 +3095,6 @@ OS:Connection,
 
 OS:Connection,
   {a9e70d2d-68c6-46ee-879f-7cae683582e5}, !- Handle
-  {0731164c-e6af-401b-817a-c7ed521cafa2}, !- Name
   {fab10055-4596-46ce-ab03-adb3bd1c409b}, !- Source Object
   3,                                      !- Outlet Port
   {49f882e6-22d5-4086-b179-21185549169d}, !- Target Object
@@ -3135,7 +3108,6 @@ OS:Node,
 
 OS:Connection,
   {1e0ba7c9-18fb-4c28-af65-e4f2d6a8da93}, !- Handle
-  {08709a3f-f99b-43cb-85e2-db3a7834cda0}, !- Name
   {6bacae5d-58ea-4bac-beac-e6c05de497e1}, !- Source Object
   3,                                      !- Outlet Port
   {cd28d0f2-049f-4363-8342-44d8f71eaa89}, !- Target Object
@@ -3143,7 +3115,6 @@ OS:Connection,
 
 OS:Connection,
   {58e21799-8ac2-4627-9836-42b1b4192027}, !- Handle
-  {3d589efa-5972-476f-99d7-6aede86b0388}, !- Name
   {3861750b-6025-49e7-883b-39ae7b9bea68}, !- Source Object
   3,                                      !- Outlet Port
   {38c93f5b-a60f-41ea-bc0d-67f842578b81}, !- Target Object
@@ -3151,7 +3122,6 @@ OS:Connection,
 
 OS:Connection,
   {7138b606-d058-4729-b45f-7533e22cef5e}, !- Handle
-  {e922b6a9-43ca-44ec-a33e-a7370d2226b2}, !- Name
   {38c93f5b-a60f-41ea-bc0d-67f842578b81}, !- Source Object
   7,                                      !- Outlet Port
   {6bacae5d-58ea-4bac-beac-e6c05de497e1}, !- Target Object
@@ -3467,7 +3437,7 @@ OS:Rendering:Color,
 OS:Construction,
   {cd171946-f981-4cd5-8a81-da2eb0360b3d}, !- Handle
   Shading,                                !- Name
-  ,                                       !- Surface Rendering Name
+  {a4c0d149-ebe3-4c94-ae54-2a6830e07353}, !- Surface Rendering Name
   {9400f9ee-e1d3-45c0-9de1-7158b66ec50f}; !- Layer 1
 
 OS:StandardsInformation:Construction,
@@ -3522,7 +3492,7 @@ OS:StandardsInformation:Material,
 OS:Construction,
   {2baa635c-bee4-42ac-ab5e-0fea9ba98ca6}, !- Handle
   Exterior Shade,                         !- Name
-  ,                                       !- Surface Rendering Name
+  {61b5df4b-5060-4b18-8039-d106550a5431}, !- Surface Rendering Name
   {64d3bc9b-ae46-434f-a0cc-eaac530fb3e7}, !- Layer 1
   {92e58d56-afd2-469a-977a-853265d8165d}; !- Layer 2
 
@@ -3554,8 +3524,8 @@ OS:Material,
   0.1,                                    !- Conductivity {W/m-K}
   0.1,                                    !- Density {kg/m3}
   100,                                    !- Specific Heat {J/kg-K}
-  0.75,                                   !- Solar Reflectance
-  0.75;                                   !- Visible Reflectance
+  0.75,                                   !- Thermal Absorptance
+  0.75;                                   !- Solar Absorptance
 
 OS:StandardsInformation:Material,
   {44cf7f66-72ce-4b33-b256-be3f3adff059}, !- Handle
@@ -3580,7 +3550,7 @@ OS:StandardsInformation:Material,
 OS:Construction,
   {298c60b8-20e6-41f3-8deb-56324edb7337}, !- Handle
   Exterior Shade 2,                       !- Name
-  ,                                       !- Surface Rendering Name
+  {97c81251-cad1-4f18-8151-2729e7a4fd50}, !- Surface Rendering Name
   {a88e28eb-c267-4d6d-86fb-7885508bd21a}, !- Layer 1
   {4fc959f4-6521-444a-a7d4-aa9af8b905ed}; !- Layer 2
 
@@ -3672,4 +3642,35 @@ OS:Material,
 OS:StandardsInformation:Material,
   {c4ca2b67-aba6-4789-ae57-be9561deff27}, !- Handle
   {92e58d56-afd2-469a-977a-853265d8165d}; !- Material Name
+
+OS:Rendering:Color,
+  {a4c0d149-ebe3-4c94-ae54-2a6830e07353}, !- Handle
+  Rendering Color 14,                     !- Name
+  255,                                    !- Rendering Red Value
+  205,                                    !- Rendering Green Value
+  235;                                    !- Rendering Blue Value
+
+OS:Rendering:Color,
+  {61b5df4b-5060-4b18-8039-d106550a5431}, !- Handle
+  Rendering Color 15,                     !- Name
+  255,                                    !- Rendering Red Value
+  225,                                    !- Rendering Green Value
+  228;                                    !- Rendering Blue Value
+
+OS:Rendering:Color,
+  {97c81251-cad1-4f18-8151-2729e7a4fd50}, !- Handle
+  Rendering Color 16,                     !- Name
+  176,                                    !- Rendering Red Value
+  222,                                    !- Rendering Green Value
+  196;                                    !- Rendering Blue Value
+
+OS:Construction,
+  {f38c0c08-27e4-47ef-b419-f09df39eeca6}, !- Handle
+  Exterior Shade 3,                       !- Name
+  ,                                       !- Surface Rendering Name
+  {2297fdfb-1abc-4e94-89d8-f7fa76f9ebc7}; !- Layer 1
+
+OS:StandardsInformation:Construction,
+  {653fb5c3-e4ea-4b82-90f2-4b405f4493dc}, !- Handle
+  {f38c0c08-27e4-47ef-b419-f09df39eeca6}; !- Construction Name
 

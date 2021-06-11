@@ -65,6 +65,8 @@ RSpec.describe Honeybee do
     expect(hash[:type]).to eq 'Model'
     expect(hash[:rooms]).not_to be_nil
     expect(hash[:rooms].size).to eq 4
+    expect(hash[:properties][:energy][:constructions].size).to eq 17
+    expect(hash[:properties][:energy][:materials].size).to eq 26
 
     output_dir = File.join(File.dirname(__FILE__), '../output/osm/')
     FileUtils.mkdir_p(output_dir)
