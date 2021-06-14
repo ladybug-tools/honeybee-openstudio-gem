@@ -61,8 +61,10 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
-      # Hash for all shade constructions in the model
-      $shade_construction = {}
+      # Hashes for all constructions in the model
+      $opaque_constructions = {}
+      $window_constructions = {}
+      $shade_constructions = {}
       hash[:properties] = properties_from_model(openstudio_model)
 
       rooms = rooms_from_model(openstudio_model)
@@ -71,8 +73,8 @@ module Honeybee
       orphaned_shades = orphaned_shades_from_model(openstudio_model)
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
 
-      unless $shade_construction.empty?
-        shade_constructions_from_model($shade_construction).each do |shade_const|
+      unless $shade_constructions.empty?
+        shade_constructions_from_model($shade_constructions).each do |shade_const|
           hash[:properties][:energy][:constructions] << shade_const
         end
       end
@@ -215,16 +217,22 @@ module Honeybee
         window_construction = false
         opaque_construction = false
         material = construction.layers[0]
-        if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized
-          window_construction = true
-        elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized
-          opaque_construction = true
-        end
-        if window_construction == true
-          result << WindowConstructionAbridged.from_construction(construction)
-        end
-        if opaque_construction == true
-          result << OpaqueConstructionAbridged.from_construction(construction)
+        unless material.nil?
+          if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized
+            window_construction = true
+          elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized
+            opaque_construction = true
+          end
+          if window_construction == true
+            constr_hash = WindowConstructionAbridged.from_construction(construction)
+            $window_constructions[constr_hash[:identifier]] = constr_hash
+            result << constr_hash
+          end
+          if opaque_construction == true
+            constr_hash = OpaqueConstructionAbridged.from_construction(construction)
+            $opaque_constructions[constr_hash[:identifier]] = constr_hash
+            result << constr_hash
+          end
         end
       end
 

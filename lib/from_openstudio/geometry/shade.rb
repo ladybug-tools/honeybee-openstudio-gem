@@ -63,10 +63,10 @@ module Honeybee
       if !construction.empty?
         const_name = construction.get.nameString
         hash[:construction] = const_name
-        unless $shade_construction.has_key?(const_name)
+        unless $shade_constructions.has_key?(const_name)
           const_obj = construction.get
           const = const_obj.to_LayeredConstruction.get
-          $shade_construction[const_name] = const
+          $shade_constructions[const_name] = const
         end
       end
 

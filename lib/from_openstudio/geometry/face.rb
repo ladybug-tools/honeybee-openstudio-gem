@@ -73,7 +73,10 @@ module Honeybee
 
       construction = surface.construction
       if !construction.empty?
-        hash[:construction] = construction.get.nameString
+        constr_id = construction.get.nameString
+        unless $opaque_constructions[constr_id].nil?
+          hash[:construction] = constr_id
+        end
       end
 
       hash
