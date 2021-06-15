@@ -362,6 +362,15 @@ module Honeybee
         end
       end
 
+      # assign any internal masses if specified
+      if @hash[:properties][:energy][:internal_masses]
+        @hash[:properties][:energy][:internal_masses].each do |int_mass|
+          hb_int_mass = InternalMassAbridged.new(int_mass)
+          os_int_mass = hb_int_mass.to_openstudio(openstudio_model, os_space)
+          os_int_mass.setSpace(os_space)
+        end
+      end
+
       os_space
     end
 
