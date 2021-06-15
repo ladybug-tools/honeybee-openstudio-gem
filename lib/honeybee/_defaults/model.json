@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.43.5",
+    "version": "1.43.6",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -388,6 +388,11 @@
       "name": "infiltrationabridged_model",
       "x-displayName": "InfiltrationAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/InfiltrationAbridged\" />\n"
+    },
+    {
+      "name": "internalmassabridged_model",
+      "x-displayName": "InternalMassAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/InternalMassAbridged\" />\n"
     },
     {
       "name": "light_model",
@@ -962,6 +967,7 @@
         "idealairsystemabridged_model",
         "infiltration_model",
         "infiltrationabridged_model",
+        "internalmassabridged_model",
         "light_model",
         "lighting_model",
         "lightingabridged_model",
@@ -1345,6 +1351,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "geometry": {
@@ -1485,7 +1493,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "geometry": {
@@ -1758,7 +1766,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "geometry": {
@@ -1936,7 +1944,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "geometry": {
@@ -2135,7 +2143,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "geometry": {
@@ -2245,6 +2253,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "people_per_area": {
@@ -2325,6 +2334,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -2406,6 +2416,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -2479,6 +2490,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -2552,6 +2564,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "flow_per_area": {
@@ -2624,6 +2637,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "flow_per_exterior_area": {
@@ -2691,6 +2705,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -2760,6 +2775,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "cooling_schedule": {
@@ -2947,6 +2963,53 @@
         },
         "additionalProperties": false
       },
+      "InternalMassAbridged": {
+        "title": "InternalMassAbridged",
+        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Identifier for an OpaqueConstruction that represents the material that the internal thermal mass is composed of.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "area": {
+            "title": "Area",
+            "description": "A number representing the surface area of the internal mass that is exposed to the Room air. This value should always be in square meters regardless of what units system the parent model is a part of.",
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "InternalMassAbridged",
+            "pattern": "^InternalMassAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "identifier",
+          "construction",
+          "area"
+        ],
+        "additionalProperties": false
+      },
       "RoomEnergyPropertiesAbridged": {
         "title": "RoomEnergyPropertiesAbridged",
         "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
@@ -3069,6 +3132,14 @@
                 "$ref": "#/components/schemas/VentilationControlAbridged"
               }
             ]
+          },
+          "internal_masses": {
+            "title": "Internal Masses",
+            "description": "An optional list of of InternalMass objects for thermal mass exposed to Room air. Note that internal masses assigned this way cannot \"see\" solar radiation that may potentially hit them and, as such, caution should be taken when using this component with internal mass objects that are not always in shade. Masses are factored into the the thermal calculations of the Room by undergoing heat transfer with the indoor air.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InternalMassAbridged"
+            }
           }
         },
         "additionalProperties": false
@@ -3122,7 +3193,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "faces": {
@@ -3423,6 +3494,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -3525,6 +3597,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "thickness": {
@@ -3623,6 +3696,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "r_value": {
@@ -3696,6 +3770,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "materials": {
@@ -3870,6 +3945,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "u_factor": {
@@ -3927,6 +4003,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -4074,6 +4151,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -4120,6 +4198,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "conductivity_coeff_a": {
@@ -4240,6 +4319,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "gas_types": {
@@ -4300,6 +4380,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "materials": {
@@ -4468,6 +4549,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -4522,6 +4604,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "values": {
@@ -4728,6 +4811,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -4806,6 +4890,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "day_schedules": {
@@ -4891,6 +4976,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "values": {
@@ -4977,6 +5063,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -5027,6 +5114,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -5120,6 +5208,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "materials": {
@@ -5163,6 +5252,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "materials": {
@@ -5232,6 +5322,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "window_construction": {
@@ -5311,6 +5402,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -5356,6 +5448,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -5519,6 +5612,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -5781,6 +5875,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "window_construction": {
@@ -5898,6 +5993,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6082,6 +6178,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6175,6 +6272,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6283,6 +6381,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6382,6 +6481,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6438,6 +6538,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6544,6 +6645,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6634,6 +6736,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6721,6 +6824,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6825,6 +6929,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6884,6 +6989,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6940,6 +7046,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -6999,6 +7106,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7061,6 +7169,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7125,6 +7234,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7187,6 +7297,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7243,6 +7354,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7291,6 +7403,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7393,6 +7506,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "people_per_area": {
@@ -7483,6 +7597,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -7569,6 +7684,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -7647,6 +7763,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "watts_per_area": {
@@ -7725,6 +7842,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "flow_per_area": {
@@ -7802,6 +7920,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "flow_per_exterior_area": {
@@ -7874,6 +7993,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -7948,6 +8068,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "cooling_schedule": {
@@ -8028,6 +8149,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "display_name": {
@@ -8130,6 +8252,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "day_schedules": {
@@ -8213,6 +8336,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
             "maxLength": 100,
             "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
           "values": {
@@ -8619,6 +8743,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -8779,6 +8905,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -8924,6 +9052,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -9087,6 +9217,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -9214,6 +9346,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -9348,6 +9482,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "bsdf_data": {
@@ -9525,6 +9661,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -9660,6 +9798,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -10456,6 +10596,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -10746,6 +10888,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "display_name": {
@@ -10975,6 +11119,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "sensors": {
@@ -11066,6 +11212,8 @@
           "identifier": {
             "title": "Identifier",
             "description": "Text string for a unique Radiance object. Must not contain spaces or special characters. This will be used to identify the object across a model and in the exported Radiance files.",
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "position": {
@@ -11303,7 +11451,7 @@
             "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "^[.A-Za-z0-9_-]+$",
             "type": "string"
           },
           "properties": {
@@ -11335,7 +11483,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.43.5",
+            "default": "1.43.6",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

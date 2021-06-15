@@ -84,10 +84,11 @@ require 'to_openstudio/schedule/type_limit'
 require 'to_openstudio/schedule/fixed_interval'
 require 'to_openstudio/schedule/ruleset'
 
-# import the ventilation objects
+# import the ventilation and internal mass objects
 require 'to_openstudio/ventcool/control'
 require 'to_openstudio/ventcool/opening'
 require 'to_openstudio/ventcool/simulation'
+require 'to_openstudio/internalmass'
 
 # extend the simulation objects
 require 'to_openstudio/simulation/design_day'

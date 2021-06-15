@@ -84,10 +84,11 @@ require 'honeybee/schedule/type_limit'
 require 'honeybee/schedule/fixed_interval'
 require 'honeybee/schedule/ruleset'
 
-# import the ventilation objects
+# import the ventilation and internal mass objects
 require 'honeybee/ventcool/control'
 require 'honeybee/ventcool/opening'
 require 'honeybee/ventcool/simulation'
+require 'honeybee/internalmass'
 
 # import the simulation objects
 require 'honeybee/simulation/design_day'
