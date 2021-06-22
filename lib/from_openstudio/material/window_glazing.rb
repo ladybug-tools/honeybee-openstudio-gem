@@ -61,7 +61,7 @@ module Honeybee
         end
         # check if boost optional object is empty
         unless material.backSideVisibleReflectanceatNormalIncidence.empty?
-            hash[:visible_reflectance_back] = material.backSideVisibleReflectanceatNormalIncidence
+            hash[:visible_reflectance_back] = material.backSideVisibleReflectanceatNormalIncidence.get
         end
         hash[:infrared_transmittance] = material.infraredTransmittance
         hash[:emissivity] = material.frontSideInfraredHemisphericalEmissivity
