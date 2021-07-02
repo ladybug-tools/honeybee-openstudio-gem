@@ -39,12 +39,17 @@ RSpec.describe Honeybee do
 
     honeybee.validation_errors.each {|error| puts error}
 
-    #expect(honeybee.valid?).to be true
+    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
     expect(hash[:rooms]).not_to be_nil
     expect(hash[:rooms].size).to eq 4
+
+    # check construction_set
+    expect(hash[:properties][:energy][:construction_sets]).not_to be nil
+    expect(hash[:properties][:energy][:construction_sets][0][:identifier]).to eq 'Default Constructions'
+    expect(hash[:properties][:energy][:construction_sets][0][:wall_set][:interior_construction]).to eq 'Air Wall'
 
     output_dir = File.join(File.dirname(__FILE__), '../output/osm/')
     FileUtils.mkdir_p(output_dir)
@@ -91,6 +96,19 @@ RSpec.describe Honeybee do
     File.open(File.join(output_dir,'exampleModel.sim.hbjson'), 'w') do |f|
       f.puts JSON::pretty_generate(hash)
     end
+  end
+
+  it 'can load constructionset' do
+    file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
+    honeybee = Honeybee::Model.translate_from_osm_file(file)
+
+    honeybee.validation_errors.each {|error| puts error}
+
+    expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'Model'
+
   end
 
 end
