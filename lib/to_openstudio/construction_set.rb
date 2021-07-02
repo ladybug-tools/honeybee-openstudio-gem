@@ -140,6 +140,8 @@ module Honeybee
             @hash[:aperture_set][:window_construction])
           unless window_ref.empty?
             window_aperture = window_ref.get
+            #TODO: This looks wrong, it should be set to interior subsurface construction since
+            #window_construction apertures have a surface boundary condition.
             ext_subsurf_const.setFixedWindowConstruction(window_aperture)
           end
         end
