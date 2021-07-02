@@ -35,7 +35,6 @@ require 'honeybee'
 # extend the compound objects that house the other objects
 require 'from_openstudio/model'
 require 'from_openstudio/model_object'
-require 'from_openstudio/construction_set'
 
 # extend the geometry objects
 require 'from_openstudio/geometry/aperture'

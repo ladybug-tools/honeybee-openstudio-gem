@@ -45,7 +45,6 @@ require 'from_openstudio/construction/air'
 require 'from_openstudio/construction/opaque'
 require 'from_openstudio/construction/window'
 require 'from_openstudio/construction/shade'
-require 'from_openstudio/construction_set'
 
 require 'openstudio'
 
@@ -66,7 +65,6 @@ module Honeybee
       $opaque_constructions = {}
       $window_constructions = {}
       $shade_constructions = {}
-
       hash[:properties] = properties_from_model(openstudio_model)
 
       rooms = rooms_from_model(openstudio_model)
@@ -129,9 +127,7 @@ module Honeybee
       hash[:constructions] = []
       hash[:constructions] = constructions_from_model(openstudio_model)
       hash[:materials] = materials_from_model(openstudio_model)
-      hash[:construction_sets] = []
-      hash[:construction_sets] = constructionsets_from_model(openstudio_model)
-
+      
       hash
     end
 
@@ -243,17 +239,6 @@ module Honeybee
       result
     end
 
-    # Create HB ConstructionSets from OpenStudio Construction Set
-    def self.constructionsets_from_model(openstudio_model)
-      result = []
-
-      openstudio_model.getDefaultConstructionSets.each do |construction_set|
-        result << ConstructionSetAbridged.from_construction_set(construction_set)
-      end
-
-      result
-    end
-  
     def self.shade_constructions_from_model(shade_constructions)
       result = []
 

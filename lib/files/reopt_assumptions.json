@@ -139,8 +139,6 @@
         "pbi_system_max_kw": 0
       }
     },
-    "timeout_seconds": 295,
     "time_steps_per_hour": 1
   }
 }
-
