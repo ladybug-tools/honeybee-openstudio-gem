@@ -160,6 +160,30 @@ module Honeybee
           defaults[:diffuse_visible_reflectance_back][:default])
       end
 
+      # assign front beam visible transmittance
+      if @hash[:beam_visible_transmittance]
+        os_blind.setSlatBeamVisibleTransmittance(@hash[:beam_visible_transmittance])
+      else
+        os_blind.setSlatBeamVisibleTransmittance(
+          defaults[:beam_visible_transmittance][:default])
+      end
+
+      # assign front beam visible reflectance
+      if @hash[:beam_visible_reflectance]
+        os_blind.setFrontSideSlatBeamVisibleReflectance(@hash[:beam_visible_reflectance])
+      else
+        os_blind.setFrontSideSlatBeamVisibleReflectance(
+          defaults[:beam_visible_reflectance][:default])
+      end
+
+      # assign back beam visible reflectance
+      if @hash[:beam_visible_reflectance_back]
+        os_blind.setBackSideSlatBeamVisibleReflectance(@hash[:beam_visible_reflectance_back])
+      else
+        os_blind.setBackSideSlatBeamVisibleReflectance(
+          defaults[:beam_visible_reflectance_back][:default])
+      end
+
       # assign infrared transmittance
       if @hash[:infrared_transmittance]
         os_blind.setSlatInfraredHemisphericalTransmittance(@hash[:infrared_transmittance])
