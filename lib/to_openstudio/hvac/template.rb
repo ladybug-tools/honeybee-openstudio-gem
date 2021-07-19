@@ -41,7 +41,9 @@ module Honeybee
       ASHRAE_2004: '90.1-2004',
       ASHRAE_2007: '90.1-2007',
       ASHRAE_2010: '90.1-2010',
-      ASHRAE_2013: '90.1-2013'
+      ASHRAE_2013: '90.1-2013',
+      ASHRAE_2016: '90.1-2016',
+      ASHRAE_2019: '90.1-2019'
     }
 
     def to_openstudio(openstudio_model, room_ids)
