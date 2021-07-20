@@ -59,7 +59,7 @@ jobs:
         env:
           RELEASE_TAG: ${{ steps.semantic.outputs.new_release_version }}
           DISPATCH_URL: https://api.github.com/repos/ladybug-tools/lbt-grasshopper/dispatches
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          DEPS_TOKEN: ${{ secrets.DEPS_UPDATING }}
         run: |
           curl -X POST $DISPATCH_URL \
           -H "Accept: application/vnd.github.everest-preview+json" \
@@ -69,4 +69,4 @@ jobs:
               "version" : "'$RELEASE_TAG'"
             }
           }' \
-          -u ladybugbot:$GH_TOKEN
+          -u chriswmackey:$DEPS_TOKEN
