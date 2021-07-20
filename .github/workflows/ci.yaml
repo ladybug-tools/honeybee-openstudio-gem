@@ -69,4 +69,4 @@ jobs:
               "version" : "'$RELEASE_TAG'"
             }
           }' \
-          -u chriswmackey:$DEPS_TOKEN
+          -u ladybugbot:$DEPS_TOKEN
