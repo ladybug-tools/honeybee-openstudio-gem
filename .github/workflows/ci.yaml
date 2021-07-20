@@ -54,3 +54,19 @@ jobs:
         uses: dawidd6/action-publish-gem@v1
         with:
           api_key: ${{secrets.RUBYGEMS_API_KEY}}
+      - name: Update lbt-grasshopper
+        if: steps.semantic.outputs.new_release_published == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.semantic.outputs.new_release_version }}
+          DISPATCH_URL: https://api.github.com/repos/ladybug-tools/lbt-grasshopper/dispatches
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          curl -X POST $DISPATCH_URL \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -d '{
+            "event_type": "honeybee_openstudio_gem_release",
+            "client_payload": {
+              "version" : "'$RELEASE_TAG'"
+            }
+          }' \
+          -u ladybugbot:$GH_TOKEN
