@@ -59,14 +59,16 @@ module Honeybee
       hash = {}
       hash[:type] = 'ShadeEnergyPropertiesAbridged'
 
-      construction = shading_surface.construction
-      if !construction.empty?
-        const_name = construction.get.nameString
-        hash[:construction] = const_name
-        unless $shade_constructions.has_key?(const_name)
-          const_obj = construction.get
-          const = const_obj.to_LayeredConstruction.get
-          $shade_constructions[const_name] = const
+      unless shading_surface.isConstructionDefaulted
+        construction = shading_surface.construction
+        if !construction.empty?
+          const_name = construction.get.nameString
+          hash[:construction] = const_name
+          unless $shade_constructions.has_key?(const_name)
+            const_obj = construction.get
+            const = const_obj.to_LayeredConstruction.get
+            $shade_constructions[const_name] = const
+          end
         end
       end
 
