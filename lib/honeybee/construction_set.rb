@@ -34,7 +34,7 @@ require 'honeybee/model_object'
 module Honeybee
   class ConstructionSetAbridged < ModelObject
 
-    def self.defaults
+    def defaults
       @@schema[:components][:schemas][:ConstructionSetAbridged][:properties]
     end
 

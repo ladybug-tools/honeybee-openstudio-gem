@@ -70,9 +70,6 @@ module Honeybee
         # get interior subsurface constructions
         unless construction_set.defaultInteriorSubSurfaceConstructions.empty?
           int_subsurf_const = construction_set.defaultInteriorSubSurfaceConstructions.get
-          # TODO: check outdoor boundary condition for fixed window and operable window and assign to
-          # interior_construction for aperture
-          # get interior fixed window construction
           unless int_subsurf_const.fixedWindowConstruction.empty?
             int_wind_const = int_subsurf_const.fixedWindowConstruction.get
             hash[:aperture_set][:window_construction] = int_wind_const.nameString

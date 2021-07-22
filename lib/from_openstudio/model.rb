@@ -248,7 +248,9 @@ module Honeybee
       result = []
 
       openstudio_model.getDefaultConstructionSets.each do |construction_set|
-        result << ConstructionSetAbridged.from_construction_set(construction_set)
+        if construction_set.nameString != "Default Generic Construction Set"
+          result << ConstructionSetAbridged.from_construction_set(construction_set)
+        end
       end
 
       result
