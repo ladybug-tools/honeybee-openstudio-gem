@@ -29,38 +29,40 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the honeybee objects which we will extend
-require 'honeybee'
+require_relative '../spec_helper'
+require 'openstudio'
+RSpec.describe Honeybee do
 
-# extend the compound objects that house the other objects
-require 'from_openstudio/model'
-require 'from_openstudio/model_object'
-require 'from_openstudio/construction_set'
+  # create output folder for HB JSON materials
+  output_dir = File.join(File.dirname(__FILE__), '../output/osm_construction_set/')
+  FileUtils.mkdir_p(output_dir)
 
-# extend the geometry objects
-require 'from_openstudio/geometry/aperture'
-require 'from_openstudio/geometry/door'
-require 'from_openstudio/geometry/face'
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
+  it 'can load OSM and translate Construction Set to Honeybee' do
+    
+    file = File.join(File.dirname(__FILE__), '../samples/osm_construction_set/constructionSet.osm')
+    vt = OpenStudio::OSVersion::VersionTranslator.new
+    openstudio_model = vt.loadModel(file)
+    
+    # create HB JSON material from OS model
+    honeybee = Honeybee::Model.constructionsets_from_model(openstudio_model.get)
 
-# extend the construction objects
-require 'from_openstudio/construction/opaque'
-require 'from_openstudio/construction/window'
-require 'from_openstudio/construction/shade'
-require 'from_openstudio/construction/air'
+    # check values
+    expect(honeybee.size).to eq 1
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'ConstructionSetAbridged'
+    expect(honeybee[0][:identifier]).to eq '189.1-2009 - CZ1 - Office'
+    expect(honeybee[0][:wall_set]).not_to be nil
+    expect(honeybee[0][:wall_set][:interior_construction]).to eq 'Interior Wall'
+    expect(honeybee[0][:floor_set]).not_to be nil
+    expect(honeybee[0][:floor_set][:exterior_construction]).to eq 'ExtSlabCarpet 4in ClimateZone 1-8'
+    expect(honeybee[0])
+    expect(honeybee[0][:roof_ceiling_set]).not_to be nil
+    expect(honeybee[0][:roof_ceiling_set][:interior_construction]).to eq 'Interior Ceiling'
 
-# import the material objects
-require 'from_openstudio/material/opaque'
-require 'from_openstudio/material/opaque_no_mass'
-require 'from_openstudio/material/window_gas'
-require 'from_openstudio/material/window_gas_mixture'
-require 'from_openstudio/material/window_gas_custom'
-require 'from_openstudio/material/window_blind'
-require 'from_openstudio/material/window_glazing'
-require 'from_openstudio/material/window_simpleglazsys'
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'constructionSet.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
+  end
 
-# extend the simulation objects
-require 'from_openstudio/simulation/design_day'
-require 'from_openstudio/simulation/parameter_model'
-require 'from_openstudio/simulation/simulation_output'
+end

@@ -71,11 +71,13 @@ module Honeybee
       hash = {}
       hash[:type] = 'FaceEnergyPropertiesAbridged'
 
-      construction = surface.construction
-      if !construction.empty?
-        constr_id = construction.get.nameString
-        unless $opaque_constructions[constr_id].nil?
-          hash[:construction] = constr_id
+      unless surface.isConstructionDefaulted
+        construction = surface.construction
+        if !construction.empty?
+          constr_id = construction.get.nameString
+          unless $opaque_constructions[constr_id].nil?
+            hash[:construction] = constr_id
+          end
         end
       end
 
