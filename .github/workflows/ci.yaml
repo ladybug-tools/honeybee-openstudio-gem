@@ -71,12 +71,13 @@ jobs:
           }' \
           -u ladybugbot:$DEPS_TOKEN
       - name: Update honeybee-energy
-        if: contains(steps.new_release.outputs.tag, '.')
+        if: steps.semantic.outputs.new_release_published == 'true'
         env:
+          RELEASE_TAG: ${{ steps.semantic.outputs.new_release_version }}
           DISPATCH_REPO: ladybug-tools/honeybee-energy
           DEPS_TOKEN: ${{ secrets.DEPS_UPDATING }}
         run: |
           curl -X POST https://api.github.com/repos/$DISPATCH_REPO/dispatches \
           -H "Accept: application/vnd.github.everest-preview+json" \
-          -d '{"event_type": "honeybee_openstudio_gem_release", "client_payload": {"version": "${{ steps.new_release.outputs.tag }}"}}' \
+          -d '{"event_type": "honeybee_openstudio_gem_release", "client_payload": {"version": "'$RELEASE_TAG'"}}' \
           -u ladybugbot:$DEPS_TOKEN
