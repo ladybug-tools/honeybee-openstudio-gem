@@ -118,8 +118,11 @@ module Honeybee
         if @hash[:properties][:energy][:construction]
           construction_identifier = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_identifier)
-          unless construction.empty?
+          if !construction.empty?
             os_construction = construction.get
+            os_subsurface.setConstruction(os_construction)
+          elsif $window_dynamic_hash[construction_identifier] != nil
+            os_construction = $window_dynamic_hash[construction_identifier].constructions[0]
             os_subsurface.setConstruction(os_construction)
           end
         end

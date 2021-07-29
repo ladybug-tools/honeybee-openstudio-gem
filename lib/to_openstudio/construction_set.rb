@@ -127,37 +127,27 @@ module Honeybee
       # assign any constructions in the aperture set
       if @hash[:aperture_set]
         if @hash[:aperture_set][:interior_construction]
-          int_ap_ref = openstudio_model.getConstructionByName(
-            @hash[:aperture_set][:interior_construction])
-          unless int_ap_ref.empty?
-            interior_aperture = int_ap_ref.get
+          interior_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:interior_construction])
+          unless interior_aperture.nil?
             int_subsurf_const.setFixedWindowConstruction(interior_aperture)
             int_subsurf_const.setOperableWindowConstruction(interior_aperture)
           end
         end
         if @hash[:aperture_set][:window_construction]
-          window_ref = openstudio_model.getConstructionByName(
-            @hash[:aperture_set][:window_construction])
-          unless window_ref.empty?
-            window_aperture = window_ref.get
-            #TODO: This looks wrong, it should be set to interior subsurface construction since
-            #window_construction apertures have a surface boundary condition.
+          window_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:window_construction])
+          unless window_aperture.nil?
             ext_subsurf_const.setFixedWindowConstruction(window_aperture)
           end
         end
         if @hash[:aperture_set][:skylight_construction]
-          skylight_ref = openstudio_model.getConstructionByName(
-            @hash[:aperture_set][:skylight_construction])
-          unless skylight_ref.empty?
-            skylight_aperture = skylight_ref.get
+          skylight_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:skylight_construction])
+          unless skylight_aperture.nil?
             ext_subsurf_const.setSkylightConstruction(skylight_aperture)
           end
         end
         if @hash[:aperture_set][:operable_construction]
-          operable_ref = openstudio_model.getConstructionByName(
-            @hash[:aperture_set][:operable_construction])
-          unless operable_ref.empty?
-            operable_aperture = operable_ref.get
+          operable_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:operable_construction])
+          unless operable_aperture.nil?
             ext_subsurf_const.setOperableWindowConstruction(operable_aperture)
           end
         end
@@ -190,18 +180,14 @@ module Honeybee
           end
         end
         if @hash[:door_set][:exterior_glass_construction]
-          ext_glz_door_ref = openstudio_model.getConstructionByName(
-            @hash[:door_set][:exterior_glass_construction])
-          unless ext_glz_door_ref.empty?
-            exterior_glass_door = ext_glz_door_ref.get
+          exterior_glass_door = get_window_construction(openstudio_model, @hash[:door_set][:exterior_glass_construction])
+          unless exterior_glass_door.nil?
             ext_subsurf_const.setGlassDoorConstruction(exterior_glass_door)
           end
         end
         if @hash[:door_set][:interior_glass_construction]
-          int_glz_door_ref = openstudio_model.getConstructionByName(
-            @hash[:door_set][:interior_glass_construction])
-          unless int_glz_door_ref.empty?
-            interior_glass_door = int_glz_door_ref.get
+          interior_glass_door = get_window_construction(openstudio_model, @hash[:door_set][:interior_glass_construction])
+          unless interior_glass_door.nil?
             int_subsurf_const.setGlassDoorConstruction(interior_glass_door)
           end
         end
@@ -262,6 +248,19 @@ module Honeybee
       else
        constr_subset.setRoofCeilingConstruction(constr_id)
       end
+    end
+    
+    # assign window construction with a check for dynamic constructions
+    def get_window_construction(openstudio_model, construction_identifier)
+      os_construction = nil
+      constr_ref = openstudio_model.getConstructionByName(construction_identifier)
+      if !constr_ref.empty?
+        os_construction = constr_ref.get
+      elsif !$window_dynamic_hash.nil? && !$window_dynamic_hash[construction_identifier].nil?
+        os_construction = $window_dynamic_hash[construction_identifier].constructions[0]
+      end
+
+      os_construction
     end
 
   end #ConstructionSetAbridged

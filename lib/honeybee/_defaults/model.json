@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.43.6",
+    "version": "1.44.2",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -363,6 +363,16 @@
       "name": "glass_model",
       "x-displayName": "Glass",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Glass\" />\n"
+    },
+    {
+      "name": "globalconstructionset_model",
+      "x-displayName": "GlobalConstructionSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GlobalConstructionSet\" />\n"
+    },
+    {
+      "name": "globalmodifierset_model",
+      "x-displayName": "GlobalModifierSet",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GlobalModifierSet\" />\n"
     },
     {
       "name": "glow_model",
@@ -880,6 +890,16 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionAbridged\" />\n"
     },
     {
+      "name": "windowconstructiondynamic_model",
+      "x-displayName": "WindowConstructionDynamic",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionDynamic\" />\n"
+    },
+    {
+      "name": "windowconstructiondynamicabridged_model",
+      "x-displayName": "WindowConstructionDynamicAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionDynamicAbridged\" />\n"
+    },
+    {
       "name": "windowconstructionshade_model",
       "x-displayName": "WindowConstructionShade",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/WindowConstructionShade\" />\n"
@@ -962,6 +982,8 @@
         "gasunitheater_model",
         "gasunitheaterequipmenttype_model",
         "glass_model",
+        "globalconstructionset_model",
+        "globalmodifierset_model",
         "glow_model",
         "ground_model",
         "idealairsystemabridged_model",
@@ -1061,6 +1083,8 @@
         "windowacequipmenttype_model",
         "windowconstruction_model",
         "windowconstructionabridged_model",
+        "windowconstructiondynamic_model",
+        "windowconstructiondynamicabridged_model",
         "windowconstructionshade_model",
         "windowconstructionshadeabridged_model",
         "wshp_model",
@@ -3260,7 +3284,7 @@
             "description": "Text string for the story identifier to which this Room belongs. Rooms sharing the same story identifier are considered part of the same story in a Model.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "[.A-Za-z0-9_-]",
             "type": "string"
           }
         },
@@ -3282,6 +3306,596 @@
           "Centimeters"
         ],
         "type": "string"
+      },
+      "Roughness": {
+        "title": "Roughness",
+        "description": "Relative roughness of a particular material layer.",
+        "enum": [
+          "VeryRough",
+          "Rough",
+          "MediumRough",
+          "MediumSmooth",
+          "Smooth",
+          "VerySmooth"
+        ],
+        "type": "string"
+      },
+      "EnergyMaterial": {
+        "title": "EnergyMaterial",
+        "description": "Opaque material representing a layer within an opaque construction.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the material layer in meters.",
+            "exclusiveMinimum": 0,
+            "maximum": 3,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the material layer in W/m-K.",
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "density": {
+            "title": "Density",
+            "description": "Density of the material layer in kg/m3.",
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "specific_heat": {
+            "title": "Specific Heat",
+            "description": "Specific heat of the material layer in J/kg-K.",
+            "minimum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterial",
+            "pattern": "^EnergyMaterial$",
+            "type": "string",
+            "readOnly": true
+          },
+          "roughness": {
+            "default": "MediumRough",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Roughness"
+              }
+            ]
+          },
+          "thermal_absorptance": {
+            "title": "Thermal Absorptance",
+            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default: 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "maximum": 0.99999,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_absorptance": {
+            "title": "Solar Absorptance",
+            "description": "Fraction of incident solar radiation absorbed by the material. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_absorptance": {
+            "title": "Visible Absorptance",
+            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "thickness",
+          "conductivity",
+          "density",
+          "specific_heat"
+        ],
+        "additionalProperties": false
+      },
+      "EnergyMaterialNoMass": {
+        "title": "EnergyMaterialNoMass",
+        "description": "No mass opaque material representing a layer within an opaque construction.\n\nUsed when only the thermal resistance (R value) of the material is known.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "r_value": {
+            "title": "R Value",
+            "description": "The thermal resistance (R-value) of the material layer [m2-K/W].",
+            "minimum": 0.001,
+            "type": "number",
+            "format": "double"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterialNoMass",
+            "pattern": "^EnergyMaterialNoMass$",
+            "type": "string",
+            "readOnly": true
+          },
+          "roughness": {
+            "default": "MediumRough",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Roughness"
+              }
+            ]
+          },
+          "thermal_absorptance": {
+            "title": "Thermal Absorptance",
+            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default: 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "maximum": 0.99999,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_absorptance": {
+            "title": "Solar Absorptance",
+            "description": "Fraction of incident solar radiation absorbed by the material. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_absorptance": {
+            "title": "Visible Absorptance",
+            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "r_value"
+        ],
+        "additionalProperties": false
+      },
+      "EnergyWindowMaterialGlazing": {
+        "title": "EnergyWindowMaterialGlazing",
+        "description": "Describe a single glass pane corresponding to a layer in a window construction.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGlazing",
+            "pattern": "^EnergyWindowMaterialGlazing$",
+            "type": "string",
+            "readOnly": true
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The surface-to-surface thickness of the glass in meters. Default:  0.003.",
+            "default": 0.003,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "Transmittance of solar radiation through the glass at normal incidence. Default: 0.85 for clear glass.",
+            "default": 0.85,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default: 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_reflectance_back": {
+            "title": "Solar Reflectance Back",
+            "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
+            "default": {
+              "type": "Autocalculate"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autocalculate"
+              },
+              {
+                "type": "number",
+                "format": "double"
+              }
+            ]
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "Transmittance of visible light through the glass at normal incidence. Default: 0.9 for clear glass.",
+            "default": 0.9,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default: 0.075 for clear glass.",
+            "default": 0.075,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance_back": {
+            "title": "Visible Reflectance Back",
+            "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
+            "default": {
+              "type": "Autocalculate"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Autocalculate"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "format": "double"
+              }
+            ]
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "Long-wave transmittance at normal incidence.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default: 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default: 0.84, which is typical for clear glass without a low-e coating.",
+            "default": 0.84,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the glass in W/(m-K). Default: 0.9, which is  typical for clear glass without a low-e coating.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "dirt_correction": {
+            "title": "Dirt Correction",
+            "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
+            "default": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "solar_diffusing": {
+            "title": "Solar Diffusing",
+            "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "GasType": {
+        "title": "GasType",
+        "description": "An enumeration.",
+        "enum": [
+          "Air",
+          "Argon",
+          "Krypton",
+          "Xenon"
+        ],
+        "type": "string"
+      },
+      "EnergyWindowMaterialGas": {
+        "title": "EnergyWindowMaterialGas",
+        "description": "Create single layer of gas in a window construction.\n\nCan be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialGas",
+            "pattern": "^EnergyWindowMaterialGas$",
+            "type": "string",
+            "readOnly": true
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the gas layer in meters. Default: 0.0125.",
+            "default": 0.0125,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "gas_type": {
+            "default": "Air",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GasType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "OpaqueConstructionAbridged": {
+        "title": "OpaqueConstructionAbridged",
+        "description": "Construction for opaque objects (Face, Shade, Door).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "materials": {
+            "title": "Materials",
+            "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "OpaqueConstructionAbridged",
+            "pattern": "^OpaqueConstructionAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "identifier",
+          "materials"
+        ],
+        "additionalProperties": false
+      },
+      "WindowConstructionAbridged": {
+        "title": "WindowConstructionAbridged",
+        "description": "Construction for window objects (Aperture, Door).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "materials": {
+            "title": "Materials",
+            "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
+            "minItems": 1,
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionAbridged",
+            "pattern": "^WindowConstructionAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "identifier",
+          "materials"
+        ],
+        "additionalProperties": false
+      },
+      "ShadeConstruction": {
+        "title": "ShadeConstruction",
+        "description": "Construction for Shade objects.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeConstruction",
+            "pattern": "^ShadeConstruction$",
+            "type": "string",
+            "readOnly": true
+          },
+          "solar_reflectance": {
+            "title": "Solar Reflectance",
+            "description": "A number for the solar reflectance of the construction.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_reflectance": {
+            "title": "Visible Reflectance",
+            "description": "A number for the visible reflectance of the construction.",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "is_specular": {
+            "title": "Is Specular",
+            "description": "Boolean to note whether the reflection off the shade is diffuse (False) or specular (True). Set to True if the construction is representing a glass facade or a mirror material.",
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "AirBoundaryConstructionAbridged": {
+        "title": "AirBoundaryConstructionAbridged",
+        "description": "Construction for Air Boundary objects.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "AirBoundaryConstructionAbridged",
+            "pattern": "^AirBoundaryConstructionAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "air_mixing_per_area": {
+            "title": "Air Mixing Per Area",
+            "description": "A positive number for the amount of air mixing between Rooms across the air boundary surface [m3/s-m2]. Default: 0.1 corresponds to average indoor air speeds of 0.1 m/s (roughly 20 fpm), which is typical of what would be induced by a HVAC system.",
+            "default": 0.1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "air_mixing_schedule": {
+            "title": "Air Mixing Schedule",
+            "description": "Identifier of a fractional schedule for the air mixing schedule across the construction. If unspecified, an Always On schedule will be assumed.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
       },
       "WallConstructionSetAbridged": {
         "title": "WallConstructionSetAbridged",
@@ -3405,14 +4019,14 @@
           },
           "interior_construction": {
             "title": "Interior Construction",
-            "description": "Identifier for a WindowConstruction for apertures with an Outdoors boundary condition, False is_operable property, and a Wall face type for their parent face.",
+            "description": "Identifier for a WindowConstruction for all apertures with a Surface boundary condition.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
           },
           "window_construction": {
             "title": "Window Construction",
-            "description": "Identifier for a WindowConstruction for all apertures with a Surface boundary condition.",
+            "description": "Identifier for a WindowConstruction for apertures with an Outdoors boundary condition, False is_operable property, and a Wall face type for their parent face.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -3479,6 +4093,512 @@
             "description": "Identifier for a WindowConstruction for all glass doors with a Surface boundary condition.",
             "maxLength": 100,
             "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GlobalConstructionSet": {
+        "title": "GlobalConstructionSet",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "GlobalConstructionSet",
+            "pattern": "^GlobalConstructionSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "materials": {
+            "title": "Materials",
+            "description": "Global Honeybee Energy materials.",
+            "default": [
+              {
+                "identifier": "Generic Roof Membrane",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.01,
+                "conductivity": 0.16,
+                "density": 1120.0,
+                "specific_heat": 1460.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.65,
+                "visible_absorptance": 0.65
+              },
+              {
+                "identifier": "Generic Acoustic Tile",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumSmooth",
+                "thickness": 0.02,
+                "conductivity": 0.06,
+                "density": 368.0,
+                "specific_heat": 590.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.2,
+                "visible_absorptance": 0.2
+              },
+              {
+                "identifier": "Generic 25mm Wood",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumSmooth",
+                "thickness": 0.0254,
+                "conductivity": 0.15,
+                "density": 608.0,
+                "specific_heat": 1630.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.5,
+                "visible_absorptance": 0.5
+              },
+              {
+                "identifier": "Generic HW Concrete",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.2,
+                "conductivity": 1.95,
+                "density": 2240.0,
+                "specific_heat": 900.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.8,
+                "visible_absorptance": 0.8
+              },
+              {
+                "identifier": "Generic Window Air Gap",
+                "display_name": null,
+                "type": "EnergyWindowMaterialGas",
+                "thickness": 0.0127,
+                "gas_type": "Air"
+              },
+              {
+                "identifier": "Generic Gypsum Board",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumSmooth",
+                "thickness": 0.0127,
+                "conductivity": 0.16,
+                "density": 800.0,
+                "specific_heat": 1090.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.5,
+                "visible_absorptance": 0.5
+              },
+              {
+                "identifier": "Generic Wall Air Gap",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "Smooth",
+                "thickness": 0.1,
+                "conductivity": 0.667,
+                "density": 1.28,
+                "specific_heat": 1000.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.7,
+                "visible_absorptance": 0.7
+              },
+              {
+                "identifier": "Generic Ceiling Air Gap",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "Smooth",
+                "thickness": 0.1,
+                "conductivity": 0.556,
+                "density": 1.28,
+                "specific_heat": 1000.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.7,
+                "visible_absorptance": 0.7
+              },
+              {
+                "identifier": "Generic Brick",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.1,
+                "conductivity": 0.9,
+                "density": 1920.0,
+                "specific_heat": 790.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.65,
+                "visible_absorptance": 0.65
+              },
+              {
+                "identifier": "Generic 50mm Insulation",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.05,
+                "conductivity": 0.03,
+                "density": 43.0,
+                "specific_heat": 1210.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.7,
+                "visible_absorptance": 0.7
+              },
+              {
+                "identifier": "Generic Low-e Glass",
+                "display_name": null,
+                "type": "EnergyWindowMaterialGlazing",
+                "thickness": 0.006,
+                "solar_transmittance": 0.45,
+                "solar_reflectance": 0.36,
+                "solar_reflectance_back": 0.36,
+                "visible_transmittance": 0.71,
+                "visible_reflectance": 0.21,
+                "visible_reflectance_back": 0.21,
+                "infrared_transmittance": 0.0,
+                "emissivity": 0.84,
+                "emissivity_back": 0.047,
+                "conductivity": 1.0,
+                "dirt_correction": 1.0,
+                "solar_diffusing": false
+              },
+              {
+                "identifier": "Generic Painted Metal",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "Smooth",
+                "thickness": 0.0015,
+                "conductivity": 45.0,
+                "density": 7690.0,
+                "specific_heat": 410.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.5,
+                "visible_absorptance": 0.5
+              },
+              {
+                "identifier": "Generic LW Concrete",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.1,
+                "conductivity": 0.53,
+                "density": 1280.0,
+                "specific_heat": 840.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.8,
+                "visible_absorptance": 0.8
+              },
+              {
+                "identifier": "Generic 25mm Insulation",
+                "display_name": null,
+                "type": "EnergyMaterial",
+                "roughness": "MediumRough",
+                "thickness": 0.05,
+                "conductivity": 0.03,
+                "density": 43.0,
+                "specific_heat": 1210.0,
+                "thermal_absorptance": 0.9,
+                "solar_absorptance": 0.7,
+                "visible_absorptance": 0.7
+              },
+              {
+                "identifier": "Generic Clear Glass",
+                "display_name": null,
+                "type": "EnergyWindowMaterialGlazing",
+                "thickness": 0.006,
+                "solar_transmittance": 0.77,
+                "solar_reflectance": 0.07,
+                "solar_reflectance_back": 0.07,
+                "visible_transmittance": 0.88,
+                "visible_reflectance": 0.08,
+                "visible_reflectance_back": 0.08,
+                "infrared_transmittance": 0.0,
+                "emissivity": 0.84,
+                "emissivity_back": 0.84,
+                "conductivity": 1.0,
+                "dirt_correction": 1.0,
+                "solar_diffusing": false
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EnergyMaterial"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyMaterialNoMass"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGas"
+                }
+              ]
+            }
+          },
+          "constructions": {
+            "title": "Constructions",
+            "description": "Global Honeybee Energy constructions.",
+            "default": [
+              {
+                "identifier": "Generic Interior Door",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic 25mm Wood"
+                ]
+              },
+              {
+                "identifier": "Generic Single Pane",
+                "display_name": null,
+                "type": "WindowConstructionAbridged",
+                "materials": [
+                  "Generic Clear Glass"
+                ]
+              },
+              {
+                "identifier": "Generic Shade",
+                "display_name": null,
+                "type": "ShadeConstruction",
+                "solar_reflectance": 0.35,
+                "visible_reflectance": 0.35,
+                "is_specular": false
+              },
+              {
+                "identifier": "Generic Interior Ceiling",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic LW Concrete",
+                  "Generic Ceiling Air Gap",
+                  "Generic Acoustic Tile"
+                ]
+              },
+              {
+                "identifier": "Generic Interior Wall",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Gypsum Board",
+                  "Generic Wall Air Gap",
+                  "Generic Gypsum Board"
+                ]
+              },
+              {
+                "identifier": "Generic Exposed Floor",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Painted Metal",
+                  "Generic Ceiling Air Gap",
+                  "Generic 50mm Insulation",
+                  "Generic LW Concrete"
+                ]
+              },
+              {
+                "identifier": "Generic Interior Floor",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Acoustic Tile",
+                  "Generic Ceiling Air Gap",
+                  "Generic LW Concrete"
+                ]
+              },
+              {
+                "identifier": "Generic Ground Slab",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic 50mm Insulation",
+                  "Generic HW Concrete"
+                ]
+              },
+              {
+                "identifier": "Generic Roof",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Roof Membrane",
+                  "Generic 50mm Insulation",
+                  "Generic LW Concrete",
+                  "Generic Ceiling Air Gap",
+                  "Generic Acoustic Tile"
+                ]
+              },
+              {
+                "identifier": "Generic Exterior Wall",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Brick",
+                  "Generic LW Concrete",
+                  "Generic 50mm Insulation",
+                  "Generic Wall Air Gap",
+                  "Generic Gypsum Board"
+                ]
+              },
+              {
+                "identifier": "Generic Underground Wall",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic 50mm Insulation",
+                  "Generic HW Concrete",
+                  "Generic Wall Air Gap",
+                  "Generic Gypsum Board"
+                ]
+              },
+              {
+                "identifier": "Generic Air Boundary",
+                "display_name": null,
+                "type": "AirBoundaryConstructionAbridged",
+                "air_mixing_per_area": 0.1,
+                "air_mixing_schedule": "Always On"
+              },
+              {
+                "identifier": "Generic Underground Roof",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic 50mm Insulation",
+                  "Generic HW Concrete",
+                  "Generic Ceiling Air Gap",
+                  "Generic Acoustic Tile"
+                ]
+              },
+              {
+                "identifier": "Generic Double Pane",
+                "display_name": null,
+                "type": "WindowConstructionAbridged",
+                "materials": [
+                  "Generic Low-e Glass",
+                  "Generic Window Air Gap",
+                  "Generic Clear Glass"
+                ]
+              },
+              {
+                "identifier": "Generic Exterior Door",
+                "display_name": null,
+                "type": "OpaqueConstructionAbridged",
+                "materials": [
+                  "Generic Painted Metal",
+                  "Generic 25mm Insulation",
+                  "Generic Painted Metal"
+                ]
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/OpaqueConstructionAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/WindowConstructionAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/ShadeConstruction"
+                },
+                {
+                  "$ref": "#/components/schemas/AirBoundaryConstructionAbridged"
+                }
+              ]
+            }
+          },
+          "wall_set": {
+            "title": "Wall Set",
+            "description": "Global Honeybee WallConstructionSet.",
+            "default": {
+              "interior_construction": "Generic Interior Wall",
+              "exterior_construction": "Generic Exterior Wall",
+              "ground_construction": "Generic Underground Wall",
+              "type": "WallConstructionSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WallConstructionSetAbridged"
+              }
+            ]
+          },
+          "floor_set": {
+            "title": "Floor Set",
+            "description": "Global Honeybee FloorConstructionSet.",
+            "default": {
+              "interior_construction": "Generic Interior Floor",
+              "exterior_construction": "Generic Exposed Floor",
+              "ground_construction": "Generic Ground Slab",
+              "type": "FloorConstructionSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorConstructionSetAbridged"
+              }
+            ]
+          },
+          "roof_ceiling_set": {
+            "title": "Roof Ceiling Set",
+            "description": "Global Honeybee RoofCeilingConstructionSet.",
+            "default": {
+              "interior_construction": "Generic Interior Ceiling",
+              "exterior_construction": "Generic Roof",
+              "ground_construction": "Generic Underground Roof",
+              "type": "RoofCeilingConstructionSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoofCeilingConstructionSetAbridged"
+              }
+            ]
+          },
+          "aperture_set": {
+            "title": "Aperture Set",
+            "description": "Global Honeybee ApertureConstructionSet.",
+            "default": {
+              "type": "ApertureConstructionSetAbridged",
+              "interior_construction": "Generic Single Pane",
+              "window_construction": "Generic Double Pane",
+              "skylight_construction": "Generic Double Pane",
+              "operable_construction": "Generic Double Pane"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApertureConstructionSetAbridged"
+              }
+            ]
+          },
+          "door_set": {
+            "title": "Door Set",
+            "description": "Global Honeybee DoorConstructionSet.",
+            "default": {
+              "type": "DoorConstructionSetAbridged",
+              "interior_construction": "Generic Interior Door",
+              "exterior_construction": "Generic Exterior Door",
+              "overhead_construction": "Generic Exterior Door",
+              "exterior_glass_construction": "Generic Double Pane",
+              "interior_glass_construction": "Generic Single Pane"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorConstructionSetAbridged"
+              }
+            ]
+          },
+          "shade_construction": {
+            "title": "Shade Construction",
+            "description": "Global Honeybee Construction for Shades.",
+            "default": "Generic Shade",
+            "readOnly": true,
+            "type": "string"
+          },
+          "air_boundary_construction": {
+            "title": "Air Boundary Construction",
+            "description": "Global Honeybee Construction for AirBoundary Faces.",
+            "default": "Generic Air Boundary",
+            "readOnly": true,
             "type": "string"
           }
         },
@@ -3571,192 +4691,6 @@
         },
         "required": [
           "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "Roughness": {
-        "title": "Roughness",
-        "description": "Relative roughness of a particular material layer.",
-        "enum": [
-          "VeryRough",
-          "Rough",
-          "MediumRough",
-          "MediumSmooth",
-          "Smooth",
-          "VerySmooth"
-        ],
-        "type": "string"
-      },
-      "EnergyMaterial": {
-        "title": "EnergyMaterial",
-        "description": "Opaque material representing a layer within an opaque construction.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "Thickness of the material layer in meters.",
-            "exclusiveMinimum": 0,
-            "maximum": 3,
-            "type": "number",
-            "format": "double"
-          },
-          "conductivity": {
-            "title": "Conductivity",
-            "description": "Thermal conductivity of the material layer in W/(m-K).",
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "density": {
-            "title": "Density",
-            "description": "Density of the material layer in kg/m3.",
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "specific_heat": {
-            "title": "Specific Heat",
-            "description": "Specific heat of the material layer in J/(kg-K).",
-            "minimum": 100,
-            "type": "number",
-            "format": "double"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyMaterial",
-            "pattern": "^EnergyMaterial$",
-            "type": "string",
-            "readOnly": true
-          },
-          "roughness": {
-            "default": "MediumRough",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Roughness"
-              }
-            ]
-          },
-          "thermal_absorptance": {
-            "title": "Thermal Absorptance",
-            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "maximum": 0.99999,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_absorptance": {
-            "title": "Solar Absorptance",
-            "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
-            "default": 0.7,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_absorptance": {
-            "title": "Visible Absorptance",
-            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
-            "default": 0.7,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier",
-          "thickness",
-          "conductivity",
-          "density",
-          "specific_heat"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyMaterialNoMass": {
-        "title": "EnergyMaterialNoMass",
-        "description": "No mass opaque material representing a layer within an opaque construction.\n\nUsed when only the thermal resistance (R value) of the material is known.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "r_value": {
-            "title": "R Value",
-            "description": "The thermal resistance (R-value) of the material layer [m2-K/W].",
-            "minimum": 0.001,
-            "type": "number",
-            "format": "double"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyMaterialNoMass",
-            "pattern": "^EnergyMaterialNoMass$",
-            "type": "string",
-            "readOnly": true
-          },
-          "roughness": {
-            "default": "MediumRough",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Roughness"
-              }
-            ]
-          },
-          "thermal_absorptance": {
-            "title": "Thermal Absorptance",
-            "description": "Fraction of incident long wavelength radiation that is absorbed by the material. Default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "maximum": 0.99999,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_absorptance": {
-            "title": "Solar Absorptance",
-            "description": "Fraction of incident solar radiation absorbed by the material. Default value is 0.7.",
-            "default": 0.7,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_absorptance": {
-            "title": "Visible Absorptance",
-            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default value is 0.7.",
-            "default": 0.7,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier",
-          "r_value"
         ],
         "additionalProperties": false
       },
@@ -3950,15 +4884,15 @@
           },
           "u_factor": {
             "title": "U Factor",
-            "description": "Used to describe the value for window system U-Factor, or overall heat transfer coefficient in W/(m2-K).",
+            "description": "The overall heat transfer coefficient for window system in W/m2-K. Note that constructions with U-values above 5.8 cannot be assigned to skylights without EnergyPlus thorwing an error.",
             "exclusiveMinimum": 0,
-            "maximum": 5.8,
+            "maximum": 12,
             "type": "number",
             "format": "double"
           },
           "shgc": {
             "title": "Shgc",
-            "description": "Unitless  quantity describing Solar Heat Gain Coefficient for normal incidence and vertical orientation.",
+            "description": "Unitless quantity for the Solar Heat Gain Coefficient (solar transmittance + conduction) at normal incidence and vertical orientation.",
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 1,
             "type": "number",
@@ -3990,201 +4924,6 @@
           "identifier",
           "u_factor",
           "shgc"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyWindowMaterialGlazing": {
-        "title": "EnergyWindowMaterialGlazing",
-        "description": "Describe a single glass pane corresponding to a layer in a window construction.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialGlazing",
-            "pattern": "^EnergyWindowMaterialGlazing$",
-            "type": "string",
-            "readOnly": true
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "The surface-to-surface of the glass in meters. Default value is 0.003.",
-            "default": 0.003,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_transmittance": {
-            "title": "Solar Transmittance",
-            "description": "Transmittance of solar radiation through the glass at normal incidence. Default value is 0.85 for clear glass.",
-            "default": 0.85,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance": {
-            "title": "Solar Reflectance",
-            "description": "Reflectance of solar radiation off of the front side of the glass at normal incidence, averaged over the solar spectrum. Default value is 0.075 for clear glass.",
-            "default": 0.075,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance_back": {
-            "title": "Solar Reflectance Back",
-            "description": "Reflectance of solar radiation off of the back side of the glass at normal incidence, averaged over the solar spectrum.",
-            "type": "number",
-            "format": "double"
-          },
-          "visible_transmittance": {
-            "title": "Visible Transmittance",
-            "description": "Transmittance of visible light through the glass at normal incidence. Default value is 0.9 for clear glass.",
-            "default": 0.9,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance": {
-            "title": "Visible Reflectance",
-            "description": "Reflectance of visible light off of the front side of the glass at normal incidence. Default value is 0.075 for clear glass.",
-            "default": 0.075,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance_back": {
-            "title": "Visible Reflectance Back",
-            "description": "Reflectance of visible light off of the back side of the glass at normal incidence averaged over the solar spectrum and weighted by the response of the human eye.",
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "Long-wave transmittance at normal incidence.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "Infrared hemispherical emissivity of the front (outward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
-            "default": 0.84,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity_back": {
-            "title": "Emissivity Back",
-            "description": "Infrared hemispherical emissivity of the back (inward facing) side of the glass.  Default value is 0.84, which is typical for clear glass without a low-e coating.",
-            "default": 0.84,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "conductivity": {
-            "title": "Conductivity",
-            "description": "Thermal conductivity of the glass in W/(m-K). Default value is 0.9, which is  typical for clear glass without a low-e coating.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "dirt_correction": {
-            "title": "Dirt Correction",
-            "description": "Factor that corrects for the presence of dirt on the glass. A default value of 1 indicates the glass is clean.",
-            "default": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_diffusing": {
-            "title": "Solar Diffusing",
-            "description": "Takes values True and False. If False (default), the beam solar radiation incident on the glass is transmitted as beam radiation with no diffuse component.If True, the beam  solar radiation incident on the glass is transmitted as hemispherical diffuse radiation with no beam component.",
-            "default": false,
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "GasType": {
-        "title": "GasType",
-        "description": "An enumeration.",
-        "enum": [
-          "Air",
-          "Argon",
-          "Krypton",
-          "Xenon"
-        ],
-        "type": "string"
-      },
-      "EnergyWindowMaterialGas": {
-        "title": "EnergyWindowMaterialGas",
-        "description": "Create single layer of gas in a window construction.\n\nCan be combined with EnergyWindowMaterialGlazing to make multi-pane windows.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialGas",
-            "pattern": "^EnergyWindowMaterialGas$",
-            "type": "string",
-            "readOnly": true
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
-            "default": 0.0125,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "gas_type": {
-            "default": "Air",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GasType"
-              }
-            ]
-          }
-        },
-        "required": [
-          "identifier"
         ],
         "additionalProperties": false
       },
@@ -4250,7 +4989,7 @@
           },
           "thickness": {
             "title": "Thickness",
-            "description": "Thickness of the gas layer in meters. Default value is 0.0125.",
+            "description": "Thickness of the gas layer in meters. Default: 0.0125.",
             "default": 0.0125,
             "exclusiveMinimum": 0,
             "type": "number",
@@ -4339,6 +5078,8 @@
             "type": "array",
             "items": {
               "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1,
               "format": "double"
             }
           },
@@ -4428,120 +5169,9 @@
         ],
         "additionalProperties": false
       },
-      "ApertureConstructionSet": {
-        "title": "ApertureConstructionSet",
-        "description": "A set of constructions for aperture assemblies.",
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "default": "ApertureConstructionSet",
-            "pattern": "^ApertureConstructionSet$",
-            "type": "string",
-            "readOnly": true
-          },
-          "interior_construction": {
-            "title": "Interior Construction",
-            "description": "A WindowConstruction for apertures with an Outdoors boundary condition, False is_operable property, and a Wall face type for their parent face.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          },
-          "window_construction": {
-            "title": "Window Construction",
-            "description": "A WindowConstruction for all apertures with a Surface boundary condition.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          },
-          "skylight_construction": {
-            "title": "Skylight Construction",
-            "description": "A WindowConstruction for apertures with a Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          },
-          "operable_construction": {
-            "title": "Operable Construction",
-            "description": "A WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "DoorConstructionSet": {
-        "title": "DoorConstructionSet",
-        "description": "A set of constructions for door assemblies.",
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "default": "DoorConstructionSet",
-            "pattern": "^DoorConstructionSet$",
-            "type": "string",
-            "readOnly": true
-          },
-          "interior_construction": {
-            "title": "Interior Construction",
-            "description": "An OpaqueConstruction for all opaque doors with a Surface boundary condition.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OpaqueConstruction"
-              }
-            ]
-          },
-          "exterior_construction": {
-            "title": "Exterior Construction",
-            "description": "An OpaqueConstruction for opaque doors with an Outdoors boundary condition and a Wall face type for their parent face.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OpaqueConstruction"
-              }
-            ]
-          },
-          "overhead_construction": {
-            "title": "Overhead Construction",
-            "description": "An OpaqueConstruction for opaque doors with an Outdoors boundary condition and a RoofCeiling or Floor type for their parent face.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OpaqueConstruction"
-              }
-            ]
-          },
-          "exterior_glass_construction": {
-            "title": "Exterior Glass Construction",
-            "description": "A WindowConstruction for all glass doors with an Outdoors boundary condition.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          },
-          "interior_glass_construction": {
-            "title": "Interior Glass Construction",
-            "description": "A WindowConstruction for all glass doors with a Surface boundary condition.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "ShadeConstruction": {
-        "title": "ShadeConstruction",
-        "description": "Construction for Shade objects.",
+      "EnergyWindowMaterialShade": {
+        "title": "EnergyWindowMaterialShade",
+        "description": "This object specifies the properties of window shade materials.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -4559,40 +5189,438 @@
           },
           "type": {
             "title": "Type",
-            "default": "ShadeConstruction",
-            "pattern": "^ShadeConstruction$",
+            "default": "EnergyWindowMaterialShade",
+            "pattern": "^EnergyWindowMaterialShade$",
             "type": "string",
             "readOnly": true
           },
+          "solar_transmittance": {
+            "title": "Solar Transmittance",
+            "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default: 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
           "solar_reflectance": {
             "title": "Solar Reflectance",
-            "description": "A number for the solar reflectance of the construction.",
-            "default": 0.2,
+            "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
             "minimum": 0,
-            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "visible_transmittance": {
+            "title": "Visible Transmittance",
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default: 0.4.",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "visible_reflectance": {
             "title": "Visible Reflectance",
-            "description": "A number for the visible reflectance of the construction.",
-            "default": 0.2,
+            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default: 0.4",
+            "default": 0.4,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default: 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default: 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "The thickness of the shade material in meters. Default: 0.005.",
+            "default": 0.005,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
+            "default": 0.1,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
+            "default": 0.05,
+            "minimum": 0.001,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default: 0.5.",
+            "default": 0.5,
             "minimum": 0,
             "maximum": 1,
             "type": "number",
             "format": "double"
           },
-          "is_specular": {
-            "title": "Is Specular",
-            "description": "Boolean to note whether the reflection off the shade is diffuse (False) or specular (True). Set to True if the construction is representing a glass facade or a mirror material.",
-            "default": false,
-            "type": "boolean"
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default: 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default: 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default: 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "airflow_permeability": {
+            "title": "Airflow Permeability",
+            "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default: 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 0.8,
+            "type": "number",
+            "format": "double"
           }
         },
         "required": [
           "identifier"
         ],
         "additionalProperties": false
+      },
+      "SlatOrientation": {
+        "title": "SlatOrientation",
+        "description": "An enumeration.",
+        "enum": [
+          "Horizontal",
+          "Vertical"
+        ],
+        "type": "string"
+      },
+      "EnergyWindowMaterialBlind": {
+        "title": "EnergyWindowMaterialBlind",
+        "description": "Window blind material consisting of flat, equally-spaced slats.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyWindowMaterialBlind",
+            "pattern": "^EnergyWindowMaterialBlind$",
+            "type": "string",
+            "readOnly": true
+          },
+          "slat_orientation": {
+            "default": "Horizontal",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SlatOrientation"
+              }
+            ]
+          },
+          "slat_width": {
+            "title": "Slat Width",
+            "description": "The width of slat measured from edge to edge in meters.",
+            "default": 0.025,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_separation": {
+            "title": "Slat Separation",
+            "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
+            "default": 0.01875,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_thickness": {
+            "title": "Slat Thickness",
+            "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
+            "default": 0.001,
+            "exclusiveMinimum": 0,
+            "maximum": 0.1,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_angle": {
+            "title": "Slat Angle",
+            "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
+            "default": 45,
+            "minimum": 0,
+            "maximum": 180,
+            "type": "number",
+            "format": "double"
+          },
+          "slat_conductivity": {
+            "title": "Slat Conductivity",
+            "description": "The thermal conductivity of the slat in W/(m-K). Default: 221.",
+            "default": 221,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_transmittance": {
+            "title": "Beam Solar Transmittance",
+            "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_reflectance": {
+            "title": "Beam Solar Reflectance",
+            "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_solar_reflectance_back": {
+            "title": "Beam Solar Reflectance Back",
+            "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_transmittance": {
+            "title": "Diffuse Solar Transmittance",
+            "description": "The slat transmittance for hemisperically diffuse solar radiation. Default: 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_reflectance": {
+            "title": "Diffuse Solar Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_solar_reflectance_back": {
+            "title": "Diffuse Solar Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_transmittance": {
+            "title": "Beam Visible Transmittance",
+            "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default: 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_reflectance": {
+            "title": "Beam Visible Reflectance",
+            "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "beam_visible_reflectance_back": {
+            "title": "Beam Visible Reflectance Back",
+            "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_transmittance": {
+            "title": "Diffuse Visible Transmittance",
+            "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_reflectance": {
+            "title": "Diffuse Visible Reflectance",
+            "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default: 0.5.",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "diffuse_visible_reflectance_back": {
+            "title": "Diffuse Visible Reflectance Back",
+            "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default: 0.5.\u201d",
+            "default": 0.5,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "infrared_transmittance": {
+            "title": "Infrared Transmittance",
+            "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
+            "default": 0,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity": {
+            "title": "Emissivity",
+            "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "emissivity_back": {
+            "title": "Emissivity Back",
+            "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
+            "default": 0.9,
+            "exclusiveMaximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "distance_to_glass": {
+            "title": "Distance To Glass",
+            "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
+            "default": 0.05,
+            "minimum": 0.01,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "top_opening_multiplier": {
+            "title": "Top Opening Multiplier",
+            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "bottom_opening_multiplier": {
+            "title": "Bottom Opening Multiplier",
+            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "left_opening_multiplier": {
+            "title": "Left Opening Multiplier",
+            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "right_opening_multiplier": {
+            "title": "Right Opening Multiplier",
+            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
+            "default": 0.5,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "ShadeLocation": {
+        "title": "ShadeLocation",
+        "description": "Choices for where a shade material is located in a window assembly.",
+        "enum": [
+          "Interior",
+          "Between",
+          "Exterior"
+        ],
+        "type": "string"
+      },
+      "ControlType": {
+        "title": "ControlType",
+        "description": "Choices for how the shading device is controlled.",
+        "enum": [
+          "AlwaysOn",
+          "OnIfHighSolarOnWindow",
+          "OnIfHighHorizontalSolar",
+          "OnIfHighOutdoorAirTemperature",
+          "OnIfHighZoneAirTemperature",
+          "OnIfHighZoneCooling",
+          "OnNightIfLowOutdoorTempAndOffDay",
+          "OnNightIfLowInsideTempAndOffDay",
+          "OnNightIfHeatingAndOffDay"
+        ],
+        "type": "string"
       },
       "ScheduleDay": {
         "title": "ScheduleDay",
@@ -5053,6 +6081,299 @@
         ],
         "additionalProperties": false
       },
+      "WindowConstructionShade": {
+        "title": "WindowConstructionShade",
+        "description": "Construction for window objects (Aperture, Door).",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "window_construction": {
+            "title": "Window Construction",
+            "description": "A WindowConstruction object that serves as the \"switched off\" version of the construction (aka. the \"bare construction\"). The shade_material and shade_location will be used to modify this starting construction.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              }
+            ]
+          },
+          "shade_material": {
+            "title": "Shade Material",
+            "description": "Identifier of a An EnergyWindowMaterialShade or an EnergyWindowMaterialBlind that serves as the shading layer for this construction. This can also be an EnergyWindowMaterialGlazing, which will indicate that the WindowConstruction has a dynamically-controlled glass pane like an electrochromic window assembly.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialShade"
+              },
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
+              },
+              {
+                "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionShade",
+            "pattern": "^WindowConstructionShade$",
+            "type": "string",
+            "readOnly": true
+          },
+          "shade_location": {
+            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
+            "default": "Interior",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeLocation"
+              }
+            ]
+          },
+          "control_type": {
+            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
+            "default": "AlwaysOn",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ControlType"
+              }
+            ]
+          },
+          "setpoint": {
+            "title": "Setpoint",
+            "description": "A number that corresponds to the specified control_type. This can be a value in (W/m2), (C) or (W) depending upon the control type.Note that this value cannot be None for any control type except \"AlwaysOn.\"",
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "An optional ScheduleRuleset or ScheduleFixedInterval to be applied on top of the control_type. If None, the control_type will govern all behavior of the construction.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "window_construction",
+          "shade_material"
+        ],
+        "additionalProperties": false
+      },
+      "WindowConstructionDynamic": {
+        "title": "WindowConstructionDynamic",
+        "description": "Construction for window objects with an included shade layer.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "constructions": {
+            "title": "Constructions",
+            "description": "A list of WindowConstruction objects that define the various states that the dynamic window can assume.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WindowConstruction"
+            }
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "A control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be intergers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleRuleset"
+              },
+              {
+                "$ref": "#/components/schemas/ScheduleFixedInterval"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionDynamic",
+            "pattern": "^WindowConstructionDynamic$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "identifier",
+          "constructions",
+          "schedule"
+        ],
+        "additionalProperties": false
+      },
+      "ApertureConstructionSet": {
+        "title": "ApertureConstructionSet",
+        "description": "A set of constructions for aperture assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureConstructionSet",
+            "pattern": "^ApertureConstructionSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "A WindowConstruction for all apertures with a Surface boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          },
+          "window_construction": {
+            "title": "Window Construction",
+            "description": "A WindowConstruction for apertures with an Outdoors boundary condition, False is_operable property, and a Wall face type for their parent face.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          },
+          "skylight_construction": {
+            "title": "Skylight Construction",
+            "description": "A WindowConstruction for apertures with a Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          },
+          "operable_construction": {
+            "title": "Operable Construction",
+            "description": "A WindowConstruction for all apertures with an Outdoors boundary condition and True is_operable property.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoorConstructionSet": {
+        "title": "DoorConstructionSet",
+        "description": "A set of constructions for door assemblies.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "DoorConstructionSet",
+            "pattern": "^DoorConstructionSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "interior_construction": {
+            "title": "Interior Construction",
+            "description": "An OpaqueConstruction for all opaque doors with a Surface boundary condition.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OpaqueConstruction"
+              }
+            ]
+          },
+          "exterior_construction": {
+            "title": "Exterior Construction",
+            "description": "An OpaqueConstruction for opaque doors with an Outdoors boundary condition and a Wall face type for their parent face.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OpaqueConstruction"
+              }
+            ]
+          },
+          "overhead_construction": {
+            "title": "Overhead Construction",
+            "description": "An OpaqueConstruction for opaque doors with an Outdoors boundary condition and a RoofCeiling or Floor type for their parent face.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OpaqueConstruction"
+              }
+            ]
+          },
+          "exterior_glass_construction": {
+            "title": "Exterior Glass Construction",
+            "description": "A WindowConstruction for all glass doors with an Outdoors boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          },
+          "interior_glass_construction": {
+            "title": "Interior Glass Construction",
+            "description": "A WindowConstruction for all glass doors with a Surface boundary condition.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WindowConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionShade"
+              },
+              {
+                "$ref": "#/components/schemas/WindowConstructionDynamic"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "AirBoundaryConstruction": {
         "title": "AirBoundaryConstruction",
         "description": "Construction for Air Boundary objects.",
@@ -5198,120 +6519,6 @@
         ],
         "additionalProperties": false
       },
-      "OpaqueConstructionAbridged": {
-        "title": "OpaqueConstructionAbridged",
-        "description": "Construction for opaque objects (Face, Shade, Door).",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "materials": {
-            "title": "Materials",
-            "description": "List of strings for opaque material identifiers. The order of the materials is from exterior to interior.",
-            "minItems": 1,
-            "maxItems": 10,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "OpaqueConstructionAbridged",
-            "pattern": "^OpaqueConstructionAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "identifier",
-          "materials"
-        ],
-        "additionalProperties": false
-      },
-      "WindowConstructionAbridged": {
-        "title": "WindowConstructionAbridged",
-        "description": "Construction for window objects (Aperture, Door).",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "materials": {
-            "title": "Materials",
-            "description": "List of strings for glazing or gas material identifiers. The order of the materials is from exterior to interior. If a SimpleGlazSys material is used, it must be the only material in the construction. For multi-layered constructions, adjacent glass layers must be separated by one and only one gas layer.",
-            "minItems": 1,
-            "maxItems": 8,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "WindowConstructionAbridged",
-            "pattern": "^WindowConstructionAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "identifier",
-          "materials"
-        ],
-        "additionalProperties": false
-      },
-      "ShadeLocation": {
-        "title": "ShadeLocation",
-        "description": "Choices for where a shade material is located in a window assembly.",
-        "enum": [
-          "Interior",
-          "Between",
-          "Exterior"
-        ],
-        "type": "string"
-      },
-      "ControlType": {
-        "title": "ControlType",
-        "description": "Choices for how the shading device is controlled.",
-        "enum": [
-          "AlwaysOn",
-          "OnIfHighSolarOnWindow",
-          "OnIfHighHorizontalSolar",
-          "OnIfHighOutdoorAirTemperature",
-          "OnIfHighZoneAirTemperature",
-          "OnIfHighZoneCooling",
-          "OnNightIfLowOutdoorTempAndOffDay",
-          "OnNightIfLowInsideTempAndOffDay",
-          "OnNightIfHeatingAndOffDay"
-        ],
-        "type": "string"
-      },
       "WindowConstructionShadeAbridged": {
         "title": "WindowConstructionShadeAbridged",
         "description": "Construction for window objects with an included shade layer.",
@@ -5392,9 +6599,9 @@
         ],
         "additionalProperties": false
       },
-      "AirBoundaryConstructionAbridged": {
-        "title": "AirBoundaryConstructionAbridged",
-        "description": "Construction for Air Boundary objects.",
+      "WindowConstructionDynamicAbridged": {
+        "title": "WindowConstructionDynamicAbridged",
+        "description": "Construction for window objects with an included shade layer.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -5405,556 +6612,38 @@
             "pattern": "^[^,;!\\n\\t]+$",
             "type": "string"
           },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "AirBoundaryConstructionAbridged",
-            "pattern": "^AirBoundaryConstructionAbridged$",
-            "type": "string",
-            "readOnly": true
-          },
-          "air_mixing_per_area": {
-            "title": "Air Mixing Per Area",
-            "description": "A positive number for the amount of air mixing between Rooms across the air boundary surface [m3/s-m2]. Default: 0.1 corresponds to average indoor air speeds of 0.1 m/s (roughly 20 fpm), which is typical of what would be induced by a HVAC system.",
-            "default": 0.1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "air_mixing_schedule": {
-            "title": "Air Mixing Schedule",
-            "description": "Identifier of a fractional schedule for the air mixing schedule across the construction. If unspecified, an Always On schedule will be assumed.",
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "EnergyWindowMaterialShade": {
-        "title": "EnergyWindowMaterialShade",
-        "description": "This object specifies the properties of window shade materials.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialShade",
-            "pattern": "^EnergyWindowMaterialShade$",
-            "type": "string",
-            "readOnly": true
-          },
-          "solar_transmittance": {
-            "title": "Solar Transmittance",
-            "description": "The transmittance averaged over the solar spectrum. It is assumed independent of incidence angle. Default value is 0.4.",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "solar_reflectance": {
-            "title": "Solar Reflectance",
-            "description": "The reflectance averaged over the solar spectrum. It us assumed same on both sides of shade and independent of incidence angle. Default value is 0.5",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_transmittance": {
-            "title": "Visible Transmittance",
-            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4.",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "visible_reflectance": {
-            "title": "Visible Reflectance",
-            "description": "The transmittance averaged over the solar spectrum and weighted by the response of the human eye. It is assumed independent of incidence angle. Default value is 0.4",
-            "default": 0.4,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "The effective long-wave infrared hemispherical emissivity. It is assumed same on both sides of shade. Default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMinimum": 0,
-            "exclusiveMaximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "The effective long-wave transmittance. It is assumed independent of incidence angle. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "thickness": {
-            "title": "Thickness",
-            "description": "The thickness of the shade material in meters. Default value is 0.005.",
-            "default": 0.005,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "conductivity": {
-            "title": "Conductivity",
-            "description": "The conductivity of the shade material in W/(m-K). Default value is 0.1.",
-            "default": 0.1,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "distance_to_glass": {
-            "title": "Distance To Glass",
-            "description": "The distance from shade to adjacent glass in meters. Default value is 0.05",
-            "default": 0.05,
-            "minimum": 0.001,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "top_opening_multiplier": {
-            "title": "Top Opening Multiplier",
-            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "bottom_opening_multiplier": {
-            "title": "Bottom Opening Multiplier",
-            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "left_opening_multiplier": {
-            "title": "Left Opening Multiplier",
-            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "right_opening_multiplier": {
-            "title": "Right Opening Multiplier",
-            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. Default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "airflow_permeability": {
-            "title": "Airflow Permeability",
-            "description": "The fraction of the shade surface that is open to air flow. If air cannot pass through the shade material, airflow_permeability = 0. Default value is 0.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 0.8,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "SlatOrientation": {
-        "title": "SlatOrientation",
-        "description": "An enumeration.",
-        "enum": [
-          "Horizontal",
-          "Vertical"
-        ],
-        "type": "string"
-      },
-      "EnergyWindowMaterialBlind": {
-        "title": "EnergyWindowMaterialBlind",
-        "description": "Window blind material consisting of flat, equally-spaced slats.",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "EnergyWindowMaterialBlind",
-            "pattern": "^EnergyWindowMaterialBlind$",
-            "type": "string",
-            "readOnly": true
-          },
-          "slat_orientation": {
-            "default": "Horizontal",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SlatOrientation"
-              }
-            ]
-          },
-          "slat_width": {
-            "title": "Slat Width",
-            "description": "The width of slat measured from edge to edge in meters.",
-            "default": 0.025,
-            "exclusiveMinimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_separation": {
-            "title": "Slat Separation",
-            "description": "The distance between the front of a slat and the back of the adjacent slat in meters.",
-            "default": 0.01875,
-            "exclusiveMinimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_thickness": {
-            "title": "Slat Thickness",
-            "description": "The distance between the faces of a slat in meters. The default value is 0.001.",
-            "default": 0.001,
-            "exclusiveMinimum": 0,
-            "maximum": 0.1,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_angle": {
-            "title": "Slat Angle",
-            "description": "The angle (degrees) between the glazing outward normal and the slat outward normal where the outward normal points away from the front face of the slat (degrees). The default value is 45.",
-            "default": 45,
-            "minimum": 0,
-            "maximum": 180,
-            "type": "number",
-            "format": "double"
-          },
-          "slat_conductivity": {
-            "title": "Slat Conductivity",
-            "description": "The thermal conductivity of the slat in W/(m-K). Default value is 221.",
-            "default": 221,
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_transmittance": {
-            "title": "Beam Solar Transmittance",
-            "description": "The beam solar transmittance of the slat, assumed to be independent of angle of incidence on the slat. Any transmitted beam radiation is assumed to be 100% diffuse (i.e., slats are translucent). The default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_reflectance": {
-            "title": "Beam Solar Reflectance",
-            "description": "The beam solar reflectance of the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_solar_reflectance_back": {
-            "title": "Beam Solar Reflectance Back",
-            "description": "The beam solar reflectance of the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_transmittance": {
-            "title": "Diffuse Solar Transmittance",
-            "description": "The slat transmittance for hemisperically diffuse solar radiation. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_reflectance": {
-            "title": "Diffuse Solar Reflectance",
-            "description": "The front-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_solar_reflectance_back": {
-            "title": "Diffuse Solar Reflectance Back",
-            "description": "The back-side slat reflectance for hemispherically diffuse solar radiation. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_transmittance": {
-            "title": "Beam Visible Transmittance",
-            "description": "The beam visible transmittance of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_reflectance": {
-            "title": "Beam Visible Reflectance",
-            "description": "The beam visible reflectance on the front side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "beam_visible_reflectance_back": {
-            "title": "Beam Visible Reflectance Back",
-            "description": "The beam visible reflectance on the back side of the slat, it is assumed to be independent of the angle of incidence. Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_transmittance": {
-            "title": "Diffuse Visible Transmittance",
-            "description": "The slat transmittance for hemispherically diffuse visible radiation. This value should equal \u201cSlat Beam Visible Transmittance.\u201d",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_reflectance": {
-            "title": "Diffuse Visible Reflectance",
-            "description": "The front-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cFront Side Slat Beam Visible Reflectance.\u201d Default value is 0.5.",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "diffuse_visible_reflectance_back": {
-            "title": "Diffuse Visible Reflectance Back",
-            "description": "The back-side slat reflectance for hemispherically diffuse visible radiation. This value should equal \u201cBack Side Slat Beam Visible Reflectance. Default value is 0.5.\u201d",
-            "default": 0.5,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "infrared_transmittance": {
-            "title": "Infrared Transmittance",
-            "description": "The slat infrared hemispherical transmittance. It is zero for solid metallic, wooden or glass slats, but may be non-zero in some cases such as for thin plastic slats. The default value is 0.",
-            "default": 0,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity": {
-            "title": "Emissivity",
-            "description": "Front side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "emissivity_back": {
-            "title": "Emissivity Back",
-            "description": "Back side hemispherical emissivity of the slat. Default is 0.9 for most materials. The default value is 0.9.",
-            "default": 0.9,
-            "exclusiveMaximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "distance_to_glass": {
-            "title": "Distance To Glass",
-            "description": "The distance from the mid-plane of the blind to the adjacent glass in meters. The default value is 0.05.",
-            "default": 0.05,
-            "minimum": 0.01,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "top_opening_multiplier": {
-            "title": "Top Opening Multiplier",
-            "description": "The effective area for air flow at the top of the shade, divided by the horizontal area between glass and shade. The default value is 0.5",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "bottom_opening_multiplier": {
-            "title": "Bottom Opening Multiplier",
-            "description": "The effective area for air flow at the bottom of the shade, divided by the horizontal area between glass and shade. The default value is 0.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "left_opening_multiplier": {
-            "title": "Left Opening Multiplier",
-            "description": "The effective area for air flow at the left side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "right_opening_multiplier": {
-            "title": "Right Opening Multiplier",
-            "description": "The effective area for air flow at the right side of the shade, divided by the vertical area between glass and shade. The default value is 0.5.",
-            "default": 0.5,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "identifier"
-        ],
-        "additionalProperties": false
-      },
-      "WindowConstructionShade": {
-        "title": "WindowConstructionShade",
-        "description": "Construction for window objects (Aperture, Door).",
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "title": "Identifier",
-            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "^[^,;!\\n\\t]+$",
-            "type": "string"
-          },
-          "window_construction": {
-            "title": "Window Construction",
-            "description": "A WindowConstruction object that serves as the \"switched off\" version of the construction (aka. the \"bare construction\"). The shade_material and shade_location will be used to modify this starting construction.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WindowConstruction"
-              }
-            ]
-          },
-          "shade_material": {
-            "title": "Shade Material",
-            "description": "Identifier of a An EnergyWindowMaterialShade or an EnergyWindowMaterialBlind that serves as the shading layer for this construction. This can also be an EnergyWindowMaterialGlazing, which will indicate that the WindowConstruction has a dynamically-controlled glass pane like an electrochromic window assembly.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EnergyWindowMaterialShade"
-              },
-              {
-                "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
-              },
-              {
-                "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
-              }
-            ]
-          },
-          "display_name": {
-            "title": "Display Name",
-            "description": "Display name of the object with no character restrictions.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "WindowConstructionShade",
-            "pattern": "^WindowConstructionShade$",
-            "type": "string",
-            "readOnly": true
-          },
-          "shade_location": {
-            "description": "Text to indicate where in the window assembly the shade_material is located.  Note that the WindowConstruction must have at least one gas gap to use the \"Between\" option. Also note that, for a WindowConstruction with more than one gas gap, the \"Between\" option defalts to using the inner gap as this is the only option that EnergyPlus supports.",
-            "default": "Interior",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ShadeLocation"
-              }
-            ]
-          },
-          "control_type": {
-            "description": "Text to indicate how the shading device is controlled, which determines when the shading is \u201con\u201d or \u201coff.\u201d",
-            "default": "AlwaysOn",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ControlType"
-              }
-            ]
-          },
-          "setpoint": {
-            "title": "Setpoint",
-            "description": "A number that corresponds to the specified control_type. This can be a value in (W/m2), (C) or (W) depending upon the control type.Note that this value cannot be None for any control type except \"AlwaysOn.\"",
-            "type": "number",
-            "format": "double"
+          "constructions": {
+            "title": "Constructions",
+            "description": "A list of WindowConstructionAbridged objects that define the various states that the dynamic window can assume.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WindowConstructionAbridged"
+            }
           },
           "schedule": {
             "title": "Schedule",
-            "description": "An optional ScheduleRuleset or ScheduleFixedInterval to be applied on top of the control_type. If None, the control_type will govern all behavior of the construction.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ScheduleRuleset"
-              },
-              {
-                "$ref": "#/components/schemas/ScheduleFixedInterval"
-              }
-            ]
+            "description": "An identifier for a control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be intergers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WindowConstructionDynamicAbridged",
+            "pattern": "^WindowConstructionDynamicAbridged$",
+            "type": "string",
+            "readOnly": true
           }
         },
         "required": [
           "identifier",
-          "window_construction",
-          "shade_material"
+          "constructions",
+          "schedule"
         ],
         "additionalProperties": false
       },
@@ -6123,6 +6812,8 @@
         "title": "Vintages",
         "description": "An enumeration.",
         "enum": [
+          "ASHRAE_2019",
+          "ASHRAE_2016",
           "ASHRAE_2013",
           "ASHRAE_2010",
           "ASHRAE_2007",
@@ -6188,7 +6879,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6282,7 +6973,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6391,7 +7082,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6491,7 +7182,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6548,7 +7239,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6655,7 +7346,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6746,7 +7437,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6834,7 +7525,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6939,7 +7630,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -6999,7 +7690,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7056,7 +7747,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7116,7 +7807,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7179,7 +7870,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7244,7 +7935,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7307,7 +7998,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -7364,7 +8055,7 @@
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
-            "default": "ASHRAE_2013",
+            "default": "ASHRAE_2019",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Vintages"
@@ -8518,6 +9209,404 @@
             "type": "string",
             "readOnly": true
           },
+          "global_construction_set": {
+            "title": "Global Construction Set",
+            "description": "Global Energy construction set.",
+            "default": {
+              "type": "GlobalConstructionSet",
+              "materials": [
+                {
+                  "identifier": "Generic Roof Membrane",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.01,
+                  "conductivity": 0.16,
+                  "density": 1120.0,
+                  "specific_heat": 1460.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.65,
+                  "visible_absorptance": 0.65
+                },
+                {
+                  "identifier": "Generic Acoustic Tile",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumSmooth",
+                  "thickness": 0.02,
+                  "conductivity": 0.06,
+                  "density": 368.0,
+                  "specific_heat": 590.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.2,
+                  "visible_absorptance": 0.2
+                },
+                {
+                  "identifier": "Generic 25mm Wood",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumSmooth",
+                  "thickness": 0.0254,
+                  "conductivity": 0.15,
+                  "density": 608.0,
+                  "specific_heat": 1630.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.5,
+                  "visible_absorptance": 0.5
+                },
+                {
+                  "identifier": "Generic HW Concrete",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.2,
+                  "conductivity": 1.95,
+                  "density": 2240.0,
+                  "specific_heat": 900.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.8,
+                  "visible_absorptance": 0.8
+                },
+                {
+                  "identifier": "Generic Window Air Gap",
+                  "display_name": null,
+                  "type": "EnergyWindowMaterialGas",
+                  "thickness": 0.0127,
+                  "gas_type": "Air"
+                },
+                {
+                  "identifier": "Generic Gypsum Board",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumSmooth",
+                  "thickness": 0.0127,
+                  "conductivity": 0.16,
+                  "density": 800.0,
+                  "specific_heat": 1090.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.5,
+                  "visible_absorptance": 0.5
+                },
+                {
+                  "identifier": "Generic Wall Air Gap",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "Smooth",
+                  "thickness": 0.1,
+                  "conductivity": 0.667,
+                  "density": 1.28,
+                  "specific_heat": 1000.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.7,
+                  "visible_absorptance": 0.7
+                },
+                {
+                  "identifier": "Generic Ceiling Air Gap",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "Smooth",
+                  "thickness": 0.1,
+                  "conductivity": 0.556,
+                  "density": 1.28,
+                  "specific_heat": 1000.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.7,
+                  "visible_absorptance": 0.7
+                },
+                {
+                  "identifier": "Generic Brick",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.1,
+                  "conductivity": 0.9,
+                  "density": 1920.0,
+                  "specific_heat": 790.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.65,
+                  "visible_absorptance": 0.65
+                },
+                {
+                  "identifier": "Generic 50mm Insulation",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.05,
+                  "conductivity": 0.03,
+                  "density": 43.0,
+                  "specific_heat": 1210.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.7,
+                  "visible_absorptance": 0.7
+                },
+                {
+                  "identifier": "Generic Low-e Glass",
+                  "display_name": null,
+                  "type": "EnergyWindowMaterialGlazing",
+                  "thickness": 0.006,
+                  "solar_transmittance": 0.45,
+                  "solar_reflectance": 0.36,
+                  "solar_reflectance_back": 0.36,
+                  "visible_transmittance": 0.71,
+                  "visible_reflectance": 0.21,
+                  "visible_reflectance_back": 0.21,
+                  "infrared_transmittance": 0.0,
+                  "emissivity": 0.84,
+                  "emissivity_back": 0.047,
+                  "conductivity": 1.0,
+                  "dirt_correction": 1.0,
+                  "solar_diffusing": false
+                },
+                {
+                  "identifier": "Generic Painted Metal",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "Smooth",
+                  "thickness": 0.0015,
+                  "conductivity": 45.0,
+                  "density": 7690.0,
+                  "specific_heat": 410.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.5,
+                  "visible_absorptance": 0.5
+                },
+                {
+                  "identifier": "Generic LW Concrete",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.1,
+                  "conductivity": 0.53,
+                  "density": 1280.0,
+                  "specific_heat": 840.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.8,
+                  "visible_absorptance": 0.8
+                },
+                {
+                  "identifier": "Generic 25mm Insulation",
+                  "display_name": null,
+                  "type": "EnergyMaterial",
+                  "roughness": "MediumRough",
+                  "thickness": 0.05,
+                  "conductivity": 0.03,
+                  "density": 43.0,
+                  "specific_heat": 1210.0,
+                  "thermal_absorptance": 0.9,
+                  "solar_absorptance": 0.7,
+                  "visible_absorptance": 0.7
+                },
+                {
+                  "identifier": "Generic Clear Glass",
+                  "display_name": null,
+                  "type": "EnergyWindowMaterialGlazing",
+                  "thickness": 0.006,
+                  "solar_transmittance": 0.77,
+                  "solar_reflectance": 0.07,
+                  "solar_reflectance_back": 0.07,
+                  "visible_transmittance": 0.88,
+                  "visible_reflectance": 0.08,
+                  "visible_reflectance_back": 0.08,
+                  "infrared_transmittance": 0.0,
+                  "emissivity": 0.84,
+                  "emissivity_back": 0.84,
+                  "conductivity": 1.0,
+                  "dirt_correction": 1.0,
+                  "solar_diffusing": false
+                }
+              ],
+              "constructions": [
+                {
+                  "identifier": "Generic Interior Door",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic 25mm Wood"
+                  ]
+                },
+                {
+                  "identifier": "Generic Single Pane",
+                  "display_name": null,
+                  "type": "WindowConstructionAbridged",
+                  "materials": [
+                    "Generic Clear Glass"
+                  ]
+                },
+                {
+                  "identifier": "Generic Shade",
+                  "display_name": null,
+                  "type": "ShadeConstruction",
+                  "solar_reflectance": 0.35,
+                  "visible_reflectance": 0.35,
+                  "is_specular": false
+                },
+                {
+                  "identifier": "Generic Interior Ceiling",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic LW Concrete",
+                    "Generic Ceiling Air Gap",
+                    "Generic Acoustic Tile"
+                  ]
+                },
+                {
+                  "identifier": "Generic Interior Wall",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Gypsum Board",
+                    "Generic Wall Air Gap",
+                    "Generic Gypsum Board"
+                  ]
+                },
+                {
+                  "identifier": "Generic Exposed Floor",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Painted Metal",
+                    "Generic Ceiling Air Gap",
+                    "Generic 50mm Insulation",
+                    "Generic LW Concrete"
+                  ]
+                },
+                {
+                  "identifier": "Generic Interior Floor",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Acoustic Tile",
+                    "Generic Ceiling Air Gap",
+                    "Generic LW Concrete"
+                  ]
+                },
+                {
+                  "identifier": "Generic Ground Slab",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic 50mm Insulation",
+                    "Generic HW Concrete"
+                  ]
+                },
+                {
+                  "identifier": "Generic Roof",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Roof Membrane",
+                    "Generic 50mm Insulation",
+                    "Generic LW Concrete",
+                    "Generic Ceiling Air Gap",
+                    "Generic Acoustic Tile"
+                  ]
+                },
+                {
+                  "identifier": "Generic Exterior Wall",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Brick",
+                    "Generic LW Concrete",
+                    "Generic 50mm Insulation",
+                    "Generic Wall Air Gap",
+                    "Generic Gypsum Board"
+                  ]
+                },
+                {
+                  "identifier": "Generic Underground Wall",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic 50mm Insulation",
+                    "Generic HW Concrete",
+                    "Generic Wall Air Gap",
+                    "Generic Gypsum Board"
+                  ]
+                },
+                {
+                  "identifier": "Generic Air Boundary",
+                  "display_name": null,
+                  "type": "AirBoundaryConstructionAbridged",
+                  "air_mixing_per_area": 0.1,
+                  "air_mixing_schedule": "Always On"
+                },
+                {
+                  "identifier": "Generic Underground Roof",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic 50mm Insulation",
+                    "Generic HW Concrete",
+                    "Generic Ceiling Air Gap",
+                    "Generic Acoustic Tile"
+                  ]
+                },
+                {
+                  "identifier": "Generic Double Pane",
+                  "display_name": null,
+                  "type": "WindowConstructionAbridged",
+                  "materials": [
+                    "Generic Low-e Glass",
+                    "Generic Window Air Gap",
+                    "Generic Clear Glass"
+                  ]
+                },
+                {
+                  "identifier": "Generic Exterior Door",
+                  "display_name": null,
+                  "type": "OpaqueConstructionAbridged",
+                  "materials": [
+                    "Generic Painted Metal",
+                    "Generic 25mm Insulation",
+                    "Generic Painted Metal"
+                  ]
+                }
+              ],
+              "wall_set": {
+                "interior_construction": "Generic Interior Wall",
+                "exterior_construction": "Generic Exterior Wall",
+                "ground_construction": "Generic Underground Wall",
+                "type": "WallConstructionSetAbridged"
+              },
+              "floor_set": {
+                "interior_construction": "Generic Interior Floor",
+                "exterior_construction": "Generic Exposed Floor",
+                "ground_construction": "Generic Ground Slab",
+                "type": "FloorConstructionSetAbridged"
+              },
+              "roof_ceiling_set": {
+                "interior_construction": "Generic Interior Ceiling",
+                "exterior_construction": "Generic Roof",
+                "ground_construction": "Generic Underground Roof",
+                "type": "RoofCeilingConstructionSetAbridged"
+              },
+              "aperture_set": {
+                "type": "ApertureConstructionSetAbridged",
+                "interior_construction": "Generic Single Pane",
+                "window_construction": "Generic Double Pane",
+                "skylight_construction": "Generic Double Pane",
+                "operable_construction": "Generic Double Pane"
+              },
+              "door_set": {
+                "type": "DoorConstructionSetAbridged",
+                "interior_construction": "Generic Interior Door",
+                "exterior_construction": "Generic Exterior Door",
+                "overhead_construction": "Generic Exterior Door",
+                "exterior_glass_construction": "Generic Double Pane",
+                "interior_glass_construction": "Generic Single Pane"
+              },
+              "shade_construction": "Generic Shade",
+              "air_boundary_construction": "Generic Air Boundary"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GlobalConstructionSet"
+              }
+            ]
+          },
           "construction_sets": {
             "title": "Construction Sets",
             "description": "List of all unique ConstructionSets in the Model.",
@@ -8559,6 +9648,12 @@
                 },
                 {
                   "$ref": "#/components/schemas/WindowConstructionShade"
+                },
+                {
+                  "$ref": "#/components/schemas/WindowConstructionDynamicAbridged"
+                },
+                {
+                  "$ref": "#/components/schemas/WindowConstructionDynamic"
                 },
                 {
                   "$ref": "#/components/schemas/AirBoundaryConstruction"
@@ -9937,6 +11032,424 @@
         ],
         "additionalProperties": false
       },
+      "WallModifierSetAbridged": {
+        "title": "WallModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Walls.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "WallModifierSetAbridged",
+            "pattern": "^WallModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FloorModifierSetAbridged": {
+        "title": "FloorModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Floors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "FloorModifierSetAbridged",
+            "pattern": "^FloorModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoofCeilingModifierSetAbridged": {
+        "title": "RoofCeilingModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Roofs.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "RoofCeilingModifierSetAbridged",
+            "pattern": "^RoofCeilingModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApertureModifierSetAbridged": {
+        "title": "ApertureModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Apertures.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ApertureModifierSetAbridged",
+            "pattern": "^ApertureModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "window_modifier": {
+            "title": "Window Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and Wall parent Face.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier of modifier object for apertures with a Surface boundary condition.",
+            "type": "string"
+          },
+          "skylight_modifier": {
+            "title": "Skylight Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
+            "type": "string"
+          },
+          "operable_modifier": {
+            "title": "Operable Modifier",
+            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition and a True is_operable property.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoorModifierSetAbridged": {
+        "title": "DoorModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Doors.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "DoorModifierSetAbridged",
+            "pattern": "^DoorModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "interior_glass_modifier": {
+            "title": "Interior Glass Modifier",
+            "description": "Identifier of modifier object for glass with a Surface boundary condition.",
+            "type": "string"
+          },
+          "exterior_glass_modifier": {
+            "title": "Exterior Glass Modifier",
+            "description": "Identifier of modifier object for glass with an Outdoors boundary condition.",
+            "type": "string"
+          },
+          "overhead_modifier": {
+            "title": "Overhead Modifier",
+            "description": "Identifier of a modifier object for doors with an Outdoors boundary condition and a RoofCeiling or Floor face type for their parent face.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShadeModifierSetAbridged": {
+        "title": "ShadeModifierSetAbridged",
+        "description": "Abridged set containing radiance modifiers needed for a model's Shade.",
+        "type": "object",
+        "properties": {
+          "exterior_modifier": {
+            "title": "Exterior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
+            "type": "string"
+          },
+          "interior_modifier": {
+            "title": "Interior Modifier",
+            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeModifierSetAbridged",
+            "pattern": "^ShadeModifierSetAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GlobalModifierSet": {
+        "title": "GlobalModifierSet",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "GlobalModifierSet",
+            "pattern": "^GlobalModifierSet$",
+            "type": "string",
+            "readOnly": true
+          },
+          "modifiers": {
+            "title": "Modifiers",
+            "description": "Global Honeybee Radiance modifiers.",
+            "default": [
+              {
+                "identifier": "generic_floor_0.20",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.2,
+                "g_reflectance": 0.2,
+                "b_reflectance": 0.2,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_wall_0.50",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.5,
+                "g_reflectance": 0.5,
+                "b_reflectance": 0.5,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_ceiling_0.80",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.8,
+                "g_reflectance": 0.8,
+                "b_reflectance": 0.8,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_opaque_door_0.50",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.5,
+                "g_reflectance": 0.5,
+                "b_reflectance": 0.5,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_interior_shade_0.50",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.5,
+                "g_reflectance": 0.5,
+                "b_reflectance": 0.5,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_exterior_shade_0.35",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.35,
+                "g_reflectance": 0.35,
+                "b_reflectance": 0.35,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
+                "identifier": "generic_interior_window_vis_0.88",
+                "display_name": null,
+                "type": "Glass",
+                "modifier": null,
+                "dependencies": [],
+                "r_transmissivity": 0.9584154328610596,
+                "g_transmissivity": 0.9584154328610596,
+                "b_transmissivity": 0.9584154328610596,
+                "refraction_index": null
+              },
+              {
+                "identifier": "generic_exterior_window_vis_0.64",
+                "display_name": null,
+                "type": "Glass",
+                "modifier": null,
+                "dependencies": [],
+                "r_transmissivity": 0.6975761815384331,
+                "g_transmissivity": 0.6975761815384331,
+                "b_transmissivity": 0.6975761815384331,
+                "refraction_index": null
+              },
+              {
+                "identifier": "air_boundary",
+                "display_name": null,
+                "type": "Trans",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 1.0,
+                "g_reflectance": 1.0,
+                "b_reflectance": 1.0,
+                "specularity": 0.0,
+                "roughness": 0.0,
+                "transmitted_diff": 1.0,
+                "transmitted_spec": 1.0
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Plastic"
+                },
+                {
+                  "$ref": "#/components/schemas/Glass"
+                }
+              ]
+            }
+          },
+          "wall_set": {
+            "title": "Wall Set",
+            "description": "Global Honeybee WallModifierSet.",
+            "default": {
+              "exterior_modifier": "generic_wall_0.50",
+              "interior_modifier": "generic_wall_0.50",
+              "type": "WallModifierSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WallModifierSetAbridged"
+              }
+            ]
+          },
+          "floor_set": {
+            "title": "Floor Set",
+            "description": "Global Honeybee FloorModifierSet.",
+            "default": {
+              "exterior_modifier": "generic_floor_0.20",
+              "interior_modifier": "generic_floor_0.20",
+              "type": "FloorModifierSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorModifierSetAbridged"
+              }
+            ]
+          },
+          "roof_ceiling_set": {
+            "title": "Roof Ceiling Set",
+            "description": "Global Honeybee RoofCeilingModifierSet.",
+            "default": {
+              "exterior_modifier": "generic_ceiling_0.80",
+              "interior_modifier": "generic_ceiling_0.80",
+              "type": "RoofCeilingModifierSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoofCeilingModifierSetAbridged"
+              }
+            ]
+          },
+          "aperture_set": {
+            "title": "Aperture Set",
+            "description": "Global Honeybee ApertureModifierSet.",
+            "default": {
+              "type": "ApertureModifierSetAbridged",
+              "window_modifier": "generic_exterior_window_vis_0.64",
+              "interior_modifier": "generic_interior_window_vis_0.88",
+              "skylight_modifier": "generic_exterior_window_vis_0.64",
+              "operable_modifier": "generic_exterior_window_vis_0.64"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApertureModifierSetAbridged"
+              }
+            ]
+          },
+          "door_set": {
+            "title": "Door Set",
+            "description": "Global Honeybee DoorModifierSet.",
+            "default": {
+              "exterior_modifier": "generic_opaque_door_0.50",
+              "interior_modifier": "generic_opaque_door_0.50",
+              "type": "DoorModifierSetAbridged",
+              "interior_glass_modifier": "generic_interior_window_vis_0.88",
+              "exterior_glass_modifier": "generic_exterior_window_vis_0.64",
+              "overhead_modifier": "generic_opaque_door_0.50"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DoorModifierSetAbridged"
+              }
+            ]
+          },
+          "shade_set": {
+            "title": "Shade Set",
+            "description": "Global Honeybee ShadeModifierSet.",
+            "default": {
+              "exterior_modifier": "generic_exterior_shade_0.35",
+              "interior_modifier": "generic_interior_shade_0.50",
+              "type": "ShadeModifierSetAbridged"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeModifierSetAbridged"
+              }
+            ]
+          },
+          "air_boundary_modifier": {
+            "title": "Air Boundary Modifier",
+            "description": "Global Honeybee Modifier for AirBoundary Faces.",
+            "default": "air_boundary",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "WallModifierSet": {
         "title": "WallModifierSet",
         "description": "Set containing radiance modifiers needed for a model's Walls.",
@@ -10705,181 +12218,6 @@
         ],
         "additionalProperties": false
       },
-      "WallModifierSetAbridged": {
-        "title": "WallModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Walls.",
-        "type": "object",
-        "properties": {
-          "exterior_modifier": {
-            "title": "Exterior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "WallModifierSetAbridged",
-            "pattern": "^WallModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "FloorModifierSetAbridged": {
-        "title": "FloorModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Floors.",
-        "type": "object",
-        "properties": {
-          "exterior_modifier": {
-            "title": "Exterior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "FloorModifierSetAbridged",
-            "pattern": "^FloorModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RoofCeilingModifierSetAbridged": {
-        "title": "RoofCeilingModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Roofs.",
-        "type": "object",
-        "properties": {
-          "exterior_modifier": {
-            "title": "Exterior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "RoofCeilingModifierSetAbridged",
-            "pattern": "^RoofCeilingModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ApertureModifierSetAbridged": {
-        "title": "ApertureModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Apertures.",
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "default": "ApertureModifierSetAbridged",
-            "pattern": "^ApertureModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          },
-          "window_modifier": {
-            "title": "Window Modifier",
-            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and Wall parent Face.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier of modifier object for apertures with a Surface boundary condition.",
-            "type": "string"
-          },
-          "skylight_modifier": {
-            "title": "Skylight Modifier",
-            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition, False is_operable property, and a RoofCeiling or Floor face type for their parent face.",
-            "type": "string"
-          },
-          "operable_modifier": {
-            "title": "Operable Modifier",
-            "description": "Identifier of modifier object for apertures with an Outdoors boundary condition and a True is_operable property.",
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DoorModifierSetAbridged": {
-        "title": "DoorModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Doors.",
-        "type": "object",
-        "properties": {
-          "exterior_modifier": {
-            "title": "Exterior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "DoorModifierSetAbridged",
-            "pattern": "^DoorModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          },
-          "interior_glass_modifier": {
-            "title": "Interior Glass Modifier",
-            "description": "Identifier of modifier object for glass with a Surface boundary condition.",
-            "type": "string"
-          },
-          "exterior_glass_modifier": {
-            "title": "Exterior Glass Modifier",
-            "description": "Identifier of modifier object for glass with an Outdoors boundary condition.",
-            "type": "string"
-          },
-          "overhead_modifier": {
-            "title": "Overhead Modifier",
-            "description": "Identifier of a modifier object for doors with an Outdoors boundary condition and a RoofCeiling or Floor face type for their parent face.",
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ShadeModifierSetAbridged": {
-        "title": "ShadeModifierSetAbridged",
-        "description": "Abridged set containing radiance modifiers needed for a model's Shade.",
-        "type": "object",
-        "properties": {
-          "exterior_modifier": {
-            "title": "Exterior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with an  Outdoors boundary condition.",
-            "type": "string"
-          },
-          "interior_modifier": {
-            "title": "Interior Modifier",
-            "description": "Identifier for a radiance modifier object for faces with a boundary condition other than Outdoors.",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "default": "ShadeModifierSetAbridged",
-            "pattern": "^ShadeModifierSetAbridged$",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ModifierSetAbridged": {
         "title": "ModifierSetAbridged",
         "description": "Abridged set containing all modifiers needed to create a radiance model.",
@@ -11141,7 +12479,7 @@
             "description": "Optional text string for the Room identifier to which this object belongs. This will be used to narrow down the number of aperture groups that have to be run with this sensor grid. If None, the grid will be run with all aperture groups in the model.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "[.A-Za-z0-9_-]",
             "type": "string"
           },
           "light_path": {
@@ -11259,7 +12597,7 @@
             "description": "Optional text string for the Room identifier to which this object belongs. This will be used to narrow down the number of aperture groups that have to be run with this sensor grid. If None, the grid will be run with all aperture groups in the model.",
             "maxLength": 100,
             "minLength": 1,
-            "pattern": "[A-Za-z0-9_-]",
+            "pattern": "[.A-Za-z0-9_-]",
             "type": "string"
           },
           "light_path": {
@@ -11351,6 +12689,165 @@
             "pattern": "^ModelRadianceProperties$",
             "type": "string",
             "readOnly": true
+          },
+          "global_modifier_set": {
+            "title": "Global Modifier Set",
+            "description": "Global Radiance modifier set.",
+            "default": {
+              "type": "GlobalModifierSet",
+              "modifiers": [
+                {
+                  "identifier": "generic_floor_0.20",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.2,
+                  "g_reflectance": 0.2,
+                  "b_reflectance": 0.2,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_wall_0.50",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.5,
+                  "g_reflectance": 0.5,
+                  "b_reflectance": 0.5,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_ceiling_0.80",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.8,
+                  "g_reflectance": 0.8,
+                  "b_reflectance": 0.8,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_opaque_door_0.50",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.5,
+                  "g_reflectance": 0.5,
+                  "b_reflectance": 0.5,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_interior_shade_0.50",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.5,
+                  "g_reflectance": 0.5,
+                  "b_reflectance": 0.5,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_exterior_shade_0.35",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.35,
+                  "g_reflectance": 0.35,
+                  "b_reflectance": 0.35,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
+                  "identifier": "generic_interior_window_vis_0.88",
+                  "display_name": null,
+                  "type": "Glass",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_transmissivity": 0.9584154328610596,
+                  "g_transmissivity": 0.9584154328610596,
+                  "b_transmissivity": 0.9584154328610596,
+                  "refraction_index": null
+                },
+                {
+                  "identifier": "generic_exterior_window_vis_0.64",
+                  "display_name": null,
+                  "type": "Glass",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_transmissivity": 0.6975761815384331,
+                  "g_transmissivity": 0.6975761815384331,
+                  "b_transmissivity": 0.6975761815384331,
+                  "refraction_index": null
+                },
+                {
+                  "identifier": "air_boundary",
+                  "display_name": null,
+                  "type": "Trans",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 1.0,
+                  "g_reflectance": 1.0,
+                  "b_reflectance": 1.0,
+                  "specularity": 0.0,
+                  "roughness": 0.0,
+                  "transmitted_diff": 1.0,
+                  "transmitted_spec": 1.0
+                }
+              ],
+              "wall_set": {
+                "exterior_modifier": "generic_wall_0.50",
+                "interior_modifier": "generic_wall_0.50",
+                "type": "WallModifierSetAbridged"
+              },
+              "floor_set": {
+                "exterior_modifier": "generic_floor_0.20",
+                "interior_modifier": "generic_floor_0.20",
+                "type": "FloorModifierSetAbridged"
+              },
+              "roof_ceiling_set": {
+                "exterior_modifier": "generic_ceiling_0.80",
+                "interior_modifier": "generic_ceiling_0.80",
+                "type": "RoofCeilingModifierSetAbridged"
+              },
+              "aperture_set": {
+                "type": "ApertureModifierSetAbridged",
+                "window_modifier": "generic_exterior_window_vis_0.64",
+                "interior_modifier": "generic_interior_window_vis_0.88",
+                "skylight_modifier": "generic_exterior_window_vis_0.64",
+                "operable_modifier": "generic_exterior_window_vis_0.64"
+              },
+              "door_set": {
+                "exterior_modifier": "generic_opaque_door_0.50",
+                "interior_modifier": "generic_opaque_door_0.50",
+                "type": "DoorModifierSetAbridged",
+                "interior_glass_modifier": "generic_interior_window_vis_0.88",
+                "exterior_glass_modifier": "generic_exterior_window_vis_0.64",
+                "overhead_modifier": "generic_opaque_door_0.50"
+              },
+              "shade_set": {
+                "exterior_modifier": "generic_exterior_shade_0.35",
+                "interior_modifier": "generic_interior_shade_0.50",
+                "type": "ShadeModifierSetAbridged"
+              },
+              "air_boundary_modifier": "air_boundary"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GlobalModifierSet"
+              }
+            ]
           },
           "modifiers": {
             "title": "Modifiers",
@@ -11483,7 +12980,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.43.6",
+            "default": "1.44.2",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

@@ -122,6 +122,7 @@ module Honeybee
       $gas_gap_hash = Hash.new  # hash to track gas gaps in case they are split by shades
       $air_boundary_hash = Hash.new  # hash to track any air boundary constructions
       $window_shade_hash = Hash.new  # hash to track any window constructions with shade
+      $window_dynamic_hash = Hash.new  # hash to track any dynamic window constructions
       $programtype_shw_hash = Hash.new  # hash to track ServiceHotWater objects
       $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
       $interior_afn_srf_hash = Hash.new  # track whether an adjacent surface is already in the AFN
@@ -183,6 +184,13 @@ module Honeybee
           puts 'Translating Window Shading Control'
         end
         create_shading_control
+      end
+
+      unless $window_dynamic_hash.empty?
+        if log_report
+          puts 'Translating Dynamic Windows'
+        end
+        create_dynamic_windows
       end
 
       if log_report
@@ -266,6 +274,9 @@ module Honeybee
           when 'WindowConstructionShadeAbridged'
             construction_object = WindowConstructionShadeAbridged.new(construction)
             $window_shade_hash[construction[:identifier]] = construction_object
+          when 'WindowConstructionDynamicAbridged'
+            construction_object = WindowConstructionDynamicAbridged.new(construction)
+            $window_dynamic_hash[construction[:identifier]] = construction_object
           when 'ShadeConstruction'
             construction_object = ShadeConstruction.new(construction)
           when 'AirBoundaryConstructionAbridged'
@@ -499,6 +510,14 @@ module Honeybee
             end
           end
         end
+      end
+    end
+
+    def create_dynamic_windows
+      # create the actuators and EMS program for any dynamic windows
+      WindowConstructionDynamicAbridged.add_sub_faces_to_window_dynamic_hash(@openstudio_model)
+      $window_dynamic_hash.each do |constr_id, constr_obj|
+        constr_obj.ems_program_to_openstudio(@openstudio_model)
       end
     end
 
