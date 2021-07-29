@@ -53,6 +53,7 @@ require 'honeybee/hvac/template'
 require 'honeybee/construction/opaque'
 require 'honeybee/construction/window'
 require 'honeybee/construction/windowshade'
+require 'honeybee/construction/dynamic'
 require 'honeybee/construction/shade'
 require 'honeybee/construction/air'
 

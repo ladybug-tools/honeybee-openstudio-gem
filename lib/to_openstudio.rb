@@ -53,6 +53,7 @@ require 'to_openstudio/hvac/template'
 require 'to_openstudio/construction/opaque'
 require 'to_openstudio/construction/window'
 require 'to_openstudio/construction/windowshade'
+require 'to_openstudio/construction/dynamic'
 require 'to_openstudio/construction/shade'
 require 'to_openstudio/construction/air'
 
