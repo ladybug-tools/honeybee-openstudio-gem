@@ -99,6 +99,11 @@ module Honeybee
     end
 
     # remove illegal characters in identifier
+    def self.clean_display_name(str)
+      str.gsub(/[^[:ascii:]]/, '')
+    end
+
+    # remove illegal characters in identifier
     def self.clean_identifier(str)
       str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
     end
