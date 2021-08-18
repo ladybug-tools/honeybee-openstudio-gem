@@ -158,7 +158,7 @@ OS:ScheduleTypeLimits,
   Temperature,                            !- Name
   -60,                                    !- Lower Limit Value
   200,                                    !- Upper Limit Value
-  CONTINUOUS,                             !- Numeric Type
+  Continuous,                             !- Numeric Type
   Temperature;                            !- Unit Type
 
 OS:DefaultScheduleSet,

@@ -61,7 +61,7 @@ module Honeybee
             hash[:solar_reflectance] = layer.solarReflectance.get
           end
           unless layer.visibleReflectance.empty?
-            hash[:visible_reflectance] = layer.visibleReflectance
+            hash[:visible_reflectance] = layer.visibleReflectance.get
           end
         elsif layer.to_MasslessOpaqueMaterial.is_initialized
           layer = layer.to_MasslessOpaqueMaterial.get

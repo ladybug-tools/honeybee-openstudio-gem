@@ -46,6 +46,8 @@ require 'from_openstudio/construction/opaque'
 require 'from_openstudio/construction/window'
 require 'from_openstudio/construction/shade'
 require 'from_openstudio/construction_set'
+require 'from_openstudio/schedule/type_limit'
+require 'from_openstudio/schedule/ruleset'
 
 require 'openstudio'
 
@@ -131,6 +133,10 @@ module Honeybee
       hash[:materials] = materials_from_model(openstudio_model)
       hash[:construction_sets] = []
       hash[:construction_sets] = constructionsets_from_model(openstudio_model)
+      hash[:schedule_type_limits] = []
+      hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
+      hash[:schedules] = []
+      hash[:schedules] = scheduleruleset_from_model(openstudio_model)
 
       hash
     end
@@ -263,6 +269,25 @@ module Honeybee
           result << ShadeConstruction.from_construction(value)
         end
 
+      result
+    end
+
+    # Create HB Schedule Type Limits from OpenStudio Schedule Type Limits
+    def self.schedtypelimits_from_model(openstudio_model)
+      result = []
+      openstudio_model.getScheduleTypeLimitss.each do |sch_typ_lim|
+        result << ScheduleTypeLimit.from_schedule_type_limit(sch_typ_lim)
+      end
+
+      result
+    end
+
+    # Create HB Schedule Ruleset from OpenStudio Ruleset
+    def self.scheduleruleset_from_model(openstudio_model)
+      result = []
+      openstudio_model.getScheduleRulesets.each do |sch_ruleset|
+        result << ScheduleRulesetAbridged.from_schedule_ruleset(sch_ruleset)
+      end
       result
     end
 
