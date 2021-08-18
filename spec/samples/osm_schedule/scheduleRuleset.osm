@@ -1,0 +1,362 @@
+
+OS:Version,
+  {c3dcf7de-c221-48fa-81ba-096edf2b8732}, !- Handle
+  3.2.0;                                  !- Version Identifier
+
+OS:Site,
+  {3c6e1374-9df5-49c4-8e77-01eddb719a1f}, !- Handle
+  Site 1,                                 !- Name
+  ,                                       !- Latitude {deg}
+  ,                                       !- Longitude {deg}
+  ,                                       !- Time Zone {hr}
+  ,                                       !- Elevation {m}
+  ;                                       !- Terrain
+
+OS:YearDescription,
+  {890c6168-ea10-4e1e-b636-1ea4df51eb0e}; !- Handle
+
+OS:ClimateZones,
+  {41085092-db68-4aa0-97c1-da80a209e3e8}, !- Handle
+  ASHRAE,                                 !- Climate Zone Institution Name 1
+  ANSI/ASHRAE Standard 169,               !- Climate Zone Document Name 1
+  2006,                                   !- Climate Zone Document Year 1
+  ,                                       !- Climate Zone Value 1
+  CEC,                                    !- Climate Zone Institution Name 2
+  California Climate Zone Descriptions,   !- Climate Zone Document Name 2
+  1995,                                   !- Climate Zone Document Year 2
+  ;                                       !- Climate Zone Value 2
+
+OS:Building,
+  {9d336be5-5161-4a9b-b832-41cf39794724}, !- Handle
+  Building 1,                             !- Name
+  ,                                       !- Building Sector Type
+  ,                                       !- North Axis {deg}
+  ,                                       !- Nominal Floor to Floor Height {m}
+  ,                                       !- Space Type Name
+  ,                                       !- Default Construction Set Name
+  ;                                       !- Default Schedule Set Name
+
+OS:Facility,
+  {65f0ca80-2b60-4b28-93a5-0dea26700d00}; !- Handle
+
+OS:SimulationControl,
+  {f1dedc20-bbe7-4e85-af6b-57fe6df2089b}; !- Handle
+
+OS:Sizing:Parameters,
+  {16cd3600-30af-45f4-97e7-a0ee0d3ccf7e}, !- Handle
+  1.25,                                   !- Heating Sizing Factor
+  1.15;                                   !- Cooling Sizing Factor
+
+OS:Timestep,
+  {095896de-e23e-45c9-8de0-b2c35ee3f637}, !- Handle
+  6;                                      !- Number of Timesteps per Hour
+
+OS:ShadowCalculation,
+  {c038514a-7a68-422d-9634-e02be7ece583}, !- Handle
+  PolygonClipping,                        !- Shading Calculation Method
+  ,                                       !- Shading Calculation Update Frequency Method
+  20,                                     !- Shading Calculation Update Frequency
+  15000,                                  !- Maximum Figures in Shadow Overlap Calculations
+  ,                                       !- Polygon Clipping Algorithm
+  512,                                    !- Pixel Counting Resolution
+  ,                                       !- Sky Diffuse Modeling Algorithm
+  No,                                     !- Output External Shading Calculation Results
+  No,                                     !- Disable Self-Shading Within Shading Zone Groups
+  No;                                     !- Disable Self-Shading From Shading Zone Groups to Other Zones
+
+OS:HeatBalanceAlgorithm,
+  {e00167b3-1002-4222-9706-36570cfa6cb6}, !- Handle
+  ConductionTransferFunction,             !- Algorithm
+  200;                                    !- Surface Temperature Upper Limit {C}
+
+OS:RunPeriod,
+  {3df6870f-3d3e-4f62-8961-0bba16a2097d}, !- Handle
+  Run Period 1,                           !- Name
+  1,                                      !- Begin Month
+  1,                                      !- Begin Day of Month
+  12,                                     !- End Month
+  31,                                     !- End Day of Month
+  ,                                       !- Use Weather File Holidays and Special Days
+  ,                                       !- Use Weather File Daylight Saving Period
+  ,                                       !- Apply Weekend Holiday Rule
+  ,                                       !- Use Weather File Rain Indicators
+  ,                                       !- Use Weather File Snow Indicators
+  ;                                       !- Number of Times Runperiod to be Repeated
+
+OS:LifeCycleCost:Parameters,
+  {4ea3c7ad-1ae0-4182-8c01-607e70c1c79b}, !- Handle
+  ,                                       !- Analysis Type
+  ,                                       !- Discounting Convention
+  ,                                       !- Inflation Approach
+  ,                                       !- Real Discount Rate
+  ,                                       !- Nominal Discount Rate
+  ,                                       !- Inflation
+  ,                                       !- Base Date Month
+  ,                                       !- Base Date Year
+  ,                                       !- Service Date Month
+  ,                                       !- Service Date Year
+  ;                                       !- Length of Study Period in Years
+
+OS:ScheduleTypeLimits,
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Handle
+  Dimensionless,                          !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous;                             !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {fd5592ad-0bb3-4350-99fc-b3d9e3bdc2b3}, !- Handle
+  Dimensionless 1,                        !- Name
+  -1,                                     !- Lower Limit Value
+  1,                                      !- Upper Limit Value
+  Continuous;                             !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {02825fde-be11-423c-bb5a-08c3bce2ee6b}, !- Handle
+  Dimensionless 2,                        !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous;                             !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {cb6a4986-e819-4d8f-abf3-b3cff99196ba}, !- Handle
+  Fractional,                             !- Name
+  0,                                      !- Lower Limit Value
+  1,                                      !- Upper Limit Value
+  Continuous;                             !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {85aade1f-e7ab-4368-a756-20b2a072cf41}, !- Handle
+  Integer,                                !- Name
+  0,                                      !- Lower Limit Value
+  4,                                      !- Upper Limit Value
+  Discrete;                               !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {233ddb38-a7f2-47db-8884-ffc2aa46b827}, !- Handle
+  Dimensionless 3,                        !- Name
+  0.1,                                    !- Lower Limit Value
+  1000,                                   !- Upper Limit Value
+  Continuous;                             !- Numeric Type
+
+OS:ScheduleTypeLimits,
+  {5fd74c14-10a7-4d82-83f6-a26b4e1db2a5}, !- Handle
+  ActivityLevel,                          !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  ActivityLevel;                          !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {9867b747-3774-4d01-8692-c4d1ce054352}, !- Handle
+  OnOff,                                  !- Name
+  0,                                      !- Lower Limit Value
+  1,                                      !- Upper Limit Value
+  Discrete,                               !- Numeric Type
+  Availability;                           !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {e1f41519-33fc-4dac-8a59-f551428b9bef}, !- Handle
+  Capacity,                               !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Capacity;                               !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {dd4018e9-078c-4d64-b101-4e18322ff582}, !- Handle
+  ClothingInsulation,                     !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  ClothingInsulation;                     !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {128dfdb0-7db4-4449-af1e-67186955ce41}, !- Handle
+  ControlMode,                            !- Name
+  0,                                      !- Lower Limit Value
+  1,                                      !- Upper Limit Value
+  Discrete,                               !- Numeric Type
+  ControlMode;                            !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {1dcc991b-3a00-49ab-87ef-5ef55823c490}, !- Handle
+  DeltaTemperature,                       !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  DeltaTemperature;                       !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {97fe55d9-1843-4f12-a317-aefa2616d11c}, !- Handle
+  Dimensionless 4,                        !- Name
+  0,                                      !- Lower Limit Value
+  1,                                      !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Dimensionless;                          !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {2f5ba27d-f9f4-4b0d-b591-c5137b489960}, !- Handle
+  LinearPowerDensity,                     !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  LinearPowerDensity;                     !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {029f59ac-f281-4b59-b7c1-7538098a69f8}, !- Handle
+  MassFlowRate,                           !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  MassFlowRate;                           !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {297d9f4c-85ae-487a-8d0b-1b558586ba8b}, !- Handle
+  Percent,                                !- Name
+  0,                                      !- Lower Limit Value
+  100,                                    !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Percent;                                !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {f7ce8ead-fa71-428d-8189-e49022095836}, !- Handle
+  Pressure,                               !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Pressure;                               !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {46d28f01-dfa8-47a3-8d3e-bdfcd150b5a0}, !- Handle
+  RotationsPerMinute,                     !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  RotationsPerMinute;                     !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {07dfc3cc-d42a-4e8f-870d-14269ef26bf1}, !- Handle
+  Temperature,                            !- Name
+  ,                                       !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Temperature;                            !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {87790d65-4cb2-4f77-8077-2801d3883f51}, !- Handle
+  Temperature 1,                          !- Name
+  ,                                       !- Lower Limit Value
+  0,                                      !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Temperature;                            !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {45a584d3-ce3d-4724-bd05-45989ed208d1}, !- Handle
+  Temperature 2,                          !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Temperature;                            !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {1f98eadd-aee4-4944-955e-5d65b0306375}, !- Handle
+  Temperature 3,                          !- Name
+  0,                                      !- Lower Limit Value
+  100,                                    !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Temperature;                            !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {d3610890-d770-4307-86be-3eeca8f1b8c1}, !- Handle
+  Velocity,                               !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  Velocity;                               !- Unit Type
+
+OS:ScheduleTypeLimits,
+  {e50236ea-0f5d-49be-8538-f128a09e9f00}, !- Handle
+  VolumetricFlowRate,                     !- Name
+  0,                                      !- Lower Limit Value
+  ,                                       !- Upper Limit Value
+  Continuous,                             !- Numeric Type
+  VolumetricFlowRate;                     !- Unit Type
+
+OS:Schedule:Ruleset,
+  {339c47d6-f0b9-4b22-92d5-48951ce96e53}, !- Handle
+  Schedule Ruleset 1,                     !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  {80c67479-e7ee-4baa-b739-a2406ae9c84c}; !- Default Day Schedule Name
+
+OS:Schedule:Day,
+  {80c67479-e7ee-4baa-b739-a2406ae9c84c}, !- Handle
+  Schedule Day 1,                         !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  ,                                       !- Interpolate to Timestep
+  24,                                     !- Hour 1
+  0,                                      !- Minute 1
+  0.3;                                    !- Value Until Time 1
+
+OS:Schedule:Day,
+  {aeaef860-5bef-46a7-8595-d69ddfccf3dd}, !- Handle
+  Schedule Day 2,                         !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  ,                                       !- Interpolate to Timestep
+  24,                                     !- Hour 1
+  0,                                      !- Minute 1
+  0.3;                                    !- Value Until Time 1
+
+OS:Schedule:Rule,
+  {c3503820-36c8-4723-a448-70155df219a1}, !- Handle
+  Schedule Rule 1,                        !- Name
+  {339c47d6-f0b9-4b22-92d5-48951ce96e53}, !- Schedule Ruleset Name
+  1,                                      !- Rule Order
+  {739243c2-6376-4cd2-a55d-a5abcb56be00}, !- Day Schedule Name
+  Yes,                                    !- Apply Sunday
+  No,                                     !- Apply Monday
+  No,                                     !- Apply Tuesday
+  No,                                     !- Apply Wednesday
+  No,                                     !- Apply Thursday
+  No,                                     !- Apply Friday
+  Yes,                                    !- Apply Saturday
+  DateRange,                              !- Date Specification Type
+  1,                                      !- Start Month
+  5,                                      !- Start Day
+  5,                                      !- End Month
+  20;                                     !- End Day
+
+OS:Schedule:Day,
+  {739243c2-6376-4cd2-a55d-a5abcb56be00}, !- Handle
+  Schedule Day 3,                         !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  ,                                       !- Interpolate to Timestep
+  24,                                     !- Hour 1
+  0,                                      !- Minute 1
+  0.3;                                    !- Value Until Time 1
+
+OS:Schedule:Day,
+  {152dbf96-7c0b-4468-b37b-99d33c85fe0e}, !- Handle
+  Schedule Day 4,                         !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  ,                                       !- Interpolate to Timestep
+  24,                                     !- Hour 1
+  0,                                      !- Minute 1
+  0.3;                                    !- Value Until Time 1
+
+OS:Schedule:Rule,
+  {6954d060-964c-424e-a300-db2feee1afa0}, !- Handle
+  Schedule Rule 2,                        !- Name
+  {339c47d6-f0b9-4b22-92d5-48951ce96e53}, !- Schedule Ruleset Name
+  0,                                      !- Rule Order
+  {519b0ee1-367b-4366-a307-6749e3daad52}; !- Day Schedule Name
+
+OS:Schedule:Day,
+  {519b0ee1-367b-4366-a307-6749e3daad52}, !- Handle
+  Schedule Day 5,                         !- Name
+  {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Schedule Type Limits Name
+  ,                                       !- Interpolate to Timestep
+  24,                                     !- Hour 1
+  0,                                      !- Minute 1
+  0.3;                                    !- Value Until Time 1
+

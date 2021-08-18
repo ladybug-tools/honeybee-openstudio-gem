@@ -29,42 +29,34 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the honeybee objects which we will extend
-require 'honeybee'
+require 'honeybee/schedule/type_limit'
+require 'to_openstudio/model_object'
 
-# extend the compound objects that house the other objects
-require 'from_openstudio/model'
-require 'from_openstudio/model_object'
-require 'from_openstudio/construction_set'
+module Honeybee
+  class ScheduleTypeLimit < ModelObject
 
-# extend the geometry objects
-require 'from_openstudio/geometry/aperture'
-require 'from_openstudio/geometry/door'
-require 'from_openstudio/geometry/face'
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
+    def self.from_schedule_type_limit(schedule_type_limit)
+      # create an empty hash
+      hash = {}
+      hash[:type] = 'ScheduleTypeLimit'
+      # set hash values from OpenStudio Object
+      hash[:identifier] = schedule_type_limit.nameString
+      # check if boost optional object is empty
+      unless schedule_type_limit.lowerLimitValue.empty?
+        hash[:lower_limit] = schedule_type_limit.lowerLimitValue.get
+      end
+      # check if boost optional object is empty
+      unless schedule_type_limit.upperLimitValue.empty?
+        hash[:upper_limit] = schedule_type_limit.upperLimitValue.get
+      end
+      # check if boost optional object is empty
+      unless schedule_type_limit.numericType.empty?
+        hash[:numeric_type] = schedule_type_limit.numericType.get
+      end
+      hash[:unit_type] = schedule_type_limit.unitType
 
-# extend the construction objects
-require 'from_openstudio/construction/opaque'
-require 'from_openstudio/construction/window'
-require 'from_openstudio/construction/shade'
-require 'from_openstudio/construction/air'
+      hash
+    end
 
-# import the material objects
-require 'from_openstudio/material/opaque'
-require 'from_openstudio/material/opaque_no_mass'
-require 'from_openstudio/material/window_gas'
-require 'from_openstudio/material/window_gas_mixture'
-require 'from_openstudio/material/window_gas_custom'
-require 'from_openstudio/material/window_blind'
-require 'from_openstudio/material/window_glazing'
-require 'from_openstudio/material/window_simpleglazsys'
-
-# extend the simulation objects
-require 'from_openstudio/simulation/design_day'
-require 'from_openstudio/simulation/parameter_model'
-require 'from_openstudio/simulation/simulation_output'
-
-# extend the schedule objects
-require 'from_openstudio/schedule/type_limit'
-require 'from_openstudio/schedule/ruleset'
+  end # ScheduleTypeLimit
+end # Honeybee
