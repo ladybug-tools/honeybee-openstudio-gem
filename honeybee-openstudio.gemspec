@@ -29,10 +29,10 @@ Gem::Specification.new do |spec|
     spec.add_development_dependency "json-schema",    "~> 2.8.1"
     spec.add_development_dependency "rake",           "~> 13.0"
     spec.add_development_dependency "rspec",          "~> 3.9"
-    spec.add_development_dependency "rubocop",        "~> 0.54.0"
+    spec.add_development_dependency "rubocop",        "~> 1.15.0"
   end
 
   spec.add_dependency 'json_pure'
-  spec.add_dependency 'openstudio-extension', '0.4.2'
-  spec.add_dependency 'openstudio-standards', '~> 0.2.13'
+  spec.add_dependency 'openstudio-extension', '0.4.3'
+  spec.add_dependency 'openstudio-standards', '~> 0.2.14'
 end
