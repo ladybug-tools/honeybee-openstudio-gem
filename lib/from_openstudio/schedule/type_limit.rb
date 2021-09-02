@@ -51,7 +51,8 @@ module Honeybee
       end
       # check if boost optional object is empty
       unless schedule_type_limit.numericType.empty?
-        hash[:numeric_type] = schedule_type_limit.numericType.get
+        numeric_type = schedule_type_limit.numericType.get
+        hash[:numeric_type] = numeric_type.titleize
       end
       hash[:unit_type] = schedule_type_limit.unitType
 
