@@ -72,7 +72,7 @@ RSpec.describe Honeybee do
     # check values
     expect(honeybee.size).to eq 1
     expect(honeybee).not_to be nil
-    expect(honeybee[0][:type]).to eq 'ScheduleRuleAbridged'
+    expect(honeybee[0][:type]).to eq 'ScheduleRulesetAbridged'
     expect(honeybee[0][:identifier]).to eq 'Schedule Ruleset 1'
     expect(honeybee[0][:default_day_schedule]).to eq 'Schedule Day 1'
     expect(honeybee[0][:summer_designday_schedule]).to eq 'Schedule Day 1'

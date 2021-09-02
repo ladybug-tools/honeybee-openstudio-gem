@@ -38,7 +38,7 @@ module Honeybee
     def self.from_schedule_ruleset(schedule_ruleset)
       # create an empty hash
       hash = {}
-      hash[:type] = 'ScheduleRuleAbridged'
+      hash[:type] = 'ScheduleRulesetAbridged'
       # set hash values from OpenStudio Object
       hash[:identifier] = schedule_ruleset.nameString
       # check if boost optional object is empty
