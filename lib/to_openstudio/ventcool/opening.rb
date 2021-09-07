@@ -128,43 +128,69 @@ module Honeybee
     end
 
     def to_openstudio_afn(openstudio_model, parent)
-      # process the flow_coefficient_closed and set it to a very small number if it's 0
+      # get the tilt and BC of the parent so that we can use the correct AFN object
+      srf_tilt = parent.tilt.to_f * (180 / Math::PI)
+      srf_bc = parent.outsideBoundaryCondition.to_s
+
+      # process the flow_coefficient_closed and flow exponent
       if @hash[:flow_coefficient_closed] and @hash[:flow_coefficient_closed] != 0
         flow_coefficient = @hash[:flow_coefficient_closed]
       else
         flow_coefficient = 1.0e-09  # set it to a very small number
       end
-
-      # create the simple opening object for the Aperture or Door using default values
       flow_exponent = defaults[:flow_exponent_closed][:default].to_f
-      two_way_thresh = defaults[:two_way_threshold][:default].to_f
-      discharge_coeff = defaults[:discharge_coefficient][:default].to_f
-      os_opening = OpenStudio::Model::AirflowNetworkSimpleOpening.new(
-        openstudio_model, flow_coefficient, flow_exponent, two_way_thresh, discharge_coeff)
 
-      # assign the flow exponent when the opening is closed
-      if @hash[:flow_exponent_closed]
-        os_opening.setAirMassFlowExponentWhenOpeningisClosed(@hash[:flow_exponent_closed])
-      end
-      # assign the minimum difference for two-way flow
-      if @hash[:two_way_threshold]
-        os_opening.setMinimumDensityDifferenceforTwoWayFlow(@hash[:two_way_threshold])
-      end
-      # assign the discharge coefficient
-      if @hash[:discharge_coefficient]
-        os_opening.setDischargeCoefficient(@hash[:discharge_coefficient])
-      end
-
-      # create the AirflowNetworkSurface
-      os_afn_srf = parent.getAirflowNetworkSurface(os_opening)
-
-      # assign the opening area
+      # process the opening area
       if @hash[:fraction_area_operable]
         open_fac = @hash[:fraction_area_operable]
       else
         open_fac = defaults[:fraction_area_operable][:default]
       end
-      os_afn_srf.setWindowDoorOpeningFactorOrCrackFactor(open_fac)
+
+      # create an opening obj
+      if srf_tilt < 10 || srf_tilt > 170
+        if srf_bc == 'Outdoors'
+          # create a crack object to represent an exterior in-operable horizontal skylight
+          open_fac = nil
+          os_opening = OpenStudio::Model::AirflowNetworkCrack.new(
+            openstudio_model, flow_coefficient, flow_exponent, $afn_reference_crack)
+        else
+          # create a HorizontalOpening object to represent the interior horizontal window
+          discharge_coeff = defaults[:discharge_coefficient][:default].to_f
+          if srf_tilt < 10
+            slope_ang = 90 - srf_tilt
+          else
+            slope_ang = 90 - (180 - srf_tilt)
+          end
+          os_opening = OpenStudio::Model::AirflowNetworkHorizontalOpening .new(
+            openstudio_model, flow_coefficient, flow_exponent, slope_ang, discharge_coeff)
+        end
+      else
+        # create the simple opening object for the Aperture or Door using default values
+        two_way_thresh = defaults[:two_way_threshold][:default].to_f
+        discharge_coeff = defaults[:discharge_coefficient][:default].to_f
+        os_opening = OpenStudio::Model::AirflowNetworkSimpleOpening.new(
+          openstudio_model, flow_coefficient, flow_exponent, two_way_thresh, discharge_coeff)
+
+        # assign the flow exponent when the opening is closed
+        if @hash[:flow_exponent_closed]
+          os_opening.setAirMassFlowExponentWhenOpeningisClosed(@hash[:flow_exponent_closed])
+        end
+        # assign the minimum difference for two-way flow
+        if @hash[:two_way_threshold]
+          os_opening.setMinimumDensityDifferenceforTwoWayFlow(@hash[:two_way_threshold])
+        end
+        # assign the discharge coefficient
+        if @hash[:discharge_coefficient]
+          os_opening.setDischargeCoefficient(@hash[:discharge_coefficient])
+        end
+      end
+
+      # create the AirflowNetworkSurface and assign the opening factor
+      os_afn_srf = parent.getAirflowNetworkSurface(os_opening)
+      unless open_fac.nil?
+        os_afn_srf.setWindowDoorOpeningFactorOrCrackFactor(open_fac)
+      end
 
       open_fac
     end
