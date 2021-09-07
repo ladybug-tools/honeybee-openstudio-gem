@@ -349,8 +349,10 @@ module Honeybee
             if sub_f.adjacentSubSurface.empty?  # not an interior window that's already in the AFN
               vent_open = VentilationOpening.new(opening)
               open_fac = vent_open.to_openstudio_afn(openstudio_model, sub_f)
-              operable_subfs << sub_f
-              opening_factors << open_fac
+              unless open_fac.nil?  # nil is used for horizontal exterior skylights
+                operable_subfs << sub_f
+                opening_factors << open_fac
+              end
             end
           end
         end

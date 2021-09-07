@@ -77,7 +77,7 @@ module Honeybee
 
           # assign the flow exponent if it's specified
           if vent_crack[:flow_exponent]
-            os_crack.	setAirMassFlowExponent(vent_crack[:flow_exponent])
+            os_crack.setAirMassFlowExponent(vent_crack[:flow_exponent])
           end
 
           # if it's a Surface boundary condition ensure the neighbor is not written as a duplicate
