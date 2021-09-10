@@ -40,11 +40,11 @@ module Honeybee
         hash = {}
         hash[:type] = 'AirBoundaryConstructionAbridged'
         # set hash values from OpenStudio Object
-        hash[:identifier] = construction.nameString
+        hash[:identifier] = clean_name(construction.nameString)
         # check if boost optional object is empty
         unless construction.simpleMixingSchedule.empty?
           schedule = construction.simpleMixingSchedule.get
-          hash[:air_mixing_schedule] = schedule.nameString
+          hash[:air_mixing_schedule] = clean_name(schedule.nameString)
         end
         #TODO: Add air_mixing_per_area
 

@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyWindowMaterialGasMixture'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
+        hash[:identifier] = clean_name(material.nameString)
         hash[:thickness] = material.thickness
         hash[:gas_types] = []
         hash[:gas_fractions] = []

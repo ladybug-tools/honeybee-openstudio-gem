@@ -40,12 +40,12 @@ module Honeybee
         hash = {}
         hash[:type] = 'OpaqueConstructionAbridged'
         # set hash values from OpenStudio Object
-        hash[:identifier] = construction.nameString
+        hash[:identifier] = clean_name(construction.nameString)
         hash[:materials] = []
         # get construction layers
         layers = construction.layers
         layers.each do |layer|
-          name = layer.nameString
+          name = clean_name(layer.nameString)
           hash[:materials] << name
         end
 

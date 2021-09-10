@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyWindowMaterialBlind'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
+        hash[:identifier] = clean_name(material.nameString)
         hash[:slat_orientation] = material.slatOrientation
         hash[:slat_width] = material.slatWidth
         hash[:slat_separation] = material.slatSeparation

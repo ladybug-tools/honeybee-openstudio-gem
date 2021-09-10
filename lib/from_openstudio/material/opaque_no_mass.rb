@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyMaterialNoMass'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
+        hash[:identifier] = clean_name(material.nameString)
         hash[:r_value] = material.thermalResistance
 
         if material.to_MasslessOpaqueMaterial.is_initialized
