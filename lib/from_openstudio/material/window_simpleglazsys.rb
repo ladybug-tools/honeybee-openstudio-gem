@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyWindowMaterialSimpleGlazSys'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
+        hash[:identifier] = clean_name(material.nameString)
         hash[:u_factor] = material.uFactor
         hash[:shgc] = material.solarHeatGainCoefficient
         # check if boost optional object is empty

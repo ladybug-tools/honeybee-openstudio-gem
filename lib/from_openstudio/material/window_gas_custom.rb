@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'EnergyWindowMaterialGasCustom'
         # set hash values from OpenStudio Object
-        hash[:identifier] = material.nameString
+        hash[:identifier] = clean_name(material.nameString)
         hash[:thickness] = material.thickness
         # check if boost optional object is empty
         unless material.customConductivityCoefficientA.empty?

@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'ConstructionSetAbridged'
         # set hash values from OpenStudio Object
-        hash[:identifier] = construction_set.nameString
+        hash[:identifier] = clean_name(construction_set.nameString)
         hash[:wall_set] = {}
         hash[:floor_set] = {}
         hash[:aperture_set] = {}
@@ -53,17 +53,17 @@ module Honeybee
           # get interior wall construction
           unless int_surf_construction.wallConstruction.empty?
             int_wall_const = int_surf_construction.wallConstruction.get
-            hash[:wall_set][:interior_construction] = int_wall_const.nameString
+            hash[:wall_set][:interior_construction] = clean_name(int_wall_const.nameString)
           end
           # get interior floor construction
           unless int_surf_construction.floorConstruction.empty?
             int_floor_const = int_surf_construction.floorConstruction.get
-            hash[:floor_set][:interior_construction] = int_floor_const.nameString
+            hash[:floor_set][:interior_construction] = clean_name(int_floor_const.nameString)
           end
           # get interior roofceiling construction
           unless int_surf_construction.roofCeilingConstruction.empty?
             int_roof_const = int_surf_construction.roofCeilingConstruction.get
-            hash[:roof_ceiling_set][:interior_construction] = int_roof_const.nameString
+            hash[:roof_ceiling_set][:interior_construction] = clean_name(int_roof_const.nameString)
           end
         end
 
@@ -72,17 +72,17 @@ module Honeybee
           int_subsurf_const = construction_set.defaultInteriorSubSurfaceConstructions.get
           unless int_subsurf_const.fixedWindowConstruction.empty?
             int_wind_const = int_subsurf_const.fixedWindowConstruction.get
-            hash[:aperture_set][:window_construction] = int_wind_const.nameString
+            hash[:aperture_set][:window_construction] = clean_name(int_wind_const.nameString)
           end
           # get interior door construction
           unless int_subsurf_const.doorConstruction.empty?
             int_door_const = int_subsurf_const.doorConstruction.get
-            hash[:door_set][:interior_construction] = int_door_const.nameString
+            hash[:door_set][:interior_construction] = clean_name(int_door_const.nameString)
           end
           # get interior glass door construction
           unless int_subsurf_const.glassDoorConstruction.empty?
             int_glass_door_const = int_subsurf_const.glassDoorConstruction.get
-            hash[:door_set][:interior_glass_construction] = int_glass_door_const.nameString
+            hash[:door_set][:interior_glass_construction] = clean_name(int_glass_door_const.nameString)
           end
         end
         
@@ -92,17 +92,17 @@ module Honeybee
           # get exterior wall construction
           unless ext_surf_const.wallConstruction.empty?
             ext_wall_const = ext_surf_const.wallConstruction.get
-            hash[:wall_set][:exterior_construction] = ext_wall_const.nameString
+            hash[:wall_set][:exterior_construction] = clean_name(ext_wall_const.nameString)
           end
           # get exterior floor construction
           unless ext_surf_const.floorConstruction.empty?
             ext_floor_const = ext_surf_const.floorConstruction.get
-            hash[:floor_set][:exterior_construction] = ext_floor_const.nameString
+            hash[:floor_set][:exterior_construction] = clean_name(ext_floor_const.nameString)
           end
           # get exterior roofceiling construction
           unless ext_surf_const.roofCeilingConstruction.empty?
             ext_roof_const = ext_surf_const.roofCeilingConstruction.get
-            hash[:roof_ceiling_set][:exterior_construction] = ext_roof_const.nameString
+            hash[:roof_ceiling_set][:exterior_construction] = clean_name(ext_roof_const.nameString)
           end
         end
 
@@ -112,22 +112,22 @@ module Honeybee
           # get exterior operable window construction
           unless ext_subsurf_const.operableWindowConstruction.empty?
             ext_wind_const = ext_subsurf_const.operableWindowConstruction.get
-            hash[:aperture_set][:operable_construction] = ext_wind_const.nameString
+            hash[:aperture_set][:operable_construction] = clean_name(ext_wind_const.nameString)
           end
           # get exterior skylight construction
           unless ext_subsurf_const.skylightConstruction.empty?
             ext_skylight_const = ext_subsurf_const.skylightConstruction.get
-            hash[:aperture_set][:skylight_construction] = ext_skylight_const.nameString
+            hash[:aperture_set][:skylight_construction] = clean_name(ext_skylight_const.nameString)
           end
           # get exterior door construction
           unless ext_subsurf_const.doorConstruction.empty?
             ext_door_const = ext_subsurf_const.doorConstruction.get
-            hash[:door_set][:exterior_construction] = ext_door_const.nameString
+            hash[:door_set][:exterior_construction] = clean_name(ext_door_const.nameString)
           end
           # get exterior overhead door construction
           unless ext_subsurf_const.overheadDoorConstruction.empty?
             ext_ovhd_door_const = ext_subsurf_const.overheadDoorConstruction.get
-            hash[:door_set][:overhead_construction] = ext_ovhd_door_const.nameString
+            hash[:door_set][:overhead_construction] = clean_name(ext_ovhd_door_const.nameString)
           end
         end
 

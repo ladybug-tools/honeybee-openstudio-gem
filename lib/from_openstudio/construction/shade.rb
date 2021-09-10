@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'ShadeConstruction'
         # set hash values from OpenStudio Object
-        hash[:identifier] = construction.nameString
+        hash[:identifier] = clean_name(construction.nameString)
         # get outermost construction layers
         layer = construction.layers[0]
         if layer.to_StandardGlazing.is_initialized
