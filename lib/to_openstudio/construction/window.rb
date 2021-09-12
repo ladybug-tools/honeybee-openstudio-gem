@@ -50,16 +50,25 @@ module Honeybee
       # create material vector
       os_materials = OpenStudio::Model::MaterialVector.new
       # loop through each layer and add to material vector
-      if @hash.key?(:layers)
-        mat_key = :layers
+      if $simple_window_cons && @hash[:u_factor]
+        os_simple_glazing = OpenStudio::Model::SimpleGlazing.new(openstudio_model)
+        os_simple_glazing.setName(@hash[:identifier] + '_SimpleGlazSys')
+        os_simple_glazing.setUFactor(@hash[:u_factor])
+        os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
+        os_simple_glazing.setVisibleTransmittance(@hash[:vt])
+        os_materials << os_simple_glazing
       else
-        mat_key = :materials
-      end
-      @hash[mat_key].each do |material_identifier|
-        material = openstudio_model.getMaterialByName(material_identifier)
-        unless material.empty?
-          os_material = material.get
-          os_materials << os_material
+        if @hash.key?(:layers)
+          mat_key = :layers
+        else
+          mat_key = :materials
+        end
+        @hash[mat_key].each do |material_identifier|
+          material = openstudio_model.getMaterialByName(material_identifier)
+          unless material.empty?
+            os_material = material.get
+            os_materials << os_material
+          end
         end
       end
       os_construction.setLayers(os_materials)

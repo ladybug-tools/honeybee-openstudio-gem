@@ -105,6 +105,14 @@ module Honeybee
         os_thermal_zone.setMultiplier(@hash[:multiplier])
       end
 
+      # assign the geometry properties if they exist
+      if @hash[:ceiling_height]
+        os_thermal_zone.setCeilingHeight(@hash[:ceiling_height])
+      end
+      if @hash[:volume]
+        os_thermal_zone.setVolume(@hash[:volume])
+      end
+
       # assign the story
       if @hash[:story]  # the users has specified the name of the story
         story = openstudio_model.getBuildingStoryByName(@hash[:story])
