@@ -51,6 +51,7 @@ module Honeybee
       @@extension ||= Extension.new
       @@schema ||= @@extension.schema
       @@standards ||= @@extension.standards
+      $simple_window_cons = false
 
       @hash = hash
       @type = @hash[:type]

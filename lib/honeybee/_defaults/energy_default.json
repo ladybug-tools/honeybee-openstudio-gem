@@ -54,7 +54,10 @@
             "identifier": "Generic Single Pane",
             "materials": [
                 "Generic Clear Glass"
-            ]
+            ],
+            "u_factor": 5.731373,
+            "shgc": 0.824407,
+            "vt": 0.88
         },
         {
             "type": "ShadeConstruction",
@@ -170,7 +173,10 @@
                 "Generic Low-e Glass",
                 "Generic Window Air Gap",
                 "Generic Clear Glass"
-            ]
+            ],
+            "u_factor": 1.687787,
+            "shgc": 0.43651,
+            "vt": 0.635473
         },
         {
             "type": "OpaqueConstructionAbridged",
