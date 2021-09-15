@@ -39,7 +39,7 @@ RSpec.describe Honeybee do
 
     honeybee.validation_errors.each {|error| puts error}
 
-    #expect(honeybee.valid?).to be true
+    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'

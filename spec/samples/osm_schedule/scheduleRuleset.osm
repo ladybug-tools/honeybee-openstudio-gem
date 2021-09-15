@@ -173,11 +173,11 @@ OS:ScheduleTypeLimits,
 
 OS:ScheduleTypeLimits,
   {128dfdb0-7db4-4449-af1e-67186955ce41}, !- Handle
-  ControlMode,                            !- Name
+  Control,                                !- Name
   0,                                      !- Lower Limit Value
   1,                                      !- Upper Limit Value
   Discrete,                               !- Numeric Type
-  ControlMode;                            !- Unit Type
+  Control;                                !- Unit Type
 
 OS:ScheduleTypeLimits,
   {1dcc991b-3a00-49ab-87ef-5ef55823c490}, !- Handle
