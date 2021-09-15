@@ -39,23 +39,49 @@ module Honeybee
       # create an empty hash
       hash = {}
       hash[:type] = 'ScheduleRulesetAbridged'
-      # set hash values from OpenStudio Object
-      hash[:identifier] = schedule_ruleset.nameString
-      # check if boost optional object is empty
-      hash[:default_day_schedule] = schedule_ruleset.defaultDaySchedule.nameString 
-      hash[:summer_designday_schedule] = schedule_ruleset.summerDesignDaySchedule.nameString
-      hash[:winter_designday_schedule] = schedule_ruleset.winterDesignDaySchedule.nameString
-      hash[:holiday_schedule] = schedule_ruleset.holidaySchedule.nameString
+      # set the primary (required) day schedules of the object
+      hash[:identifier] = clean_name(schedule_ruleset.nameString)
+      hash[:default_day_schedule] = clean_name(schedule_ruleset.defaultDaySchedule.nameString)
+      hash[:summer_designday_schedule] = clean_name(schedule_ruleset.summerDesignDaySchedule.nameString)
+      hash[:winter_designday_schedule] = clean_name(schedule_ruleset.winterDesignDaySchedule.nameString)
+      hash[:holiday_schedule] = clean_name(schedule_ruleset.holidaySchedule.nameString)
 
-      schedule_days = [schedule_ruleset.defaultDaySchedule, schedule_ruleset.summerDesignDaySchedule, schedule_ruleset.winterDesignDaySchedule, schedule_ruleset.holidaySchedule]
+      # create a list of all day schedules referenced in the Ruleset
+      schedule_days, day_ids = [], []
+      required_days = [
+        schedule_ruleset.defaultDaySchedule,
+        schedule_ruleset.summerDesignDaySchedule,
+        schedule_ruleset.winterDesignDaySchedule,
+        schedule_ruleset.holidaySchedule
+      ]
+      required_days.each do |day_sch|
+        unless day_ids.include? day_sch.nameString
+          schedule_days << day_sch
+          day_ids << day_sch.nameString
+        end
+      end
+
+      # loop through the rules and add them along with their day schedules
+      hash[:schedule_rules] = []
+      schedule_ruleset.scheduleRules.each do |schedule_rule|
+        hash[:schedule_rules] << ScheduleRulesetAbridged.from_schedule_rule(schedule_rule)
+        day_sch = schedule_rule.daySchedule
+        unless day_ids.include? day_sch.nameString
+          schedule_days << day_sch
+          day_ids << day_sch.nameString
+        end
+      end
+
+      # write all of the day schedule specifications into the hash
       hash[:day_schedules] = []
       schedule_days.each do |schedule_day|
         hash[:day_schedules] << ScheduleRulesetAbridged.from_day_schedule(schedule_day)
       end
 
-      hash[:schedule_rules] = []
-      schedule_ruleset.scheduleRules.each do |schedule_rule|
-        hash[:schedule_rules] << ScheduleRulesetAbridged.from_schedule_rule(schedule_rule)
+      # assing any schedule type limits if they exist
+      unless schedule_ruleset.scheduleTypeLimits.empty?
+        typ_lim = schedule_ruleset.scheduleTypeLimits.get
+        hash[:schedule_type_limit] = clean_name(typ_lim.nameString)
       end
 
       hash
@@ -64,7 +90,7 @@ module Honeybee
     def self.from_day_schedule(day_schedule)
       hash = {}
       hash[:type] = 'ScheduleDay'
-      hash[:identifier] = day_schedule.nameString
+      hash[:identifier] = clean_name(day_schedule.nameString)
       hash[:interpolate] = day_schedule.interpolatetoTimestep
       hash[:values] = day_schedule.values
       time_until = [[0,0]]
@@ -80,7 +106,7 @@ module Honeybee
     def self.from_schedule_rule(schedule_rule)
       hash = {}
       hash[:type] = 'ScheduleRuleAbridged'
-      hash[:schedule_day] = schedule_rule.daySchedule.nameString
+      hash[:schedule_day] = clean_name(schedule_rule.daySchedule.nameString)
       hash[:apply_sunday] = schedule_rule.applySunday
       hash[:apply_monday] = schedule_rule.applyMonday
       hash[:apply_tuesday] = schedule_rule.applyTuesday

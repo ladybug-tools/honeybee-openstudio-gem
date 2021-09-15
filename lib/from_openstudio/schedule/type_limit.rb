@@ -40,7 +40,7 @@ module Honeybee
       hash = {}
       hash[:type] = 'ScheduleTypeLimit'
       # set hash values from OpenStudio Object
-      hash[:identifier] = schedule_type_limit.nameString
+      hash[:identifier] = clean_name(schedule_type_limit.nameString)
       # check if boost optional object is empty
       unless schedule_type_limit.lowerLimitValue.empty?
         hash[:lower_limit] = schedule_type_limit.lowerLimitValue.get
@@ -54,7 +54,19 @@ module Honeybee
         numeric_type = schedule_type_limit.numericType.get
         hash[:numeric_type] = numeric_type.titleize
       end
-      hash[:unit_type] = schedule_type_limit.unitType
+
+      # make sure unit type always follows the capitalization of the Honeybee Enumeration
+      unit_type = schedule_type_limit.unitType.titleize
+      if unit_type == 'Deltatemperature'
+        unit_type = 'DeltaTemperature'
+      elsif unit_type == 'Precipitationrate'
+        unit_type = 'PrecipitationRate'
+      elsif unit_type == 'Convectioncoefficient'
+        unit_type = 'ConvectionCoefficient'
+      elsif unit_type == 'Activitylevel'
+        unit_type = 'ActivityLevel'
+      end
+      hash[:unit_type] = unit_type
 
       hash
     end
