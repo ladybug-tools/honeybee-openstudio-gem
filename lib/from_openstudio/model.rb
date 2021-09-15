@@ -128,14 +128,10 @@ module Honeybee
     def self.energy_properties_from_model(openstudio_model)
       hash = {}
       hash[:type] = 'ModelEnergyProperties'
-      hash[:constructions] = []
       hash[:constructions] = constructions_from_model(openstudio_model)
       hash[:materials] = materials_from_model(openstudio_model)
-      hash[:construction_sets] = []
       hash[:construction_sets] = constructionsets_from_model(openstudio_model)
-      hash[:schedule_type_limits] = []
       hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
-      hash[:schedules] = []
       hash[:schedules] = scheduleruleset_from_model(openstudio_model)
 
       hash

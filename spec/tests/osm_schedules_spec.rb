@@ -77,7 +77,7 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:default_day_schedule]).to eq 'Schedule Day 1'
     expect(honeybee[0][:summer_designday_schedule]).to eq 'Schedule Day 1'
     expect(honeybee[0][:winter_designday_schedule]).to eq 'Schedule Day 1'
-    expect((honeybee[0][:day_schedules]).size).to eq 4
+    expect((honeybee[0][:day_schedules]).size).to eq 3
     expect((honeybee[0][:schedule_rules]).size).to eq 2
 
     FileUtils.mkdir_p(output_dir)
