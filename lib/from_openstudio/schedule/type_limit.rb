@@ -65,6 +65,8 @@ module Honeybee
         unit_type = 'ConvectionCoefficient'
       elsif unit_type == 'Activitylevel'
         unit_type = 'ActivityLevel'
+      elsif unit_type == 'Controlmode'
+        unit_type = 'Control'
       end
       hash[:unit_type] = unit_type
 

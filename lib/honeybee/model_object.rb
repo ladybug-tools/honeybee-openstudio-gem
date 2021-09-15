@@ -36,13 +36,6 @@ module Honeybee
 
     attr_reader :errors, :warnings
 
-    @@encoding_options = {
-      :invalid           => :replace,  # Replace invalid byte sequences
-      :undef             => :replace,  # Replace anything not defined in ASCII
-      :replace           => '',        # Use a blank for those replacements
-      :universal_newline => true       # Always break lines with \n
-    }
-
     def method_missing(sym, *args)
       name = sym.to_s
       aname = name.sub('=', '')
@@ -107,12 +100,12 @@ module Honeybee
 
     # remove illegal characters in identifier
     def self.clean_name(str)
-      ascii = str.encode(Encoding.find('ASCII'), @@encoding_options)
+      ascii = str.encode(Encoding.find('ASCII'))
     end
 
     # remove illegal characters in identifier
     def self.clean_identifier(str)
-      encode_str = str.encode(Encoding.find('ASCII'), @@encoding_options)
+      encode_str = str.encode(Encoding.find('ASCII'))
       encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
     end
 

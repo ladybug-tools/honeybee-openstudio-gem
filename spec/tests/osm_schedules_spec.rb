@@ -43,7 +43,7 @@ RSpec.describe Honeybee do
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
 
-    # create HB JSON material from OS model
+    # create HBJSON hash from OS model
     honeybee = Honeybee::Model.schedtypelimits_from_model(openstudio_model.get)
 
     # check values
@@ -66,7 +66,7 @@ RSpec.describe Honeybee do
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
 
-    # create HB JSON material from OS model
+    # create HBJSON hash from OS model
     honeybee = Honeybee::Model.scheduleruleset_from_model(openstudio_model.get)
 
     # check values
