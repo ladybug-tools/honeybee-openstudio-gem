@@ -88,7 +88,7 @@ module Honeybee
 
       # set up the EMS sensor for the schedule value
       state_sch = openstudio_model.getScheduleByName(@hash[:schedule])
-      @sch_sensor_name = replace_ems_special_characters(@hash[:identifier]) + '_Sensor' + @@sensor_count.to_s
+      @sch_sensor_name = replace_ems_special_characters(@hash[:identifier]) + 'Sensor' + @@sensor_count.to_s
       @@sensor_count = @@sensor_count + 1
       unless state_sch.empty?  # schedule not specified
         sch_var = OpenStudio::Model::OutputVariable.new('Schedule Value', openstudio_model)
@@ -107,18 +107,15 @@ module Honeybee
       @sub_faces.each do |dyn_window|
         window_act = OpenStudio::Model::EnergyManagementSystemActuator.new(
           dyn_window, 'Surface', 'Construction State')
-        dyn_window_name = dyn_window.name
-        unless dyn_window_name.empty?
-          act_name = replace_ems_special_characters(dyn_window_name.get) + '_Actuator' + @@actuator_count.to_s
-          @@actuator_count = @@actuator_count + 1
-          window_act.setName(act_name)
-          actuator_names << act_name
-        end
+        act_name = replace_ems_special_characters(dyn_window.nameString) + 'Actuator' + @@actuator_count.to_s
+        @@actuator_count = @@actuator_count + 1
+        window_act.setName(act_name)
+        actuator_names << act_name
       end
 
       # create the EMS Program to accout for each state according to the control logic
       ems_program = OpenStudio::Model::EnergyManagementSystemProgram.new(openstudio_model)
-      prog_name = replace_ems_special_characters(@hash[:identifier]) + '_StateChange' + @@program_count.to_s
+      prog_name = replace_ems_special_characters(@hash[:identifier]) + 'StateChange' + @@program_count.to_s
       @@program_count = @@program_count + 1
       ems_program.setName(prog_name)
 
@@ -143,12 +140,9 @@ module Honeybee
         # create the construction index variable
         constr_i = OpenStudio::Model::EnergyManagementSystemConstructionIndexVariable.new(
           openstudio_model, construction)
-        constr_name = construction.name
-        unless constr_name.empty?
-          constr_i_name = replace_ems_special_characters(constr_name.get) + '_State' + @@state_count.to_s
-          @@state_count = @@state_count + 1
-          constr_i.setName(constr_i_name)
-        end
+        constr_i_name = replace_ems_special_characters(construction.nameString) + 'State' + @@state_count.to_s
+        @@state_count = @@state_count + 1
+        constr_i.setName(constr_i_name)
 
         # loop through the actuators and set the appropriate window state
         actuator_names.each do |act_name|

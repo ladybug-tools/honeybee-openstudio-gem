@@ -85,7 +85,7 @@ module Honeybee
         in_var.setKeyValue(os_zone_name)
       end
       in_air_temp = OpenStudio::Model::EnergyManagementSystemSensor.new(openstudio_model, in_var)
-      in_sensor_name = replace_ems_special_characters(os_zone_name) + '_Sensor' + @@sensor_count.to_s
+      in_sensor_name = replace_ems_special_characters(os_zone_name) + 'Sensor' + @@sensor_count.to_s
       @@sensor_count = @@sensor_count + 1
       in_air_temp.setName(in_sensor_name)
 
@@ -97,7 +97,7 @@ module Honeybee
           sch_var.setReportingFrequency('Timestep')
           sch_var.setKeyValue(@hash[:schedule])
           sch_sens = OpenStudio::Model::EnergyManagementSystemSensor.new(openstudio_model, sch_var)
-          sch_sensor_name = replace_ems_special_characters(os_zone_name) + '_Sensor' + @@sensor_count.to_s
+          sch_sensor_name = replace_ems_special_characters(os_zone_name) + 'Sensor' + @@sensor_count.to_s
           @@sensor_count = @@sensor_count + 1
           sch_sens.setName(sch_sensor_name)
         end
@@ -108,14 +108,11 @@ module Honeybee
       vent_opening_surfaces.each do |vent_srf|
         window_act = OpenStudio::Model::EnergyManagementSystemActuator.new(
             vent_srf, 'AirFlow Network Window/Door Opening', 'Venting Opening Factor')
-        vent_srf_name = vent_srf.name
-        unless vent_srf_name.empty?
-          act_name = replace_ems_special_characters(vent_srf_name.get) + \
-            '_OpenFactor' + @@actuator_count.to_s
-            @@actuator_count = @@actuator_count + 1
-          window_act.setName(act_name)
-          actuator_names << act_name
-        end
+        act_name = replace_ems_special_characters(vent_srf.nameString) + \
+          'OpenFactor' + @@actuator_count.to_s
+          @@actuator_count = @@actuator_count + 1
+        window_act.setName(act_name)
+        actuator_names << act_name
       end
 
       # create the first line of the EMS Program to open each window according to the control logic
@@ -158,7 +155,7 @@ module Honeybee
 
       # initialize the program and add the complete logic
       ems_program = OpenStudio::Model::EnergyManagementSystemProgram.new(openstudio_model)
-      prog_name = replace_ems_special_characters(os_zone_name) + '_WindowOpening' + @@program_count.to_s
+      prog_name = replace_ems_special_characters(os_zone_name) + 'WindowOpening' + @@program_count.to_s
       @@program_count = @@program_count + 1
       ems_program.setName(prog_name)
       ems_program.addLine(complete_logic)
