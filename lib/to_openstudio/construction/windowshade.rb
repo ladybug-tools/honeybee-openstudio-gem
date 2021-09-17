@@ -86,13 +86,13 @@ module Honeybee
       shd_mat_name = openstudio_model.getMaterialByName(@hash[:shade_material])
       unless shd_mat_name.empty?
         @shade_material = shd_mat_name.get
-        obj_type = @shade_material.iddObject.name
+        obj_type = @shade_material.iddObject.name.to_s
       end
       unless @shade_material.nil?
-        if obj_type == 'OS:WindowMaterial:StandardGlazing'
+        if obj_type == 'OS:WindowMaterial:StandardGlazing' || obj_type == 'OS:WindowMaterial:Glazing'
           if @shade_location == 'Interior'
               os_materials[-1] = @shade_material
-          elsif @shade_location == 'Exterior' | os_materials.length < 2
+          elsif @shade_location == 'Exterior' || os_materials.length < 2
               os_materials[0] = @shade_material
           else  # middle glass pane
               os_materials[-3] = @shade_material
@@ -150,9 +150,9 @@ module Honeybee
 
       # figure out the shading type
       unless @shade_material.nil?
-        obj_type = @shade_material.iddObject.name
+        obj_type = @shade_material.iddObject.name.to_s
       end
-      if obj_type == 'OS:WindowMaterial:StandardGlazing'
+      if obj_type == 'OS:WindowMaterial:StandardGlazing' || obj_type == 'OS:WindowMaterial:Glazing'
         shd_type = 'SwitchableGlazing'
       elsif obj_type == 'OS:WindowMaterial:Blind'
         if @shade_location == 'Between'
