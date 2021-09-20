@@ -112,7 +112,7 @@ module Honeybee
     def self.story_from_space(space)
       story = space.buildingStory
       if !story.empty?
-        return story.get.nameString
+        return clean_identifier(story.get.nameString)
       end
       nil
     end

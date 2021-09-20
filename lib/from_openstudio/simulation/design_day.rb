@@ -37,7 +37,7 @@ module Honeybee
     def self.from_design_day(design_day)
       hash = {}
       hash[:type] = 'DesignDay'
-      hash[:name] = design_day.nameString
+      hash[:name] = clean_identifier(design_day.nameString)
       hash[:day_type] = day_type_from_design_day(design_day)
       hash[:dry_bulb_condition] = dry_bulb_condition_from_design_day(design_day)
       hash[:humidity_condition] = humidity_condition_from_design_day(design_day)
