@@ -34,7 +34,7 @@ require 'openstudio/workflow/adapters/output_adapter'
 # Local file based workflow
 class HoneybeeAdapter < OpenStudio::Workflow::OutputAdapters
   def initialize(options = {})
-    puts "viiiiiiiiiiiiizzzzzzzzz!"
+
     STDOUT.flush
     super
   end
