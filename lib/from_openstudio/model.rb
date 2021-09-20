@@ -64,7 +64,8 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
-      # Hashes for all constructions in the model
+      # Hashes for all shcedules and constructions in the model
+      $schedules = {}
       $opaque_constructions = {}
       $window_constructions = {}
       $shade_constructions = {}
@@ -282,7 +283,9 @@ module Honeybee
     def self.scheduleruleset_from_model(openstudio_model)
       result = []
       openstudio_model.getScheduleRulesets.each do |sch_ruleset|
-        result << ScheduleRulesetAbridged.from_schedule_ruleset(sch_ruleset)
+        sched_hash = ScheduleRulesetAbridged.from_schedule_ruleset(sch_ruleset)
+        $schedules[sched_hash[:identifier]] = sched_hash
+        result << sched_hash
       end
       result
     end

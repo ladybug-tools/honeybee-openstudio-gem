@@ -72,7 +72,7 @@ module Honeybee
       unless sub_surface.isConstructionDefaulted
         construction = sub_surface.construction
         if !construction.empty?
-          constr_id = construction.get.nameString
+          constr_id = clean_identifier(construction.get.nameString)
           if hash[:is_glass] && !$window_constructions[constr_id].nil?
             hash[:construction] = constr_id
           elsif !hash[:is_glass] && !$opaque_constructions[constr_id].nil?
