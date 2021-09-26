@@ -43,9 +43,16 @@ module Honeybee
     end
 
     def to_openstudio(openstudio_model)
+      # get the vertices from the face
+      if @hash[:geometry][:vertices].nil?
+        hb_verts = @hash[:geometry][:boundary]
+      else
+        hb_verts = @hash[:geometry][:vertices]
+      end
+
       # reorder the vertices to ensure they start from the upper-left corner
       os_vertices = OpenStudio::Point3dVector.new
-      @hash[:geometry][:boundary].each do |vertex|
+      hb_verts.each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
       reordered_vertices = OpenStudio.reorderULC(os_vertices)
