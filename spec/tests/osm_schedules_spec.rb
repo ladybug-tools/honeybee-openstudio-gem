@@ -86,4 +86,23 @@ RSpec.describe Honeybee do
     end
   end
 
+  it 'can load OSM and translate Schedule Fixed Interval to Honeybee' do
+
+    file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleFixedInterval.osm')
+
+    vt = OpenStudio::OSVersion::VersionTranslator.new
+    openstudio_model = vt.loadModel(file)
+
+    # create HBJSON hash from OS model
+    honeybee = Honeybee::Model.schedulefixedinterval_from_model(openstudio_model.get)
+
+    # check values
+    expect(honeybee.size).to eq 2
+    expect(honeybee).not_to be nil
+    expect(honeybee[0][:type]).to eq 'ScheduleFixedIntervalAbridged'
+    expect(honeybee[0][:identifier]).to eq 'Random Occupancy'
+
+  end
+
+
 end
