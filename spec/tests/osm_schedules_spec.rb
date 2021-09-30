@@ -102,7 +102,11 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:type]).to eq 'ScheduleFixedIntervalAbridged'
     expect(honeybee[0][:identifier]).to eq 'Random Occupancy'
 
-  end
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'scheduleFixedInterval.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(honeybee[0])
+    end
 
+  end
 
 end

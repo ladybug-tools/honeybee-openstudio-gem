@@ -45,9 +45,17 @@ module Honeybee
             hash[:start_date] = [start_month, start_day]
             #leapyear
             hash[:interpolate] = schedule_fixedinterval.interpolatetoTimestep
+            # assigning schedule type limit if it exists
+            unless schedule_fixedinterval.scheduleTypeLimits.empty?
+                typ_lim = schedule_fixedinterval.scheduleTypeLimits.get
+                hash[:schedule_type_limit] = clean_name(typ_lim.nameString)
+            end
+            interval_length = schedule_fixedinterval.intervalLength
+            hash[:timestep] = 60 / interval_length.to_i
+            values = schedule_fixedinterval.timeSeries.values
+            hash[:values] = [values]
 
             hash
-            # assigning schedule type limit if it exists
         end
     
     end
