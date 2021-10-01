@@ -75,6 +75,8 @@ module Honeybee
       transmittance_schedule = shading_surface.transmittanceSchedule
       if !transmittance_schedule.empty?
         trans_sch_name = clean_identifier(transmittance_schedule.get.nameString)
+        # Check whether schedules other than schedule ruleset or schedule fixed interval are
+        # being assigned
         unless $schedules[trans_sch_name].nil?
           hash[:transmittance_schedule] = trans_sch_name
         end

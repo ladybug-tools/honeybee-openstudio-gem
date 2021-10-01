@@ -295,8 +295,10 @@ module Honeybee
     # Create HB Schedule Fixed Interval from OpenStudio Schedule Fixed Interval
     def self.schedulefixedinterval_from_model(openstudio_model)
       result = []
+      # check if it is a leap year 
+      is_leap_year = openstudio_model.getYearDescription.isLeapYear
       openstudio_model.getScheduleFixedIntervals.each do |sch_fix_int|
-        sched_fixed_hash = ScheduleFixedIntervalAbridged.from_schedule_fixedinterval(sch_fix_int)
+        sched_fixed_hash = ScheduleFixedIntervalAbridged.from_schedule_fixedinterval(sch_fix_int, is_leap_year)
         $schedules[sched_fixed_hash[:identifier]] = sched_fixed_hash
         result << sched_fixed_hash
       end

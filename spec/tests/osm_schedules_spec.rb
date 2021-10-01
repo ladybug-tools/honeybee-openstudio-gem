@@ -97,10 +97,14 @@ RSpec.describe Honeybee do
     honeybee = Honeybee::Model.schedulefixedinterval_from_model(openstudio_model.get)
 
     # check values
-    expect(honeybee.size).to eq 2
+    expect(honeybee.size).to eq 1
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'ScheduleFixedIntervalAbridged'
     expect(honeybee[0][:identifier]).to eq 'Random Occupancy'
+    expect((honeybee[0][:start_date]).size).to eq 2
+    expect(honeybee[0][:values].size).to eq 8760
+    expect(honeybee[0][:timestep]).to eq 1
+    expect(honeybee[0][:interpolate]).to eq false
 
     FileUtils.mkdir_p(output_dir)
     File.open(File.join(output_dir,'scheduleFixedInterval.hbjson'), 'w') do |f|

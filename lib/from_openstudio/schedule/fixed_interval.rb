@@ -35,15 +35,19 @@ require 'from_openstudio/model_object'
 module Honeybee
     class ScheduleFixedIntervalAbridged < ModelObject
 
-        def self.from_schedule_fixedinterval(schedule_fixedinterval)
+        def self.from_schedule_fixedinterval(schedule_fixedinterval, is_leap_year)
             # create an empty hash
             hash = {}
             hash[:type] = 'ScheduleFixedIntervalAbridged'
             hash[:identifier] = clean_name(schedule_fixedinterval.nameString)
             start_month = schedule_fixedinterval.startMonth
             start_day = schedule_fixedinterval.startDay
-            hash[:start_date] = [start_month, start_day]
-            #leapyear
+            if is_leap_year
+                # if it is a leap year then add  1 as third value
+                hash[:start_date] = [start_month, start_day, 1]
+            else
+                hash[:start_date] = [start_month, start_day]
+            end
             hash[:interpolate] = schedule_fixedinterval.interpolatetoTimestep
             # assigning schedule type limit if it exists
             unless schedule_fixedinterval.scheduleTypeLimits.empty?
@@ -52,8 +56,13 @@ module Honeybee
             end
             interval_length = schedule_fixedinterval.intervalLength
             hash[:timestep] = 60 / interval_length.to_i
+            # get values from schedule fixed interval
             values = schedule_fixedinterval.timeSeries.values
-            hash[:values] = [values]
+            value_array = []
+            for i in 0..(values.size - 1)
+                value_array << values[i]
+            end
+            hash[:values] = value_array
 
             hash
         end
