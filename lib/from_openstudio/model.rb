@@ -48,6 +48,7 @@ require 'from_openstudio/construction/shade'
 require 'from_openstudio/construction_set'
 require 'from_openstudio/schedule/type_limit'
 require 'from_openstudio/schedule/ruleset'
+require 'from_openstudio/schedule/fixed_interval'
 
 require 'openstudio'
 
@@ -134,6 +135,7 @@ module Honeybee
       hash[:construction_sets] = constructionsets_from_model(openstudio_model)
       hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
       hash[:schedules] = scheduleruleset_from_model(openstudio_model)
+      hash[:schedules] = schedulefixedinterval_from_model(openstudio_model)
 
       hash
     end
@@ -286,6 +288,19 @@ module Honeybee
         sched_hash = ScheduleRulesetAbridged.from_schedule_ruleset(sch_ruleset)
         $schedules[sched_hash[:identifier]] = sched_hash
         result << sched_hash
+      end
+      result
+    end
+
+    # Create HB Schedule Fixed Interval from OpenStudio Schedule Fixed Interval
+    def self.schedulefixedinterval_from_model(openstudio_model)
+      result = []
+      # check if it is a leap year 
+      is_leap_year = openstudio_model.getYearDescription.isLeapYear
+      openstudio_model.getScheduleFixedIntervals.each do |sch_fix_int|
+        sched_fixed_hash = ScheduleFixedIntervalAbridged.from_schedule_fixedinterval(sch_fix_int, is_leap_year)
+        $schedules[sched_fixed_hash[:identifier]] = sched_fixed_hash
+        result << sched_fixed_hash
       end
       result
     end
