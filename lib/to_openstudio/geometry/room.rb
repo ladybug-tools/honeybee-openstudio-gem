@@ -280,7 +280,8 @@ module Honeybee
       # assign service hot water if it exists
       if @hash[:properties][:energy][:service_hot_water]
         shw_space = ServiceHotWaterAbridged.new(@hash[:properties][:energy][:service_hot_water])
-        os_shw_space = shw_space.to_openstudio(openstudio_model, os_space)
+        os_shw_space = shw_space.to_openstudio(
+          openstudio_model, os_space, @hash[:properties][:energy][:shw])
         $shw_for_plant = shw_space
       end
 

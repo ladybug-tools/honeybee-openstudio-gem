@@ -448,7 +448,8 @@ module Honeybee
             shw_hash = $programtype_shw_hash[program_type_id]
             unless shw_hash.nil?
               shw_object = ServiceHotWaterAbridged.new(shw_hash)
-              openstudio_shw = shw_object.to_openstudio(@openstudio_model, openstudio_room)
+              openstudio_shw = shw_object.to_openstudio(
+                @openstudio_model, openstudio_room, room[:properties][:energy][:shw])
               $shw_for_plant = shw_object
             end
           end
@@ -570,7 +571,18 @@ module Honeybee
     def create_hot_water_plant
       # create a hot water plant if there's any service hot water in the model
       unless $shw_for_plant.nil?
-        $shw_for_plant.add_district_hot_water_plant(@openstudio_model)
+        if @hash[:properties][:energy][:shws].nil?
+          shw_list = []
+        else
+          shw_list = @hash[:properties][:energy][:shws]
+        end
+        unless $shw_for_plant.shw_connections['default_district_shw'].nil?
+          def_hash = {}
+          def_hash[:equipment_type] = 'Default_District_SHW'
+          def_hash[:identifier] = 'default_district_shw'
+          shw_list << def_hash
+        end
+        $shw_for_plant.add_hot_water_plants(@openstudio_model, shw_list)
       end
     end
 
