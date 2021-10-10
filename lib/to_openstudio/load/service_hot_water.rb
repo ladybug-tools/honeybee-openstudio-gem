@@ -82,9 +82,6 @@ module Honeybee
         hot_water_pump.setRatedPumpHead(29891)  # default value in Pa from OpenStudio Application
         hot_water_pump.setMotorEfficiency(0.9)  # default value from OpenStudio Application
         hot_water_pump.addToNode(hot_water_plant.supplyInletNode())
-        if shw_hash[:equipment_type] != 'Default_District_SHW'
-          hot_water_pump.setEndUseSubcategory('Water Systems')
-        end
 
         eq_type = shw_hash[:equipment_type]
         if eq_type == 'Default_District_SHW'
