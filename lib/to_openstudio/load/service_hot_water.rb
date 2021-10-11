@@ -168,7 +168,7 @@ module Honeybee
           if eq_type == 'HeatPump_WaterHeater'
             # create a coil for the heat pump
             heat_pump = OpenStudio::Model::CoilWaterHeatingAirToWaterHeatPump.new(openstudio_model)
-            heat_pump.setName('HPWH DX Coil' + @@sys_count.to_s)
+            heat_pump.setName('SHW HPWH DX Coil' + @@sys_count.to_s)
             if shw_hash[:heater_efficiency].nil?
               heat_pump.setRatedCOP(3.5)
             else
