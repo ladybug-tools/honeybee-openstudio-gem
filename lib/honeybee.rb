@@ -79,6 +79,7 @@ require 'honeybee/load/ventilation'
 require 'honeybee/load/setpoint_thermostat'
 require 'honeybee/load/setpoint_humidistat'
 require 'honeybee/load/daylight'
+require 'honeybee/load/process'
 
 # import the schedule objects
 require 'honeybee/schedule/type_limit'

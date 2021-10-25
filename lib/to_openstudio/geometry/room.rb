@@ -382,6 +382,15 @@ module Honeybee
         end
       end
 
+      # assign any process loads if specified
+      if @hash[:properties][:energy][:process_loads]
+        @hash[:properties][:energy][:process_loads].each do |p_load|
+          hb_p_load = ProcessAbridged.new(p_load)
+          os_p_load = hb_p_load.to_openstudio(openstudio_model)
+          os_p_load.setSpace(os_space)
+        end
+      end
+
       os_space
     end
 
