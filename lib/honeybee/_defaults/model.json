@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.44.2",
+    "version": "1.46.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -330,6 +330,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ForcedAirFurnace\" />\n"
     },
     {
+      "name": "fueltypes_model",
+      "x-displayName": "FuelTypes",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FuelTypes\" />\n"
+    },
+    {
       "name": "furnaceequipmenttype_model",
       "x-displayName": "FurnaceEquipmentType",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FurnaceEquipmentType\" />\n"
@@ -535,6 +540,11 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Plastic\" />\n"
     },
     {
+      "name": "processabridged_model",
+      "x-displayName": "ProcessAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ProcessAbridged\" />\n"
+    },
+    {
       "name": "programtype_model",
       "x-displayName": "ProgramType",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ProgramType\" />\n"
@@ -608,6 +618,16 @@
       "name": "roughness_model",
       "x-displayName": "Roughness",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Roughness\" />\n"
+    },
+    {
+      "name": "shwequipmenttype_model",
+      "x-displayName": "SHWEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SHWEquipmentType\" />\n"
+    },
+    {
+      "name": "shwsystem_model",
+      "x-displayName": "SHWSystem",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/SHWSystem\" />\n"
     },
     {
       "name": "scheduleday_model",
@@ -975,6 +995,7 @@
         "floormodifierset_model",
         "floormodifiersetabridged_model",
         "forcedairfurnace_model",
+        "fueltypes_model",
         "furnaceequipmenttype_model",
         "gasequipment_model",
         "gasequipmentabridged_model",
@@ -1010,6 +1031,7 @@
         "peopleabridged_model",
         "plane_model",
         "plastic_model",
+        "processabridged_model",
         "programtype_model",
         "programtypeabridged_model",
         "psz_model",
@@ -1054,6 +1076,8 @@
         "shademodifiersetabridged_model",
         "shadepropertiesabridged_model",
         "shaderadiancepropertiesabridged_model",
+        "shwequipmenttype_model",
+        "shwsystem_model",
         "slatorientation_model",
         "stategeometryabridged_model",
         "surface_model",
@@ -2269,7 +2293,7 @@
       },
       "PeopleAbridged": {
         "title": "PeopleAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2298,6 +2322,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2350,7 +2379,7 @@
       },
       "LightingAbridged": {
         "title": "LightingAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2379,6 +2408,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2432,7 +2466,7 @@
       },
       "ElectricEquipmentAbridged": {
         "title": "ElectricEquipmentAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2462,9 +2496,14 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "radiant_fraction": {
             "title": "Radiant Fraction",
-            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "description": "Number for the amount of long-wave radiation heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -2473,7 +2512,7 @@
           },
           "latent_fraction": {
             "title": "Latent Fraction",
-            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "description": "Number for the amount of latent heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -2506,7 +2545,7 @@
       },
       "GasEquipmentAbridged": {
         "title": "GasEquipmentAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2536,9 +2575,14 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "radiant_fraction": {
             "title": "Radiant Fraction",
-            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "description": "Number for the amount of long-wave radiation heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -2547,7 +2591,7 @@
           },
           "latent_fraction": {
             "title": "Latent Fraction",
-            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "description": "Number for the amount of latent heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -2580,7 +2624,7 @@
       },
       "ServiceHotWaterAbridged": {
         "title": "ServiceHotWaterAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2609,6 +2653,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2653,7 +2702,7 @@
       },
       "InfiltrationAbridged": {
         "title": "InfiltrationAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2682,6 +2731,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2721,7 +2775,7 @@
       },
       "VentilationAbridged": {
         "title": "VentilationAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -2736,6 +2790,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2820,6 +2879,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -2989,7 +3053,7 @@
       },
       "InternalMassAbridged": {
         "title": "InternalMassAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -3019,6 +3083,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "InternalMassAbridged",
@@ -3031,6 +3100,123 @@
           "identifier",
           "construction",
           "area"
+        ],
+        "additionalProperties": false
+      },
+      "FuelTypes": {
+        "title": "FuelTypes",
+        "description": "Designates the acceptable fuel types for process loads.",
+        "enum": [
+          "Electricity",
+          "NaturalGas",
+          "Propane",
+          "FuelOilNo1",
+          "FuelOilNo2",
+          "Diesel",
+          "Gasoline",
+          "Coal",
+          "Steam",
+          "DistrictHeating",
+          "DistrictCooling",
+          "OtherFuel1",
+          "OtherFuel2",
+          "None"
+        ],
+        "type": "string"
+      },
+      "ProcessAbridged": {
+        "title": "ProcessAbridged",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "watts": {
+            "title": "Watts",
+            "description": "A number for the process load power in Watts.",
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "description": "Identifier of the schedule for the use of the process over the course of the year. The type of this schedule should be Fractional and the fractional values will get multiplied by the watts to yield a complete equipment profile.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "fuel_type": {
+            "description": "Text to denote the type of fuel consumed by the process. Using the \"None\" type indicates that no end uses will be associated with the process, only the zone gains.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FuelTypes"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ProcessAbridged",
+            "pattern": "^ProcessAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "end_use_category": {
+            "title": "End Use Category",
+            "description": "Text to indicate the end-use subcategory, which will identify the process load in the end use output. For example, \u201cCooking\u201d, \u201cClothes Drying\u201d, etc. A new meter for reporting is created for each unique subcategory.",
+            "default": "Process",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "radiant_fraction": {
+            "title": "Radiant Fraction",
+            "description": "Number for the amount of long-wave radiation heat given off by the process load. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "latent_fraction": {
+            "title": "Latent Fraction",
+            "description": "Number for the amount of latent heat given off by the process load. Default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "lost_fraction": {
+            "title": "Lost Fraction",
+            "description": "Number for the amount of \u201clost\u201d heat being given off by the process load. The default value is 0.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier",
+          "watts",
+          "schedule",
+          "fuel_type"
         ],
         "additionalProperties": false
       },
@@ -3063,6 +3249,13 @@
           "hvac": {
             "title": "Hvac",
             "description": "An optional identifier of a HVAC system (such as an IdealAirSystem) that specifies how the Room is conditioned. If None, it will be assumed that the Room is not conditioned.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "shw": {
+            "title": "Shw",
+            "description": "An optional identifier of a Service Hot Water (SHW) system that specifies how the hot water load of the Room is met. If None, the hot water load will be met with a generic system that only measures thermal loadand does not account for system efficiencies.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -3163,6 +3356,14 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/InternalMassAbridged"
+            }
+          },
+          "process_loads": {
+            "title": "Process Loads",
+            "description": "An optional list of of Process objects for process loads within the room. These can represent kilns, manufacturing equipment, and various industrial processes. They can also be used to represent wood burning fireplaces or certain pieces of equipment to be separated from the other end uses.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessAbridged"
             }
           }
         },
@@ -3367,6 +3568,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyMaterial",
@@ -3444,6 +3650,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyMaterialNoMass",
@@ -3510,6 +3721,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -3679,6 +3895,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGas",
@@ -3738,6 +3959,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "OpaqueConstructionAbridged",
@@ -3782,6 +4008,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "WindowConstructionAbridged",
@@ -3813,6 +4044,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -3868,6 +4104,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -4117,6 +4358,7 @@
               {
                 "identifier": "Generic Roof Membrane",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.01,
@@ -4130,6 +4372,7 @@
               {
                 "identifier": "Generic Acoustic Tile",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumSmooth",
                 "thickness": 0.02,
@@ -4143,6 +4386,7 @@
               {
                 "identifier": "Generic 25mm Wood",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumSmooth",
                 "thickness": 0.0254,
@@ -4156,6 +4400,7 @@
               {
                 "identifier": "Generic HW Concrete",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.2,
@@ -4169,6 +4414,7 @@
               {
                 "identifier": "Generic Window Air Gap",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyWindowMaterialGas",
                 "thickness": 0.0127,
                 "gas_type": "Air"
@@ -4176,6 +4422,7 @@
               {
                 "identifier": "Generic Gypsum Board",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumSmooth",
                 "thickness": 0.0127,
@@ -4189,6 +4436,7 @@
               {
                 "identifier": "Generic Wall Air Gap",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "Smooth",
                 "thickness": 0.1,
@@ -4202,6 +4450,7 @@
               {
                 "identifier": "Generic Ceiling Air Gap",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "Smooth",
                 "thickness": 0.1,
@@ -4215,6 +4464,7 @@
               {
                 "identifier": "Generic Brick",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.1,
@@ -4228,6 +4478,7 @@
               {
                 "identifier": "Generic 50mm Insulation",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.05,
@@ -4241,6 +4492,7 @@
               {
                 "identifier": "Generic Low-e Glass",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyWindowMaterialGlazing",
                 "thickness": 0.006,
                 "solar_transmittance": 0.45,
@@ -4259,6 +4511,7 @@
               {
                 "identifier": "Generic Painted Metal",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "Smooth",
                 "thickness": 0.0015,
@@ -4272,6 +4525,7 @@
               {
                 "identifier": "Generic LW Concrete",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.1,
@@ -4285,6 +4539,7 @@
               {
                 "identifier": "Generic 25mm Insulation",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
                 "thickness": 0.05,
@@ -4298,6 +4553,7 @@
               {
                 "identifier": "Generic Clear Glass",
                 "display_name": null,
+                "user_data": null,
                 "type": "EnergyWindowMaterialGlazing",
                 "thickness": 0.006,
                 "solar_transmittance": 0.77,
@@ -4340,6 +4596,7 @@
               {
                 "identifier": "Generic Interior Door",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic 25mm Wood"
@@ -4348,6 +4605,7 @@
               {
                 "identifier": "Generic Single Pane",
                 "display_name": null,
+                "user_data": null,
                 "type": "WindowConstructionAbridged",
                 "materials": [
                   "Generic Clear Glass"
@@ -4356,6 +4614,7 @@
               {
                 "identifier": "Generic Shade",
                 "display_name": null,
+                "user_data": null,
                 "type": "ShadeConstruction",
                 "solar_reflectance": 0.35,
                 "visible_reflectance": 0.35,
@@ -4364,6 +4623,7 @@
               {
                 "identifier": "Generic Interior Ceiling",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic LW Concrete",
@@ -4374,6 +4634,7 @@
               {
                 "identifier": "Generic Interior Wall",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Gypsum Board",
@@ -4384,6 +4645,7 @@
               {
                 "identifier": "Generic Exposed Floor",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Painted Metal",
@@ -4395,6 +4657,7 @@
               {
                 "identifier": "Generic Interior Floor",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Acoustic Tile",
@@ -4405,6 +4668,7 @@
               {
                 "identifier": "Generic Ground Slab",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic 50mm Insulation",
@@ -4414,6 +4678,7 @@
               {
                 "identifier": "Generic Roof",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Roof Membrane",
@@ -4426,6 +4691,7 @@
               {
                 "identifier": "Generic Exterior Wall",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Brick",
@@ -4438,6 +4704,7 @@
               {
                 "identifier": "Generic Underground Wall",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic 50mm Insulation",
@@ -4449,6 +4716,7 @@
               {
                 "identifier": "Generic Air Boundary",
                 "display_name": null,
+                "user_data": null,
                 "type": "AirBoundaryConstructionAbridged",
                 "air_mixing_per_area": 0.1,
                 "air_mixing_schedule": "Always On"
@@ -4456,6 +4724,7 @@
               {
                 "identifier": "Generic Underground Roof",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic 50mm Insulation",
@@ -4467,6 +4736,7 @@
               {
                 "identifier": "Generic Double Pane",
                 "display_name": null,
+                "user_data": null,
                 "type": "WindowConstructionAbridged",
                 "materials": [
                   "Generic Low-e Glass",
@@ -4477,6 +4747,7 @@
               {
                 "identifier": "Generic Exterior Door",
                 "display_name": null,
+                "user_data": null,
                 "type": "OpaqueConstructionAbridged",
                 "materials": [
                   "Generic Painted Metal",
@@ -4622,6 +4893,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "ConstructionSetAbridged",
@@ -4728,6 +5004,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -4903,6 +5184,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialSimpleGlazSys",
@@ -4979,6 +5265,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -5088,6 +5379,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "EnergyWindowMaterialGasMixture",
@@ -5155,6 +5451,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "WindowConstruction",
@@ -5186,6 +5487,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -5350,6 +5656,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -5941,6 +6252,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "ScheduleRuleset",
@@ -6022,6 +6338,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -6123,6 +6444,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "WindowConstructionShade",
@@ -6211,6 +6537,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -6392,6 +6723,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "AirBoundaryConstruction",
@@ -6442,6 +6778,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -6553,6 +6894,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "WindowConstructionShadeAbridged",
@@ -6632,6 +6978,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "WindowConstructionDynamicAbridged",
@@ -6689,6 +7040,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -6877,6 +7233,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -6970,6 +7331,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7080,6 +7446,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7180,6 +7551,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7236,6 +7612,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7344,6 +7725,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7435,6 +7821,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7522,6 +7913,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7628,6 +8024,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7688,6 +8089,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7744,6 +8150,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7804,6 +8215,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7867,6 +8283,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
@@ -7933,6 +8354,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -7996,6 +8422,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -8053,6 +8484,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "vintage": {
             "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
             "default": "ASHRAE_2019",
@@ -8084,9 +8520,21 @@
         ],
         "additionalProperties": false
       },
-      "ProgramTypeAbridged": {
-        "title": "ProgramTypeAbridged",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+      "SHWEquipmentType": {
+        "title": "SHWEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Gas_WaterHeater",
+          "Electric_WaterHeater",
+          "HeatPump_WaterHeater",
+          "Gas_TanklessHeater",
+          "Electric_TanklessHeater"
+        ],
+        "type": "string"
+      },
+      "SHWSystem": {
+        "title": "SHWSystem",
+        "description": "Provides a model for a Service Hot Water system.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8101,6 +8549,94 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "default": "SHWSystem",
+            "pattern": "^SHWSystem$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "description": "Text to indicate the type of air-side economizer used on the ideal air system. Economizers will mix in a greater amount of outdoor air to cool the zone (rather than running the cooling system) when the zone needs cooling and the outdoor air is cooler than the zone.",
+            "default": "Gas_WaterHeater",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SHWEquipmentType"
+              }
+            ]
+          },
+          "heater_efficiency": {
+            "title": "Heater Efficiency",
+            "description": "A number for the efficiency of the heater within the system. For Gas systems, this is the efficiency of the burner. For HeatPump systems, this is the rated COP of the system. For electric systems, this should usually be set to 1. If set to Autocalculate, this value will automatically be set based on the equipment_type. Gas_WaterHeater - 0.8, Electric_WaterHeater - 1.0, HeatPump_WaterHeater - 3.5, Gas_TanklessHeater - 0.8, Electric_TanklessHeater - 1.0.",
+            "default": {
+              "type": "Autocalculate"
+            },
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "format": "double"
+              },
+              {
+                "$ref": "#/components/schemas/Autocalculate"
+              }
+            ]
+          },
+          "ambient_condition": {
+            "title": "Ambient Condition",
+            "description": "A number for the ambient temperature in which the hot water tank is located [C]. This can also be the identifier of a Room in which the tank is located.",
+            "default": 22,
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "double"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "ambient_loss_coefficient": {
+            "title": "Ambient Loss Coefficient",
+            "description": "A number for the loss of heat from the water heater tank to the surrounding ambient conditions [W/K].",
+            "default": 6,
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "ProgramTypeAbridged": {
+        "title": "ProgramTypeAbridged",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8189,7 +8725,7 @@
       },
       "People": {
         "title": "People",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8223,6 +8759,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8280,7 +8821,7 @@
       },
       "Lighting": {
         "title": "Lighting",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8314,6 +8855,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8367,7 +8913,7 @@
       },
       "ElectricEquipment": {
         "title": "ElectricEquipment",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8402,9 +8948,14 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "radiant_fraction": {
             "title": "Radiant Fraction",
-            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "description": "Number for the amount of long-wave radiation heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -8413,7 +8964,7 @@
           },
           "latent_fraction": {
             "title": "Latent Fraction",
-            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "description": "Number for the amount of latent heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -8446,7 +8997,7 @@
       },
       "GasEquipment": {
         "title": "GasEquipment",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8481,9 +9032,14 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "radiant_fraction": {
             "title": "Radiant Fraction",
-            "description": "Number for the amount of long-wave radiation heat given off by electric equipment. Default value is 0.",
+            "description": "Number for the amount of long-wave radiation heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -8492,7 +9048,7 @@
           },
           "latent_fraction": {
             "title": "Latent Fraction",
-            "description": "Number for the amount of latent heat given off by electricequipment. Default value is 0.",
+            "description": "Number for the amount of latent heat given off by equipment. Default value is 0.",
             "default": 0,
             "minimum": 0,
             "maximum": 1,
@@ -8525,7 +9081,7 @@
       },
       "ServiceHotWater": {
         "title": "ServiceHotWater",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8559,6 +9115,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8603,7 +9164,7 @@
       },
       "Infiltration": {
         "title": "Infiltration",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8637,6 +9198,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8676,7 +9242,7 @@
       },
       "Ventilation": {
         "title": "Ventilation",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8691,6 +9257,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8791,6 +9362,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "Setpoint",
@@ -8832,7 +9408,7 @@
       },
       "ProgramType": {
         "title": "ProgramType",
-        "description": "Base class for all objects requiring a valid EnergyPlus identifier.",
+        "description": "Base class for all objects requiring an EnergyPlus identifier and user_data.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8847,6 +9423,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -8966,6 +9547,11 @@
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
           },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
           "type": {
             "title": "Type",
             "default": "ScheduleRulesetAbridged",
@@ -9045,6 +9631,11 @@
             "title": "Display Name",
             "description": "Display name of the object with no character restrictions.",
             "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
           },
           "type": {
             "title": "Type",
@@ -9218,6 +9809,7 @@
                 {
                   "identifier": "Generic Roof Membrane",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.01,
@@ -9231,6 +9823,7 @@
                 {
                   "identifier": "Generic Acoustic Tile",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumSmooth",
                   "thickness": 0.02,
@@ -9244,6 +9837,7 @@
                 {
                   "identifier": "Generic 25mm Wood",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumSmooth",
                   "thickness": 0.0254,
@@ -9257,6 +9851,7 @@
                 {
                   "identifier": "Generic HW Concrete",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.2,
@@ -9270,6 +9865,7 @@
                 {
                   "identifier": "Generic Window Air Gap",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyWindowMaterialGas",
                   "thickness": 0.0127,
                   "gas_type": "Air"
@@ -9277,6 +9873,7 @@
                 {
                   "identifier": "Generic Gypsum Board",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumSmooth",
                   "thickness": 0.0127,
@@ -9290,6 +9887,7 @@
                 {
                   "identifier": "Generic Wall Air Gap",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "Smooth",
                   "thickness": 0.1,
@@ -9303,6 +9901,7 @@
                 {
                   "identifier": "Generic Ceiling Air Gap",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "Smooth",
                   "thickness": 0.1,
@@ -9316,6 +9915,7 @@
                 {
                   "identifier": "Generic Brick",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.1,
@@ -9329,6 +9929,7 @@
                 {
                   "identifier": "Generic 50mm Insulation",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.05,
@@ -9342,6 +9943,7 @@
                 {
                   "identifier": "Generic Low-e Glass",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyWindowMaterialGlazing",
                   "thickness": 0.006,
                   "solar_transmittance": 0.45,
@@ -9360,6 +9962,7 @@
                 {
                   "identifier": "Generic Painted Metal",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "Smooth",
                   "thickness": 0.0015,
@@ -9373,6 +9976,7 @@
                 {
                   "identifier": "Generic LW Concrete",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.1,
@@ -9386,6 +9990,7 @@
                 {
                   "identifier": "Generic 25mm Insulation",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
                   "thickness": 0.05,
@@ -9399,6 +10004,7 @@
                 {
                   "identifier": "Generic Clear Glass",
                   "display_name": null,
+                  "user_data": null,
                   "type": "EnergyWindowMaterialGlazing",
                   "thickness": 0.006,
                   "solar_transmittance": 0.77,
@@ -9419,6 +10025,7 @@
                 {
                   "identifier": "Generic Interior Door",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic 25mm Wood"
@@ -9427,6 +10034,7 @@
                 {
                   "identifier": "Generic Single Pane",
                   "display_name": null,
+                  "user_data": null,
                   "type": "WindowConstructionAbridged",
                   "materials": [
                     "Generic Clear Glass"
@@ -9435,6 +10043,7 @@
                 {
                   "identifier": "Generic Shade",
                   "display_name": null,
+                  "user_data": null,
                   "type": "ShadeConstruction",
                   "solar_reflectance": 0.35,
                   "visible_reflectance": 0.35,
@@ -9443,6 +10052,7 @@
                 {
                   "identifier": "Generic Interior Ceiling",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic LW Concrete",
@@ -9453,6 +10063,7 @@
                 {
                   "identifier": "Generic Interior Wall",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Gypsum Board",
@@ -9463,6 +10074,7 @@
                 {
                   "identifier": "Generic Exposed Floor",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Painted Metal",
@@ -9474,6 +10086,7 @@
                 {
                   "identifier": "Generic Interior Floor",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Acoustic Tile",
@@ -9484,6 +10097,7 @@
                 {
                   "identifier": "Generic Ground Slab",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic 50mm Insulation",
@@ -9493,6 +10107,7 @@
                 {
                   "identifier": "Generic Roof",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Roof Membrane",
@@ -9505,6 +10120,7 @@
                 {
                   "identifier": "Generic Exterior Wall",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Brick",
@@ -9517,6 +10133,7 @@
                 {
                   "identifier": "Generic Underground Wall",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic 50mm Insulation",
@@ -9528,6 +10145,7 @@
                 {
                   "identifier": "Generic Air Boundary",
                   "display_name": null,
+                  "user_data": null,
                   "type": "AirBoundaryConstructionAbridged",
                   "air_mixing_per_area": 0.1,
                   "air_mixing_schedule": "Always On"
@@ -9535,6 +10153,7 @@
                 {
                   "identifier": "Generic Underground Roof",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic 50mm Insulation",
@@ -9546,6 +10165,7 @@
                 {
                   "identifier": "Generic Double Pane",
                   "display_name": null,
+                  "user_data": null,
                   "type": "WindowConstructionAbridged",
                   "materials": [
                     "Generic Low-e Glass",
@@ -9556,6 +10176,7 @@
                 {
                   "identifier": "Generic Exterior Door",
                   "display_name": null,
+                  "user_data": null,
                   "type": "OpaqueConstructionAbridged",
                   "materials": [
                     "Generic Painted Metal",
@@ -9758,6 +10379,14 @@
                   "$ref": "#/components/schemas/GasUnitHeater"
                 }
               ]
+            }
+          },
+          "shws": {
+            "title": "Shws",
+            "description": "List of all unique Service Hot Water (SHW) systems in the Model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SHWSystem"
             }
           },
           "program_types": {
@@ -10873,9 +11502,9 @@
           },
           "refraction_index": {
             "title": "Refraction Index",
-            "description": "A value between 0 and 1 for the index of refraction.",
+            "description": "A value greater than 1 for the index of refraction. Typical values are 1.52 for float glass and 1.4 for ETFE.",
             "default": 1.52,
-            "minimum": 0,
+            "exclusiveMinimum": 1,
             "type": "number",
             "format": "double"
           }
@@ -11341,6 +11970,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Glass"
+                },
+                {
+                  "$ref": "#/components/schemas/Trans"
                 }
               ]
             }
@@ -12980,7 +13612,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.44.2",
+            "default": "1.46.1",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

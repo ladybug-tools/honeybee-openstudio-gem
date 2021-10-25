@@ -60,6 +60,9 @@ module Honeybee
         os_gas_equip.setSchedule(gas_equipment_schedule_object)
       end
 
+      # ensure that it's always reported under electric equipment
+      os_gas_equip.setEndUseSubcategory('Gas Equipment')
+
       # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
         os_gas_equip_def.setFractionRadiant(@hash[:radiant_fraction])

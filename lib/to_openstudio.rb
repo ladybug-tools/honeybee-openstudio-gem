@@ -79,6 +79,7 @@ require 'to_openstudio/load/ventilation'
 require 'to_openstudio/load/setpoint_thermostat'
 require 'to_openstudio/load/setpoint_humidistat'
 require 'to_openstudio/load/daylight'
+require 'to_openstudio/load/process'
 
 # extend the schedule objects
 require 'to_openstudio/schedule/type_limit'

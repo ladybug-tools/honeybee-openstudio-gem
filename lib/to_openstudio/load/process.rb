@@ -29,62 +29,69 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/load/electric_equipment'
+require 'honeybee/load/process'
 
 require 'to_openstudio/model_object'
 
 module Honeybee
-  class ElectricEquipmentAbridged
+  class ProcessAbridged
 
     def find_existing_openstudio_object(openstudio_model)
-      model_electric_equipment = openstudio_model.getElectricEquipmentByName(@hash[:identifier])
-      return model_electric_equipment.get unless model_electric_equipment.empty?
+      model_other_equipment = openstudio_model.getOtherEquipmentByName(@hash[:identifier])
+      return model_other_equipment.get unless model_other_equipment.empty?
       nil
     end
 
     def to_openstudio(openstudio_model)
-      # create electrical equipment and set identifier
-      os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
-      os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
-      os_electric_equip_def.setName(@hash[:identifier])
-      os_electric_equip.setName(@hash[:identifier])
+      # create process load and set identifier
+      os_other_equip_def = OpenStudio::Model::OtherEquipmentDefinition.new(openstudio_model)
+      os_other_equip = OpenStudio::Model::OtherEquipment.new(os_other_equip_def)
+      os_other_equip_def.setName(@hash[:identifier])
+      os_other_equip.setName(@hash[:identifier])
 
-      # assign watts per area
-      os_electric_equip_def.setWattsperSpaceFloorArea(@hash[:watts_per_area])
+      # assign watts
+      os_other_equip_def.setDesignLevel(@hash[:watts])
 
       # assign schedule
-      electric_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
-      unless electric_equipment_schedule.empty?
-        electric_equipment_schedule_object = electric_equipment_schedule.get
-        os_electric_equip.setSchedule(electric_equipment_schedule_object)
+      other_equipment_schedule = openstudio_model.getScheduleByName(@hash[:schedule])
+      unless other_equipment_schedule.empty?
+        other_equipment_schedule_object = other_equipment_schedule.get
+        os_other_equip.setSchedule(other_equipment_schedule_object)
       end
 
-      # ensure that it's always reported under electric equipment
-      os_electric_equip.setEndUseSubcategory('Electric Equipment')
+      # assign the fuel type
+      os_other_equip.setFuelType(@hash[:fuel_type])
+
+      # assign the end use category if it exists
+      if @hash[:end_use_category]
+        os_other_equip.setEndUseSubcategory(@hash[:end_use_category])
+      else
+        os_other_equip.setEndUseSubcategory(defaults[:end_use_category][:default])
+      end
 
       # assign radiant fraction if it exists
       if @hash[:radiant_fraction]
-        os_electric_equip_def.setFractionRadiant(@hash[:radiant_fraction])
+        os_other_equip_def.setFractionRadiant(@hash[:radiant_fraction])
       else
-        os_electric_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
+        os_other_equip_def.setFractionRadiant(defaults[:radiant_fraction][:default])
       end
 
       # assign latent fraction if it exists
       if @hash[:latent_fraction]
-        os_electric_equip_def.setFractionLatent(@hash[:latent_fraction])
+        os_other_equip_def.setFractionLatent(@hash[:latent_fraction])
       else
-        os_electric_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
+        os_other_equip_def.setFractionLatent(defaults[:latent_fraction][:default])
       end
 
       # assign lost fraction if it exists
       if @hash[:lost_fraction]
-        os_electric_equip_def.setFractionLost(@hash[:lost_fraction])
+        os_other_equip_def.setFractionLost(@hash[:lost_fraction])
       else
-        os_electric_equip_def.setFractionLost(defaults[:lost_fraction][:default])
+        os_other_equip_def.setFractionLost(defaults[:lost_fraction][:default])
       end
 
-      os_electric_equip
+      os_other_equip
     end
 
-  end #ElectricEquipmentAbridged
+  end #ProcessAbridged
 end #Honeybee
