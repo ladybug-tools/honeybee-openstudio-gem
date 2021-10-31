@@ -48,6 +48,9 @@ RSpec.describe Honeybee do
   it 'can load OSM and translate StandardOpaqueMaterial  to Honeybee' do
 
     openstudio_model = load_file('energyMaterial.osm')
+    material = openstudio_model.get.getOpaqueMaterialByName('1/2IN Gypsum')
+    material = material.get
+    #material.setDisplayName('название теста')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -58,6 +61,7 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:type]).to eq 'EnergyMaterial'
     expect(honeybee[0][:identifier]).to eq '1/2IN Gypsum'
     expect(honeybee[0][:conductivity]).to eq 0.16
+    #expect(honeybee[0][:display_name]).to eq 'название теста'
     
     FileUtils.mkdir_p(output_dir)
     File.open(File.join(output_dir,'energyMaterial.hbjson'), 'w') do |f|
@@ -69,6 +73,9 @@ RSpec.describe Honeybee do
   it 'can load OSM and translate MasslessOpaqueMaterial to Honeybee' do
 
     openstudio_model = load_file('matNoMass.osm')
+    material = openstudio_model.get.getMasslessOpaqueMaterialByName('CP02 CARPET PAD')
+    material = material.get
+    material.setDisplayName('テスト名')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -79,6 +86,7 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:type]).to eq 'EnergyMaterialNoMass'
     expect(honeybee[0][:identifier]).to eq 'CP02 CARPET PAD'
     expect(honeybee[0][:roughness]).to eq 'Smooth'
+    expect(honeybee[0][:display_name]).to eq 'テスト名'
 
     File.open(File.join(output_dir,'energyMaterialNoMass.hbjson'), 'w') do |f|
       f.puts JSON::pretty_generate(honeybee[0])
@@ -87,6 +95,9 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate SimpleGlazingSystem to Honeybee' do
     openstudio_model = load_file('simGlazSys.osm')
+    material = openstudio_model.get.getSimpleGlazingByName('Simple Glazing')
+    material = material.get
+    #material.setDisplayName('건설명')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -96,6 +107,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialSimpleGlazSys'
     expect(honeybee[0][:identifier]).to eq 'Simple Glazing'
+    #expect(honeybee[0][:display_name]).to eq '건설명'
     expect(honeybee[0][:shgc]).to eq 0.39
 
     File.open(File.join(output_dir,'simGlazSys.hbjson'), 'w') do |f|
@@ -105,7 +117,10 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate WindowMaterialGlazing to Honeybee' do
     openstudio_model = load_file('winMatGlaz.osm')
-
+    material = openstudio_model.get.getStandardGlazingByName('Clear 3mm')
+    material = material.get
+    material.setDisplayName('Clear 3mm!@#$%^&*()')
+  
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
 
@@ -114,6 +129,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGlazing'
     expect(honeybee[0][:identifier]).to eq 'Clear 3mm'
+    expect(honeybee[0][:display_name]).to eq 'Clear 3mm!@#$%^&*()'
     expect(honeybee[0][:solar_transmittance]).to eq 0.837
     expect(honeybee[0][:emissivity]).to eq 0.84
     expect(honeybee[0][:dirt_correction]).to eq 1
@@ -125,6 +141,9 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate WindowMaterialBlind to Honeybee' do
     openstudio_model = load_file('winMatBlind.osm')
+    material = openstudio_model.get.getBlindByName('Window Material Blind 1')
+    material = material.get
+    material.setDisplayName('Window Material Blind {}:"<>?[];}')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -134,6 +153,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialBlind'
     expect(honeybee[0][:identifier]).to eq 'Window Material Blind 1'
+    expect(honeybee[0][:display_name]).to eq 'Window Material Blind {}:"<>?[];}'
     expect(honeybee[0][:slat_width]).to eq 0.025
     expect(honeybee[0][:slat_separation]).to eq 0.01875
     expect(honeybee[0][:beam_solar_reflectance]).to eq 0.5
@@ -145,6 +165,9 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate WindowMaterialGas to Honeybee' do
     openstudio_model = load_file('winMatGas.osm')
+    material = openstudio_model.get.getGasByName('Window Material Gas 1')
+    material = material.get
+    material.setDisplayName('Window Material Gas 1 [];,./')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -154,6 +177,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGas'
     expect(honeybee[0][:identifier]).to eq 'Window Material Gas 1'
+    expect(honeybee[0][:display_name]).to eq 'Window Material Gas 1 [];,./'
     expect(honeybee[0][:thickness]).to eq 0.003
     expect(honeybee[0][:gas_type]).to eq 'Air'
 
@@ -164,6 +188,9 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate WindowMaterialGasCustom to Honeybee' do
     openstudio_model = load_file('winMatGasCustom.osm')
+    material = openstudio_model.get.getGasByName('Window Material Gas Custom')
+    material = material.get
+    material.setDisplayName('Window Material Gas Custom')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -173,6 +200,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGasCustom'
     expect(honeybee[0][:identifier]).to eq 'Window Material Gas Custom'
+    expect(honeybee[0][:display_name]).to eq 'Window Material Gas Custom'
     expect(honeybee[0][:thickness]).to eq 0.003
     expect(honeybee[0][:conductivity_coeff_a]).to eq 0.0146
     expect(honeybee[0][:specific_heat_coeff_a]).to eq 827.73
@@ -185,6 +213,9 @@ RSpec.describe Honeybee do
 
   it 'can load OSM and translate WindowMaterialGasMixture to Honeybee' do
     openstudio_model = load_file('winMatGasMixture.osm')
+    material = openstudio_model.get.getGasMixtureByName('Window Material Gas Mixture 1')
+    material = material.get
+    material.setDisplayName('Window Material Gas Mixture 1')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -194,8 +225,8 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialGasMixture'
     expect(honeybee[0][:identifier]).to eq 'Window Material Gas Mixture 1'
+    expect(honeybee[0][:display_name]).to eq 'Window Material Gas Mixture 1'
     expect(honeybee[0][:thickness]).to eq 0.003
-
     expect(honeybee[0][:gas_types][0]).to eq 'Air'
     expect(honeybee[0][:gas_fractions][0]).to eq 0.96
     expect(honeybee[0][:gas_types][2]).to eq 'Krypton'

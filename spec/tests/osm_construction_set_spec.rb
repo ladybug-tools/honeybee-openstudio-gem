@@ -42,7 +42,9 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction_set/constructionSet.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-    
+    const_set = openstudio_model.get.getDefaultConstructionSetByName('189.1-2009 - CZ1 - Office')
+    const_set = const_set.get
+    const_set.setDisplayName('Test Name áéíóúüñ¿¡')
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.constructionsets_from_model(openstudio_model.get)
 
@@ -51,6 +53,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'ConstructionSetAbridged'
     expect(honeybee[0][:identifier]).to eq '189.1-2009 - CZ1 - Office'
+    expect(honeybee[0][:display_name]).to eq 'Test Name áéíóúüñ¿¡'
     expect(honeybee[0][:wall_set]).not_to be nil
     expect(honeybee[0][:wall_set][:interior_construction]).to eq 'Interior Wall'
     expect(honeybee[0][:floor_set]).not_to be nil

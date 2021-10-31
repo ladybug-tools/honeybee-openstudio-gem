@@ -76,6 +76,8 @@ RSpec.describe Honeybee do
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
+    expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((openstudio_space.displayName.get)).to eq 'テスト名'
 
     openstudio_story = openstudio_space.buildingStory
     expect(openstudio_story.empty?).to be false
@@ -89,6 +91,7 @@ RSpec.describe Honeybee do
     openstudio_construction = openstudio_surface.construction
     expect(openstudio_construction.empty?).to be false
     openstudio_construction = openstudio_construction.get
+
     openstudio_layered_construction = openstudio_construction.to_LayeredConstruction
     expect(openstudio_layered_construction.empty?).to be false
     openstudio_layered_construction = openstudio_layered_construction.get
@@ -107,6 +110,7 @@ RSpec.describe Honeybee do
 
     schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
     expect(schedule_ruleset).not_to be nil
+    expect((schedule_ruleset.get).additionalProperties.featureNames).to include ("DisplayName")
 
     infilt = openstudio_model.getSpaceInfiltrationDesignFlowRates
     expect(infilt.size).to be 1

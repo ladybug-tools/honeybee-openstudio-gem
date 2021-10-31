@@ -48,7 +48,9 @@ module Honeybee
       os_simple_glazing.setName(@hash[:identifier])
       os_simple_glazing.setUFactor(@hash[:u_factor])
       os_simple_glazing.setSolarHeatGainCoefficient(@hash[:shgc])
-
+      unless @hash[:display_name].nil?
+        os_simple_glazing.setDisplayName(@hash[:display_name])
+      end
       # assign visible transmittance
       if @hash[:vt]
         os_simple_glazing.setVisibleTransmittance(@hash[:vt])

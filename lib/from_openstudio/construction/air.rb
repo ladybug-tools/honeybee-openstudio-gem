@@ -41,6 +41,9 @@ module Honeybee
         hash[:type] = 'AirBoundaryConstructionAbridged'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(construction.nameString)
+        unless construction.displayName.empty?
+          hash[:display_name] = (construction.displayName.get).force_encoding("UTF-8")
+        end
         # check if boost optional object is empty
         unless construction.simpleMixingSchedule.empty?
           schedule = construction.simpleMixingSchedule.get

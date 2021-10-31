@@ -46,7 +46,9 @@ module Honeybee
       # create schedule type limits openstudio object
       os_type_limit = OpenStudio::Model::ScheduleTypeLimits.new(openstudio_model)
       os_type_limit.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_type_limit.setDisplayName(@hash[:display_name])
+      end
       if @hash[:lower_limit] != nil and @hash[:lower_limit] != {:type => 'NoLimit'}
         os_type_limit.setLowerLimitValue(@hash[:lower_limit])
       end

@@ -114,6 +114,10 @@ module Honeybee
           os_subsurface.setName(@hash[:identifier])
         end
 
+        unless @hash[:display_name].nil?
+          os_subsurface.setDisplayName(@hash[:display_name])
+        end
+
         # assign the construction if it exists
         if @hash[:properties][:energy][:construction]
           construction_identifier = @hash[:properties][:energy][:construction]

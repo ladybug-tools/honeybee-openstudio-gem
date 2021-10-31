@@ -46,7 +46,9 @@ module Honeybee
       # create the gas mixture
       os_gas_mixture = OpenStudio::Model::GasMixture.new(openstudio_model)
       os_gas_mixture.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_gas_mixture.setDisplayName(@hash[:display_name])
+      end
       # set the thickness
       if @hash[:thickness]
         os_gas_mixture.setThickness(@hash[:thickness])

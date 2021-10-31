@@ -43,6 +43,7 @@ module Honeybee
       :universal_newline => true       # Always break lines with \n
     }
 
+
     def method_missing(sym, *args)
       name = sym.to_s
       aname = name.sub('=', '')
@@ -116,6 +117,17 @@ module Honeybee
       encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
     end
 
+    # Create methods to get and set display name 
+    if !OpenStudio::Model::ModelObject.method_defined?(:displayName)
+      OpenStudio::Model::ModelObject.class_eval do
+        define_method(:displayName) do
+          additionalProperties.getFeatureAsString("DisplayName")
+        end
+        define_method(:setDisplayName) do |value|
+          additionalProperties.setFeature("DisplayName", value)
+        end
+      end
+    end
 
   end # ModelObject
 end # Honeybee

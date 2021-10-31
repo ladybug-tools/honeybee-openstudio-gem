@@ -1,6 +1,7 @@
 {
     "type": "ScheduleFixedIntervalAbridged",
     "identifier": "Solstice Increasing",
+    "display_name": "Solstice Increasing%",
     "values": [
         0.0,
         0.007,

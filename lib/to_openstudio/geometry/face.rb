@@ -60,6 +60,9 @@ module Honeybee
       # create the openstudio surface and assign the type
       os_surface = OpenStudio::Model::Surface.new(reordered_vertices, openstudio_model)
       os_surface.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_surface.setDisplayName(@hash[:display_name])
+      end
       os_surface.setSurfaceType(@hash[:face_type])
 
       # assign the construction if it is present

@@ -46,6 +46,9 @@ module Honeybee
       # create window gas openstudio object
       os_gas_custom = OpenStudio::Model::Gas.new(openstudio_model)
       os_gas_custom.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_gas_custom.setDisplayName(@hash[:display_name])
+      end
       os_gas_custom.setGasType('Custom')
       os_gas_custom.setConductivityCoefficientA(@hash[:conductivity_coeff_a])
       os_gas_custom.setViscosityCoefficientA(@hash[:viscosity_coeff_a])

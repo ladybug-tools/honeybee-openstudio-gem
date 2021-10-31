@@ -46,6 +46,9 @@ module Honeybee
       # create ventilation openstudio object and set identifier
       os_vent = OpenStudio::Model::DesignSpecificationOutdoorAir.new(openstudio_model)
       os_vent.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_vent.setDisplayName(@hash[:display_name])
+      end
 
       # assign air changes per hour if it exists
       if @hash[:air_changes_per_hour]

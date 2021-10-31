@@ -51,7 +51,6 @@ module Honeybee
       shd_id = @hash[:window_construction][:identifier]
       @hash[:window_construction][:identifier] = unshd_id
       @hash[:identifier] = shd_id
-
       # create the unshaded construction
       unshd_constr_obj = WindowConstructionAbridged.new(@hash[:window_construction])
       @construction = unshd_constr_obj.to_openstudio(openstudio_model)
@@ -59,7 +58,9 @@ module Honeybee
       # create the shaded construction
       @shade_construction = OpenStudio::Model::Construction.new(openstudio_model)
       @shade_construction.setName(shd_id)
-
+      unless @hash[:display_name].nil?
+        @shade_construction.setDisplayName(@hash[:display_name])
+      end
       # create the layers of the unshaded construction into which we will insert the shade
       os_materials = []
       if @hash.key?(:layers)

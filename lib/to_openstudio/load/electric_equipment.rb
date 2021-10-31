@@ -47,6 +47,9 @@ module Honeybee
       os_electric_equip_def = OpenStudio::Model::ElectricEquipmentDefinition.new(openstudio_model)
       os_electric_equip = OpenStudio::Model::ElectricEquipment.new(os_electric_equip_def)
       os_electric_equip_def.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_electric_equip_def.setDisplayName(@hash[:display_name])
+      end
       os_electric_equip.setName(@hash[:identifier])
 
       # assign watts per area

@@ -46,7 +46,9 @@ module Honeybee
       # create openstudio space type object
       os_space_type = OpenStudio::Model::SpaceType.new(openstudio_model)
       os_space_type.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_space_type.setDisplayName(@hash[:display_name])
+      end
       # assign people
       if @hash[:people]
         people = PeopleAbridged.new(@hash[:people])

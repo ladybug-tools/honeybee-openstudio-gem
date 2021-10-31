@@ -47,7 +47,9 @@ module Honeybee
       # create infiltration OpenStudio object and set identifier
       os_infilt = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(openstudio_model)
       os_infilt.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_infilt.setDisplayName(@hash[:display_name])
+      end
       # assign flow per surface
       os_infilt.setFlowperExteriorSurfaceArea(@hash[:flow_per_exterior_area])
 

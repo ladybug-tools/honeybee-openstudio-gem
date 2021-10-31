@@ -46,7 +46,9 @@ module Honeybee
       # create openstudio standard glazing object and set identifier
       os_glazing = OpenStudio::Model::StandardGlazing.new(openstudio_model)
       os_glazing.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_glazing.setDisplayName(@hash[:display_name])
+      end
       # assign thickness
       if @hash[:thickness]
         os_glazing.setThickness(@hash[:thickness])

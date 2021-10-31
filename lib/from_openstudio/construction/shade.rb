@@ -41,6 +41,9 @@ module Honeybee
         hash[:type] = 'ShadeConstruction'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(construction.nameString)
+        unless construction.displayName.empty?
+          hash[:display_name] = (construction.displayName.get).force_encoding("UTF-8")
+        end
         # get outermost construction layers
         layer = construction.layers[0]
         if layer.to_StandardGlazing.is_initialized

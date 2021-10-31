@@ -48,6 +48,9 @@ module Honeybee
       os_people_def = OpenStudio::Model::PeopleDefinition.new(openstudio_model)
       os_people = OpenStudio::Model::People.new(os_people_def)
       os_people_def.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_people_def.setDisplayName(@hash[:display_name])
+      end
       os_people.setName(@hash[:identifier])
 
       # assign people per space floor area

@@ -91,6 +91,8 @@ RSpec.describe Honeybee do
     blind_mat = material1.to_openstudio(openstudio_model)
 
     object1 = construction1.to_openstudio(openstudio_model)
+    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((object1.displayName.get)).to eq 'Double Low-E Outside Shade ({}|`^~!@\#$%^&*<>?-,!&~-)'
     expect(object1).not_to be nil
     shd_cntrl = construction1.to_openstudio_shading_control(openstudio_model)
     expect(shd_cntrl.shadingType).to eq('InteriorBlind')

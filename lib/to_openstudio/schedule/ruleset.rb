@@ -47,7 +47,9 @@ module Honeybee
       # create openstudio schedule ruleset object
       os_sch_ruleset = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
       os_sch_ruleset.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_sch_ruleset.setDisplayName(@hash[:display_name])
+      end
       # assign schedule type limit
       sch_type_limit_obj = nil
       if @hash[:schedule_type_limit]
@@ -65,6 +67,9 @@ module Honeybee
         if day_schedule[:identifier] != def_day_id
           day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
           day_schedule_new.setName(day_schedule[:identifier])
+          unless @hash[:display_name].nil?
+            day_schedule_new.setDisplayName(@hash[:display_name])
+          end
           unless sch_type_limit_obj.nil?
             day_schedule_new.setScheduleTypeLimits(sch_type_limit_obj)
           end

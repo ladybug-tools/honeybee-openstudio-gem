@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 require 'honeybee/construction_set'
-
 require 'to_openstudio/model_object'
 
 module Honeybee
@@ -46,7 +45,9 @@ module Honeybee
       # create the constructionset object
       os_constr_set = OpenStudio::Model::DefaultConstructionSet.new(openstudio_model)
       os_constr_set.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_constr_set.setDisplayName(@hash[:display_name])
+      end
       int_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
       ext_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)
       grnd_surf_const = OpenStudio::Model::DefaultSurfaceConstructions.new(openstudio_model)

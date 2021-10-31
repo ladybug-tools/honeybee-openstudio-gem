@@ -49,6 +49,8 @@ RSpec.describe Honeybee do
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
     expect(object1.nameString).to eq 'Passive House HVAC System'
+    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((object1.displayName.get)).to eq 'Test Name áéíóúüñ¿¡'
     expect(object1.maximumHeatingSupplyAirTemperature).to eq 40.0
     expect(object1.minimumCoolingSupplyAirTemperature).to eq 15.0
     expect(object1.outdoorAirEconomizerType).to eq 'DifferentialEnthalpy'

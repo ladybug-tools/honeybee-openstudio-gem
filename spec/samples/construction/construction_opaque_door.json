@@ -1,6 +1,7 @@
 {
     "type": "OpaqueConstructionAbridged",
     "identifier": "Generic Exterior Door",
+    "display_name": "%Generic Exterior Door%",
     "materials": [
         "Generic Painted Metal",
         "Generic 25mm Insulation",

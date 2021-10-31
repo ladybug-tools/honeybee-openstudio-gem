@@ -41,6 +41,9 @@ module Honeybee
       hash[:type] = 'ScheduleTypeLimit'
       # set hash values from OpenStudio Object
       hash[:identifier] = clean_name(schedule_type_limit.nameString)
+      unless schedule_type_limit.displayName.empty?
+        hash[:display_name] = (schedule_type_limit.displayName.get).force_encoding("UTF-8")
+      end
       # check if boost optional object is empty
       unless schedule_type_limit.lowerLimitValue.empty?
         hash[:lower_limit] = schedule_type_limit.lowerLimitValue.get

@@ -154,6 +154,7 @@
                 {
                     "type": "ScheduleRulesetAbridged",
                     "identifier": "Generic Office Infiltration",
+                    "display_name": "Generic Office Infiltration&",
                     "day_schedules": [
                         {
                             "type": "ScheduleDay",
@@ -1343,7 +1344,7 @@
         {
             "type": "Room",
             "identifier": "Tiny_House_Office",
-            "display_name": "Tiny_House_Office",
+            "display_name": "テスト名",
             "properties": {
                 "type": "RoomPropertiesAbridged",
                 "energy": {

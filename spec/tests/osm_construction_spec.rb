@@ -62,6 +62,9 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/energyConstructionAirBoundary.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    const = openstudio_model.get.getConstructionAirBoundaryByName('Construction Air Boundary 1')
+    const = const.get
+    const.setDisplayName('Construction Air Boundary ({}|`^~!@#$%^&*<>?-,!&~-)')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
@@ -71,7 +74,8 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'AirBoundaryConstructionAbridged'
     expect(honeybee[0][:identifier]).to eq 'Construction Air Boundary 1'
-      
+    expect(honeybee[0][:display_name]).to eq 'Construction Air Boundary ({}|`^~!@#$%^&*<>?-,!&~-)'
+
     FileUtils.mkdir_p(output_dir)
     File.open(File.join(output_dir,'energyConstructionAirBoundary.hbjson'), 'w') do |f|
       f.puts JSON::pretty_generate(honeybee[0])

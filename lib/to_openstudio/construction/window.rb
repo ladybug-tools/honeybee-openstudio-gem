@@ -46,7 +46,9 @@ module Honeybee
       # create construction and set identifier
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
       os_construction.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_construction.setDisplayName(@hash[:display_name])
+      end
       # create material vector
       os_materials = OpenStudio::Model::MaterialVector.new
       # loop through each layer and add to material vector

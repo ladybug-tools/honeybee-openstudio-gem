@@ -46,7 +46,9 @@ module Honeybee
       # create window gas OpenStudio object
       os_window_gas = OpenStudio::Model::Gas.new(openstudio_model)
       os_window_gas.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_window_gas.setDisplayName(@hash[:display_name])
+      end
       # assign thickness
       if @hash[:thickness]
         os_window_gas.setThickness(@hash[:thickness])

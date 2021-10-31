@@ -41,6 +41,9 @@ module Honeybee
         hash[:type] = 'EnergyWindowMaterialGlazing'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(material.nameString)
+        unless material.displayName.empty?
+            hash[:display_name] = (material.displayName.get).force_encoding("UTF-8")
+        end
         hash[:thickness] = material.thickness
         hash[:solar_transmittance] = material.solarTransmittance
         # check if boost optional object is empty

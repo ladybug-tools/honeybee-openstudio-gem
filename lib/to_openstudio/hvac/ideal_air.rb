@@ -40,7 +40,9 @@ module Honeybee
       # create the ideal air system and set the identifier
       os_ideal_air = OpenStudio::Model::ZoneHVACIdealLoadsAirSystem.new(openstudio_model)
       os_ideal_air.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_ideal_air.setDisplayName(@hash[:display_name])
+      end
       # assign the economizer type
       if @hash[:economizer_type]
         os_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
