@@ -40,7 +40,8 @@ module Honeybee
     def self.read_from_disk(file)
       hash = nil
       File.open(File.join(file), 'r') do |f|
-        hash = JSON.parse(f.read, symbolize_names: true)
+        hash = JSON.parse(File.read(f, :external_encoding => 'iso-8859-1',
+          :internal_encoding => 'utf-8'), symbolize_names: true, encoding: 'UTF-8')
       end
       Model.new(hash)
     end
