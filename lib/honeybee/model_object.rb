@@ -30,6 +30,20 @@
 # *******************************************************************************
 
 module Honeybee
+  class FakeOptionalString
+    def initialize(str)
+      @str = str
+    end
+
+    def empty?
+      false
+    end
+
+    def get
+      @str
+    end
+  end
+
   class ModelObject
     # Base class from which all other objects in this module inherit.
     # Attributes and methods of this class should be overwritten in each inheriting object.
@@ -65,8 +79,8 @@ module Honeybee
     def self.read_from_disk(file)
       hash = nil
       File.open(File.join(file), 'r') do |f|
-        hash = JSON.parse(File.read(f, :external_encoding => 'iso-8859-1',
-          :internal_encoding => 'utf-8'), symbolize_names: true, encoding: 'UTF-8')
+        hash = JSON.parse(File.read(f, :external_encoding => 'UTF-8',
+          :internal_encoding => 'UTF-8'), symbolize_names: true, encoding: 'UTF-8')
       end
       new(hash)
     end
@@ -118,11 +132,15 @@ module Honeybee
       encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
     end
 
-    # Create methods to get and set display name 
+    # Create methods to get and set display name
     if !OpenStudio::Model::ModelObject.method_defined?(:displayName)
       OpenStudio::Model::ModelObject.class_eval do
         define_method(:displayName) do
-          additionalProperties.getFeatureAsString("DisplayName")
+          result = additionalProperties.getFeatureAsString("DisplayName")
+          if !result.empty?
+            result = FakeOptionalString.new(result.get.force_encoding(Encoding::UTF_8))
+          end
+          result
         end
         define_method(:setDisplayName) do |value|
           additionalProperties.setFeature("DisplayName", value)
