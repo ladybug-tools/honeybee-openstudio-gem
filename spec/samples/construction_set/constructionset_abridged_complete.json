@@ -1,6 +1,7 @@
 {
     "type": "ConstructionSetAbridged",
     "identifier": "Default Generic Construction Set",
+    "display_name": "건설명",
     "wall_set": {
         "type": "WallConstructionSetAbridged",
         "exterior_construction": "Generic Exterior Wall",

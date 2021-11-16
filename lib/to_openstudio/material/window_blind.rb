@@ -46,7 +46,9 @@ module Honeybee
       # create blind OpenStudio object
       os_blind = OpenStudio::Model::Blind.new(openstudio_model)
       os_blind.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_blind.setDisplayName(@hash[:display_name])
+      end
       # assign slat orientation
       if @hash[:slat_orientation]
         os_blind.setSlatOrientation(@hash[:slat_orientation])

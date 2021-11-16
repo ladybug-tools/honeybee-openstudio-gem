@@ -40,6 +40,9 @@ module Honeybee
             hash = {}
             hash[:type] = 'ScheduleFixedIntervalAbridged'
             hash[:identifier] = clean_name(schedule_fixedinterval.nameString)
+            unless schedule_fixedinterval.displayName.empty?
+                hash[:display_name] = (schedule_fixedinterval.displayName.get).force_encoding("UTF-8")
+            end
             start_month = schedule_fixedinterval.startMonth
             start_day = schedule_fixedinterval.startDay
             if is_leap_year

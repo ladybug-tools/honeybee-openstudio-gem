@@ -46,6 +46,9 @@ module Honeybee
       # create standard opaque OpenStudio material
       os_opaque_mat = OpenStudio::Model::StandardOpaqueMaterial.new(openstudio_model)
       os_opaque_mat.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_opaque_mat.setDisplayName(@hash[:display_name])
+      end
       os_opaque_mat.setThickness(@hash[:thickness])
       os_opaque_mat.setConductivity(@hash[:conductivity])
       os_opaque_mat.setDensity(@hash[:density])

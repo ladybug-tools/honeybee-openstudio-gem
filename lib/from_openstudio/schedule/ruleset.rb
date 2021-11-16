@@ -41,6 +41,9 @@ module Honeybee
       hash[:type] = 'ScheduleRulesetAbridged'
       # set the primary (required) day schedules of the object
       hash[:identifier] = clean_name(schedule_ruleset.nameString)
+      unless schedule_ruleset.displayName.empty?
+        hash[:display_name] = (schedule_ruleset.displayName.get).force_encoding("UTF-8")
+      end
       hash[:default_day_schedule] = clean_name(schedule_ruleset.defaultDaySchedule.nameString)
       hash[:summer_designday_schedule] = clean_name(schedule_ruleset.summerDesignDaySchedule.nameString)
       hash[:winter_designday_schedule] = clean_name(schedule_ruleset.winterDesignDaySchedule.nameString)

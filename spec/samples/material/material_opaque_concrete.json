@@ -1,6 +1,7 @@
 {
     "type": "EnergyMaterial",
     "identifier": "Generic LW Concrete",
+    "display_name": "название теста",
     "roughness": "MediumRough",
     "thickness": 0.1,
     "conductivity": 0.53,

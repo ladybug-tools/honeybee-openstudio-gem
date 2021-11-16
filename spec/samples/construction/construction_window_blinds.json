@@ -1,6 +1,7 @@
 {
     "type": "WindowConstructionShadeAbridged",
     "identifier": "Double Low-E Outside Shade",
+    "display_name": "Double Low-E Outside Shade ({}|`^~!@\#$%^&*<>?-,!&~_)",
     "window_construction": {
         "type": "WindowConstructionAbridged",
         "identifier": "Double Low-E",

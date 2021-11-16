@@ -41,11 +41,26 @@ module Honeybee
         hash[:type] = 'EnergyMaterial'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(material.nameString)
+        unless material.displayName.empty?
+          hash[:display_name] = (material.displayName.get).force_encoding("UTF-8")
+        end
         hash[:thickness] = material.thickness
         hash[:conductivity] = material.conductivity
         hash[:density] = material.density
         hash[:specific_heat] = material.specificHeat
-        hash[:roughness] = material.roughness
+        case material.roughness.downcase
+        when 'veryrough'
+          hash[:roughness] == 'VeryRough'
+        when 'mediumrough'
+          hash[:roughness] == 'MediumRough'
+        when 'mediumsmooth'
+          hash[:roughness] == 'MediumSmooth'
+        when 'verysmooth'
+          hash[:roughness] == 'VerySmooth'
+        # In case of Rough or Smooth
+        else
+          hash[:roughness] = material.roughness.titleize
+        end
         hash[:thermal_absorptance] = material.thermalAbsorptance
         hash[:solar_absorptance] = material.solarAbsorptance
         hash[:visible_absorptance] = material.visibleAbsorptance

@@ -42,6 +42,9 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleTypeLimit.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    schedule = openstudio_model.get.getScheduleTypeLimitsByName('Dimensionless')
+    schedule = schedule.get
+    schedule.setDisplayName('Dimensionless123`~-_+=:!@#')
 
     # create HBJSON hash from OS model
     honeybee = Honeybee::Model.schedtypelimits_from_model(openstudio_model.get)
@@ -51,6 +54,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'ScheduleTypeLimit'
     expect(honeybee[0][:identifier]).to eq 'Dimensionless'
+    expect(honeybee[0][:display_name]).to eq 'Dimensionless123`~-_+=:!@#'
     expect(honeybee[0][:lower_limit]).to eq 0
     expect(honeybee[0][:upper_limit]).to eq 1
     
@@ -65,6 +69,9 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleRuleset.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    schedule = openstudio_model.get.getScheduleRulesetByName('Schedule Ruleset 1')
+    schedule = schedule.get
+    schedule.setDisplayName('Schedule Ruleset 1{}:>,=+')
 
     # create HBJSON hash from OS model
     honeybee = Honeybee::Model.scheduleruleset_from_model(openstudio_model.get)
@@ -74,6 +81,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'ScheduleRulesetAbridged'
     expect(honeybee[0][:identifier]).to eq 'Schedule Ruleset 1'
+    expect(honeybee[0][:display_name]).to eq 'Schedule Ruleset 1{}:>,=+'
     expect(honeybee[0][:default_day_schedule]).to eq 'Schedule Day 1'
     expect(honeybee[0][:summer_designday_schedule]).to eq 'Schedule Day 1'
     expect(honeybee[0][:winter_designday_schedule]).to eq 'Schedule Day 1'
@@ -92,6 +100,9 @@ RSpec.describe Honeybee do
 
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    schedule = openstudio_model.get.getScheduleFixedIntervalByName('Random Occupancy')
+    schedule = schedule.get
+    schedule.setDisplayName('Random Occupancy 1{}:>,=+')
 
     # create HBJSON hash from OS model
     honeybee = Honeybee::Model.schedulefixedinterval_from_model(openstudio_model.get)
@@ -101,6 +112,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'ScheduleFixedIntervalAbridged'
     expect(honeybee[0][:identifier]).to eq 'Random Occupancy'
+    expect(honeybee[0][:display_name]).to eq 'Random Occupancy 1{}:>,=+'
     expect((honeybee[0][:start_date]).size).to eq 2
     expect(honeybee[0][:values].size).to eq 8760
     expect(honeybee[0][:timestep]).to eq 1

@@ -47,7 +47,9 @@ module Honeybee
       # create no mass material OpenStudio object and set identifier
       os_nomass_mat = OpenStudio::Model::MasslessOpaqueMaterial.new(openstudio_model)
       os_nomass_mat.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_nomass_mat.setDisplayName(@hash[:display_name])
+      end
       # assign thermal resistance
       os_nomass_mat.setThermalResistance(@hash[:r_value])
 

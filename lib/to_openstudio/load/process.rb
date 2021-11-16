@@ -47,6 +47,9 @@ module Honeybee
       os_other_equip_def = OpenStudio::Model::OtherEquipmentDefinition.new(openstudio_model)
       os_other_equip = OpenStudio::Model::OtherEquipment.new(os_other_equip_def)
       os_other_equip_def.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_other_equip_def.setDisplayName(@hash[:display_name])
+      end
       os_other_equip.setName(@hash[:identifier])
 
       # assign watts

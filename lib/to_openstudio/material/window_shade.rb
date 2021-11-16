@@ -46,7 +46,9 @@ module Honeybee
       # create openstudio shade object
       os_shade_mat = OpenStudio::Model::Shade.new(openstudio_model)
       os_shade_mat.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_shade_mat.setDisplayName(@hash[:display_name])
+      end
       # assign solar transmittance
       if @hash[:solar_transmittance]
         os_shade_mat.setSolarTransmittance(@hash[:solar_transmittance])

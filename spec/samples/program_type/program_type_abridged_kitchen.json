@@ -1,9 +1,11 @@
 {
     "type": "ProgramTypeAbridged",
     "identifier": "2013::FullServiceRestaurant::Kitchen",
+    "display_name": "~2013::FullServiceRestaurant::Kitchen",
     "people": {
         "type": "PeopleAbridged",
         "identifier": "2013::FullServiceRestaurant::Kitchen_People",
+        "display_name": "//2013::FullServiceRestaurant::Kitchen_People",
         "people_per_area": 0.05381957525591208,
         "radiant_fraction": 0.3,
         "latent_fraction": {
@@ -15,6 +17,7 @@
     "lighting": {
         "type": "LightingAbridged",
         "identifier": "2013::FullServiceRestaurant::Kitchen_Lighting",
+        "display_name": "//2013::FullServiceRestaurant::Kitchen_Lighting//",
         "watts_per_area": 13.024318999999998,
         "return_air_fraction": 0.0,
         "radiant_fraction": 0.7,

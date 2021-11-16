@@ -46,6 +46,9 @@ module Honeybee
       os_construction = OpenStudio::Model::ConstructionAirBoundary.new(openstudio_model)
       os_construction.setName(@hash[:identifier])
       os_construction.setAirExchangeMethod('None')
+      unless @hash[:display_name].nil?
+        os_construction.setDisplayName(@hash[:display_name])
+      end
 
       os_construction
     end

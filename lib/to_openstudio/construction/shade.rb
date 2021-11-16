@@ -46,6 +46,9 @@ module Honeybee
 
       os_construction = OpenStudio::Model::Construction.new(openstudio_model)
       os_construction.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_construction.setDisplayName(@hash[:display_name])
+      end
       os_materials = OpenStudio::Model::MaterialVector.new
 
       # create standard glazing if is specular is true

@@ -41,6 +41,8 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
 
     expect(object1.nameString).to eq 'Solstice Increasing'
+    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    expect((object1.displayName.get)).to eq 'Solstice Increasing%'
 
     start_day = object1.startDay
     expect(start_day).to eq(21)

@@ -41,6 +41,9 @@ module Honeybee
         hash[:type] = 'ConstructionSetAbridged'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(construction_set.nameString)
+        unless construction_set.displayName.empty?
+          hash[:display_name] = (construction_set.displayName.get).force_encoding("UTF-8")
+        end
         hash[:wall_set] = {}
         hash[:floor_set] = {}
         hash[:aperture_set] = {}

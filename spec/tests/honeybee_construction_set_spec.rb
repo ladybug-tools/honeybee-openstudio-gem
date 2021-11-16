@@ -40,7 +40,8 @@ RSpec.describe Honeybee do
     object1 = constr_set_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
     expect(object1.nameString).to eq 'Default Generic Construction Set'
-    
+    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    expect(((object1.displayName.get)).to_s).to eq '건설명'
   end
 
   it 'can load construction set partial' do

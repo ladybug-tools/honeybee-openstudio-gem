@@ -41,12 +41,27 @@ module Honeybee
         hash[:type] = 'EnergyMaterialNoMass'
         # set hash values from OpenStudio Object
         hash[:identifier] = clean_name(material.nameString)
+        unless material.displayName.empty?
+          hash[:display_name] = (material.displayName.get).force_encoding("UTF-8")
+        end
         hash[:r_value] = material.thermalResistance
 
         if material.to_MasslessOpaqueMaterial.is_initialized
           # Roughness is a required property for OS MasslessOpaqueMaterial but isn't a listed
           # property for OS AirGap
-          hash[:roughness] = material.roughness
+          case material.roughness.downcase
+          when 'veryrough'
+            hash[:roughness] == 'VeryRough'
+          when 'mediumrough'
+            hash[:roughness] == 'MediumRough'
+          when 'mediumsmooth'
+            hash[:roughness] == 'MediumSmooth'
+          when 'verysmooth'
+            hash[:roughness] == 'VerySmooth'
+          # In case of Rough or Smooth
+          else
+            hash[:roughness] = material.roughness.titleize
+          end
           # check if boost optional object is empty
           unless material.thermalAbsorptance.empty?
             hash[:thermal_absorptance] = material.thermalAbsorptance.get

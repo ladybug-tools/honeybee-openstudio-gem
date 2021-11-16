@@ -76,6 +76,9 @@ module Honeybee
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
       os_space.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_space.setDisplayName(@hash[:display_name])
+      end
       os_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
       os_thermal_zone.setName(@hash[:identifier])
       os_space.setThermalZone(os_thermal_zone)

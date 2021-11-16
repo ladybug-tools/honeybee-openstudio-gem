@@ -89,7 +89,9 @@ module Honeybee
       # create the new schedule
       os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
       os_fi_schedule.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_fi_schedule.setDisplayName(@hash[:display_name])
+      end
       # assign start date
       os_fi_schedule.setStartMonth(start_month)
       os_fi_schedule.setStartDay(start_day)
@@ -202,6 +204,9 @@ module Honeybee
       rowsToSkip = 1
       os_schedule_file = OpenStudio::Model::ScheduleFile.new(os_external_file, column, rowsToSkip)
       os_schedule_file.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_schedule_file.setDisplayName(@hash[:display_name])
+      end
       os_schedule_file.setInterpolatetoTimestep(interpolate)
       os_schedule_file.setMinutesperItem(interval_length)
 

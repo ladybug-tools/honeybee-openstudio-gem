@@ -59,7 +59,9 @@ module Honeybee
 
       os_shading_surface = OpenStudio::Model::ShadingSurface.new(reordered_vertices, openstudio_model)
       os_shading_surface.setName(@hash[:identifier])
-
+      unless @hash[:display_name].nil?
+        os_shading_surface.setDisplayName(@hash[:display_name])
+      end
       # assign the construction if it exists
       if @hash[:properties][:energy][:construction]
         construction_identifier = @hash[:properties][:energy][:construction]

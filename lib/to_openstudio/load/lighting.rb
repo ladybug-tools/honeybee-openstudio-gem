@@ -48,6 +48,9 @@ module Honeybee
       os_lights_def = OpenStudio::Model::LightsDefinition.new(openstudio_model)
       os_lights = OpenStudio::Model::Lights.new(os_lights_def)
       os_lights_def.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_lights_def.setDisplayName(@hash[:display_name])
+      end
       os_lights.setName(@hash[:identifier])
 
       # assign watts per space floor area
