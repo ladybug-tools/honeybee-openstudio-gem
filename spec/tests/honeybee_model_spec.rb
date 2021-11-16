@@ -77,7 +77,7 @@ RSpec.describe Honeybee do
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
     expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
-    #expect((openstudio_space.displayName.get)).to eq 'テスト名'
+    expect((openstudio_space.displayName.get)).to eq 'テスト名'
 
     openstudio_story = openstudio_space.buildingStory
     expect(openstudio_story.empty?).to be false

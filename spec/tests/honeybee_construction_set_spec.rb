@@ -41,7 +41,7 @@ RSpec.describe Honeybee do
     expect(object1).not_to be nil
     expect(object1.nameString).to eq 'Default Generic Construction Set'
     expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
-    #expect((object1.displayName.get)).to eq '건설명'
+    expect(((object1.displayName.get)).to_s).to eq '건설명'
   end
 
   it 'can load construction set partial' do
