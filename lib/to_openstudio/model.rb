@@ -203,9 +203,6 @@ module Honeybee
         puts 'Translating Context Shade Geometry'
       end
       create_orphaned_shades
-      create_orphaned_faces
-      create_orphaned_apertures
-      create_orphaned_doors
     end
 
     def create_materials(material_dicts, check_existing=false)
