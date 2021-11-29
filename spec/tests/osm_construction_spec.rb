@@ -42,6 +42,8 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/energyConstruction.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    year = 2020
+    openstudio_model.get.getYearDescription.setCalendarYear(year.to_i)
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
@@ -62,6 +64,10 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/energyConstructionAirBoundary.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setSeedFile(file)
+    workflow.setWeatherFile(File.absolute_path(weather_file))
     const = openstudio_model.get.getConstructionAirBoundaryByName('Construction Air Boundary 1')
     const = const.get
     const.setDisplayName('Construction Air Boundary ({}|`^~!@#$%^&*<>?-,!&~-)')

@@ -29,56 +29,36 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# import the honeybee objects which we will extend
-require 'honeybee'
+require 'honeybee/load/lighting'
+require 'to_openstudio/model_object'
 
-# extend the compound objects that house the other objects
-require 'from_openstudio/model'
-require 'from_openstudio/model_object'
-require 'from_openstudio/construction_set'
+module Honeybee
+    class LightingAbridged < ModelObject
 
-# extend the geometry objects
-require 'from_openstudio/geometry/aperture'
-require 'from_openstudio/geometry/door'
-require 'from_openstudio/geometry/face'
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
+        def self.from_load(load)
+            # create an empty hash
+            hash = {}
+            hash[:type] = 'LightingAbridged'
+            # set hash values from OpenStudio Object
+            hash[:identifier] = clean_name(load.nameString)
+            unless load.displayName.empty?
+                hash[:display_name] = (load.displayName.get).force_encoding("UTF-8")
+            end
+            unless load.schedule.empty?
+                schedule = load.schedule.get
+                hash[:schedule] = schedule.name.to_s
+            end
+            loads_def = load.lightsDefinition
+            unless loads_def.wattsperSpaceFloorArea.empty?
+                hash[:watts_per_area] = loads_def.wattsperSpaceFloorArea.get
+            end
+            #TODO: user_data?
+            #TODO: baseline_watts_per_area
+            hash[:visible_fraction] = loads_def.fractionVisible
+            hash[:radiant_fraction] = loads_def.fractionRadiant
+            hash[:return_air_fraction] = loads_def.returnAirFraction
 
-# extend the construction objects
-require 'from_openstudio/construction/opaque'
-require 'from_openstudio/construction/window'
-require 'from_openstudio/construction/shade'
-require 'from_openstudio/construction/air'
-
-# import the material objects
-require 'from_openstudio/material/opaque'
-require 'from_openstudio/material/opaque_no_mass'
-require 'from_openstudio/material/window_gas'
-require 'from_openstudio/material/window_gas_mixture'
-require 'from_openstudio/material/window_gas_custom'
-require 'from_openstudio/material/window_blind'
-require 'from_openstudio/material/window_glazing'
-require 'from_openstudio/material/window_simpleglazsys'
-
-# extend the simulation objects
-require 'from_openstudio/simulation/design_day'
-require 'from_openstudio/simulation/parameter_model'
-require 'from_openstudio/simulation/simulation_output'
-
-# extend the schedule objects
-require 'from_openstudio/schedule/type_limit'
-require 'from_openstudio/schedule/ruleset'
-require 'from_openstudio/schedule/fixed_interval'
-
-# extend the load objects
-require 'from_openstudio/load/electric_equipment'
-require 'from_openstudio/load/people'
-require 'from_openstudio/load/gas_equipment'
-require 'from_openstudio/load/lighting'
-require 'from_openstudio/load/infiltration'
-require 'from_openstudio/load/ventilation'
-require 'from_openstudio/load/daylight'
-require 'from_openstudio/load/process'
-
-# extend the program type objects
-require 'from_openstudio/program_type'
+            hash
+        end
+    end
+end

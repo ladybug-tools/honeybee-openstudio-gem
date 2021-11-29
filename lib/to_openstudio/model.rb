@@ -454,7 +454,7 @@ module Honeybee
             end
           end
 
-          # for rooms with setpoint objects definied in the ProgramType, make a new thermostat
+          # for rooms with setpoint objects defined in the ProgramType, make a new thermostat
           if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
             thermal_zone = openstudio_room.thermalZone()
             unless thermal_zone.empty?

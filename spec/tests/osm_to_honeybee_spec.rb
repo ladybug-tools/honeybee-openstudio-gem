@@ -35,6 +35,10 @@ RSpec.describe Honeybee do
 
   it 'can load an OSM and translate to Honeybee' do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
+    weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setSeedFile(file)
+    workflow.setWeatherFile(File.absolute_path(weather_file))
     honeybee = Honeybee::Model.translate_from_osm_file(file)
 
     honeybee.validation_errors.each {|error| puts error}
@@ -79,6 +83,39 @@ RSpec.describe Honeybee do
       f.puts JSON::pretty_generate(hash)
     end
   end
+
+  it 'can load an OSM and translate to Honeybee' do
+    file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModelSingleZone.osm')
+    vt = OpenStudio::OSVersion::VersionTranslator.new
+    openstudio_model = vt.loadModel(file)
+    honeybee = Honeybee::Model.translate_from_osm_file(file)
+    honeybee.validation_errors.each {|error| puts error}
+
+    expect(honeybee.valid?).to be true
+    hash = honeybee.hash
+    expect(hash[:type]).not_to be_nil
+    expect(hash[:type]).to eq 'Model'
+    expect(hash[:rooms]).not_to be_nil
+    expect(hash[:rooms].size).to eq 1
+    
+    # Check load
+    expect(hash[:rooms][0][:properties][:energy][:setpoint]).not_to be nil
+    expect(hash[:rooms][0][:properties][:energy][:setpoint][:heating_schedule]).to eq 'Heating Schedule Default'
+    expect(hash[:rooms][0][:properties][:energy][:setpoint][:cooling_schedule]).to eq 'Cooling Schedule Default'
+
+    process_load = openstudio_model.get.getOtherEquipmentByName('Other Equipment 1')
+    process_load.get.setFuelType('Electricity')
+    #expect(hash[:rooms][0][:properties][:energy][:process_loads]).not_to be nil
+    #expect(hash[:rooms][0][:properties][:energy][:process_loads][:identifier]).to eq ''
+    
+    output_dir = File.join(File.dirname(__FILE__), '../output/osm/')
+    FileUtils.mkdir_p(output_dir)
+    File.open(File.join(output_dir,'exampleModelSingleZone.hbjson'), 'w') do |f|
+      f.puts JSON::pretty_generate(hash)
+    end
+  
+  end
+
 
   it 'can load an OSM and translate to Honeybee SimulationParameter' do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')

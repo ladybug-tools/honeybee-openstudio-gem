@@ -42,6 +42,12 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleTypeLimit.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    year = 2020
+    openstudio_model.get.getYearDescription.setCalendarYear(year.to_i)
+    weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setSeedFile(file)
+    workflow.setWeatherFile(File.absolute_path(weather_file))
     schedule = openstudio_model.get.getScheduleTypeLimitsByName('Dimensionless')
     schedule = schedule.get
     schedule.setDisplayName('Dimensionless123`~-_+=:!@#')
@@ -74,7 +80,7 @@ RSpec.describe Honeybee do
     schedule.setDisplayName('Schedule Ruleset 1{}:>,=+')
 
     # create HBJSON hash from OS model
-    honeybee = Honeybee::Model.scheduleruleset_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.schedules_from_model(openstudio_model.get)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -105,7 +111,7 @@ RSpec.describe Honeybee do
     schedule.setDisplayName('Random Occupancy 1{}:>,=+')
 
     # create HBJSON hash from OS model
-    honeybee = Honeybee::Model.schedulefixedinterval_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.schedules_from_model(openstudio_model.get)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -113,7 +119,7 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:type]).to eq 'ScheduleFixedIntervalAbridged'
     expect(honeybee[0][:identifier]).to eq 'Random Occupancy'
     expect(honeybee[0][:display_name]).to eq 'Random Occupancy 1{}:>,=+'
-    expect((honeybee[0][:start_date]).size).to eq 2
+    expect((honeybee[0][:start_date]).size).to eq 3
     expect(honeybee[0][:values].size).to eq 8760
     expect(honeybee[0][:timestep]).to eq 1
     expect(honeybee[0][:interpolate]).to eq false

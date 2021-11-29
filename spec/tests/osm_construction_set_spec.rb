@@ -42,6 +42,12 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction_set/constructionSet.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    year = 2020
+    openstudio_model.get.getYearDescription.setCalendarYear(year.to_i)
+    weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setSeedFile(file)
+    workflow.setWeatherFile(File.absolute_path(weather_file))
     const_set = openstudio_model.get.getDefaultConstructionSetByName('189.1-2009 - CZ1 - Office')
     const_set = const_set.get
     const_set.setDisplayName('Test Name áéíóúüñ¿¡')

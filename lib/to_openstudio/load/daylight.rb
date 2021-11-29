@@ -73,7 +73,7 @@ module Honeybee
       end
 
       # assign light output fraction if it exists
-      if @hash[:min_power_input]
+      if @hash[:min_light_output]
         os_dl_control.setMinimumLightOutputFractionforContinuousDimmingControl(@hash[:min_light_output])
       else
         os_dl_control.setMinimumLightOutputFractionforContinuousDimmingControl(defaults[:min_light_output][:default])

@@ -36,6 +36,12 @@ def load_file(file_name)
   file = File.join(File.dirname(__FILE__), '../samples/osm_material/', file_name)
   vt = OpenStudio::OSVersion::VersionTranslator.new
   osm = vt.loadModel(file)
+  year = 2020
+  osm.get.getYearDescription.setCalendarYear(year.to_i)
+  weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
+  workflow = OpenStudio::WorkflowJSON.new
+  workflow.setSeedFile(file)
+  workflow.setWeatherFile(File.absolute_path(weather_file))
   return osm
 end
 
@@ -50,7 +56,7 @@ RSpec.describe Honeybee do
     openstudio_model = load_file('energyMaterial.osm')
     material = openstudio_model.get.getOpaqueMaterialByName('1/2IN Gypsum')
     material = material.get
-    #material.setDisplayName('название теста')
+    material.setDisplayName('название теста')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -61,7 +67,7 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:type]).to eq 'EnergyMaterial'
     expect(honeybee[0][:identifier]).to eq '1/2IN Gypsum'
     expect(honeybee[0][:conductivity]).to eq 0.16
-    #expect(honeybee[0][:display_name]).to eq 'название теста'
+    expect(honeybee[0][:display_name]).to eq 'название теста'
     
     FileUtils.mkdir_p(output_dir)
     File.open(File.join(output_dir,'energyMaterial.hbjson'), 'w') do |f|
@@ -97,7 +103,7 @@ RSpec.describe Honeybee do
     openstudio_model = load_file('simGlazSys.osm')
     material = openstudio_model.get.getSimpleGlazingByName('Simple Glazing')
     material = material.get
-    #material.setDisplayName('건설명')
+    material.setDisplayName('건설명')
 
     # create HB JSON material from OS model
     honeybee = Honeybee::Model.materials_from_model(openstudio_model.get)
@@ -107,7 +113,7 @@ RSpec.describe Honeybee do
     expect(honeybee).not_to be nil
     expect(honeybee[0][:type]).to eq 'EnergyWindowMaterialSimpleGlazSys'
     expect(honeybee[0][:identifier]).to eq 'Simple Glazing'
-    #expect(honeybee[0][:display_name]).to eq '건설명'
+    expect(honeybee[0][:display_name]).to eq '건설명'
     expect(honeybee[0][:shgc]).to eq 0.39
 
     File.open(File.join(output_dir,'simGlazSys.hbjson'), 'w') do |f|
