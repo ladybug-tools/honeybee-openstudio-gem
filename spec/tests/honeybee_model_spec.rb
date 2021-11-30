@@ -75,7 +75,7 @@ RSpec.describe Honeybee do
     openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
+    expect(openstudio_space.nameString).to eq 'Tiny_House_Office_Space'
     expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
     expect((openstudio_space.displayName.get)).to eq 'テスト名'
 
@@ -142,7 +142,7 @@ RSpec.describe Honeybee do
 
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Simple_Shoe_Box_Zone'
+    expect(openstudio_space.nameString).to eq 'Simple_Shoe_Box_Zone_Space'
 
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
@@ -176,11 +176,11 @@ RSpec.describe Honeybee do
     openstudio_spaces = openstudio_model.getSpaces
     expect(openstudio_spaces.size).to eq 3
 
-    openstudio_space = openstudio_model.getSpaceByName('Attic')
+    openstudio_space = openstudio_model.getSpaceByName('Attic_Space')
     expect(openstudio_space.empty?).to be false
 
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Attic'
+    expect(openstudio_space.nameString).to eq 'Attic_Space'
   end
 
   it 'can load complete office floor' do

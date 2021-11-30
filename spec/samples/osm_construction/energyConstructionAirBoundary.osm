@@ -1,7 +1,7 @@
 
 OS:Version,
-  {fb57bb1d-ebf3-4c07-bf48-06be62e95dc0}, !- Handle
-  3.0.0;                                  !- Version Identifier
+  {1a28bdac-d09d-46e5-b8d4-6174bf24ae3f}, !- Handle
+  3.3.0;                                  !- Version Identifier
 
 OS:Site,
   {d560c6b6-992b-4adf-ab65-b07e85b0a342}, !- Handle
@@ -100,8 +100,6 @@ OS:LifeCycleCost:Parameters,
 OS:Construction:AirBoundary,
   {56806193-80f1-4cce-9eac-5b23d6908bc9}, !- Handle
   Construction Air Boundary 1,            !- Name
-  ,                                       !- Solar and Daylighting Method
-  ,                                       !- Radiant Exchange Method
   ,                                       !- Air Exchange Method
   0;                                      !- Simple Mixing Air Changes per Hour {1/hr}
 

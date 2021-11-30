@@ -39,7 +39,7 @@ module Honeybee
     attr_reader :unique_space_type
 
     def find_existing_openstudio_object(openstudio_model)
-      model_space = openstudio_model.getSpaceByName(@hash[:identifier])
+      model_space = openstudio_model.getSpaceByName(@hash[:identifier] + '_Space')
       return model_space.get unless model_space.empty?
       nil
     end
@@ -75,7 +75,7 @@ module Honeybee
     def to_openstudio(openstudio_model)
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
-      os_space.setName(@hash[:identifier])
+      os_space.setName(@hash[:identifier] + '_Space')
       unless @hash[:display_name].nil?
         os_space.setDisplayName(@hash[:display_name])
       end

@@ -1,8 +1,7 @@
 
 OS:Version,
-  {90e33009-4373-4abc-913d-12c70a7d4513}, !- Handle
-  3.2.0,                                  !- Version Identifier
-  rc1;                                    !- Prerelease Identifier
+  {e930fa1a-f4e6-455a-9d3c-1f8fd26ddbce}, !- Handle
+  3.3.0;                                  !- Version Identifier
 
 OS:Building,
   {0cddede0-b205-42a1-aa30-a99347b22cf0}, !- Handle
@@ -8993,7 +8992,7 @@ OS:Schedule:FixedInterval,
   0.4162,                                 !- Value 8758
   0.228,                                  !- Value 8759
   0.4107;                                 !- Value 8760
-  
+
 OS:Schedule:Ruleset,
   {28716d9a-f445-4114-83f9-c01ab3d98216}, !- Handle
   Generic Office Lighting,                !- Name
@@ -10660,7 +10659,7 @@ OS:Space,
 
 OS:ThermalZone,
   {0d99cadd-0450-4726-a5d7-f5e253931e10}, !- Handle
-  Tiny_House_Office,                      !- Name
+  Tiny_House_Office 1,                    !- Name
   ,                                       !- Multiplier
   ,                                       !- Ceiling Height {m}
   ,                                       !- Volume {m3}
@@ -11091,7 +11090,7 @@ OS:ShadingSurface,
   Tree_Canopy,                            !- Name
   ,                                       !- Construction Name
   {39cdc896-ac00-40f1-b131-2302f5512135}, !- Shading Surface Group Name
-  ,                                      !- Transmittance Schedule Name
+  ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
   5, -5, 4,                               !- X,Y,Z Vertex 1 {m}
   6.73205080756888, -4, 4,                !- X,Y,Z Vertex 2 {m}
@@ -11128,333 +11127,359 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Clg .4% Condns DB=>MWB 1, !- Name
   33,                                     !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  15.7,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  15.7,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {f69fb882-b7fd-49a7-8bf3-fa29b2373093}, !- Handle
   Denver Centennial  Golden   N Ann Clg .4% Condns DP=>MDB 1, !- Name
   20.2,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  16.1,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Dewpoint,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Dewpoint,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  16.1,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {87620577-e647-468a-b84c-b9c6aa2e5475}, !- Handle
   Denver Centennial  Golden   N Ann Clg .4% Condns Enth=>MDB 1, !- Name
   27.3,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  59700,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Enthalpy,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Enthalpy,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  ,                                       !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  59700,                                  !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {b1fe54d1-cb33-48c0-aaf3-194466583710}, !- Handle
   Denver Centennial  Golden   N Ann Clg .4% Condns WB=>MDB 1, !- Name
   27.3,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  18.4,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  18.4,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {20d9c7ab-6bb3-401b-8268-1686dccd4c3c}, !- Handle
   Denver Centennial  Golden   N Ann Clg 1% Condns DB=>MWB 1, !- Name
   32,                                     !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  15.5,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  15.5,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {ef9d883e-6846-42bf-96ea-ad2016c5d125}, !- Handle
   Denver Centennial  Golden   N Ann Clg 1% Condns DP=>MDB 1, !- Name
   19.9,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  14.9,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Dewpoint,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Dewpoint,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  14.9,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {5d8f8f13-d0eb-48fe-a5f4-91e2a9ef18e8}, !- Handle
   Denver Centennial  Golden   N Ann Clg 1% Condns Enth=>MDB 1, !- Name
   26.6,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  56600,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Enthalpy,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Enthalpy,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  ,                                       !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  56600,                                  !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {5023c760-ada2-4d9b-8cad-3719d48b5274}, !- Handle
   Denver Centennial  Golden   N Ann Clg 1% Condns WB=>MDB 1, !- Name
   26.4,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  17.5,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  17.5,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {e8ec5ced-33d3-48b5-a599-da98c6a049f5}, !- Handle
   Denver Centennial  Golden   N Ann Clg 2% Condns DB=>MWB 1, !- Name
   30.2,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  15.3,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  15.3,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {046ad3f9-53d4-4bac-bc49-17e4008e0611}, !- Handle
   Denver Centennial  Golden   N Ann Clg 2% Condns DP=>MDB 1, !- Name
   19.6,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  13.9,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Dewpoint,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Dewpoint,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  13.9,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {6914d366-877a-4363-8f5a-59959edc149a}, !- Handle
   Denver Centennial  Golden   N Ann Clg 2% Condns Enth=>MDB 1, !- Name
   25.7,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  54000,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Enthalpy,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Enthalpy,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  ,                                       !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  54000,                                  !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {c2482cb5-510a-481a-9cb1-e60186ba23da}, !- Handle
   Denver Centennial  Golden   N Ann Clg 2% Condns WB=>MDB 1, !- Name
   25.6,                                   !- Maximum Dry-Bulb Temperature {C}
   15.2,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  16.8,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   0,                                      !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  16.8,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAETau,                              !- Solar Model Indicator
   ,                                       !- Beam Solar Day Schedule Name
   ,                                       !- Diffuse Solar Day Schedule Name
-  0.424,                                  !- ASHRAE Taub {dimensionless}
-  2.025;                                  !- ASHRAE Taud {dimensionless}
+  0.424,                                  !- ASHRAE Clear Sky Optical Depth for Beam Irradiance {dimensionless}
+  2.025;                                  !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance {dimensionless}
 
 OS:SizingPeriod:DesignDay,
   {4984366d-0adc-42c1-b7be-30ca33d06e35}, !- Handle
   Denver Centennial  Golden   N Ann Htg 99% Condns DB 1, !- Name
   -15.5,                                  !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  -15.5,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   3,                                      !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  -15.5,                                  !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -11462,21 +11487,23 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Htg 99.6% Condns DB 1, !- Name
   -18.8,                                  !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  -18.8,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   3,                                      !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  -18.8,                                  !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -11484,21 +11511,23 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Htg Wind 99% Condns WS=>MCDB 1, !- Name
   3.8,                                    !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  3.8,                                    !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   10.9,                                   !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  3.8,                                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -11506,21 +11535,23 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Htg Wind 99.6% Condns WS=>MCDB 1, !- Name
   3.9,                                    !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  3.9,                                    !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   12.2,                                   !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Wetbulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Wetbulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  3.9,                                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -11528,21 +11559,23 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Hum_n 99% Condns DP=>MCDB 1, !- Name
   -7.5,                                   !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  -18.8,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   3,                                      !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Dewpoint,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Dewpoint,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  -18.8,                                  !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -11550,21 +11583,23 @@ OS:SizingPeriod:DesignDay,
   Denver Centennial  Golden   N Ann Hum_n 99.6% Condns DP=>MCDB 1, !- Name
   -10.9,                                  !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  -21.6,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   81198,                                  !- Barometric Pressure {Pa}
   3,                                      !- Wind Speed {m/s}
   340,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   12,                                     !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  Dewpoint,                               !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  Dewpoint,                               !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  -21.6,                                  !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:RunPeriod,
