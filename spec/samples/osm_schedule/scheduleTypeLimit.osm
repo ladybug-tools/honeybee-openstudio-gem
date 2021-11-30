@@ -1,7 +1,7 @@
 
 OS:Version,
-  {c3dcf7de-c221-48fa-81ba-096edf2b8732}, !- Handle
-  3.2.0;                                  !- Version Identifier
+  {23ee7d77-635d-488a-92a0-6bbd666792ad}, !- Handle
+  3.3.0;                                  !- Version Identifier
 
 OS:Site,
   {3c6e1374-9df5-49c4-8e77-01eddb719a1f}, !- Handle
@@ -100,8 +100,7 @@ OS:LifeCycleCost:Parameters,
 OS:ScheduleTypeLimits,
   {e932038d-73bd-4b9d-9644-ba5a15093d59}, !- Handle
   Dimensionless,                          !- Name
-  0,                                       !- Lower Limit Value
-  1,                                       !- Upper Limit Value
+  0,                                      !- Lower Limit Value
+  1,                                      !- Upper Limit Value
   Continuous;                             !- Numeric Type
-
 

@@ -37,7 +37,7 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     os_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
-    os_space = os_model.getSpaceByName('Tiny_House_Office').get
+    os_space = os_model.getSpaceByName('Tiny_House_Office_Space').get
 
     file = File.join(File.dirname(__FILE__), '../samples/daylight/daylight_control.json')
     honeybee_obj_1 = Honeybee::DaylightingControl.read_from_disk(file)

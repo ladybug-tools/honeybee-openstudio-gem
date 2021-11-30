@@ -145,13 +145,24 @@ module Honeybee
           os_sizing_par.setCoolingSizingFactor(@hash[:sizing_parameter][:cooling_factor])
         end
         # set any design days
+        db_temps = []
         if @hash[:sizing_parameter][:design_days]
           @hash[:sizing_parameter][:design_days].each do |des_day|
             des_day_object = DesignDay.new(des_day)
             os_des_day = des_day_object.to_openstudio(@openstudio_model)
+            db_temps << des_day[:dry_bulb_condition][:dry_bulb_max]
           end
         end
       end
+      # use the average of design day temperatures to set the water mains temperature
+      os_water_mains = @openstudio_model.getSiteWaterMainsTemperature 
+      os_water_mains.setCalculationMethod('Correlation')
+      if db_temps.length > 0
+        os_water_mains.setAnnualAverageOutdoorAirTemperature((db_temps.max + db_temps.min) / 2)
+      else  # just use some dummy values so that the simulation does not fail
+        os_water_mains.setAnnualAverageOutdoorAirTemperature(12)
+      end
+      os_water_mains.setMaximumDifferenceInMonthlyAverageOutdoorAirTemperatures(4)
 
       # set Outputs for the simulation
       if @hash[:output]
@@ -238,9 +249,6 @@ module Honeybee
         os_site.setTerrain(@hash[:terrain_type])
       end
 
-      # ensure water mains temperatures are written
-      os_water_mains = @openstudio_model.getSiteWaterMainsTemperature 
-      os_water_mains.setCalculationMethod('CorrelationFromWeatherFile')
     end
 
   end #SimulationParameter
