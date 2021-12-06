@@ -62,7 +62,7 @@ module Honeybee
       unless shading_surface.isConstructionDefaulted
         construction = shading_surface.construction
         if !construction.empty?
-          const_name = clean_identifier(construction.get.nameString)
+          const_name = clean_name(construction.get.nameString) + ' Shade'
           hash[:construction] = const_name
           unless $shade_constructions.has_key?(const_name)
             const_obj = construction.get
@@ -74,7 +74,7 @@ module Honeybee
 
       transmittance_schedule = shading_surface.transmittanceSchedule
       if !transmittance_schedule.empty?
-        trans_sch_name = clean_identifier(transmittance_schedule.get.nameString)
+        trans_sch_name = clean_name(transmittance_schedule.get.nameString)
         # Check whether schedules other than schedule ruleset or schedule fixed interval are
         # being assigned
         unless $schedules[trans_sch_name].nil?

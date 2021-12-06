@@ -184,5 +184,70 @@ module Honeybee
 
       os_surface
     end
+
+    def to_openstudio_shade(openstudio_model, shading_surface_group)
+      # get the vertices from the face
+      if @hash[:geometry][:vertices].nil?
+        hb_verts = @hash[:geometry][:boundary]
+      else
+        hb_verts = @hash[:geometry][:vertices]
+      end
+
+      # create the openstudio shading surface
+      os_vertices = OpenStudio::Point3dVector.new
+      hb_verts.each do |vertex|
+        os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+      end
+      reordered_vertices = OpenStudio.reorderULC(os_vertices)
+
+      os_shading_surface = OpenStudio::Model::ShadingSurface.new(reordered_vertices, openstudio_model)
+      os_shading_surface.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_shading_surface.setDisplayName(@hash[:display_name])
+      end
+
+      # get the approriate construction id
+      construction_id = nil
+      if @hash[:properties][:energy][:construction]
+        construction_id = @hash[:properties][:energy][:construction]
+      elsif @hash[:face_type] == 'Wall'
+        construction_id = 'Generic Exterior Wall'
+      elsif @hash[:face_type] == 'RoofCeiling'
+        construction_id = 'Generic Roof'
+      elsif @hash[:face_type] == 'Floor'
+        construction_id = 'Generic Exposed Floor'
+      end
+  
+      # assign the construction
+      unless construction_id.nil?
+        construction = openstudio_model.getConstructionByName(construction_id)
+        unless construction.empty?
+          os_construction = construction.get
+          os_shading_surface.setConstruction(os_construction)
+        end
+      end
+
+      # add the shade to the group
+      os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
+
+      # convert the apertures to shade objects
+      if @hash[:apertures]
+        @hash[:apertures].each do |aperture|
+          hb_aperture = Aperture.new(aperture)
+          os_subsurface_aperture = hb_aperture.to_openstudio_shade(openstudio_model, shading_surface_group)
+        end
+      end
+
+      # convert the apertures to shade objects
+      if @hash[:doors]
+        @hash[:doors].each do |door|
+          hb_door = Door.new(door)
+          os_subsurface_door = hb_door.to_openstudio_shade(openstudio_model, shading_surface_group)
+        end
+      end
+
+      os_shading_surface
+    end
+
   end # Face
 end # Honeybee
