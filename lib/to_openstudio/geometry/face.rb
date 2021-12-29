@@ -55,10 +55,9 @@ module Honeybee
       hb_verts.each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
-      reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       # create the openstudio surface and assign the type
-      os_surface = OpenStudio::Model::Surface.new(reordered_vertices, openstudio_model)
+      os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)
       os_surface.setName(@hash[:identifier])
       unless @hash[:display_name].nil?
         os_surface.setDisplayName(@hash[:display_name])
@@ -198,9 +197,8 @@ module Honeybee
       hb_verts.each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
-      reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
-      os_shading_surface = OpenStudio::Model::ShadingSurface.new(reordered_vertices, openstudio_model)
+      os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
       os_shading_surface.setName(@hash[:identifier])
       unless @hash[:display_name].nil?
         os_shading_surface.setDisplayName(@hash[:display_name])
