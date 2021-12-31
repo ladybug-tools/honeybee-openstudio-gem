@@ -214,14 +214,18 @@ module Honeybee
           # add air mixing properties to the global list that tracks them
           if $use_simple_vent  # only use air mixing objects when simple ventilation is requested
             air_hash = $air_boundary_hash[air_construction.name.to_s]
-            if air_hash[:air_mixing_per_area]
+            if air_hash && air_hash[:air_mixing_per_area]
               air_mix_area = air_hash[:air_mixing_per_area]
             else
               air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
               air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
             end
             flow_rate = os_surface.netArea * air_mix_area
-            flow_sch_id = air_hash[:air_mixing_schedule]
+            if air_hash
+              flow_sch_id = air_hash[:air_mixing_schedule]
+            else
+              flow_sch_id = 'Always On'
+            end
             adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
             $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
           end
