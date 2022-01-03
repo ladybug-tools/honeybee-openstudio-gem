@@ -137,6 +137,7 @@ module Honeybee
       os_sizing_par.setCoolingSizingFactor(siz_defaults[:cooling_factor][:default])
 
       # override any SizingParameter defaults with lodaded JSON
+      db_temps = []
       if @hash[:sizing_parameter]
         if @hash[:sizing_parameter][:heating_factor]
           os_sizing_par.setHeatingSizingFactor(@hash[:sizing_parameter][:heating_factor])
@@ -145,7 +146,6 @@ module Honeybee
           os_sizing_par.setCoolingSizingFactor(@hash[:sizing_parameter][:cooling_factor])
         end
         # set any design days
-        db_temps = []
         if @hash[:sizing_parameter][:design_days]
           @hash[:sizing_parameter][:design_days].each do |des_day|
             des_day_object = DesignDay.new(des_day)
