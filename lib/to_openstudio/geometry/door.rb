@@ -48,14 +48,13 @@ module Honeybee
       @hash[:geometry][:boundary].each do |vertex|
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
-      reordered_vertices = OpenStudio.reorderULC(os_vertices)
 
       # triangulate subsurface if neccesary
       triangulated = false
       final_vertices_list = []
       matching_os_subsurfaces = []
       matching_os_subsurface_indices = []
-      if reordered_vertices.size > 4
+      if os_vertices.size > 4
 
         # if this door has a matched door, see if the other one has already been created
         # the matched door should have been converted to multiple subsurfaces
@@ -75,9 +74,9 @@ module Honeybee
         if final_vertices_list.empty?
 
           # transform to face coordinates
-          t = OpenStudio::Transformation::alignFace(reordered_vertices)
+          t = OpenStudio::Transformation::alignFace(os_vertices)
           tInv = t.inverse
-          face_vertices = OpenStudio::reverse(tInv*reordered_vertices)
+          face_vertices = OpenStudio::reverse(tInv*os_vertices)
 
           # no holes in the subsurface
           holes = OpenStudio::Point3dVectorVector.new
@@ -85,7 +84,7 @@ module Honeybee
           # triangulate surface
           triangles = OpenStudio::computeTriangulation(face_vertices, holes)
           if triangles.empty?
-            raise "Failed to triangulate door #{@hash[:identifier]} with #{reordered_vertices.size} vertices"
+            raise "Failed to triangulate door #{@hash[:identifier]} with #{os_vertices.size} vertices"
           end
 
           # create new list of surfaces
@@ -98,13 +97,13 @@ module Honeybee
         end
 
       else
-        # reordered_vertices are good as is
-        final_vertices_list << reordered_vertices
+        # os_vertices are good as is
+        final_vertices_list << os_vertices
       end
 
       result = []
-      final_vertices_list.each_with_index do |reordered_vertices, index|
-        os_subsurface = OpenStudio::Model::SubSurface.new(reordered_vertices, openstudio_model)
+      final_vertices_list.each_with_index do |os_vertices, index|
+        os_subsurface = OpenStudio::Model::SubSurface.new(os_vertices, openstudio_model)
 
         if !matching_os_subsurfaces.empty?
           os_subsurface.setName(@hash[:identifier] + "..#{matching_os_subsurface_indices[index]}")
@@ -154,4 +153,50 @@ module Honeybee
       return result
     end
   end # Door
+
+  def to_openstudio_shade(openstudio_model, shading_surface_group)
+    # get the vertices from the door
+    if @hash[:geometry][:vertices].nil?
+      hb_verts = @hash[:geometry][:boundary]
+    else
+      hb_verts = @hash[:geometry][:vertices]
+    end
+
+    # create the openstudio shading surface
+    os_vertices = OpenStudio::Point3dVector.new
+    hb_verts.each do |vertex|
+      os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+    end
+
+    os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
+    os_shading_surface.setName(@hash[:identifier])
+    unless @hash[:display_name].nil?
+      os_shading_surface.setDisplayName(@hash[:display_name])
+    end
+
+    # get the approriate construction id
+    construction_id = nil
+    if @hash[:properties][:energy][:construction]
+      construction_id = @hash[:properties][:energy][:construction]
+    elsif @hash[:is_glass] == true
+      construction_id = 'Generic Double Pane'
+    else
+      construction_id = 'Generic Exterior Door'
+    end
+
+    # assign the construction
+    unless construction_id.nil?
+      construction = openstudio_model.getConstructionByName(construction_id)
+      unless construction.empty?
+        os_construction = construction.get
+        os_shading_surface.setConstruction(os_construction)
+      end
+    end
+
+    # add the shade to the group
+    os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
+
+    os_shading_surface
+  end
+
 end # Honeybee

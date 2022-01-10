@@ -34,6 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load program type kitchen' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_kitchen.json')
     honeybee_obj_1 = Honeybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -98,6 +99,7 @@ RSpec.describe Honeybee do
 
   it 'can load program type office' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_office.json')
     honeybee_obj_1 = Honeybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -106,6 +108,7 @@ RSpec.describe Honeybee do
 
   it 'can load program type patient room' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_patient_room.json')
     honeybee_obj_1 = Honeybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -114,6 +117,7 @@ RSpec.describe Honeybee do
 
   it 'can load program type plenum' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/program_type/program_type_abridged_plenum.json')
     honeybee_obj_1 = Honeybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)

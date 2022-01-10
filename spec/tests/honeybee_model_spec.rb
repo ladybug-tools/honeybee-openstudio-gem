@@ -52,6 +52,7 @@ RSpec.describe Honeybee do
 
   it 'can load and validate complete single zone office' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -75,7 +76,7 @@ RSpec.describe Honeybee do
     openstudio_space = openstudio_surface.space
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Tiny_House_Office'
+    expect(openstudio_space.nameString).to eq 'Tiny_House_Office_Space'
     expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
     expect((openstudio_space.displayName.get)).to eq 'テスト名'
 
@@ -122,6 +123,7 @@ RSpec.describe Honeybee do
     model = Honeybee::Model.read_from_disk(file)
 
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     openstudio_model = model.to_openstudio_model(openstudio_model, log_report=false)
 
     openstudio_surfaces = openstudio_model.getSurfaces
@@ -142,7 +144,7 @@ RSpec.describe Honeybee do
 
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Simple_Shoe_Box_Zone'
+    expect(openstudio_space.nameString).to eq 'Simple_Shoe_Box_Zone_Space'
 
     openstudio_vertices = openstudio_surface.vertices
     expect(openstudio_vertices.empty?).to be false
@@ -160,6 +162,7 @@ RSpec.describe Honeybee do
 
   it 'can load and validate model complete multi zone office' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_multi_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -176,15 +179,16 @@ RSpec.describe Honeybee do
     openstudio_spaces = openstudio_model.getSpaces
     expect(openstudio_spaces.size).to eq 3
 
-    openstudio_space = openstudio_model.getSpaceByName('Attic')
+    openstudio_space = openstudio_model.getSpaceByName('Attic_Space')
     expect(openstudio_space.empty?).to be false
 
     openstudio_space = openstudio_space.get
-    expect(openstudio_space.nameString).to eq 'Attic'
+    expect(openstudio_space.nameString).to eq 'Attic_Space'
   end
 
   it 'can load complete office floor' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_office_floor.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -193,6 +197,7 @@ RSpec.describe Honeybee do
 
   it 'can load complete patient room' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_patient_room.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -201,6 +206,7 @@ RSpec.describe Honeybee do
 
   it 'can load model energy fixed interval' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_fixed_interval.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -209,6 +215,7 @@ RSpec.describe Honeybee do
 
   it 'can load model energy no program' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_no_program.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -217,6 +224,7 @@ RSpec.describe Honeybee do
 
   it 'can load model energy with service hot water' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_service_hot_water.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -225,6 +233,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with all air template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_allair_hvac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -233,6 +242,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with DOAS template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_doas_hvac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -241,6 +251,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with heating/cooling template HVAC' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ac.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -249,6 +260,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with window ventilation' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_window_ventilation.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -260,6 +272,7 @@ RSpec.describe Honeybee do
 
   it 'can load model with an Airflow Network' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_energy_afn.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -288,6 +301,7 @@ RSpec.describe Honeybee do
 
   it 'can triangulate 5vertex sub faces' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -299,6 +313,7 @@ RSpec.describe Honeybee do
 
   it 'can triangulate 5vertex sub faces with interior boundary conditions' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces_interior.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -336,6 +351,7 @@ RSpec.describe Honeybee do
 
   it 'can load large model for a single-family home' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model_large/single_family_home.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
@@ -344,6 +360,7 @@ RSpec.describe Honeybee do
 
   it 'can load large model for a lab building' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/model_large/lab_building.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)

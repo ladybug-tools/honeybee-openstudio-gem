@@ -1,7 +1,7 @@
 
 OS:Version,
-  {3db9c14b-4608-4bb4-aad4-8c5ecedef9a1}, !- Handle
-  3.2.0;                                  !- Version Identifier
+  {78f9b0bc-37ec-4805-8a5d-81a2198df580}, !- Handle
+  3.3.0;                                  !- Version Identifier
 
 OS:SimulationControl,
   {c1f25074-dfe8-478a-a3a0-760203ea42a4}, !- Handle
@@ -114,21 +114,23 @@ OS:SizingPeriod:DesignDay,
   Sizing Period Design Day 1,             !- Name
   -20.6,                                  !- Maximum Dry-Bulb Temperature {C}
   0,                                      !- Daily Dry-Bulb Temperature Range {deltaC}
-  -20.6,                                  !- Humidity Indicating Conditions at Maximum Dry-Bulb
   99063,                                  !- Barometric Pressure {Pa}
   4.9,                                    !- Wind Speed {m/s}
   270,                                    !- Wind Direction {deg}
   0,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   1,                                      !- Month
   WinterDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  WetBulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  WetBulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  -20.6,                                  !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:SizingPeriod:DesignDay,
@@ -136,21 +138,23 @@ OS:SizingPeriod:DesignDay,
   Sizing Period Design Day 2,             !- Name
   33.2,                                   !- Maximum Dry-Bulb Temperature {C}
   10.7,                                   !- Daily Dry-Bulb Temperature Range {deltaC}
-  23.8,                                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
   99063,                                  !- Barometric Pressure {Pa}
   5.3,                                    !- Wind Speed {m/s}
   230,                                    !- Wind Direction {deg}
   1,                                      !- Sky Clearness
-  0,                                      !- Rain Indicator
-  0,                                      !- Snow Indicator
+  No,                                     !- Rain Indicator
+  No,                                     !- Snow Indicator
   21,                                     !- Day of Month
   7,                                      !- Month
   SummerDesignDay,                        !- Day Type
-  0,                                      !- Daylight Saving Time Indicator
-  WetBulb,                                !- Humidity Indicating Type
-  ,                                       !- Humidity Indicating Day Schedule Name
+  No,                                     !- Daylight Saving Time Indicator
+  WetBulb,                                !- Humidity Condition Type
+  ,                                       !- Humidity Condition Day Schedule Name
+  23.8,                                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+  ,                                       !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+  ,                                       !- Enthalpy at Maximum Dry-Bulb {J/kg}
   DefaultMultipliers,                     !- Dry-Bulb Temperature Range Modifier Type
-  ,                                       !- Dry-Bulb Temperature Range Modifier Schedule Name
+  ,                                       !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   ASHRAEClearSky;                         !- Solar Model Indicator
 
 OS:ScheduleTypeLimits,
@@ -2966,7 +2970,8 @@ OS:Sizing:System,
   autosize,                               !- Heating Design Capacity {W}
   157,                                    !- Heating Design Capacity Per Floor Area {W/m2}
   1,                                      !- Fraction of Autosized Heating Design Capacity
-  OnOff;                                  !- Central Cooling Capacity Control Method
+  OnOff,                                  !- Central Cooling Capacity Control Method
+  ;                                       !- Occupant Diversity
 
 OS:AvailabilityManagerAssignmentList,
   {f149d189-5bbb-4961-8d79-eb5f0cbc2d79}, !- Handle

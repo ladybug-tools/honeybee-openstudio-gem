@@ -50,9 +50,8 @@ module Honeybee
                     # Only translate if people per floor area is specified
                     # Check if schedule exists and is of the correct type
                     if !people_def.peopleperSpaceFloorArea.empty? && !people.numberofPeopleSchedule.empty?
-                        sch = people.numberofPeopleSchedule.get.scheduleTypeLimits.get.unitType
-                        # TODO Fractional isn't listed in schedule type limits unit type
-                        if sch == 'Dimensionless'
+                        sch = people.numberofPeopleSchedule.get
+                        if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
                             hash[:people] = Honeybee::PeopleAbridged.from_load(people)
                             break
                         end
@@ -65,8 +64,8 @@ module Honeybee
                     # Only translate if watts per floor area is specified
                     # Check if schedule exists and is of the correct type
                     if !light_def.wattsperSpaceFloorArea.empty? && !light.schedule.empty?
-                        sch = light.schedule.get.scheduleTypeLimits.get.unitType
-                        if sch == 'Dimensionless'
+                        sch = light.schedule.get
+                        if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
                             hash[:lighting] = Honeybee::LightingAbridged.from_load(light)
                             break
                         end
@@ -79,8 +78,8 @@ module Honeybee
                     # Only translate if watts per floor area is specified
                     # Check if schedule exists and is of the correct type
                     if !electric_eq_def.wattsperSpaceFloorArea.empty? && !electric_eq.schedule.empty?
-                        sch = electric_eq.schedule.get.scheduleTypeLimits.get.unitType
-                        if sch == 'Dimensionless'
+                        sch = electric_eq.schedule.get
+                        if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
                             hash[:electric_equipment] = Honeybee::ElectricEquipmentAbridged.from_load(electric_eq)
                             break
                         end
@@ -93,8 +92,8 @@ module Honeybee
                     # Only translate if watts per floor area is specified
                     # Check if schedule exists and is of the correct type
                     if !gas_eq_def.wattsperSpaceFloorArea.empty? && !gas_eq.schedule.empty?
-                        sch = gas_eq.schedule.get.scheduleTypeLimits.get.unitType
-                        if sch == 'Dimensionless'
+                        sch = gas_eq.schedule.get
+                        if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
                             hash[:gas_equipment] = Honeybee::GasEquipmentAbridged.from_load(gas_eq)
                             break
                         end
@@ -106,8 +105,8 @@ module Honeybee
                     # Only translate if flow per exterior area is specified
                     # Check if schedule exists and is of the correct type
                     if !infiltration.flowperExteriorSurfaceArea.empty? && !infiltration.schedule.empty?
-                        sch = infiltration.schedule.get.scheduleTypeLimits.get.unitType
-                        if sch == 'Dimensionless'
+                        sch = infiltration.schedule.get
+                        if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
                             hash[:infiltration] = Honeybee::InfiltrationAbridged.from_load(infiltration)
                             break
                         end

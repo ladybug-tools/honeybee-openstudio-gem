@@ -40,7 +40,7 @@ module Honeybee
         hash = {}
         hash[:type] = 'ShadeConstruction'
         # set hash values from OpenStudio Object
-        hash[:identifier] = clean_name(construction.nameString)
+        hash[:identifier] = clean_name(construction.nameString) + ' Shade'
         unless construction.displayName.empty?
           hash[:display_name] = (construction.displayName.get).force_encoding("UTF-8")
         end

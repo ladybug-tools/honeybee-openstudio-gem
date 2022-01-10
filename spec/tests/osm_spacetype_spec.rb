@@ -42,14 +42,15 @@ RSpec.describe Honeybee do
         file = File.join(File.dirname(__FILE__), '../samples/osm_program_type/programType.osm')
         vt = OpenStudio::OSVersion::VersionTranslator.new
         openstudio_model = vt.loadModel(file)
+        openstudio_model = openstudio_model.get
         year = 2020
-        openstudio_model.get.getYearDescription.setCalendarYear(year.to_i)
-        weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
-        workflow = OpenStudio::WorkflowJSON.new
-        workflow.setSeedFile(file)
-        workflow.setWeatherFile(File.absolute_path(weather_file))
+        openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+        weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+        epw = Dir.glob("#{weather_folder}/*.epw")
+        epw_file = OpenStudio::EpwFile.new(epw[0])
+        OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
         # create HB JSON material from OS model
-        honeybee = Honeybee::Model.programtype_from_model(openstudio_model.get)
+        honeybee = Honeybee::Model.programtype_from_model(openstudio_model)
 
         # check values
         expect(honeybee.size).to eq 1
@@ -60,7 +61,7 @@ RSpec.describe Honeybee do
         expect(honeybee[0][:people]).not_to be nil
         expect(honeybee[0][:people][:identifier]).to eq 'People 1'
         expect(honeybee[0][:people][:people_per_area]).to eq 0.5381955504417419
-        expect(honeybee[0][:people][:occupancy_schedule]).to eq 'Office Misc Occ 1'
+        expect(honeybee[0][:people][:occupancy_schedule]).to eq 'Office Misc Occ'
 
         expect(honeybee[0][:electric_equipment]).not_to be nil
         expect(honeybee[0][:electric_equipment][:identifier]).to eq '189.1-2009 - Office - BreakRoom - CZ1-3 Electric Equipment'

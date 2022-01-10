@@ -42,10 +42,12 @@ module Honeybee
             # set hash values from OpenStudio Object
             hash[:identifier] = clean_name(load.nameString)
             unless load.schedule.empty?
-                hash[:schedule] = (load.schedule.get).to_s
+                schedule = load.schedule.get
+                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                    hash[:schedule] = schedule.nameString
+                end
             end
             load_def = load.gasEquipmentDefinition
-            load_def.setWattsperSpaceFloorArea(15)
             unless load_def.wattsperSpaceFloorArea.empty?
                 hash[:watts_per_area] = load_def.wattsperSpaceFloorArea.get
             end

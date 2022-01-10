@@ -77,6 +77,15 @@ module Honeybee
       rooms = rooms_from_model(openstudio_model)
       hash[:rooms] = rooms if !rooms.empty?
 
+      # Add schedule created at the room level to the array of schedules in the model
+      unless $heating_setpoint_schedule.nil?
+        hash[:properties][:energy][:schedules] << $heating_setpoint_schedule
+      end
+      # Add schedule created at the room level to the array of schedules in the model
+      unless $cooling_setpoint_schedule.nil?
+        hash[:properties][:energy][:schedules] << $cooling_setpoint_schedule
+      end
+
       orphaned_shades = orphaned_shades_from_model(openstudio_model)
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
 
@@ -295,12 +304,7 @@ module Honeybee
         $schedules[sched_fixed_hash[:identifier]] = sched_fixed_hash
         result << sched_fixed_hash
       end
-      unless $heating_setpoint_schedule.nil?
-        result << $heating_setpoint_schedule
-      end
-      unless $cooling_setpoint_schedule.nil?
-        result << $cooling_setpoint_schedule
-      end
+
       result
     end
 

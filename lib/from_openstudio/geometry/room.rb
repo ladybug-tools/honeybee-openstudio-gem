@@ -83,19 +83,29 @@ module Honeybee
       # TODO: These are loads assigned to the space directly. How should duplicates created in programtype, if any, be handled? 
       unless space.people.empty?
         space.people.each do |people|
+          people_def = people.peopleDefinition
           # Only translate if people per floor area is specified
-          unless people.peopleDefinition.peopleperSpaceFloorArea.empty?
-            hash[:people] = Honeybee::PeopleAbridged.from_load(people)
-            break
+          # Check if schedule exists and is of the correct type
+          if !people_def.peopleperSpaceFloorArea.empty? && !people.numberofPeopleSchedule.empty?
+            sch = people.numberofPeopleSchedule.get
+            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+              hash[:people] = Honeybee::PeopleAbridged.from_load(people)
+              break
+            end
           end
         end
       end
       unless space.lights.empty?
         space.lights.each do |light|
+          light_def = light.lightsDefinition
           # Only translate if watts per floor area is specified
-          unless light.lightsDefinition.wattsperSpaceFloorArea.empty?
-            hash[:lighting] = Honeybee::LightingAbridged.from_load(light)
-            break
+          # Check if schedule exists and is of the correct type
+          if !light_def.wattsperSpaceFloorArea.empty? && !light.schedule.empty?
+            sch = light.schedule.get
+            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+              hash[:lighting] = Honeybee::LightingAbridged.from_load(light)
+              break
+            end
           end
         end
       end
@@ -103,18 +113,27 @@ module Honeybee
         space.electricEquipment.each do |electric_eq|
           electric_eq_def = electric_eq.electricEquipmentDefinition
           # Only translate if watts per floor area is specified
-          unless electric_eq_def.wattsperSpaceFloorArea.empty?
-            hash[:electric_equipment] = Honeybee::ElectricEquipmentAbridged.from_load(electric_eq)
-            break
+          # Check if schedule exists and is of the correct type
+          if !electric_eq_def.wattsperSpaceFloorArea.empty? && !electric_eq.schedule.empty?
+            sch = electric_eq.schedule.get
+            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+              hash[:electric_equipment] = Honeybee::ElectricEquipmentAbridged.from_load(electric_eq)
+              break
+            end
           end
         end
       end
       unless space.gasEquipment.empty?
         space.gasEquipment.each do |gas_eq|
           gas_eq_def = gas_eq.gasEquipmentDefinition
-          unless gas_eq_def.wattsperSpaceFloorArea
-            hash[:gas_equipment] = Honeybee::GasEquipmentAbridged.from_load(gas_eq)
-            break
+          # Only translate if watts per floor area is specified
+          # Check if schedule exists and is of the correct type
+          if !gas_eq_def.wattsperSpaceFloorArea.empty? && !gas_eq.schedule.empty?
+            sch = gas_eq.schedule.get
+            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+              hash[:gas_equipment] = Honeybee::GasEquipmentAbridged.from_load(gas_eq)
+              break
+            end
           end
         end
       end
@@ -127,11 +146,15 @@ module Honeybee
         end
       end
       unless space.spaceInfiltrationDesignFlowRates.empty?
-        space.spaceInfiltrationDesignFlowRates.each do |infilt|
+        space.spaceInfiltrationDesignFlowRates.each do |infiltration|
           # Only translate if flow per exterior area is specified
-          unless infilt.flowperExteriorSurfaceArea.empty?
-            hash[:infiltration] = Honeybee::InfiltrationAbridged.from_load(infilt)
-            break
+          # Check if schedule exists and is of the correct type
+          if !infiltration.flowperExteriorSurfaceArea.empty? && !infiltration.schedule.empty?
+            sch = infiltration.schedule.get
+            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+              hash[:infiltration] = Honeybee::InfiltrationAbridged.from_load(infiltration)
+              break
+            end
           end
         end
       end
@@ -145,8 +168,6 @@ module Honeybee
       unless thermal_zone.empty?
         thermal_zone = space.thermalZone.get
         unless thermal_zone.thermostatSetpointDualSetpoint.empty?
-        # TODO: There isn't a combined setpoint object in OS and the identifier can't be assigned.
-        # For now using the thermal zone name as setpoint identifier.
           hash[:setpoint] = {}
           thermostat = thermal_zone.thermostatSetpointDualSetpoint.get
           hash[:setpoint][:identifier] = thermostat.nameString

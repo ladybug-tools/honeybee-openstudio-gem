@@ -47,17 +47,28 @@ module Honeybee
             #TODO: Is there a default occupancy schedule since it is a required field in HB but not
             #in OS
             unless load.numberofPeopleSchedule.empty?
-                hash[:occupancy_schedule] = (load.numberofPeopleSchedule.get).name.to_s
+                schedule = load.numberofPeopleSchedule.get
+                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                    hash[:occupancy_schedule] = schedule.nameString
+                end
             end
             unless load.activityLevelSchedule.empty?
-                hash[:activity_schedule] = (load.activityLevelSchedule.get).name.to_s
+                schedule = load.activityLevelSchedule.get
+                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                    hash[:activity_schedule] = schedule.nameString
+                end
             end
             load_def = load.peopleDefinition
             unless load_def.peopleperSpaceFloorArea.empty?
                 hash[:people_per_area] = load_def.peopleperSpaceFloorArea.to_f
             end
             hash[:radiant_fraction] = load_def.fractionRadiant
-            hash[:latent_fraction] = 1 - load_def.fractionRadiant
+            unless load_def.isSensibleHeatFractionAutocalculated
+                sensible_fraction = load_def.sensibleHeatFraction
+                unless sensible_fraction.empty
+                    hash[:latent_fraction] = 1 - load_def.sensibleHeatFraction.get
+                end
+            end
            hash
         end
     end

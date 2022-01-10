@@ -34,6 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load schedule fixed interval 1' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_fine_timestep.json')
     honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
@@ -56,6 +57,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule fixed interval 2' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_increasing_single_day.json')
     honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
@@ -65,6 +67,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule fixed interval 3' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     year_description = openstudio_model.getYearDescription
     year_description.setIsLeapYear(true)
 
@@ -77,6 +80,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule fixed interval 4' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_fixedinterval_random_annual.json')
     honeybee_obj_1 = Honeybee::ScheduleFixedIntervalAbridged.read_from_disk(file)
 
@@ -86,6 +90,8 @@ RSpec.describe Honeybee do
 
   it 'can load schedule primary school occupancy' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
+
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_primary_school_occupancy.json')
     honeybee_obj_1 = Honeybee::ScheduleRulesetAbridged.read_from_disk(file)
 
@@ -119,6 +125,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule ruleset office occupancy' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_office_occupancy.json')
     honeybee_obj_1 = Honeybee::ScheduleRulesetAbridged.read_from_disk(file)
 
@@ -128,6 +135,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule ruleset simple repeating' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/schedule_ruleset_simple_repeating.json')
     honeybee_obj_1 = Honeybee::ScheduleRulesetAbridged.read_from_disk(file)
 
@@ -137,6 +145,7 @@ RSpec.describe Honeybee do
 
   it 'can load schedule type limit' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/schedule/scheduletypelimit_temperature.json')
     honeybee_obj_1 = Honeybee::ScheduleTypeLimit.read_from_disk(file)
 
@@ -155,6 +164,7 @@ RSpec.describe Honeybee do
     FileUtils.mkdir_p(schedule_file_dir)
 
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(schedule_file_dir)
     openstudio_model.setWorkflowJSON(workflow)
@@ -182,8 +192,8 @@ RSpec.describe Honeybee do
     expect(filename).to eq 'Solstice_Increasing.csv'
     columns = schedule_csv[:columns]
     expect(columns.size).to eq 2
-    expect(columns[0].size).to eq 8760*6 + 1
-    expect(columns[1].size).to eq 8760*6 + 1
+    expect(columns[0].size).to eq 8784*6 + 1
+    expect(columns[1].size).to eq 8784*6 + 1
 
     Honeybee.write_schedule_csv(schedule_file_dir, schedule_csv)
   end
@@ -199,6 +209,7 @@ RSpec.describe Honeybee do
     FileUtils.mkdir_p(schedule_file_dir)
 
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(schedule_file_dir)
     openstudio_model.setWorkflowJSON(workflow)

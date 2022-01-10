@@ -46,7 +46,10 @@ module Honeybee
                 hash[:display_name] = (load_def.displayName.get).force_encoding("UTF-8")
             end
             hash[:watts] = load_def.getDesignLevel
-            hash[:schedule] = load.schedule.nameString
+            schedule = load.schedule
+            if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                hash[:schedule] = schedule.nameString
+            end
             hash[:end_use_category] = load.endUseSubcategory
             hash[:fuel_type] = load.fuelType
             hash[:radiant_fraction] = load_def.fractionRadiant

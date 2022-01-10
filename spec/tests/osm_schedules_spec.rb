@@ -42,18 +42,19 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleTypeLimit.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    openstudio_model = openstudio_model.get
     year = 2020
-    openstudio_model.get.getYearDescription.setCalendarYear(year.to_i)
-    weather_file = File.join(File.dirname(__FILE__), '../samples/epw')
-    workflow = OpenStudio::WorkflowJSON.new
-    workflow.setSeedFile(file)
-    workflow.setWeatherFile(File.absolute_path(weather_file))
-    schedule = openstudio_model.get.getScheduleTypeLimitsByName('Dimensionless')
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
+    schedule = openstudio_model.getScheduleTypeLimitsByName('Dimensionless')
     schedule = schedule.get
     schedule.setDisplayName('Dimensionless123`~-_+=:!@#')
 
     # create HBJSON hash from OS model
-    honeybee = Honeybee::Model.schedtypelimits_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.schedtypelimits_from_model(openstudio_model)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -75,12 +76,19 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_schedule/scheduleRuleset.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-    schedule = openstudio_model.get.getScheduleRulesetByName('Schedule Ruleset 1')
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
+    schedule = openstudio_model.getScheduleRulesetByName('Schedule Ruleset 1')
     schedule = schedule.get
     schedule.setDisplayName('Schedule Ruleset 1{}:>,=+')
 
     # create HBJSON hash from OS model
-    honeybee = Honeybee::Model.schedules_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.schedules_from_model(openstudio_model)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -106,12 +114,19 @@ RSpec.describe Honeybee do
 
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-    schedule = openstudio_model.get.getScheduleFixedIntervalByName('Random Occupancy')
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
+    schedule = openstudio_model.getScheduleFixedIntervalByName('Random Occupancy')
     schedule = schedule.get
     schedule.setDisplayName('Random Occupancy 1{}:>,=+')
 
     # create HBJSON hash from OS model
-    honeybee = Honeybee::Model.schedules_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.schedules_from_model(openstudio_model)
 
     # check values
     expect(honeybee.size).to eq 1

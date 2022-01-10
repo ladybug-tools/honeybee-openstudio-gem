@@ -47,7 +47,9 @@ module Honeybee
             hash[:flow_per_exterior_area] = load.flowperExteriorSurfaceArea.get
             unless load.schedule.empty?
                 schedule = load.schedule.get
-                hash[:schedule] = schedule.nameString
+                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                    hash[:schedule] = schedule.nameString
+                end
             end
             hash[:constant_coefficient] = load.constantTermCoefficient
             hash[:temperature_coefficient] = load.temperatureTermCoefficient

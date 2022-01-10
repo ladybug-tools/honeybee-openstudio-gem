@@ -205,8 +205,12 @@ module Honeybee
 
       # assign any air boundary constructions to construction set
       if @hash[:air_boundary_construction]
-        air_ref = openstudio_model.getConstructionAirBoundaryByName(
-          @hash[:air_boundary_construction])
+        air_ref = openstudio_model.getConstructionAirBoundaryByName(@hash[:air_boundary_construction])
+        unless air_ref.empty?
+          air_construction = air_ref.get
+          os_constr_set.setInteriorPartitionConstruction(air_construction)
+        end
+        air_ref = openstudio_model.getConstructionByName(@hash[:air_boundary_construction])
         unless air_ref.empty?
           air_construction = air_ref.get
           os_constr_set.setInteriorPartitionConstruction(air_construction)

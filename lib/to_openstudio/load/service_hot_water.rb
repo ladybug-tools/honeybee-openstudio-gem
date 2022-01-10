@@ -234,7 +234,7 @@ module Honeybee
       # create water use equipment + connection and set identifier
       os_shw_def = OpenStudio::Model::WaterUseEquipmentDefinition.new(openstudio_model)
       os_shw = OpenStudio::Model::WaterUseEquipment.new(os_shw_def)
-      unique_id = @hash[:identifier] + '..' + os_space.nameString
+      unique_id = @hash[:identifier] + '..' + os_space.nameString[0...-6]
       os_shw_def.setName(unique_id)
       os_shw.setName(unique_id)
 

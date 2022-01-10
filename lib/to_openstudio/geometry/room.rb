@@ -39,7 +39,7 @@ module Honeybee
     attr_reader :unique_space_type
 
     def find_existing_openstudio_object(openstudio_model)
-      model_space = openstudio_model.getSpaceByName(@hash[:identifier])
+      model_space = openstudio_model.getSpaceByName(@hash[:identifier] + '_Space')
       return model_space.get unless model_space.empty?
       nil
     end
@@ -75,7 +75,7 @@ module Honeybee
     def to_openstudio(openstudio_model)
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
-      os_space.setName(@hash[:identifier])
+      os_space.setName(@hash[:identifier] + '_Space')
       unless @hash[:display_name].nil?
         os_space.setDisplayName(@hash[:display_name])
       end
@@ -189,6 +189,7 @@ module Honeybee
           end
         end
 
+        # assign interior constructions for adiabatic Faces
         if !face[:properties][:energy][:construction]
           if face[:boundary_condition][:type] == 'Adiabatic'
             # assign default interior construction for Adiabatic Faces
@@ -198,28 +199,38 @@ module Honeybee
                 os_surface.setConstruction(interior_construction)
               end
             end
-          elsif face[:face_type] == 'AirBoundary'
-            # assign default air boundary construction for AirBoundary face types
-            air_construction = closest_air_construction(openstudio_model, os_space)
+          end
+        end
+
+        # assign air boundaries
+        if face[:face_type] == 'AirBoundary'
+          # assign default air boundary construction for AirBoundary face types
+          air_construction = closest_air_construction(openstudio_model, os_space)
+          if !face[:properties][:energy][:construction]
             unless air_construction.nil?
               os_surface.setConstruction(air_construction)
             end
-            # add air mixing properties to the global list that tracks them
-            if $use_simple_vent  # only use air mixing objects when simple ventilation is requested
-              air_hash = $air_boundary_hash[air_construction.name.to_s]
-              if air_hash[:air_mixing_per_area]
-                air_mix_area = air_hash[:air_mixing_per_area]
-              else
-                air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
-                air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
-              end
-              flow_rate = os_surface.netArea * air_mix_area
-              flow_sch_id = air_hash[:air_mixing_schedule]
-              adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
-              $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
+          end
+          # add air mixing properties to the global list that tracks them
+          if $use_simple_vent  # only use air mixing objects when simple ventilation is requested
+            air_hash = $air_boundary_hash[air_construction.name.to_s]
+            if air_hash && air_hash[:air_mixing_per_area]
+              air_mix_area = air_hash[:air_mixing_per_area]
+            else
+              air_default = @@schema[:components][:schemas][:AirBoundaryConstructionAbridged]
+              air_mix_area = air_default[:properties][:air_mixing_per_area][:default]
             end
+            flow_rate = os_surface.netArea * air_mix_area
+            if air_hash
+              flow_sch_id = air_hash[:air_mixing_schedule]
+            else
+              flow_sch_id = 'Always On'
+            end
+            adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
+            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
           end
         end
+      
       end
 
       # assign any room-level outdoor shades if they exist
