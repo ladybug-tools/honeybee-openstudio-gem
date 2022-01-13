@@ -226,8 +226,14 @@ module Honeybee
             else
               flow_sch_id = 'Always On'
             end
-            adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
-            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
+            begin
+              adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
+            rescue Exception
+              msg = 'ERROR: Air Boundary Faces must be adjacent to a neighboring Room and have a Surface boundary condition.'
+              puts msg
+            else
+              $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
+            end
           end
         end
       
