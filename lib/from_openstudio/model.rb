@@ -135,7 +135,7 @@ module Honeybee
       hash[:construction_sets] = constructionsets_from_model(openstudio_model)
       hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
       hash[:schedules] = scheduleruleset_from_model(openstudio_model)
-      hash[:schedules] = schedulefixedinterval_from_model(openstudio_model)
+      hash[:schedules].push(*schedulefixedinterval_from_model(openstudio_model))
 
       hash
     end
