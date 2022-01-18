@@ -76,12 +76,13 @@ module Honeybee
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
       os_space.setName(@hash[:identifier] + '_Space')
-      unless @hash[:display_name].nil?
-        os_space.setDisplayName(@hash[:display_name])
-      end
       os_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
       os_thermal_zone.setName(@hash[:identifier])
       os_space.setThermalZone(os_thermal_zone)
+      unless @hash[:display_name].nil?
+        os_space.setDisplayName(@hash[:display_name])
+        os_thermal_zone.setDisplayName(@hash[:display_name])
+      end
 
       # assign the programtype
       if @hash[:properties][:energy][:program_type]
