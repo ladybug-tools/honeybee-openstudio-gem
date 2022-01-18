@@ -76,12 +76,13 @@ module Honeybee
       # create the space and thermal zone
       os_space = OpenStudio::Model::Space.new(openstudio_model)
       os_space.setName(@hash[:identifier] + '_Space')
-      unless @hash[:display_name].nil?
-        os_space.setDisplayName(@hash[:display_name])
-      end
       os_thermal_zone = OpenStudio::Model::ThermalZone.new(openstudio_model)
       os_thermal_zone.setName(@hash[:identifier])
       os_space.setThermalZone(os_thermal_zone)
+      unless @hash[:display_name].nil?
+        os_space.setDisplayName(@hash[:display_name])
+        os_thermal_zone.setDisplayName(@hash[:display_name])
+      end
 
       # assign the programtype
       if @hash[:properties][:energy][:program_type]
@@ -226,8 +227,14 @@ module Honeybee
             else
               flow_sch_id = 'Always On'
             end
-            adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
-            $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
+            begin
+              adj_zone_id = face[:boundary_condition][:boundary_condition_objects][-1]
+            rescue Exception
+              msg = 'ERROR: Air Boundary Faces must be adjacent to a neighboring Room and have a Surface boundary condition.'
+              puts msg
+            else
+              $air_mxing_array << [os_thermal_zone, flow_rate, flow_sch_id, adj_zone_id]
+            end
           end
         end
       
