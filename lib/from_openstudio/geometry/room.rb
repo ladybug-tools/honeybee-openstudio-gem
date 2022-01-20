@@ -88,7 +88,7 @@ module Honeybee
           # Check if schedule exists and is of the correct type
           if !people_def.peopleperSpaceFloorArea.empty? && !people.numberofPeopleSchedule.empty?
             sch = people.numberofPeopleSchedule.get
-            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
               hash[:people] = Honeybee::PeopleAbridged.from_load(people)
               break
             end
@@ -102,7 +102,7 @@ module Honeybee
           # Check if schedule exists and is of the correct type
           if !light_def.wattsperSpaceFloorArea.empty? && !light.schedule.empty?
             sch = light.schedule.get
-            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
               hash[:lighting] = Honeybee::LightingAbridged.from_load(light)
               break
             end
@@ -116,7 +116,7 @@ module Honeybee
           # Check if schedule exists and is of the correct type
           if !electric_eq_def.wattsperSpaceFloorArea.empty? && !electric_eq.schedule.empty?
             sch = electric_eq.schedule.get
-            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
               hash[:electric_equipment] = Honeybee::ElectricEquipmentAbridged.from_load(electric_eq)
               break
             end
@@ -130,7 +130,7 @@ module Honeybee
           # Check if schedule exists and is of the correct type
           if !gas_eq_def.wattsperSpaceFloorArea.empty? && !gas_eq.schedule.empty?
             sch = gas_eq.schedule.get
-            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
               hash[:gas_equipment] = Honeybee::GasEquipmentAbridged.from_load(gas_eq)
               break
             end
@@ -140,8 +140,12 @@ module Honeybee
       unless space.otherEquipment.empty?
         hash[:process_loads] = []
         space.otherEquipment.each do |other_eq|
-          unless other_eq.designLevel.empty?
-            hash[:process_loads] << Honeybee::ProcessAbridged.from_load(other_eq)
+          other_eq_def = other_eq.otherEquipmentDefinition
+          if !other_eq_def.designLevel.empty? && !other_eq.schedule.empty?
+            sch = other_eq.schedule.get
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+              hash[:process_loads] << Honeybee::ProcessAbridged.from_load(other_eq)
+            end
           end
         end
       end
@@ -151,7 +155,7 @@ module Honeybee
           # Check if schedule exists and is of the correct type
           if !infiltration.flowperExteriorSurfaceArea.empty? && !infiltration.schedule.empty?
             sch = infiltration.schedule.get
-            if sch.to_ScheduleFixedInterval.is_initialized or sch.to_ScheduleRuleset.is_initialized
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
               hash[:infiltration] = Honeybee::InfiltrationAbridged.from_load(infiltration)
               break
             end
@@ -169,9 +173,14 @@ module Honeybee
         thermal_zone = space.thermalZone.get
         unless thermal_zone.thermostatSetpointDualSetpoint.empty?
           hash[:setpoint] = {}
+          hash[:setpoint][:type] = 'SetpointAbridged'
           thermostat = thermal_zone.thermostatSetpointDualSetpoint.get
           hash[:setpoint][:identifier] = thermostat.nameString
-          if thermostat.heatingSetpointTemperatureSchedule.empty?
+          unless thermostat.displayName.empty?
+            hash[:display_name] = (thermostat.displayName.get).force_encoding("UTF-8")
+          end
+          sch = thermostat.heatingSetpointTemperatureSchedule
+          if sch.empty? or !sch.get.to_ScheduleRuleset.is_initialized
             # if heating setpoint schedule is not specified create a new setpoint schedule and assign to HB thermostat object.
             # first check if schedule is already created
             if $heating_setpoint_schedule.nil?
@@ -182,16 +191,17 @@ module Honeybee
               openstudio_sch_type_lim.setName('Temperature')
               openstudio_sch_type_lim.setNumericType('Temperature')
               openstudio_schedule.defaultDaySchedule.setName('Heating Day Default')
-              openstudio_schedule.defaultDaySchedule.addValue(OpenStudio::Time.new(0,24,0,0), 100)
+              openstudio_schedule.defaultDaySchedule.addValue(OpenStudio::Time.new(0,24,0,0), -100)
               openstudio_schedule.defaultDaySchedule.setScheduleTypeLimits(openstudio_sch_type_lim)
               $heating_setpoint_schedule = Honeybee::ScheduleRulesetAbridged.from_schedule_ruleset(openstudio_schedule)
             end
             hash[:setpoint][:heating_schedule] = $heating_setpoint_schedule[:identifier]
           else
-            heating_schedule = thermostat.heatingSetpointTemperatureSchedule.get
+            heating_schedule = sch.get
             hash[:setpoint][:heating_schedule] = heating_schedule.nameString
           end
-          if thermostat.coolingSetpointTemperatureSchedule.empty?
+          sch = thermostat.coolingSetpointTemperatureSchedule
+          if sch.empty? or !sch.get.to_ScheduleRuleset.is_initialized
             # if cooling setpoint schedule is not specified create a new setpoint schedule and assign to HB thermostat object
             # first check if schedule is already created
             if $cooling_setpoint_schedule.nil?
@@ -202,25 +212,29 @@ module Honeybee
               openstudio_sch_type_lim.setName('Temperature')
               openstudio_sch_type_lim.setNumericType('Temperature')
               openstudio_schedule.defaultDaySchedule.setName('Cooling Day Default')
-              openstudio_schedule.defaultDaySchedule.addValue(OpenStudio::Time.new(0,24,0,0), -100)
+              openstudio_schedule.defaultDaySchedule.addValue(OpenStudio::Time.new(0,24,0,0), 100)
               openstudio_schedule.defaultDaySchedule.setScheduleTypeLimits(openstudio_sch_type_lim)
               $cooling_setpoint_schedule = Honeybee::ScheduleRulesetAbridged.from_schedule_ruleset(openstudio_schedule)
             end
             hash[:setpoint][:cooling_schedule] = $cooling_setpoint_schedule[:identifier]
           else
-            cooling_schedule = thermostat.coolingSetpointTemperatureSchedule.get
+            cooling_schedule = sch.get
             hash[:setpoint][:cooling_schedule] = cooling_schedule.nameString
           end
         end
         unless thermal_zone.zoneControlHumidistat.empty?
           humidistat = thermal_zone.zoneControlHumidistat.get
           unless humidistat.humidifyingRelativeHumiditySetpointSchedule.empty?
-            humidifying_schedule = humidistat.humidifyingRelativeHumiditySetpointSchedule.get
-            hash[:setpoint][:humidifying_schedule] = humidifying_schedule.nameString
+            sch = humidistat.humidifyingRelativeHumiditySetpointSchedule.get
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+              hash[:setpoint][:humidifying_schedule] = sch.nameString
+            end
           end
           unless humidistat.dehumidifyingRelativeHumiditySetpointSchedule.empty?
-            dehumidifying_schedule = humidistat.dehumidifyingRelativeHumiditySetpointSchedule.get
-            hash[:setpoint][:dehumidifying_schedule] = dehumidifying_schedule.nameString
+            sch = humidistat.dehumidifyingRelativeHumiditySetpointSchedule.get
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+              hash[:setpoint][:dehumidifying_schedule] = sch.nameString
+            end
           end
         end
       end 

@@ -48,15 +48,11 @@ module Honeybee
             #in OS
             unless load.numberofPeopleSchedule.empty?
                 schedule = load.numberofPeopleSchedule.get
-                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
-                    hash[:occupancy_schedule] = schedule.nameString
-                end
+                hash[:occupancy_schedule] = schedule.nameString
             end
             unless load.activityLevelSchedule.empty?
                 schedule = load.activityLevelSchedule.get
-                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
-                    hash[:activity_schedule] = schedule.nameString
-                end
+                hash[:activity_schedule] = schedule.nameString
             end
             load_def = load.peopleDefinition
             unless load_def.peopleperSpaceFloorArea.empty?
@@ -66,7 +62,7 @@ module Honeybee
             unless load_def.isSensibleHeatFractionAutocalculated
                 sensible_fraction = load_def.sensibleHeatFraction
                 unless sensible_fraction.empty
-                    hash[:latent_fraction] = 1 - load_def.sensibleHeatFraction.get
+                    hash[:latent_fraction] = 1 - sensible_fraction.get
                 end
             end
            hash

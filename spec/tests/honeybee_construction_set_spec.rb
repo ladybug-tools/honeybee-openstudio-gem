@@ -35,7 +35,7 @@ RSpec.describe Honeybee do
   # TODO: add assertions about properties
   it 'can load construction set complete' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_abridged_complete.json')
     constr_set_1 = Honeybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)
@@ -47,7 +47,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction set partial' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction_set/constructionset_abridged_partial_exterior.json')
     constr_set_1 = Honeybee::ConstructionSetAbridged.read_from_disk(file)
     object1 = constr_set_1.to_openstudio(openstudio_model)

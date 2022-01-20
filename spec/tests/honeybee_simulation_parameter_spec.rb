@@ -46,7 +46,7 @@ RSpec.describe Honeybee do
     expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
   end
 
@@ -56,7 +56,7 @@ RSpec.describe Honeybee do
     expect(honeybee_obj_1.valid?).to be true
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     openstudio_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
 
     sim_contr = openstudio_model.getSimulationControl

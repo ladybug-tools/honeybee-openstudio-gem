@@ -46,9 +46,7 @@ module Honeybee
             end
             unless load.schedule.empty?
                 schedule = load.schedule.get
-                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
-                    hash[:schedule] = schedule.nameString
-                end
+                hash[:schedule] = schedule.nameString
             end
             loads_def = load.lightsDefinition
             unless loads_def.wattsperSpaceFloorArea.empty?

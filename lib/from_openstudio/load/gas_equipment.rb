@@ -43,9 +43,7 @@ module Honeybee
             hash[:identifier] = clean_name(load.nameString)
             unless load.schedule.empty?
                 schedule = load.schedule.get
-                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
-                    hash[:schedule] = schedule.nameString
-                end
+                hash[:schedule] = schedule.nameString
             end
             load_def = load.gasEquipmentDefinition
             unless load_def.wattsperSpaceFloorArea.empty?

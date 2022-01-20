@@ -34,7 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load construction opaque door' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_door.json')
     construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
 
@@ -56,7 +56,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction opaque roof' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_roof.json')
     construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
@@ -65,7 +65,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction opaque wall' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_opaque_wall.json')
     construction1 = Honeybee::OpaqueConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
@@ -74,7 +74,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction window construction with shade' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_shade.json')
     construction1 = Honeybee::WindowConstructionShadeAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
@@ -85,7 +85,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction window construction with blinds' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_blinds.json')
     construction1 = Honeybee::WindowConstructionShadeAbridged.read_from_disk(file)
 
@@ -105,7 +105,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction window double' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_double.json')
     construction1 = Honeybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)
@@ -114,7 +114,7 @@ RSpec.describe Honeybee do
 
   it 'can load construction window triple' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/construction/construction_window_triple.json')
     construction1 = Honeybee::WindowConstructionAbridged.read_from_disk(file)
     object1 = construction1.to_openstudio(openstudio_model)

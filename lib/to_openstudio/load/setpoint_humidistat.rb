@@ -40,6 +40,10 @@ module Honeybee
 
       # create humidistat openstudio object
       os_humidistat = OpenStudio::Model::ZoneControlHumidistat.new(openstudio_model)
+      os_humidistat.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_humidistat.setDisplayName(@hash[:display_name])
+      end
 
       # assign humidifying schedule if it exists
       if @hash[:humidifying_schedule]

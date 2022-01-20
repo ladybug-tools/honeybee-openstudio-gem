@@ -95,7 +95,7 @@ RSpec.describe Honeybee do
     FileUtils.mkdir_p(schedule_file_dir)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(schedule_file_dir)
     workflow.addFilePath(epw_dir)
@@ -135,7 +135,7 @@ RSpec.describe Honeybee do
     FileUtils.mkdir_p(schedule_file_dir)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(schedule_file_dir)
     workflow.addFilePath(epw_dir)
@@ -175,7 +175,7 @@ RSpec.describe Honeybee do
     FileUtils.mkdir_p(fixed_interval_dir)
 
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     workflow = openstudio_model.workflowJSON
     workflow.addFilePath(epw_dir)
     workflow.setSeedFile('in.osm')
