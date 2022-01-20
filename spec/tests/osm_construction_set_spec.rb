@@ -42,11 +42,18 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction_set/constructionSet.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-    const_set = openstudio_model.get.getDefaultConstructionSetByName('189.1-2009 - CZ1 - Office')
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
+    const_set = openstudio_model.getDefaultConstructionSetByName('189.1-2009 - CZ1 - Office')
     const_set = const_set.get
     const_set.setDisplayName('Test Name áéíóúüñ¿¡')
     # create HB JSON material from OS model
-    honeybee = Honeybee::Model.constructionsets_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.constructionsets_from_model(openstudio_model)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -58,7 +65,6 @@ RSpec.describe Honeybee do
     expect(honeybee[0][:wall_set][:interior_construction]).to eq 'Interior Wall'
     expect(honeybee[0][:floor_set]).not_to be nil
     expect(honeybee[0][:floor_set][:exterior_construction]).to eq 'ExtSlabCarpet 4in ClimateZone 1-8'
-    expect(honeybee[0])
     expect(honeybee[0][:roof_ceiling_set]).not_to be nil
     expect(honeybee[0][:roof_ceiling_set][:interior_construction]).to eq 'Interior Ceiling'
 

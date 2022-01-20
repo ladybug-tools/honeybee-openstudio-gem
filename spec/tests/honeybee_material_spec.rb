@@ -34,6 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load opaque material brick' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_opaque_brick.json')
     material1 = Honeybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -42,6 +43,7 @@ RSpec.describe Honeybee do
 
   it 'can load opaque material concrete' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_opaque_concrete.json')
     material1 = Honeybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -61,6 +63,7 @@ RSpec.describe Honeybee do
 
   it 'can load opaque material gypsum' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_opaque_gypsum.json')
     material1 = Honeybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -69,6 +72,7 @@ RSpec.describe Honeybee do
 
   it 'can load opaque insulation' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_opaque_insulation.json')
     material1 = Honeybee::EnergyMaterial.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -77,6 +81,7 @@ RSpec.describe Honeybee do
 
   it 'can load opaque wall gap' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_opaque_wall_gap.json')
     material1 = Honeybee::EnergyMaterialNoMass.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -85,6 +90,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window blind' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_blind.json')
     material1 = Honeybee::EnergyWindowMaterialBlind.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -93,6 +99,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window gas custom' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_gas_custom.json')
     material1 = Honeybee::EnergyWindowMaterialGasCustom.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -101,6 +108,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window gas mixture' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_gas_mixture.json')
     material1 = Honeybee::EnergyWindowMaterialGasMixture.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -109,6 +117,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window gas' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_gas.json')
     material1 = Honeybee::EnergyWindowMaterialGas.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -122,6 +131,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window glazing clear' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_glazing_clear.json')
     material1 = Honeybee::EnergyWindowMaterialGlazing.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -130,6 +140,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window glazing lowe' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_glazing_lowe.json')
     material1 = Honeybee::EnergyWindowMaterialGlazing.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -138,6 +149,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window glazing system' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_glazing_system.json')
     material1 = Honeybee::EnergyWindowMaterialSimpleGlazSys.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)
@@ -146,6 +158,7 @@ RSpec.describe Honeybee do
 
   it 'can load material window shade' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/material/material_window_shade.json')
     material1 = Honeybee::EnergyWindowMaterialShade.read_from_disk(file)
     object1 = material1.to_openstudio(openstudio_model)

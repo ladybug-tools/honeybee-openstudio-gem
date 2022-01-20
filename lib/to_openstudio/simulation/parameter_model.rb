@@ -49,6 +49,8 @@ module Honeybee
                           else
                             OpenStudio::Model::Model.new
                           end
+      
+      @openstudio_model.getYearDescription.setCalendarYear(2020)
 
       create_openstudio_objects
 

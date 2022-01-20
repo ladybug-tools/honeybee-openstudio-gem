@@ -34,6 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load ideal air default' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_default.json')
     honeybee_obj_1 = Honeybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -44,6 +45,7 @@ RSpec.describe Honeybee do
 
   it 'can load ideal air detailed' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/hvac/ideal_air_detailed.json')
     honeybee_obj_1 = Honeybee::IdealAirSystemAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
@@ -62,18 +64,21 @@ RSpec.describe Honeybee do
 
   it 'can load a VAV template system' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/hvac/vav_template.json')
     honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end
 
   it 'can load a FCU with DOAS template system' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/hvac/fcu_with_doas_template.json')
     honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end
 
   it 'can load a Window AC with Baseboard template system' do
     openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2020)
     file = File.join(File.dirname(__FILE__), '../samples/hvac/window_ac_with_baseboard_template.json')
     honeybee_obj_1 = Honeybee::TemplateHVAC.read_from_disk(file)
   end

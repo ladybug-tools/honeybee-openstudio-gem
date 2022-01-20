@@ -68,3 +68,17 @@ require 'from_openstudio/simulation/simulation_output'
 # extend the schedule objects
 require 'from_openstudio/schedule/type_limit'
 require 'from_openstudio/schedule/ruleset'
+require 'from_openstudio/schedule/fixed_interval'
+
+# extend the load objects
+require 'from_openstudio/load/electric_equipment'
+require 'from_openstudio/load/people'
+require 'from_openstudio/load/gas_equipment'
+require 'from_openstudio/load/lighting'
+require 'from_openstudio/load/infiltration'
+require 'from_openstudio/load/ventilation'
+require 'from_openstudio/load/daylight'
+require 'from_openstudio/load/process'
+
+# extend the program type objects
+require 'from_openstudio/program_type'

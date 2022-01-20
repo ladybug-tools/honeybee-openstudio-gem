@@ -30,7 +30,6 @@
 # *******************************************************************************
 
 require 'honeybee/load/gas_equipment'
-
 require 'to_openstudio/model_object'
 
 module Honeybee

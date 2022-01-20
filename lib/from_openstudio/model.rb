@@ -49,6 +49,7 @@ require 'from_openstudio/construction_set'
 require 'from_openstudio/schedule/type_limit'
 require 'from_openstudio/schedule/ruleset'
 require 'from_openstudio/schedule/fixed_interval'
+require 'from_openstudio/program_type'
 
 require 'openstudio'
 
@@ -65,7 +66,7 @@ module Honeybee
       hash[:tolerance] = 0.01
       hash[:angle_tolerance] = 1.0
 
-      # Hashes for all shcedules and constructions in the model
+      # Hashes for various model properties
       $schedules = {}
       $opaque_constructions = {}
       $window_constructions = {}
@@ -75,6 +76,15 @@ module Honeybee
 
       rooms = rooms_from_model(openstudio_model)
       hash[:rooms] = rooms if !rooms.empty?
+
+      # Add schedule created at the room level to the array of schedules in the model
+      unless $heating_setpoint_schedule.nil?
+        hash[:properties][:energy][:schedules] << $heating_setpoint_schedule
+      end
+      # Add schedule created at the room level to the array of schedules in the model
+      unless $cooling_setpoint_schedule.nil?
+        hash[:properties][:energy][:schedules] << $cooling_setpoint_schedule
+      end
 
       orphaned_shades = orphaned_shades_from_model(openstudio_model)
       hash[:orphaned_shades] = orphaned_shades if !orphaned_shades.empty?
@@ -134,8 +144,8 @@ module Honeybee
       hash[:materials] = materials_from_model(openstudio_model)
       hash[:construction_sets] = constructionsets_from_model(openstudio_model)
       hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
-      hash[:schedules] = scheduleruleset_from_model(openstudio_model)
-      hash[:schedules].push(*schedulefixedinterval_from_model(openstudio_model))
+      hash[:schedules] = schedules_from_model(openstudio_model)
+      hash[:program_types] = programtype_from_model(openstudio_model)
 
       hash
     end
@@ -263,10 +273,9 @@ module Honeybee
   
     def self.shade_constructions_from_model(shade_constructions)
       result = []
-
-        shade_constructions.each do |key, value|
-          result << ShadeConstruction.from_construction(value)
-        end
+      shade_constructions.each do |key, value|
+        result << ShadeConstruction.from_construction(value)
+      end
 
       result
     end
@@ -281,26 +290,29 @@ module Honeybee
       result
     end
 
-    # Create HB Schedule Ruleset from OpenStudio Ruleset
-    def self.scheduleruleset_from_model(openstudio_model)
+    def self.schedules_from_model(openstudio_model)
       result = []
       openstudio_model.getScheduleRulesets.each do |sch_ruleset|
         sched_hash = ScheduleRulesetAbridged.from_schedule_ruleset(sch_ruleset)
         $schedules[sched_hash[:identifier]] = sched_hash
         result << sched_hash
       end
-      result
-    end
-
-    # Create HB Schedule Fixed Interval from OpenStudio Schedule Fixed Interval
-    def self.schedulefixedinterval_from_model(openstudio_model)
-      result = []
       # check if it is a leap year 
       is_leap_year = openstudio_model.getYearDescription.isLeapYear
       openstudio_model.getScheduleFixedIntervals.each do |sch_fix_int|
         sched_fixed_hash = ScheduleFixedIntervalAbridged.from_schedule_fixedinterval(sch_fix_int, is_leap_year)
         $schedules[sched_fixed_hash[:identifier]] = sched_fixed_hash
         result << sched_fixed_hash
+      end
+
+      result
+    end
+
+    # Create HB Program Type from OpenStudio Space Type
+    def self.programtype_from_model(openstudio_model)
+      result = []
+      openstudio_model.getSpaceTypes.each do |space_type|
+        result << ProgramTypeAbridged.from_programtype(space_type)
       end
       result
     end

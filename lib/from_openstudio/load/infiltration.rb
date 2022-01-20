@@ -29,20 +29,34 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+require 'honeybee/load/infiltration'
+require 'to_openstudio/model_object'
 
-RSpec.describe Honeybee do
-  it 'can load daylight control' do
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
-    honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
-    os_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
-    os_space = os_model.getSpaceByName('Tiny_House_Office_Space').get
+module Honeybee
+    class InfiltrationAbridged
 
-    file = File.join(File.dirname(__FILE__), '../samples/daylight/daylight_control.json')
-    honeybee_obj_1 = Honeybee::DaylightingControl.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio(openstudio_model, os_space.thermalZone.get, os_space)
-    expect(object1).not_to be nil
-  end
-end
+        def self.from_load(load)
+            # create an empty hash
+            hash = {}
+            hash[:type] = 'InfiltrationaAridged'
+            # set hash values from OpenStudio Object
+            hash[:identifier] = clean_name(load.nameString)
+            unless load.displayName.empty?
+                hash[:display_name] = (load.displayName.get).force_encoding("UTF-8")
+            end
+            hash[:flow_per_exterior_area] = load.flowperExteriorSurfaceArea.get
+            unless load.schedule.empty?
+                schedule = load.schedule.get
+                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+                    hash[:schedule] = schedule.nameString
+                end
+            end
+            hash[:constant_coefficient] = load.constantTermCoefficient
+            hash[:temperature_coefficient] = load.temperatureTermCoefficient
+            hash[:velocity_coefficient] = load.velocityTermCoefficient
+
+            hash
+        end
+
+    end #InfiltrationAbridged
+end #Honeybee

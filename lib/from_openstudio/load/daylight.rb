@@ -29,20 +29,32 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require_relative '../spec_helper'
+require 'honeybee/load/daylight'
+require 'to_openstudio/model_object'
 
-RSpec.describe Honeybee do
-  it 'can load daylight control' do
-    openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
-    file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
-    honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
-    os_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
-    os_space = os_model.getSpaceByName('Tiny_House_Office_Space').get
+module Honeybee
+    class DaylightingControl < ModelObject
 
-    file = File.join(File.dirname(__FILE__), '../samples/daylight/daylight_control.json')
-    honeybee_obj_1 = Honeybee::DaylightingControl.read_from_disk(file)
-    object1 = honeybee_obj_1.to_openstudio(openstudio_model, os_space.thermalZone.get, os_space)
-    expect(object1).not_to be nil
-  end
-end
+        def self.from_load(load)
+            # create an empty hash
+            hash = {}
+            hash[:type] = 'DaylightingControl'
+            # set hash values from OpenStudio Object
+            unless load.displayName.empty?
+                hash[:display_name] = (load.displayName.get).force_encoding("UTF-8")
+            end
+            hash[:illuminance_setpoint] = load.illuminanceSetpoint
+            # TODO: set control fraction property
+            hash[:min_power_input] = load.minimumInputPowerFractionforContinuousDimmingControl
+            hash[:min_light_output] = load.minimumLightOutputFractionforContinuousDimmingControl
+            # TODO: set off at minimum property
+            hash[:sensor_position] = []
+            hash[:sensor_position] << load.positionXCoordinate
+            hash[:sensor_position] << load.positionYCoordinate
+            hash[:sensor_position] << load.positionZCoordinate
+            
+            hash 
+        end
+
+    end  #DaylightingControl
+end #Honeybee

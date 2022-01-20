@@ -42,9 +42,16 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/energyConstruction.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
 
     # create HB JSON material from OS model
-    honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.constructions_from_model(openstudio_model)
 
     # check values
     expect(honeybee.size).to eq 1
@@ -62,12 +69,20 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/energyConstructionAirBoundary.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-    const = openstudio_model.get.getConstructionAirBoundaryByName('Construction Air Boundary 1')
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
+
+    const = openstudio_model.getConstructionAirBoundaryByName('Construction Air Boundary 1')
     const = const.get
     const.setDisplayName('Construction Air Boundary ({}|`^~!@#$%^&*<>?-,!&~-)')
 
     # create HB JSON material from OS model
-    honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.constructions_from_model(openstudio_model)
   
     # check values
     expect(honeybee.size).to eq 1
@@ -86,9 +101,15 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm_construction/window.osm')
     vt = OpenStudio::OSVersion::VersionTranslator.new
     openstudio_model = vt.loadModel(file)
-
+    openstudio_model = openstudio_model.get
+    year = 2020
+    openstudio_model.getYearDescription.setCalendarYear(year.to_i)
+    weather_folder = File.join(File.dirname(__FILE__), '../samples/epw')
+    epw = Dir.glob("#{weather_folder}/*.epw")
+    epw_file = OpenStudio::EpwFile.new(epw[0])
+    OpenStudio::Model::WeatherFile.setWeatherFile(openstudio_model, epw_file)
     # create HB JSON material from OS model
-    honeybee = Honeybee::Model.constructions_from_model(openstudio_model.get)
+    honeybee = Honeybee::Model.constructions_from_model(openstudio_model)
   
     # check values
     expect(honeybee.size).to eq 1
