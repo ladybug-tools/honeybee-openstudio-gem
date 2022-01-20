@@ -45,9 +45,11 @@ module Honeybee
             unless load_def.displayName.empty?
                 hash[:display_name] = (load_def.displayName.get).force_encoding("UTF-8")
             end
-            hash[:watts] = load_def.getDesignLevel
-            schedule = load.schedule
-            if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
+            unless load_def.designLevel.empty?
+                hash[:watts] = load_def.designLevel.get
+            end
+            unless load.schedule.empty?
+                schedule = load.schedule.get
                 hash[:schedule] = schedule.nameString
             end
             hash[:end_use_category] = load.endUseSubcategory

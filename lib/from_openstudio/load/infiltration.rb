@@ -38,7 +38,7 @@ module Honeybee
         def self.from_load(load)
             # create an empty hash
             hash = {}
-            hash[:type] = 'InfiltrationaAridged'
+            hash[:type] = 'InfiltrationAbridged'
             # set hash values from OpenStudio Object
             hash[:identifier] = clean_name(load.nameString)
             unless load.displayName.empty?
@@ -47,9 +47,7 @@ module Honeybee
             hash[:flow_per_exterior_area] = load.flowperExteriorSurfaceArea.get
             unless load.schedule.empty?
                 schedule = load.schedule.get
-                if schedule.to_ScheduleFixedInterval.is_initialized or schedule.to_ScheduleRuleset.is_initialized
-                    hash[:schedule] = schedule.nameString
-                end
+                hash[:schedule] = schedule.nameString
             end
             hash[:constant_coefficient] = load.constantTermCoefficient
             hash[:temperature_coefficient] = load.temperatureTermCoefficient

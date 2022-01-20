@@ -35,14 +35,14 @@ RSpec.describe Honeybee do
 
   it 'can load a simple ventilation opening' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/ventcool/ventilation_opening_default.json')
     honeybee_obj_1 = Honeybee::VentilationOpening.read_from_disk(file)
   end
 
   it 'can load ventilation simulation control' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/ventcool/ventilation_simulation_control.json')
     honeybee_obj_1 = Honeybee::VentilationSimulationControl.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)

@@ -34,7 +34,7 @@ require_relative '../spec_helper'
 RSpec.describe Honeybee do
   it 'can load daylight control' do
     openstudio_model = OpenStudio::Model::Model.new
-    openstudio_model.getYearDescription.setCalendarYear(2020)
+    openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_complete_single_zone_office.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     os_model = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)

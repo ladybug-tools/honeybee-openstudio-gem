@@ -46,10 +46,9 @@ module Honeybee
             hash[:flow_per_person] = load.outdoorAirFlowperPerson
             hash[:flow_per_area] = load.outdoorAirFlowperFloorArea
             unless load.outdoorAirFlowRateFractionSchedule.empty?
-                sch = load.outdoorAirFlowRateFractionSchedule.get.scheduleTypeLimits.get.unitType
-                # Check if the schedule type is correct
-                if sch == 'Fractional'
-                    hash[:schedule] = load.name
+                sch = load.outdoorAirFlowRateFractionSchedule.get
+                if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+                    hash[:schedule] = sch.nameString
                 end
             end
 

@@ -40,6 +40,10 @@ module Honeybee
 
       # create thermostat openstudio object
       os_thermostat = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(openstudio_model)
+      os_thermostat.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_thermostat.setDisplayName(@hash[:display_name])
+      end
 
       # assign heating setpoint temperature schedule
       heat_sch = openstudio_model.getScheduleByName(@hash[:heating_schedule])
