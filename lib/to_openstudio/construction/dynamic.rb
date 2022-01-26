@@ -68,7 +68,7 @@ module Honeybee
         @@program_manager = OpenStudio::Model::EnergyManagementSystemProgramCallingManager.new(
           openstudio_model)
         @@program_manager.setName('Dynamic_Window_Constructions')
-        @@program_manager.setCallingPoint('BeginTimestepBeforePredictor')
+        @@program_manager.setCallingPoint('BeginZoneTimestepBeforeInitHeatBalance')
       end
       @@program_manager
     end
