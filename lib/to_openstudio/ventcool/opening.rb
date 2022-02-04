@@ -162,7 +162,7 @@ module Honeybee
           else
             slope_ang = 90 - (180 - srf_tilt)
           end
-          os_opening = OpenStudio::Model::AirflowNetworkHorizontalOpening .new(
+          os_opening = OpenStudio::Model::AirflowNetworkHorizontalOpening.new(
             openstudio_model, flow_coefficient, flow_exponent, slope_ang, discharge_coeff)
         end
       else

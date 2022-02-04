@@ -53,6 +53,7 @@ require 'from_openstudio/construction/air'
 # import the material objects
 require 'from_openstudio/material/opaque'
 require 'from_openstudio/material/opaque_no_mass'
+require 'from_openstudio/material/vegetation'
 require 'from_openstudio/material/window_gas'
 require 'from_openstudio/material/window_gas_mixture'
 require 'from_openstudio/material/window_gas_custom'

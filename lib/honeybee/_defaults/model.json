@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.46.1",
+    "version": "1.47.2",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -208,6 +208,11 @@
       "name": "energymaterialnomass_model",
       "x-displayName": "EnergyMaterialNoMass",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterialNoMass\" />\n"
+    },
+    {
+      "name": "energymaterialvegetation_model",
+      "x-displayName": "EnergyMaterialVegetation",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/EnergyMaterialVegetation\" />\n"
     },
     {
       "name": "energywindowmaterialblind_model",
@@ -468,6 +473,11 @@
       "name": "modifiersetabridged_model",
       "x-displayName": "ModifierSetAbridged",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ModifierSetAbridged\" />\n"
+    },
+    {
+      "name": "moisturediffusionmodel_model",
+      "x-displayName": "MoistureDiffusionModel",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/MoistureDiffusionModel\" />\n"
     },
     {
       "name": "nolimit_model",
@@ -971,6 +981,7 @@
         "electricequipmentabridged_model",
         "energymaterial_model",
         "energymaterialnomass_model",
+        "energymaterialvegetation_model",
         "energywindowmaterialblind_model",
         "energywindowmaterialgas_model",
         "energywindowmaterialgascustom_model",
@@ -1023,6 +1034,7 @@
         "modelradianceproperties_model",
         "modifierset_model",
         "modifiersetabridged_model",
+        "moisturediffusionmodel_model",
         "nolimit_model",
         "opaqueconstruction_model",
         "opaqueconstructionabridged_model",
@@ -1641,6 +1653,7 @@
           "flow_coefficient_closed": {
             "title": "Flow Coefficient Closed",
             "description": "An optional number in kg/s-m, at 1 Pa per meter of crack length, used to calculate the mass flow rate when the opening is closed; required to run an AirflowNetwork simulation. The DesignBuilder Cracks template defines the flow coefficient for a tight, low-leakage closed external window to be 0.00001, and the flow coefficient for a very poor, high-leakage closed external window to be 0.003.",
+            "default": 0,
             "minimum": 0,
             "type": "number",
             "format": "double"
@@ -4959,10 +4972,203 @@
           },
           "air_boundary_construction": {
             "title": "Air Boundary Construction",
-            "description": "The identifier of an AirBoundaryConstruction to set the properties of Faces with an AirBoundary type.",
+            "description": "The identifier of an AirBoundaryConstruction or OpaqueConstruction to set the properties of Faces with an AirBoundary type.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "MoistureDiffusionModel": {
+        "title": "MoistureDiffusionModel",
+        "description": "Acceptable values for the moisture diffusion model for vegetation.",
+        "enum": [
+          "Simple",
+          "Advanced"
+        ],
+        "type": "string"
+      },
+      "EnergyMaterialVegetation": {
+        "title": "EnergyMaterialVegetation",
+        "description": "Material representing vegetation on the exterior of an opaque construction.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "default": "EnergyMaterialVegetation",
+            "pattern": "^EnergyMaterialVegetation$",
+            "type": "string",
+            "readOnly": true
+          },
+          "roughness": {
+            "default": "MediumRough",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Roughness"
+              }
+            ]
+          },
+          "thickness": {
+            "title": "Thickness",
+            "description": "Thickness of the soil layer in meters.",
+            "default": 0.1,
+            "exclusiveMinimum": 0,
+            "maximum": 3,
+            "type": "number",
+            "format": "double"
+          },
+          "conductivity": {
+            "title": "Conductivity",
+            "description": "Thermal conductivity of the dry soil in W/m-K.",
+            "default": 0.35,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "density": {
+            "title": "Density",
+            "description": "Density of the dry soil in kg/m3.",
+            "default": 1100,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "specific_heat": {
+            "title": "Specific Heat",
+            "description": "Specific heat of the dry soil in J/kg-K.",
+            "default": 1200,
+            "minimum": 100,
+            "type": "number",
+            "format": "double"
+          },
+          "soil_thermal_absorptance": {
+            "title": "Soil Thermal Absorptance",
+            "description": "Fraction of incident long wavelength radiation that is absorbed by the soil. Default: 0.9.",
+            "default": 0.9,
+            "exclusiveMinimum": 0,
+            "maximum": 0.99999,
+            "type": "number",
+            "format": "double"
+          },
+          "soil_solar_absorptance": {
+            "title": "Soil Solar Absorptance",
+            "description": "Fraction of incident solar radiation absorbed by the soil. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "soil_visible_absorptance": {
+            "title": "Soil Visible Absorptance",
+            "description": "Fraction of incident visible wavelength radiation absorbed by the material. Default: 0.7.",
+            "default": 0.7,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "plant_height": {
+            "title": "Plant Height",
+            "description": "The height of plants in the vegetation in meters.",
+            "default": 0.2,
+            "minimum": 0.005,
+            "maximum": 1.0,
+            "type": "number",
+            "format": "double"
+          },
+          "leaf_area_index": {
+            "title": "Leaf Area Index",
+            "description": "The projected leaf area per unit area of soil surface (aka. Leaf Area Index or LAI). Note that the fraction of vegetation cover is calculated directly from LAI using an empirical relation.",
+            "default": 1.0,
+            "minimum": 0.001,
+            "maximum": 5.0,
+            "type": "number",
+            "format": "double"
+          },
+          "leaf_reflectivity": {
+            "title": "Leaf Reflectivity",
+            "description": "The fraction of incident solar radiation that is reflected by the leaf surfaces. Solar radiation includes the visible spectrum as well as infrared and ultraviolet wavelengths. Typical values are 0.18 to 0.25.",
+            "default": 0.22,
+            "minimum": 0.005,
+            "maximum": 0.5,
+            "type": "number",
+            "format": "double"
+          },
+          "leaf_emissivity": {
+            "title": "Leaf Emissivity",
+            "description": "The ratio of thermal radiation emitted from leaf surfaces to that emitted by an ideal black body at the same temperature.",
+            "default": 0.95,
+            "minimum": 0.8,
+            "maximum": 1.0,
+            "type": "number",
+            "format": "double"
+          },
+          "min_stomatal_resist": {
+            "title": "Min Stomatal Resist",
+            "description": "The resistance of the plants to moisture transport [s/m]. Plants with low values of stomatal resistance will result in higher evapotranspiration rates than plants with high resistance.",
+            "default": 180,
+            "minimum": 50,
+            "maximum": 300,
+            "type": "number",
+            "format": "double"
+          },
+          "sat_vol_moist_cont": {
+            "title": "Sat Vol Moist Cont",
+            "description": "The saturation moisture content of the soil by volume.",
+            "default": 0.3,
+            "minimum": 0.1,
+            "maximum": 0.5,
+            "type": "number",
+            "format": "double"
+          },
+          "residual_vol_moist_cont": {
+            "title": "Residual Vol Moist Cont",
+            "description": "The residual moisture content of the soil by volume.",
+            "default": 0.01,
+            "minimum": 0.01,
+            "maximum": 0.1,
+            "type": "number",
+            "format": "double"
+          },
+          "init_vol_moist_cont": {
+            "title": "Init Vol Moist Cont",
+            "description": "The initial moisture content of the soil by volume.",
+            "default": 0.01,
+            "minimum": 0.05,
+            "maximum": 0.5,
+            "type": "number",
+            "format": "double"
+          },
+          "moist_diff_model": {
+            "default": "Simple",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MoistureDiffusionModel"
+              }
+            ]
           }
         },
         "required": [
@@ -4996,6 +5202,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/EnergyMaterialNoMass"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyMaterialVegetation"
                 }
               ]
             }
@@ -6847,10 +7056,13 @@
           },
           "air_boundary_construction": {
             "title": "Air Boundary Construction",
-            "description": "An AirBoundaryConstruction to set the properties of Faces with an AirBoundary type.",
-            "allOf": [
+            "description": "An AirBoundaryConstruction or OpaqueConstruction to set the properties of Faces with an AirBoundary type.",
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/AirBoundaryConstruction"
+              },
+              {
+                "$ref": "#/components/schemas/OpaqueConstruction"
               }
             ]
           }
@@ -10298,22 +10510,25 @@
                   "$ref": "#/components/schemas/EnergyMaterialNoMass"
                 },
                 {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialGas"
+                  "$ref": "#/components/schemas/EnergyMaterialVegetation"
                 },
                 {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialGasCustom"
-                },
-                {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialGasMixture"
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
                 },
                 {
                   "$ref": "#/components/schemas/EnergyWindowMaterialSimpleGlazSys"
                 },
                 {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGas"
                 },
                 {
-                  "$ref": "#/components/schemas/EnergyWindowMaterialGlazing"
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGasMixture"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialGasCustom"
+                },
+                {
+                  "$ref": "#/components/schemas/EnergyWindowMaterialBlind"
                 },
                 {
                   "$ref": "#/components/schemas/EnergyWindowMaterialShade"
@@ -13612,7 +13827,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.46.1",
+            "default": "1.47.2",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

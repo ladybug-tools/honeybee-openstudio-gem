@@ -227,6 +227,8 @@ module Honeybee
             material_object = EnergyMaterial.new(material)
           when 'EnergyMaterialNoMass'
             material_object = EnergyMaterialNoMass.new(material)
+          when 'EnergyMaterialVegetation'
+            material_object = EnergyMaterialVegetation.new(material)
           when 'EnergyWindowMaterialGas'
             material_object = EnergyWindowMaterialGas.new(material)
             $gas_gap_hash[material[:identifier]] = material_object

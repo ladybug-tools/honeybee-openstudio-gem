@@ -31,26 +31,6 @@
 
 require 'honeybee/model'
 
-require 'from_openstudio/geometry/room'
-require 'from_openstudio/geometry/shade'
-require 'from_openstudio/material/opaque'
-require 'from_openstudio/material/opaque_no_mass'
-require 'from_openstudio/material/window_simpleglazsys'
-require 'from_openstudio/material/window_glazing'
-require 'from_openstudio/material/window_blind'
-require 'from_openstudio/material/window_gas'
-require 'from_openstudio/material/window_gas_custom'
-require 'from_openstudio/material/window_gas_mixture'
-require 'from_openstudio/construction/air'
-require 'from_openstudio/construction/opaque'
-require 'from_openstudio/construction/window'
-require 'from_openstudio/construction/shade'
-require 'from_openstudio/construction_set'
-require 'from_openstudio/schedule/type_limit'
-require 'from_openstudio/schedule/ruleset'
-require 'from_openstudio/schedule/fixed_interval'
-require 'from_openstudio/program_type'
-
 require 'openstudio'
 
 module Honeybee
@@ -188,6 +168,11 @@ module Honeybee
         result << EnergyMaterialNoMass.from_material(material)
       end
 
+      # Create HB EnergyMaterialVegetation from OpenStudio RoofVegetation Materials
+      openstudio_model.getRoofVegetations.each do |material|
+        result << EnergyMaterialVegetation.from_material(material)
+      end
+
       # Create HB EnergyMaterialNoMass from OpenStudio AirGap materials
       openstudio_model.getAirGaps.each do|material|
         result << EnergyMaterialNoMass.from_material(material)
@@ -239,7 +224,7 @@ module Honeybee
         unless material.nil?
           if material.to_StandardGlazing.is_initialized or material.to_SimpleGlazing.is_initialized
             window_construction = true
-          elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized
+          elsif material.to_StandardOpaqueMaterial.is_initialized or material.to_MasslessOpaqueMaterial.is_initialized or material.to_RoofVegetation.is_initialized
             opaque_construction = true
           end
           if window_construction == true
