@@ -38,7 +38,9 @@ module Honeybee
       hash = {}
       hash[:type] = 'Face'
       hash[:identifier] = clean_identifier(surface.nameString)
-      hash[:display_name] = clean_name(surface.nameString)
+      unless surface.displayName.empty?
+        hash[:display_name] = (surface.displayName.get).force_encoding("UTF-8")
+      end
       hash[:user_data] = {handle: surface.handle.to_s}
       hash[:properties] = properties_from_surface(surface)
       hash[:geometry] = geometry_from_surface(surface, site_transformation)

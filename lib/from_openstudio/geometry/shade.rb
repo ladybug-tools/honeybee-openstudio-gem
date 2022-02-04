@@ -40,7 +40,9 @@ module Honeybee
       hash = {}
       hash[:type] = 'Shade'
       hash[:identifier] = clean_identifier(shading_surface.nameString)
-      hash[:display_name] = clean_name(shading_surface.nameString)
+      unless shading_surface.displayName.empty?
+        hash[:display_name] = (shading_surface.displayName.get).force_encoding("UTF-8")
+      end
       hash[:user_data] = {handle: shading_surface.handle.to_s}
       hash[:properties] = properties_from_shading_surface(shading_surface)
       hash[:geometry] = geometry_from_shading_surface(shading_surface, site_transformation)

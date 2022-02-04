@@ -60,6 +60,7 @@ require 'to_openstudio/construction/air'
 # extend the material objects
 require 'to_openstudio/material/opaque'
 require 'to_openstudio/material/opaque_no_mass'
+require 'to_openstudio/material/vegetation'
 require 'to_openstudio/material/window_gas'
 require 'to_openstudio/material/window_gas_mixture'
 require 'to_openstudio/material/window_gas_custom'

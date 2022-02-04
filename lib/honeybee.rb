@@ -60,6 +60,7 @@ require 'honeybee/construction/air'
 # import the material objects
 require 'honeybee/material/opaque'
 require 'honeybee/material/opaque_no_mass'
+require 'honeybee/material/vegetation'
 require 'honeybee/material/window_gas'
 require 'honeybee/material/window_gas_mixture'
 require 'honeybee/material/window_gas_custom'

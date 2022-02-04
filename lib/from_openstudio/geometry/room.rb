@@ -38,7 +38,9 @@ module Honeybee
       hash = {}
       hash[:type] = 'Room'
       hash[:identifier] = clean_identifier(space.nameString)
-      hash[:display_name] = clean_name(space.nameString)
+      unless space.displayName.empty?
+        hash[:display_name] = (space.displayName.get).force_encoding("UTF-8")
+      end
       hash[:user_data] = {space: space.handle.to_s}
       hash[:properties] = properties_from_space(space)
 
