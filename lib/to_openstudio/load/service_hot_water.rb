@@ -86,25 +86,38 @@ module Honeybee
         eq_type = shw_hash[:equipment_type]
         if eq_type == 'Default_District_SHW'
           # add a district heating system to supply the heat for the loop
-          district_hw = OpenStudio::Model::DistrictHeating.new(openstudio_model)
-          district_hw.setName('Service Hot Water District Heat')
-          district_hw.setNominalCapacity(1000000)
+          district_hw = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
+          district_hw.setName('Ideal Service Hot Water Heater')
+          district_hw.setHeaterFuelType('DistrictHeating')
+          district_hw.setOffCycleParasiticFuelType('DistrictHeating')
+          district_hw.setOnCycleParasiticFuelType('DistrictHeating')
+          district_hw.setHeaterThermalEfficiency(1.0)
+          district_hw.setHeaterMaximumCapacity(1000000)
+          district_hw.setTankVolume(0)
+          district_hw.setHeaterControlType('Modulate')
+          target_sch_name = '22C Ambient Condition'
+          target_sch = create_constant_schedule(openstudio_model, target_sch_name, 22)
+          district_hw.setAmbientTemperatureSchedule(target_sch)
+          district_hw.setOffCycleLossCoefficienttoAmbientTemperature(0)
+          district_hw.setOnCycleLossCoefficienttoAmbientTemperature(0)
           hot_water_plant.addSupplyBranchForComponent(district_hw)
-        elsif eq_type == 'Gas_WaterHeater' || eq_type == 'Electric_WaterHeater' || eq_type == 'HeatPump_WaterHeater'
+          # try to minimize the impact of the pump as much as possible
+          hot_water_pump.setEndUseSubcategory('Water Systems')
+          hot_water_pump.setMotorEfficiency(0.9)
+        else
           # add a water heater to supply the heat for the loop
           heater = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
-          if eq_type == 'Electric_WaterHeater' || eq_type == 'HeatPump_WaterHeater'
+          if eq_type == 'Electric_WaterHeater' || eq_type == 'HeatPump_WaterHeater' || eq_type == 'Electric_TanklessHeater'
             heater.setHeaterFuelType('Electricity')
             heater.setOffCycleParasiticFuelType('Electricity')
             heater.setOnCycleParasiticFuelType('Electricity')
           end
-          heater.setName('SHW WaterHeater' + @@sys_count.to_s)
 
           # set the water heater efficiency
           if eq_type == 'HeatPump_WaterHeater'
             heater.setHeaterThermalEfficiency(1.0)
           elsif shw_hash[:heater_efficiency].nil?
-            if eq_type == 'Electric_WaterHeater'
+            if eq_type == 'Electric_WaterHeater' || eq_type == 'Electric_TanklessHeater'
               heater.setHeaterThermalEfficiency(1.0)
             else
               heater.setHeaterThermalEfficiency(0.8)
@@ -159,9 +172,20 @@ module Honeybee
             end
           end
 
-          # ensure that the tank is sized appropriately and add it to the loop
+          # set the capactiy and and controls of the water heater
           heater.setHeaterMaximumCapacity(1000000)
-          heater.setTankVolume(@@shw_rates[shw_hash[:identifier]])
+          if eq_type == 'Gas_TanklessHeater' || eq_type == 'Electric_TanklessHeater'
+            heater.setName('SHW Tankless WaterHeater' + @@sys_count.to_s)
+            heater.setTankVolume(0)
+            heater.setHeaterControlType('Modulate')
+            heater.setOffCycleLossCoefficienttoAmbientTemperature(0)
+            heater.setOnCycleLossCoefficienttoAmbientTemperature(0)
+          else
+            heater.setName('SHW WaterHeater' + @@sys_count.to_s)
+            heater.setTankVolume(@@shw_rates[shw_hash[:identifier]])
+          end
+
+          # add it to the loop
           hot_water_plant.addSupplyBranchForComponent(heater)
           
           # if it's a heat pump system, then add the pump
@@ -196,30 +220,6 @@ module Honeybee
             end
             heat_sys.setName('SHW WaterHeater HeatPump' + @@sys_count.to_s)
           end
-
-        elsif eq_type == 'Gas_TanklessHeater' || eq_type == 'Electric_TanklessHeater'
-          # add a boiler to supply the heat for the loop
-          heater = OpenStudio::Model::BoilerHotWater.new(openstudio_model)
-          if eq_type == 'Electric_TanklessHeater'
-            heater.setFuelType('Electricity')
-          end
-          heater.setName('SHW Tankless WaterHeater' + @@sys_count.to_s)
-          heater.setEndUseSubcategory('Water Systems')
-
-          # set the water heater efficiency
-          unless shw_hash[:heater_efficiency].nil?
-            heater.setNominalThermalEfficiency(shw_hash[:heater_efficiency])
-          else
-            if eq_type == 'Electric_TanklessHeater'
-              heater.setNominalThermalEfficiency(1.0)
-            else
-              heater.setNominalThermalEfficiency(0.8)
-            end
-          end
-
-          # ensure that the boiler is sized appropriately and add it to the loop
-          heater.setNominalCapacity(1000000)
-          hot_water_plant.addSupplyBranchForComponent(heater)
         end
 
         # add all of the water use connections to the loop and total the capacity
