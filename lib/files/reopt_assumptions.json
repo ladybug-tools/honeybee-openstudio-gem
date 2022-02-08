@@ -21,7 +21,8 @@
         "add_blended_rates_to_urdb_rate": false,
         "net_metering_limit_kw": 0,
         "interconnection_limit_kw": 100000000.0,
-       "urdb_label": "5e162e2a5457a3d50873e3af"
+        "blended_monthly_demand_charges_us_dollars_per_kw": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], 
+        "blended_monthly_rates_us_dollars_per_kwh": [0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13] 
       },
       "Wind": {
         "min_kw": 0,
@@ -46,10 +47,9 @@
         "pbi_years": 1,
         "pbi_system_max_kw": 1000000000.0
       },
-      "PV": {
+      "PV": [{
         "pv_name": "Roof - South Face",
         "location":"roof",
-        "existing_kw": 0,
         "existing_kw": 0,
         "min_kw": 0,
         "max_kw": 1000000000.0,
@@ -77,12 +77,48 @@
         "losses": 0.14,
         "array_type": 1,
         "module_type": 0,
-        "gcr": 0.4,
+        "gcr": 0.99,
         "dc_ac_ratio": 1.2,
         "inv_eff": 0.96,
         "radius": 0,
         "tilt": 0.537
       },
+      {
+        "pv_name": "Groundmount",
+        "location":"ground",
+        "existing_kw": 0,
+        "min_kw": 0,
+        "max_kw": 1000000000.0,
+        "installed_cost_us_dollars_per_kw": 2200,
+        "om_cost_us_dollars_per_kw": 16,
+        "macrs_option_years": 5,
+        "macrs_bonus_pct": 1,
+        "macrs_itc_reduction": 0.5,
+        "federal_itc_pct": 0.26,
+        "state_ibi_pct": 0,
+        "state_ibi_max_us_dollars": 10000000000.0,
+        "utility_ibi_pct": 0,
+        "utility_ibi_max_us_dollars": 10000000000.0,
+        "federal_rebate_us_dollars_per_kw": 0,
+        "state_rebate_us_dollars_per_kw": 0,
+        "state_rebate_max_us_dollars": 10000000000.0,
+        "utility_rebate_us_dollars_per_kw": 0,
+        "utility_rebate_max_us_dollars": 10000000000.0,
+        "pbi_us_dollars_per_kwh": 0,
+        "pbi_max_us_dollars": 1000000000.0,
+        "pbi_years": 1,
+        "pbi_system_max_kw": 1000000000.0,
+        "degradation_pct": 0.005,
+        "azimuth": 180,
+        "losses": 0.14,
+        "array_type": 0,
+        "module_type": 0,
+        "gcr": 0.99,
+        "dc_ac_ratio": 1.2,
+        "inv_eff": 0.96,
+        "radius": 0,
+        "tilt": 0.537
+      }],
       "Storage": {
         "min_kw": 0,
         "max_kw": 1000000,
@@ -142,3 +178,4 @@
     "time_steps_per_hour": 1
   }
 }
+
