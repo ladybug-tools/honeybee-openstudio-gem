@@ -35,6 +35,23 @@ require 'to_openstudio/model_object'
 module Honeybee
   class ScheduleTypeLimit < ModelObject
 
+    @@unit_types = [
+      'Dimensionless',
+      'Temperature',
+      'DeltaTemperature',
+      'PrecipitationRate',
+      'Angle',
+      'ConvectionCoefficient',
+      'ActivityLevel',
+      'Velocity',
+      'Capacity',
+      'Power',
+      'Availability',
+      'Percent',
+      'Control',
+      'Mode'
+    ]
+
     def self.from_schedule_type_limit(schedule_type_limit)
       # create an empty hash
       hash = {}
@@ -71,7 +88,9 @@ module Honeybee
       elsif unit_type == 'Controlmode'
         unit_type = 'Control'
       end
-      hash[:unit_type] = unit_type
+      if @@unit_types.include? unit_type
+        hash[:unit_type] = unit_type
+      end
 
       hash
     end
