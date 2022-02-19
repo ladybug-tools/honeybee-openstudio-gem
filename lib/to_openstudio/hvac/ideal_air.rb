@@ -43,6 +43,9 @@ module Honeybee
       unless @hash[:display_name].nil?
         os_ideal_air.setDisplayName(@hash[:display_name])
       end
+      # use no dehumidification unless there's a humidistat
+      os_ideal_air.setDehumidificationControlType('None')
+
       # assign the economizer type
       if @hash[:economizer_type]
         os_ideal_air.setOutdoorAirEconomizerType(@hash[:economizer_type])
