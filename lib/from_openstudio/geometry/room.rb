@@ -56,6 +56,9 @@ module Honeybee
       multipler = multiplier_from_space(space)
       hash[:multipler] = multipler if multipler
 
+      exclude_floor_area = exclude_floor_area_from_space(space)
+      hash[:exclude_floor_area] = exclude_floor_area
+
       story = story_from_space(space)
       hash[:story] = story if story
 
@@ -277,6 +280,14 @@ module Honeybee
         return multiplier
       end
       nil
+    end
+
+    def self.exclude_floor_area_from_space(space)
+      incl_floor = space.partofTotalFloorArea
+      if incl_floor
+        return false
+      end
+      true
     end
 
     def self.story_from_space(space)

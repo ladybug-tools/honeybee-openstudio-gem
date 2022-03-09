@@ -109,6 +109,11 @@ module Honeybee
         os_thermal_zone.setMultiplier(@hash[:multiplier])
       end
 
+      # assign the exclude_floor_area
+      if @hash[:exclude_floor_area]
+        os_space.setPartofTotalFloorArea(false)
+      end
+
       # assign the geometry properties if they exist
       if @hash[:ceiling_height]
         os_thermal_zone.setCeilingHeight(@hash[:ceiling_height])

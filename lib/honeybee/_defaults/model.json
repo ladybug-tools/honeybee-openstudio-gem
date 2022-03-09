@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.47.2",
+    "version": "1.48.1",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -3492,6 +3492,12 @@
             "minimum": 1,
             "type": "integer",
             "format": "int32"
+          },
+          "exclude_floor_area": {
+            "title": "Exclude Floor Area",
+            "description": "A boolean for whether the Room floor area contributes to Models it is a part of. Note that this will not affect the floor_area property of this Room itself but it will ensure the Room floor area is excluded from any calculations when the Room is part of a Model, including EUI calculations.",
+            "default": false,
+            "type": "boolean"
           },
           "story": {
             "title": "Story",
@@ -13827,7 +13833,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.47.2",
+            "default": "1.48.1",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true
