@@ -564,7 +564,7 @@ module Honeybee
             end
           elsif TemplateHVAC.types.include?(system_type)
             template_system = TemplateHVAC.new(hvac)
-            os_template_system = template_system.to_openstudio(@openstudio_model, hvac['rooms'])
+            template_system.to_openstudio(@openstudio_model, hvac['rooms'])
           end
         end
       end
