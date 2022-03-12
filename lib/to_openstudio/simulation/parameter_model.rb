@@ -154,6 +154,7 @@ module Honeybee
           end
         end
       end
+
       # use the average of design day temperatures to set the water mains temperature
       os_water_mains = @openstudio_model.getSiteWaterMainsTemperature 
       os_water_mains.setCalculationMethod('Correlation')
@@ -163,6 +164,62 @@ module Honeybee
         os_water_mains.setAnnualAverageOutdoorAirTemperature(12)
       end
       os_water_mains.setMaximumDifferenceInMonthlyAverageOutdoorAirTemperatures(4)
+
+      # set the climate zone from design days assuming 0.4% extremes and normal distribution
+      climate_zone_objs = @openstudio_model.getClimateZones
+      ashrae_zones = climate_zone_objs.getClimateZones('ASHRAE')
+      if ashrae_zones.empty? && db_temps.length > 0
+        # generate temperatures according to a normal distribution
+        mean_temp = (db_temps.max + db_temps.min) / 2
+        dist_to_mean = db_temps.max - mean_temp
+        st_dev = dist_to_mean / 2.65
+        vals = []
+        for i in 0..4379
+          step_seed = i.to_f / 4380
+          add_val1, add_val2 = gaussian(mean_temp, st_dev, step_seed)
+          vals << add_val1
+          vals << add_val2
+        end
+
+        # compute the number of heating and cooling degree days
+        cooling_deg_days, heating_deg_days = 0, 0
+        vals.each do |temp|
+          if temp > 10
+            cdd = (temp - 10) / 24
+            cooling_deg_days += cdd
+          end
+          if temp < 18
+            hdd = (18 - temp) / 24
+            heating_deg_days += hdd
+          end
+        end
+
+        # determine the climate zone from the degree-day distribution
+        if cooling_deg_days > 5000
+          cz = '1'
+        elsif cooling_deg_days > 3500
+          cz = '2A'
+        elsif cooling_deg_days > 2500
+          cz = '3A'
+        elsif cooling_deg_days <= 2500 and heating_deg_days <= 2000
+          cz = '3C'
+        elsif cooling_deg_days <= 2500 and heating_deg_days <= 3000
+          cz = '4A'
+        elsif heating_deg_days <= 3000
+          cz = '4C'
+        elsif heating_deg_days <= 4000
+          cz = '5A'
+        elsif heating_deg_days <= 5000
+          cz = '6A'
+        elsif heating_deg_days <= 7000
+          cz = '7'
+        else
+            cz = '8'
+        end
+
+        # set the climate zone
+        climate_zone_objs.setClimateZone('ASHRAE', cz)
+      end
 
       # set Outputs for the simulation
       if @hash[:output]
@@ -249,6 +306,16 @@ module Honeybee
         os_site.setTerrain(@hash[:terrain_type])
       end
 
+    end
+
+    def gaussian(mean, stddev, seed)
+      # generate a gaussian distribution of values
+      theta = 2 * Math::PI * seed
+      rho = Math.sqrt(-2 * Math.log(1 - seed))
+      scale = stddev * rho
+      x = mean + scale * Math.cos(theta)
+      y = mean + scale * Math.sin(theta)
+      return x, y
     end
 
   end #SimulationParameter
