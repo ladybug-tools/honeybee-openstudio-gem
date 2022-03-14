@@ -36,9 +36,10 @@ module Honeybee
     attr_reader :errors, :warnings
 
     @@all_air_types = ['VAV', 'PVAV', 'PSZ', 'PTAC', 'ForcedAirFurnace']
-    @@doas_types = ['FCUwithDOASAbridged', 'WSHPwithDOASAbridged', 'VRFwithDOASAbridged']
+    @@doas_types = ['FCUwithDOASAbridged', 'WSHPwithDOASAbridged',
+                    'VRFwithDOASAbridged', 'RadiantwithDOASAbridged']
     @@heat_cool_types = ['FCU', 'WSHP', 'VRF', 'Baseboard',  'EvaporativeCooler',
-                         'Residential', 'WindowAC', 'GasUnitHeater']
+                         'Residential', 'WindowAC', 'GasUnitHeater', 'Radiant']
     @@types = @@all_air_types + @@doas_types + @@heat_cool_types
 
     def allowable_types

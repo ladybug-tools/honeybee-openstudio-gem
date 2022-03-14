@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.48.1",
+    "version": "1.48.2",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -575,6 +575,31 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadianceSubFaceStateAbridged\" />\n"
     },
     {
+      "name": "radiant_model",
+      "x-displayName": "Radiant",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Radiant\" />\n"
+    },
+    {
+      "name": "radiantequipmenttype_model",
+      "x-displayName": "RadiantEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadiantEquipmentType\" />\n"
+    },
+    {
+      "name": "radiantfacetypes_model",
+      "x-displayName": "RadiantFaceTypes",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadiantFaceTypes\" />\n"
+    },
+    {
+      "name": "radiantwithdoasabridged_model",
+      "x-displayName": "RadiantwithDOASAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadiantwithDOASAbridged\" />\n"
+    },
+    {
+      "name": "radiantwithdoasequipmenttype_model",
+      "x-displayName": "RadiantwithDOASEquipmentType",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RadiantwithDOASEquipmentType\" />\n"
+    },
+    {
       "name": "residential_model",
       "x-displayName": "Residential",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Residential\" />\n"
@@ -1054,6 +1079,11 @@
         "pvavequipmenttype_model",
         "radianceshadestateabridged_model",
         "radiancesubfacestateabridged_model",
+        "radiant_model",
+        "radiantequipmenttype_model",
+        "radiantfacetypes_model",
+        "radiantwithdoasabridged_model",
+        "radiantwithdoasequipmenttype_model",
         "residential_model",
         "residentialequipmenttype_model",
         "roofceilingconstructionset_model",
@@ -8199,6 +8229,151 @@
         ],
         "additionalProperties": false
       },
+      "RadiantwithDOASEquipmentType": {
+        "title": "RadiantwithDOASEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "DOAS_Radiant_Chiller_Boiler",
+          "DOAS_Radiant_Chiller_ASHP",
+          "DOAS_Radiant_Chiller_DHW",
+          "DOAS_Radiant_ACChiller_Boiler",
+          "DOAS_Radiant_ACChiller_ASHP",
+          "DOAS_Radiant_ACChiller_DHW",
+          "DOAS_Radiant_DCW_Boiler",
+          "DOAS_Radiant_DCW_ASHP",
+          "DOAS_Radiant_DCW_DHW"
+        ],
+        "type": "string"
+      },
+      "RadiantFaceTypes": {
+        "title": "RadiantFaceTypes",
+        "description": "An enumeration.",
+        "enum": [
+          "Floor",
+          "Ceiling",
+          "FloorWithCarpet"
+        ],
+        "type": "string"
+      },
+      "RadiantwithDOASAbridged": {
+        "title": "RadiantwithDOASAbridged",
+        "description": "Low Temperature Radiant with DOAS HVAC system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "vintage": {
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "ASHRAE_2019",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "sensible_heat_recovery": {
+            "title": "Sensible Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "latent_heat_recovery": {
+            "title": "Latent Heat Recovery",
+            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "demand_controlled_ventilation": {
+            "title": "Demand Controlled Ventilation",
+            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
+            "default": false,
+            "type": "boolean"
+          },
+          "doas_availability_schedule": {
+            "title": "Doas Availability Schedule",
+            "description": "An optional On/Off discrete schedule to set when the dedicated outdoor air system (DOAS) shuts off. This will not only prevent any outdoor air from flowing thorough the system but will also shut off the fans, which can result in more energy savings when spaces served by the DOAS are completely unoccupied. If None, the DOAS will be always on.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "RadiantwithDOASAbridged",
+            "pattern": "^RadiantwithDOASAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "description": "Text for the specific type of system equipment from the RadiantwithDOASEquipmentType enumeration.",
+            "default": "DOAS_Radiant_Chiller_Boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantwithDOASEquipmentType"
+              }
+            ]
+          },
+          "proportional_gain": {
+            "title": "Proportional Gain",
+            "description": "A fractional number for the proportional gain constant. Recommended values are 0.3 or less.",
+            "default": 0.3,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "minimum_operation_time": {
+            "title": "Minimum Operation Time",
+            "description": "A number for the minimum number of hours of operation for the radiant system before it shuts off.",
+            "default": 1.0,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "switch_over_time": {
+            "title": "Switch Over Time",
+            "description": "A number for the minimum number of hours for when the system can switch between heating and cooling.",
+            "default": 24.0,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "radiant_face_type": {
+            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
+            "default": "Floor",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantFaceTypes"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
       "FCUEquipmentType": {
         "title": "FCUEquipmentType",
         "description": "An enumeration.",
@@ -8729,6 +8904,110 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/GasUnitHeaterEquipmentType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ],
+        "additionalProperties": false
+      },
+      "RadiantEquipmentType": {
+        "title": "RadiantEquipmentType",
+        "description": "An enumeration.",
+        "enum": [
+          "Radiant_Chiller_Boiler",
+          "Radiant_Chiller_ASHP",
+          "Radiant_Chiller_DHW",
+          "Radiant_ACChiller_Boiler",
+          "Radiant_ACChiller_ASHP",
+          "Radiant_ACChiller_DHW",
+          "Radiant_DCW_Boiler",
+          "Radiant_DCW_ASHP",
+          "Radiant_DCW_DHW"
+        ],
+        "type": "string"
+      },
+      "Radiant": {
+        "title": "Radiant",
+        "description": "Low Temperature Radiant system.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "vintage": {
+            "description": "Text for the vintage of the template system. This will be used to set efficiencies for various pieces of equipment within the system. Further information about these defaults can be found in the version of ASHRAE 90.1 corresponding to the selected vintage. Read-only versions of the standard can be found at: https://www.ashrae.org/technical-resources/standards-and-guidelines/read-only-versions-of-ashrae-standards",
+            "default": "ASHRAE_2019",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vintages"
+              }
+            ]
+          },
+          "type": {
+            "title": "Type",
+            "default": "Radiant",
+            "pattern": "^Radiant$",
+            "type": "string",
+            "readOnly": true
+          },
+          "equipment_type": {
+            "description": "Text for the specific type of system equipment from the RadiantEquipmentType enumeration.",
+            "default": "Radiant_Chiller_Boiler",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantEquipmentType"
+              }
+            ]
+          },
+          "proportional_gain": {
+            "title": "Proportional Gain",
+            "description": "A fractional number for the proportional gain constant. Recommended values are 0.3 or less.",
+            "default": 0.3,
+            "minimum": 0,
+            "maximum": 1,
+            "type": "number",
+            "format": "double"
+          },
+          "minimum_operation_time": {
+            "title": "Minimum Operation Time",
+            "description": "A number for the minimum number of hours of operation for the radiant system before it shuts off.",
+            "default": 1.0,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "switch_over_time": {
+            "title": "Switch Over Time",
+            "description": "A number for the minimum number of hours for when the system can switch between heating and cooling.",
+            "default": 24.0,
+            "exclusiveMinimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "radiant_face_type": {
+            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
+            "default": "Floor",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantFaceTypes"
               }
             ]
           }
@@ -10576,6 +10855,9 @@
                   "$ref": "#/components/schemas/VRFwithDOASAbridged"
                 },
                 {
+                  "$ref": "#/components/schemas/RadiantwithDOASAbridged"
+                },
+                {
                   "$ref": "#/components/schemas/FCU"
                 },
                 {
@@ -10598,6 +10880,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/GasUnitHeater"
+                },
+                {
+                  "$ref": "#/components/schemas/Radiant"
                 }
               ]
             }
@@ -13833,7 +14118,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.48.1",
+            "default": "1.48.2",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true

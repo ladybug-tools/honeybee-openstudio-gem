@@ -51,6 +51,7 @@ module Honeybee
       # only load openstudio-standards when needed
       require 'openstudio-standards'
       require_relative 'Model.hvac'
+      require_relative 'radiant'
 
       # get the defaults for the specific system type
       hvac_defaults = defaults(@hash[:type])
@@ -79,8 +80,14 @@ module Honeybee
         end
       end
 
-      # create the HVAC system and assign the display name to the air loop name if it exists
-      openstudio_model.add_cbecs_hvac_system(standard, equipment_type, zones)
+      # create the HVAC system
+      if equipment_type.to_s.include? 'Radiant'
+        os_hvac = openstudio_model.add_radiant_hvac_system(standard, equipment_type.to_s, zones, @hash)
+      else
+        os_hvac = openstudio_model.add_cbecs_hvac_system(standard, equipment_type, zones)
+      end
+
+      # Get the air loops and assign the display name to the air loop name if it exists
       os_air_loops = []
       air_loops = openstudio_model.getAirLoopHVACs
       unless air_loops.length == $air_loop_count  # check if any new loops were added
