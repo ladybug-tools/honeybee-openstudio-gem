@@ -29,9 +29,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-# Note: This file is copied directly from the "Create Typical DOE Building from Model" measure
+# Note: This file is copied from the "Create Typical DOE Building from Model" measure
 # https://bcl.nrel.gov/node/85019
-# It is intended that this file be re-copied if new system types are added
+# https://github.com/NREL/openstudio-model-articulation-gem/tree/develop/lib/measures/create_typical_doe_building_from_model
+# It is intended that this file be updated if new system types are added to the original file
 
 class OpenStudio::Model::Model
   # Adds the HVAC system as derived from the combinations of CBECS 2012 MAINHT and MAINCL fields.
@@ -49,7 +50,7 @@ class OpenStudio::Model::Model
     system_zones = heated_and_cooled_zones + cooled_only_zones
 
     # system type naming convention:
-    # [ventilation strategy] [ cooling system and plant] [heating system and plant]
+    # [ventilation strategy] [cooling system and plant] [heating system and plant]
 
     case system_type
 
