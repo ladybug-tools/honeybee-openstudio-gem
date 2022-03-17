@@ -173,6 +173,11 @@ module Honeybee
       unless space.daylightingControls.empty?
         hash[:daylighting_control] = Honeybee::DaylightingControl.from_load(space.daylightingControls[0])
       end
+      unless space.waterUseEquipment.empty?
+        # Get floor area 
+        floor_area = space.floorArea
+        hash[:service_hot_water] = Honeybee::ServiceHotWaterAbridged.from_load(space.waterUseEquipment[0], floor_area)
+      end
       thermal_zone = space.thermalZone
       unless thermal_zone.empty?
         thermal_zone = space.thermalZone.get

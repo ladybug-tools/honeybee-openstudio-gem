@@ -80,6 +80,7 @@ require 'from_openstudio/load/infiltration'
 require 'from_openstudio/load/ventilation'
 require 'from_openstudio/load/daylight'
 require 'from_openstudio/load/process'
+require 'from_openstudio/load/service_hot_water'
 
 # extend the program type objects
 require 'from_openstudio/program_type'
