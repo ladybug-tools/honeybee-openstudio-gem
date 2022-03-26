@@ -54,20 +54,28 @@ class OpenStudio::Model::Model
     case climate_zone
     when '0', '1'
       radiant_htg_dsgn_sup_wtr_temp_f = 90.0
+      cz_mult = 2
     when '2', '2A', '2B'
       radiant_htg_dsgn_sup_wtr_temp_f = 100.0
+      cz_mult = 2
     when '3', '3A', '3B', '3C'
       radiant_htg_dsgn_sup_wtr_temp_f = 100.0
+      cz_mult = 3
     when '4', '4A', '4B', '4C'
       radiant_htg_dsgn_sup_wtr_temp_f = 100.0
+      cz_mult = 4
     when '5', '5A', '5B', '5C'
       radiant_htg_dsgn_sup_wtr_temp_f = 110.0
+      cz_mult = 4
     when '6', '6A', '6B'
       radiant_htg_dsgn_sup_wtr_temp_f = 120.0
+      cz_mult = 4
     when '7', '8'
       radiant_htg_dsgn_sup_wtr_temp_f = 120.0
+      cz_mult = 5
     else  # unrecognized climate zone; default to climate zone 4
       radiant_htg_dsgn_sup_wtr_temp_f = 100.0
+      cz_mult = 4
     end
 
     # create the hot water loop
@@ -120,11 +128,6 @@ class OpenStudio::Model::Model
     end
 
     # get the various controls for the radiant system
-    if rad_props[:proportional_gain]
-      proportional_gain = rad_props[:proportional_gain]
-    else
-      proportional_gain = 0.3
-    end
     if rad_props[:minimum_operation_time]
       minimum_operation = rad_props[:minimum_operation_time]
     else
@@ -136,24 +139,34 @@ class OpenStudio::Model::Model
       switch_over_time = 24
     end
 
+    # get the start and end hour from the input zones
+    start_hour, end_hour = start_end_hour_from_zones_occupancy(zones)
+
     # add radiant system to the conditioned zones
     include_carpet = false
-    if rad_props[:radiant_face_type]
-      radiant_type = rad_props[:radiant_face_type].downcase
+    control_strategy = 'proportional_control'
+    if rad_props[:radiant_type]
+      radiant_type = rad_props[:radiant_type].downcase
       if radiant_type == 'floorwithcarpet'
         radiant_type = 'floor'
         include_carpet = true
+      elsif radiant_type == 'ceilingmetalpanel'
+        control_strategy = 'default'
       end
     else
       radiant_type = 'floor'
     end
-    radiant_loops = std.model_add_low_temp_radiant(
-      self, conditioned_zones, hot_water_loop, chilled_water_loop,
+
+    radiant_loops = model_add_low_temp_radiant(
+      std, conditioned_zones, hot_water_loop, chilled_water_loop,
       radiant_type: radiant_type,
+      control_strategy: control_strategy,
       include_carpet: include_carpet,
-      proportional_gain: proportional_gain,
+      model_occ_hr_start: start_hour,
+      model_occ_hr_end: end_hour,
       minimum_operation: minimum_operation,
-      switch_over_time: switch_over_time)
+      switch_over_time: switch_over_time,
+      cz_mult: cz_mult)
 
     # if the equipment includes a DOAS, then add it
     if system_type.include? 'DOAS_'
@@ -161,4 +174,365 @@ class OpenStudio::Model::Model
     end
 
   end
+
+  # get the start and end hour from the occupancy schedules of thermal zones
+  def start_end_hour_from_zones_occupancy(thermal_zones, threshold: 0.1)
+    # set the default start and end hour in the event there's no occupancy
+    start_hour = 12
+    end_hour = 12
+    # loop through the occupancy schedules and get the lowest start hour; highest end hour
+    thermal_zones.each do |zone|
+      zone.spaces.each do |space|
+        # gather all of the people objects assigned to the sapce
+        peoples = []
+        unless space.spaceType.empty?
+          space_type = space.spaceType.get
+          unless space_type.people.empty?
+            space_type.people.each do |ppl|
+              peoples << ppl
+            end
+          end
+        end
+        space.people.each do |ppl|
+          peoples << ppl
+        end
+        # loop through the pople and gather all occupancy schedules
+        peoples.each do |people|
+          occupancy_sch_opt = people.numberofPeopleSchedule
+          unless occupancy_sch_opt.empty?
+            occupancy_sch = occupancy_sch_opt.get
+            if occupancy_sch.to_ScheduleRuleset.is_initialized
+              occupancy_sch = occupancy_sch.to_ScheduleRuleset.get
+              # gather all of the day schedules across the schedule ruleset
+              schedule_days, day_ids = [], []
+              required_days = [
+                occupancy_sch.defaultDaySchedule,
+                occupancy_sch.summerDesignDaySchedule,
+                occupancy_sch.winterDesignDaySchedule,
+                occupancy_sch.holidaySchedule
+              ]
+              required_days.each do |day_sch|
+                unless day_ids.include? day_sch.nameString
+                  schedule_days << day_sch
+                  day_ids << day_sch.nameString
+                end
+              end
+              occupancy_sch.scheduleRules.each do |schedule_rule|
+                day_sch = schedule_rule.daySchedule
+                unless day_ids.include? day_sch.nameString
+                  schedule_days << day_sch
+                  day_ids << day_sch.nameString
+                end
+              end
+              # loop through the day schedules and see if the start and end hours should be changed
+              schedule_days.each do |day_sch|
+                time_until = [1]
+                day_sch.times.each do |time|
+                  time_until << time.hours
+                end
+                final_time = time_until[-2]
+                day_sch.values.zip(time_until).each do |value, time|
+                  if value > threshold
+                    if time < start_hour
+                      start_hour = time
+                    end
+                    if time > end_hour
+                      end_hour = time
+                    end
+                    if time == final_time
+                      start_hour = 1
+                      end_hour = 24
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    # if no values were set, just set the system to be on all of the time
+    if start_hour == 12 or start_hour == 0
+      start_hour = 1
+    end
+    if end_hour == 12
+      end_hour = 24
+    end
+    return start_hour, end_hour
+  end
+
+  def model_add_low_temp_radiant(std,
+                                 thermal_zones,
+                                 hot_water_loop,
+                                 chilled_water_loop,
+                                 radiant_type: 'floor',
+                                 include_carpet: true,
+                                 carpet_thickness_in: 0.25,
+                                 model_occ_hr_start: 1.0,
+                                 model_occ_hr_end: 24.0,
+                                 control_strategy: 'proportional_control',
+                                 proportional_gain: 0.3,
+                                 minimum_operation: 1,
+                                 weekend_temperature_reset: 2,
+                                 early_reset_out_arg: 20,
+                                 switch_over_time: 24.0,
+                                 cz_mult: 4)
+
+    # create internal source constructions for surfaces
+    OpenStudio.logFree(OpenStudio::Warn, 'openstudio.Model.Model', "Replacing constructions with new radiant slab constructions.")
+
+    # create materials
+    mat_concrete_3_5in = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumRough', 0.0889, 2.31, 2322, 832)
+    mat_concrete_3_5in.setName('Radiant Slab Concrete - 3.5 in.')
+    mat_concrete_1_5in = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumRough', 0.0381, 2.31, 2322, 832)
+    mat_concrete_1_5in.setName('Radiant Slab Concrete - 1.5 in')
+
+    metal_mat = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumSmooth', 0.003175, 30, 7680, 418)
+    metal_mat.setName('Radiant Metal Layer - 0.125 in')
+    air_gap_map = OpenStudio::Model::MasslessOpaqueMaterial.new(self, 'Smooth', 0.004572)
+    air_gap_map.setName('Generic Ceiling Air Gap - R 0.025')
+
+    mat_refl_roof_membrane = self.getStandardOpaqueMaterialByName('Roof Membrane - Highly Reflective')
+    if mat_refl_roof_membrane.is_initialized
+      mat_refl_roof_membrane = self.getStandardOpaqueMaterialByName('Roof Membrane - Highly Reflective').get
+    else
+      mat_refl_roof_membrane = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'VeryRough', 0.0095, 0.16, 1121.29, 1460)
+      mat_refl_roof_membrane.setThermalAbsorptance(0.75)
+      mat_refl_roof_membrane.setSolarAbsorptance(0.45)
+      mat_refl_roof_membrane.setVisibleAbsorptance(0.7)
+      mat_refl_roof_membrane.setName('Roof Membrane - Highly Reflective')
+    end
+
+    if include_carpet
+      carpet_thickness_m = OpenStudio.convert(carpet_thickness_in / 12.0, 'ft', 'm').get
+      conductivity_si = 0.06
+      conductivity_ip = OpenStudio.convert(conductivity_si, 'W/m*K', 'Btu*in/hr*ft^2*R').get
+      r_value_ip = carpet_thickness_in * (1 / conductivity_ip)
+      mat_thin_carpet_tile = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumRough', carpet_thickness_m, conductivity_si, 288, 1380)
+      mat_thin_carpet_tile.setThermalAbsorptance(0.9)
+      mat_thin_carpet_tile.setSolarAbsorptance(0.7)
+      mat_thin_carpet_tile.setVisibleAbsorptance(0.8)
+      mat_thin_carpet_tile.setName("Radiant Slab Thin Carpet Tile R-#{r_value_ip.round(2)}")
+    end
+
+    # set exterior slab insulation thickness based on climate zone
+    slab_insulation_thickness_m = 0.0254 * cz_mult
+    mat_slab_insulation = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'Rough', slab_insulation_thickness_m, 0.02, 56.06, 1210)
+    mat_slab_insulation.setName("Radiant Ground Slab Insulation - #{cz_mult} in.")
+
+    ext_insulation_thickness_m = 0.0254 * (cz_mult + 1)
+    mat_ext_insulation = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'Rough', ext_insulation_thickness_m, 0.02, 56.06, 1210)
+    mat_ext_insulation.setName("Radiant Exterior Slab Insulation - #{cz_mult + 1} in.")
+
+    roof_insulation_thickness_m = 0.0254 * (cz_mult + 1) * 2
+    mat_roof_insulation = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'Rough', roof_insulation_thickness_m, 0.02, 56.06, 1210)
+    mat_roof_insulation.setName("Radiant Exterior Ceiling Insulation - #{(cz_mult + 1) * 2} in.")
+
+    # create radiant internal source constructions
+    OpenStudio.logFree(OpenStudio::Warn, 'openstudio.Model.Model', 'New constructions exclude the metal deck, as high thermal diffusivity materials cause errors in EnergyPlus internal source construction calculations.')
+
+    layers = []
+    layers << mat_slab_insulation
+    layers << mat_concrete_3_5in
+    layers << mat_concrete_1_5in
+    layers << mat_thin_carpet_tile if include_carpet
+    radiant_ground_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_ground_slab_construction.setName('Radiant Ground Slab Construction')
+    radiant_ground_slab_construction.setSourcePresentAfterLayerNumber(2)
+    radiant_ground_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+    radiant_ground_slab_construction.setTubeSpacing(0.2286) # 9 inches
+
+    layers = []
+    layers << mat_ext_insulation
+    layers << mat_concrete_3_5in
+    layers << mat_concrete_1_5in
+    layers << mat_thin_carpet_tile if include_carpet
+    radiant_exterior_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_exterior_slab_construction.setName('Radiant Exterior Slab Construction')
+    radiant_exterior_slab_construction.setSourcePresentAfterLayerNumber(2)
+    radiant_exterior_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+    radiant_exterior_slab_construction.setTubeSpacing(0.2286) # 9 inches
+
+    layers = []
+    layers << mat_concrete_3_5in
+    layers << mat_concrete_1_5in
+    layers << mat_thin_carpet_tile if include_carpet
+    radiant_interior_floor_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_interior_floor_slab_construction.setName('Radiant Interior Floor Slab Construction')
+    radiant_interior_floor_slab_construction.setSourcePresentAfterLayerNumber(1)
+    radiant_interior_floor_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(2)
+    radiant_interior_floor_slab_construction.setTubeSpacing(0.2286) # 9 inches
+
+    layers = []
+    layers << mat_thin_carpet_tile if include_carpet
+    layers << mat_concrete_3_5in
+    layers << mat_concrete_1_5in
+    radiant_interior_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_interior_ceiling_slab_construction.setName('Radiant Interior Ceiling Slab Construction')
+    slab_src_loc = include_carpet ? 2 : 1
+    radiant_interior_ceiling_slab_construction.setSourcePresentAfterLayerNumber(slab_src_loc)
+    radiant_interior_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(slab_src_loc + 1)
+    radiant_interior_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
+
+    layers = []
+    layers << mat_refl_roof_membrane
+    layers << mat_roof_insulation
+    layers << mat_concrete_3_5in
+    layers << mat_concrete_1_5in
+    radiant_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_ceiling_slab_construction.setName('Radiant Exterior Ceiling Slab Construction')
+    radiant_ceiling_slab_construction.setSourcePresentAfterLayerNumber(3)
+    radiant_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
+    radiant_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
+
+    layers = []
+    layers << mat_concrete_3_5in
+    layers << air_gap_map
+    layers << metal_mat
+    layers << metal_mat
+    radiant_interior_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_interior_ceiling_metal_construction.setName('Radiant Interior Ceiling Metal Construction')
+    radiant_interior_ceiling_metal_construction.setSourcePresentAfterLayerNumber(3)
+    radiant_interior_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
+    radiant_interior_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
+    
+    layers = []
+    layers << mat_refl_roof_membrane
+    layers << mat_roof_insulation
+    layers << mat_concrete_3_5in
+    layers << air_gap_map
+    layers << metal_mat
+    layers << metal_mat
+    radiant_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+    radiant_ceiling_metal_construction.setName('Radiant Ceiling Metal Construction')
+    radiant_ceiling_metal_construction.setSourcePresentAfterLayerNumber(5)
+    radiant_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(6)
+    radiant_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
+
+    # default temperature controls for radiant system
+    zn_radiant_htg_dsgn_temp_f = 68.0
+    zn_radiant_htg_dsgn_temp_c = OpenStudio.convert(zn_radiant_htg_dsgn_temp_f, 'F', 'C').get
+    zn_radiant_clg_dsgn_temp_f = 74.0
+    zn_radiant_clg_dsgn_temp_c = OpenStudio.convert(zn_radiant_clg_dsgn_temp_f, 'F', 'C').get
+
+    htg_control_temp_sch = std.model_add_constant_schedule_ruleset(
+      self,
+      zn_radiant_htg_dsgn_temp_c,
+      name = "Zone Radiant Loop Heating Threshold Temperature Schedule - #{zn_radiant_htg_dsgn_temp_f.round(0)}F")
+    clg_control_temp_sch = std.model_add_constant_schedule_ruleset(
+      self,
+      zn_radiant_clg_dsgn_temp_c,
+      name = "Zone Radiant Loop Cooling Threshold Temperature Schedule - #{zn_radiant_clg_dsgn_temp_f.round(0)}F")
+    throttling_range_f = 4.0 # 2 degF on either side of control temperature
+    throttling_range_c = OpenStudio.convert(throttling_range_f, 'F', 'C').get
+
+    # make a low temperature radiant loop for each zone
+    radiant_loops = []
+    thermal_zones.each do |zone|
+      OpenStudio.logFree(OpenStudio::Info, 'openstudio.Model.Model', "Adding radiant loop for #{zone.name}.")
+      if zone.name.to_s.include? ':'
+        OpenStudio.logFree(OpenStudio::Error, 'openstudio.Model.Model', "Thermal zone '#{zone.name}' has a restricted character ':' in the name and will not work with some EMS and output reporting objects. Please rename the zone.")
+      end
+
+      # create radiant coils
+      if hot_water_loop
+        radiant_loop_htg_coil = OpenStudio::Model::CoilHeatingLowTempRadiantVarFlow.new(self, htg_control_temp_sch)
+        radiant_loop_htg_coil.setName("#{zone.name} Radiant Loop Heating Coil")
+        radiant_loop_htg_coil.setHeatingControlThrottlingRange(throttling_range_c)
+        hot_water_loop.addDemandBranchForComponent(radiant_loop_htg_coil)
+      else
+        OpenStudio.logFree(OpenStudio::Error, 'openstudio.Model.Model', 'Radiant loops require a hot water loop, but none was provided.')
+      end
+
+      if chilled_water_loop
+        radiant_loop_clg_coil = OpenStudio::Model::CoilCoolingLowTempRadiantVarFlow.new(self, clg_control_temp_sch)
+        radiant_loop_clg_coil.setName("#{zone.name} Radiant Loop Cooling Coil")
+        radiant_loop_clg_coil.setCoolingControlThrottlingRange(throttling_range_c)
+        chilled_water_loop.addDemandBranchForComponent(radiant_loop_clg_coil)
+      else
+        OpenStudio.logFree(OpenStudio::Error, 'openstudio.Model.Model', 'Radiant loops require a chilled water loop, but none was provided.')
+      end
+
+      radiant_avail_sch = self.alwaysOnDiscreteSchedule
+      radiant_loop = OpenStudio::Model::ZoneHVACLowTempRadiantVarFlow.new(self,
+                                                                          radiant_avail_sch,
+                                                                          radiant_loop_htg_coil,
+                                                                          radiant_loop_clg_coil)
+
+      # assign internal source construction to floors in zone
+      zone.spaces.each do |space|
+        space.surfaces.each do |surface|
+          if radiant_type == 'floor'
+            if surface.surfaceType == 'Floor'
+              if surface.outsideBoundaryCondition == 'Ground'
+                surface.setConstruction(radiant_ground_slab_construction)
+              elsif surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_exterior_slab_construction)
+              else # interior floor
+                surface.setConstruction(radiant_interior_floor_slab_construction)
+              end
+            end
+          elsif radiant_type == 'ceiling'
+            if surface.surfaceType == 'RoofCeiling'
+              if surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_ceiling_slab_construction)
+              else # interior ceiling
+                surface.setConstruction(radiant_interior_ceiling_slab_construction)
+              end
+            end
+          elsif radiant_type == 'ceilingmetalpanel'
+            if surface.surfaceType == 'RoofCeiling'
+              if surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_ceiling_metal_construction)
+              else # interior ceiling
+                surface.setConstruction(radiant_interior_ceiling_metal_construction)
+              end
+            end
+          end
+        end
+      end
+
+      # radiant loop surfaces
+      radiant_loop.setName("#{zone.name} Radiant Loop")
+      if radiant_type == 'floor'
+        radiant_loop.setRadiantSurfaceType('Floors')
+      elsif radiant_type == 'ceiling'
+        radiant_loop.setRadiantSurfaceType('Ceilings')
+      elsif radiant_type == 'ceilingmetalpanel'
+        radiant_loop.setRadiantSurfaceType('Ceilings')
+      end
+
+      # radiant loop layout details
+      radiant_loop.setHydronicTubingInsideDiameter(0.015875) # 5/8 in. ID, 3/4 in. OD
+      # @todo include a method to determine tubing length in the zone
+      # loop_length = 7*zone.floorArea
+      # radiant_loop.setHydronicTubingLength()
+      radiant_loop.setNumberofCircuits('CalculateFromCircuitLength')
+      radiant_loop.setCircuitLength(106.7)
+
+      # radiant loop controls
+      radiant_loop.setTemperatureControlType('MeanAirTemperature')
+      radiant_loop.addToThermalZone(zone)
+      radiant_loops << radiant_loop
+
+      # rename nodes before adding EMS code
+      std.rename_plant_loop_nodes(self)
+
+      # set radiant loop controls
+      if control_strategy == 'proportional_control'
+        std.model_add_radiant_proportional_controls(self, zone, radiant_loop,
+                                                    radiant_type: radiant_type,
+                                                    model_occ_hr_start: model_occ_hr_start,
+                                                    model_occ_hr_end: model_occ_hr_end,
+                                                    proportional_gain: proportional_gain,
+                                                    minimum_operation: minimum_operation,
+                                                    weekend_temperature_reset: weekend_temperature_reset,
+                                                    early_reset_out_arg: early_reset_out_arg,
+                                                    switch_over_time: switch_over_time)
+      end
+    end
+
+    return radiant_loops
+  end
+
 end

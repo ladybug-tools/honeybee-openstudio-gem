@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.48.2",
+    "version": "1.49.0",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -3531,10 +3531,7 @@
           },
           "story": {
             "title": "Story",
-            "description": "Text string for the story identifier to which this Room belongs. Rooms sharing the same story identifier are considered part of the same story in a Model.",
-            "maxLength": 100,
-            "minLength": 1,
-            "pattern": "[.A-Za-z0-9_-]",
+            "description": "Text string for the story identifier to which this Room belongs. Rooms sharing the same story identifier are considered part of the same story in a Model. Note that this property has no character restrictions.",
             "type": "string"
           }
         },
@@ -8251,7 +8248,8 @@
         "enum": [
           "Floor",
           "Ceiling",
-          "FloorWithCarpet"
+          "FloorWithCarpet",
+          "CeilingMetalPanel"
         ],
         "type": "string"
       },
@@ -8334,14 +8332,14 @@
               }
             ]
           },
-          "proportional_gain": {
-            "title": "Proportional Gain",
-            "description": "A fractional number for the proportional gain constant. Recommended values are 0.3 or less.",
-            "default": 0.3,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
+          "radiant_face_type": {
+            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
+            "default": "Floor",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantFaceTypes"
+              }
+            ]
           },
           "minimum_operation_time": {
             "title": "Minimum Operation Time",
@@ -8358,15 +8356,6 @@
             "exclusiveMinimum": 0,
             "type": "number",
             "format": "double"
-          },
-          "radiant_face_type": {
-            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
-            "default": "Floor",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RadiantFaceTypes"
-              }
-            ]
           }
         },
         "required": [
@@ -8977,14 +8966,14 @@
               }
             ]
           },
-          "proportional_gain": {
-            "title": "Proportional Gain",
-            "description": "A fractional number for the proportional gain constant. Recommended values are 0.3 or less.",
-            "default": 0.3,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
+          "radiant_face_type": {
+            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
+            "default": "Floor",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RadiantFaceTypes"
+              }
+            ]
           },
           "minimum_operation_time": {
             "title": "Minimum Operation Time",
@@ -9001,15 +8990,6 @@
             "exclusiveMinimum": 0,
             "type": "number",
             "format": "double"
-          },
-          "radiant_face_type": {
-            "description": "Text to indicate which faces are thermally active by default. Note that this property has no effect when the rooms to which the HVAC system is assigned have constructions with internal source materials. In this case, those constructions will dictate the thermally active surfaces.",
-            "default": "Floor",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RadiantFaceTypes"
-              }
-            ]
           }
         },
         "required": [
@@ -14118,7 +14098,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.48.2",
+            "default": "1.49.0",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true
