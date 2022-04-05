@@ -304,11 +304,13 @@ RSpec.describe Honeybee do
     openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
+    $triangulate_sub_faces = true
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
 
     openstudio_surfaces = openstudio_model.getSubSurfaces
     expect(openstudio_surfaces.size).to be >= 4
+    $triangulate_sub_faces = false
   end
 
   it 'can triangulate 5vertex sub faces with interior boundary conditions' do
@@ -316,6 +318,7 @@ RSpec.describe Honeybee do
     openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/model/model_5vertex_sub_faces_interior.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
+    $triangulate_sub_faces = true
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
 
@@ -346,6 +349,7 @@ RSpec.describe Honeybee do
       end
 
       expect(num_surfaces_with_subsurfaces).to eq 1
+      $triangulate_sub_faces = false
     end
   end
 

@@ -52,6 +52,7 @@ module Honeybee
       @@extension ||= Extension.new
       @@schema ||= @@extension.schema
       @@standards ||= @@extension.standards
+      $triangulate_sub_faces = false
       $simple_window_cons = false
 
       @hash = hash
