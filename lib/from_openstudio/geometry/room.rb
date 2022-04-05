@@ -85,7 +85,8 @@ module Honeybee
         space_type = space.spaceType.get
         hash[:program_type] = space_type.nameString
       end
-      # TODO: These are loads assigned to the space directly. How should duplicates created in programtype, if any, be handled? 
+      # TODO: These are only loads assigned to the space directly.
+      # Duplicates and other definitions created in programtype should be summed 
       unless space.people.empty?
         space.people.each do |people|
           people_def = people.peopleDefinition
@@ -100,6 +101,7 @@ module Honeybee
           end
         end
       end
+
       unless space.lights.empty?
         space.lights.each do |light|
           light_def = light.lightsDefinition
@@ -114,6 +116,7 @@ module Honeybee
           end
         end
       end
+
       unless space.electricEquipment.empty?
         space.electricEquipment.each do |electric_eq|
           electric_eq_def = electric_eq.electricEquipmentDefinition
@@ -128,6 +131,7 @@ module Honeybee
           end
         end
       end
+
       unless space.gasEquipment.empty?
         space.gasEquipment.each do |gas_eq|
           gas_eq_def = gas_eq.gasEquipmentDefinition
@@ -142,18 +146,7 @@ module Honeybee
           end
         end
       end
-      unless space.otherEquipment.empty?
-        hash[:process_loads] = []
-        space.otherEquipment.each do |other_eq|
-          other_eq_def = other_eq.otherEquipmentDefinition
-          if !other_eq_def.designLevel.empty? && !other_eq.schedule.empty?
-            sch = other_eq.schedule.get
-            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
-              hash[:process_loads] << Honeybee::ProcessAbridged.from_load(other_eq)
-            end
-          end
-        end
-      end
+
       unless space.spaceInfiltrationDesignFlowRates.empty?
         space.spaceInfiltrationDesignFlowRates.each do |infiltration|
           # Only translate if flow per exterior area is specified
@@ -167,17 +160,41 @@ module Honeybee
           end
         end
       end
+
+      unless space.waterUseEquipment.empty?
+        space.waterUseEquipment.each do |shw_equipment|
+          # Check if schedule exists and is of the correct type
+          unless shw_equipment.flowRateFractionSchedule.empty?
+            sch = shw_equipment.flowRateFractionSchedule.get
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+              floor_area = space.floorArea  # Get floor area 
+              hash[:service_hot_water] = Honeybee::ServiceHotWaterAbridged.from_load(shw_equipment, floor_area)
+            end
+          end
+        end
+      end
+
       unless space.designSpecificationOutdoorAir.empty?
         hash[:ventilation] = Honeybee::VentilationAbridged.from_load(space.designSpecificationOutdoorAir.get)
       end
+
+      unless space.otherEquipment.empty?
+        hash[:process_loads] = []
+        space.otherEquipment.each do |other_eq|
+          other_eq_def = other_eq.otherEquipmentDefinition
+          if !other_eq_def.designLevel.empty? && !other_eq.schedule.empty?
+            sch = other_eq.schedule.get
+            if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
+              hash[:process_loads] << Honeybee::ProcessAbridged.from_load(other_eq)
+            end
+          end
+        end
+      end
+
       unless space.daylightingControls.empty?
         hash[:daylighting_control] = Honeybee::DaylightingControl.from_load(space.daylightingControls[0])
       end
-      unless space.waterUseEquipment.empty?
-        # Get floor area 
-        floor_area = space.floorArea
-        hash[:service_hot_water] = Honeybee::ServiceHotWaterAbridged.from_load(space.waterUseEquipment[0], floor_area)
-      end
+     
       thermal_zone = space.thermalZone
       unless thermal_zone.empty?
         thermal_zone = space.thermalZone.get

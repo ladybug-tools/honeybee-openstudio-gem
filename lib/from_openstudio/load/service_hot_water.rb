@@ -41,17 +41,14 @@ module Honeybee
             hash[:type] = 'ServiceHotWaterAbridged'
             # set hash values from OpenStudio Object
             hash[:identifier] = clean_name(load.nameString)
-            load_def = load.WaterUseEquipmentDefinition
+            load_def = load.waterUseEquipmentDefinition
             # units of peak flow rate are m3/s
             peak_flow = load_def.peakFlowRate
             # unit for flow per area is L/h-m2 (m3/s = 3600000 L/h)
-            hash[:flow_per_area] = (peak_flow * 3600000)/floor_area
-            unless load_def.flowRateFractionSchedule.empty?
-                sch = load_def.flowRateFractionSchedule
-                # Translate only Scheudle Ruleset and Schedule Fixed Interval
-                if sch.to_ScheduleRuleset.is_initialized or sch.to_ScheduleFixedInterval.is_initialized
-                    hash[:schedule] = load_def.flowRateFractionSchedule.get.nameString
-                end
+            hash[:flow_per_area] = (peak_flow * 3600000) / floor_area
+            unless load.flowRateFractionSchedule.empty? 
+                schedule = load.flowRateFractionSchedule.get
+                hash[:schedule] = schedule.nameString
             end
 
             hash
