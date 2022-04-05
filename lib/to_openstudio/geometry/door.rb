@@ -54,7 +54,7 @@ module Honeybee
       final_vertices_list = []
       matching_os_subsurfaces = []
       matching_os_subsurface_indices = []
-      if os_vertices.size > 4
+      if $triangulate_sub_faces && os_vertices.size > 4
 
         # if this door has a matched door, see if the other one has already been created
         # the matched door should have been converted to multiple subsurfaces
