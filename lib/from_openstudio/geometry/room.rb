@@ -79,7 +79,10 @@ module Honeybee
       # set room energy properties
       unless space.defaultConstructionSet.empty?
         const_set = space.defaultConstructionSet.get
-        hash[:construction_set] = const_set.nameString
+        c_set_name = const_set.nameString
+        unless c_set_name == 'Default Generic Construction Set'
+          hash[:construction_set] = const_set.nameString
+        end
       end
       unless space.spaceType.empty?
         space_type = space.spaceType.get
