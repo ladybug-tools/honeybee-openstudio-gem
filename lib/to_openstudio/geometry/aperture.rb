@@ -197,6 +197,16 @@ module Honeybee
         end
       end
 
+      # add a transmittance schedule if a value is found
+      if @hash[:transmit]
+        schedule_identifier = 'Constant ' + @hash[:transmit] + ' Transmittance'
+        schedule = openstudio_model.getScheduleByName(schedule_identifier)
+        unless schedule.empty?
+          os_schedule = schedule.get
+          os_shading_surface.setTransmittanceSchedule(os_schedule)
+        end
+      end
+
       # add the shade to the group
       os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
 
