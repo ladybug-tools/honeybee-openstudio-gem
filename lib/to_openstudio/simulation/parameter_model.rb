@@ -156,14 +156,19 @@ module Honeybee
       end
 
       # use the average of design day temperatures to set the water mains temperature
-      os_water_mains = @openstudio_model.getSiteWaterMainsTemperature 
-      os_water_mains.setCalculationMethod('Correlation')
-      if db_temps.length > 0
-        os_water_mains.setAnnualAverageOutdoorAirTemperature((db_temps.max + db_temps.min) / 2)
-      else  # just use some dummy values so that the simulation does not fail
-        os_water_mains.setAnnualAverageOutdoorAirTemperature(12)
+      os_water_mains = @openstudio_model.getSiteWaterMainsTemperature
+      os_version_water_fix = OpenStudio::VersionString.new(3, 4)
+      if @openstudio_model.version() >= os_version_water_fix
+        os_water_mains.setCalculationMethod('CorrelationFromWeatherFile')
+      else
+        os_water_mains.setCalculationMethod('Correlation')
+        if db_temps.length > 0
+          os_water_mains.setAnnualAverageOutdoorAirTemperature((db_temps.max + db_temps.min) / 2)
+        else  # just use some dummy values so that the simulation does not fail
+          os_water_mains.setAnnualAverageOutdoorAirTemperature(12)
+        end
+        os_water_mains.setMaximumDifferenceInMonthlyAverageOutdoorAirTemperatures(4)
       end
-      os_water_mains.setMaximumDifferenceInMonthlyAverageOutdoorAirTemperatures(4)
 
       # set the climate zone from design days assuming 0.4% extremes and normal distribution
       climate_zone_objs = @openstudio_model.getClimateZones
