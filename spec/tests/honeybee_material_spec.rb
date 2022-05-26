@@ -57,7 +57,7 @@ RSpec.describe Honeybee do
     expect(roughness).to eq('MediumRough')
     solar_absorptance = object1.thermalAbsorptance
     expect(solar_absorptance).to eq(0.9)
-    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
     expect((object1.displayName.get)).to eq 'название теста'
   end
 

@@ -84,26 +84,6 @@ module Honeybee
         os_thermal_zone.setDisplayName(@hash[:display_name])
       end
 
-      # assign the programtype
-      if @hash[:properties][:energy][:program_type]
-        space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
-        unless space_type.empty?
-          space_type_object = space_type.get
-          os_space.setSpaceType(space_type_object)
-        end
-      end
-
-      # assign the constructionset
-      if @hash[:properties][:energy][:construction_set]
-        construction_set_identifier = @hash[:properties][:energy][:construction_set]
-        # gets default construction set assigned to room from openstudio_model
-        construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_identifier)
-        unless construction_set.empty?
-          default_construction_set = construction_set.get
-          os_space.setDefaultConstructionSet(default_construction_set)
-        end
-      end
-
       # assign the multiplier
       if @hash[:multiplier] and @hash[:multiplier] != 1
         os_thermal_zone.setMultiplier(@hash[:multiplier])
@@ -142,6 +122,28 @@ module Honeybee
       end
       os_space.setBuildingStory(story)
 
+      if @hash[:properties].key?(:energy)
+        # assign the programtype
+        if @hash[:properties][:energy][:program_type]
+          space_type = openstudio_model.getSpaceTypeByName(@hash[:properties][:energy][:program_type])
+          unless space_type.empty?
+            space_type_object = space_type.get
+            os_space.setSpaceType(space_type_object)
+          end
+        end
+  
+        # assign the constructionset
+        if @hash[:properties][:energy][:construction_set]
+          construction_set_identifier = @hash[:properties][:energy][:construction_set]
+          # gets default construction set assigned to room from openstudio_model
+          construction_set = openstudio_model.getDefaultConstructionSetByName(construction_set_identifier)
+          unless construction_set.empty?
+            default_construction_set = construction_set.get
+            os_space.setDefaultConstructionSet(default_construction_set)
+          end
+        end
+      end
+
       # keep track of all window ventilation objects
       window_vent = {}
 
@@ -162,9 +164,11 @@ module Honeybee
         # assign aperture-level shades if they exist
         if face[:apertures]
           face[:apertures].each do |aperture|
-            if aperture[:properties][:energy][:vent_opening]
-              window_vent[aperture[:identifier]] = \
-                [aperture[:properties][:energy][:vent_opening], aperture[:boundary_condition][:type]]
+            if aperture[:properties].key?(:energy)
+              if aperture[:properties][:energy][:vent_opening]
+                window_vent[aperture[:identifier]] = \
+                  [aperture[:properties][:energy][:vent_opening], aperture[:boundary_condition][:type]]
+              end
             end
             if aperture[:outdoor_shades]
               unless os_shd_group
@@ -180,9 +184,11 @@ module Honeybee
         # assign door-level shades if they exist
         if face[:doors]
           face[:doors].each do |door|
-            if door[:properties][:energy][:vent_opening]
-              window_vent[door[:identifier]] = \
-                [door[:properties][:energy][:vent_opening], door[:boundary_condition][:type]]
+            if door[:properties].key?(:energy)
+              if door[:properties][:energy][:vent_opening]
+                window_vent[door[:identifier]] = \
+                  [door[:properties][:energy][:vent_opening], door[:boundary_condition][:type]]
+              end
             end
             if door[:outdoor_shades]
               unless os_shd_group
@@ -196,7 +202,7 @@ module Honeybee
         end
 
         # assign interior constructions for adiabatic Faces
-        if !face[:properties][:energy][:construction]
+        if face[:properties].key?(:energy) && !face[:properties][:energy][:construction]
           if face[:boundary_condition][:type] == 'Adiabatic'
             # assign default interior construction for Adiabatic Faces
             if face[:face_type] != 'Wall'
@@ -212,7 +218,7 @@ module Honeybee
         if face[:face_type] == 'AirBoundary'
           # assign default air boundary construction for AirBoundary face types
           air_construction = closest_air_construction(openstudio_model, os_space)
-          if !face[:properties][:energy][:construction]
+          if face[:properties].key?(:energy) && !face[:properties][:energy][:construction]
             unless air_construction.nil?
               os_surface.setConstruction(air_construction)
             end
@@ -256,164 +262,166 @@ module Honeybee
       end
 
       #check whether there are any load objects on the room overriding the programtype
-      if @hash[:properties][:energy][:people]
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program_ppl = unique_program.people
-        unless unique_program_ppl.empty?  # remove the previous load definition
-          unique_program_ppl[0].remove()
+      if @hash[:properties].key?(:energy)
+        if @hash[:properties][:energy][:people]
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program_ppl = unique_program.people
+          unless unique_program_ppl.empty?  # remove the previous load definition
+            unique_program_ppl[0].remove()
+          end
+          custom_people = PeopleAbridged.new(@hash[:properties][:energy][:people])
+          os_custom_people = custom_people.to_openstudio(openstudio_model)
+          os_custom_people.setSpaceType(unique_program)  # assign the new load definition
         end
-        custom_people = PeopleAbridged.new(@hash[:properties][:energy][:people])
-        os_custom_people = custom_people.to_openstudio(openstudio_model)
-        os_custom_people.setSpaceType(unique_program)  # assign the new load definition
-      end
 
-      # assign lighting if it exists
-      if @hash[:properties][:energy][:lighting]
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program_lght = unique_program.lights
-        unless unique_program_lght.empty?  # remove the previous load definition
-          unique_program_lght[0].remove()
+        # assign lighting if it exists
+        if @hash[:properties][:energy][:lighting]
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program_lght = unique_program.lights
+          unless unique_program_lght.empty?  # remove the previous load definition
+            unique_program_lght[0].remove()
+          end
+          custom_lighting = LightingAbridged.new(@hash[:properties][:energy][:lighting])
+          os_custom_lighting = custom_lighting.to_openstudio(openstudio_model)
+          os_custom_lighting.setSpaceType(unique_program)  # assign the new load definition
         end
-        custom_lighting = LightingAbridged.new(@hash[:properties][:energy][:lighting])
-        os_custom_lighting = custom_lighting.to_openstudio(openstudio_model)
-        os_custom_lighting.setSpaceType(unique_program)  # assign the new load definition
-      end
 
-      # assign electric equipment if it exists
-      if @hash[:properties][:energy][:electric_equipment]
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program_ele = unique_program.electricEquipment
-        unless unique_program_ele.empty?  # remove the previous load definition
-          unique_program_ele[0].remove()
+        # assign electric equipment if it exists
+        if @hash[:properties][:energy][:electric_equipment]
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program_ele = unique_program.electricEquipment
+          unless unique_program_ele.empty?  # remove the previous load definition
+            unique_program_ele[0].remove()
+          end
+          custom_electric_equipment = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
+          os_custom_electric_equipment = custom_electric_equipment.to_openstudio(openstudio_model)
+          os_custom_electric_equipment.setSpaceType(unique_program)  # assign the new load definition
         end
-        custom_electric_equipment = ElectricEquipmentAbridged.new(@hash[:properties][:energy][:electric_equipment])
-        os_custom_electric_equipment = custom_electric_equipment.to_openstudio(openstudio_model)
-        os_custom_electric_equipment.setSpaceType(unique_program)  # assign the new load definition
-      end
 
-      # assign gas equipment if it exists
-      if @hash[:properties][:energy][:gas_equipment]
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program_gas = unique_program.gasEquipment
-        unless unique_program_gas.empty?  # remove the previous load definition
-          unique_program_gas[0].remove()
+        # assign gas equipment if it exists
+        if @hash[:properties][:energy][:gas_equipment]
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program_gas = unique_program.gasEquipment
+          unless unique_program_gas.empty?  # remove the previous load definition
+            unique_program_gas[0].remove()
+          end
+          custom_gas_equipment = GasEquipmentAbridged.new(@hash[:properties][:energy][:gas_equipment])
+          os_custom_gas_equipment = custom_gas_equipment.to_openstudio(openstudio_model)
+          os_custom_gas_equipment.setSpaceType(unique_program)  # assign the new load definition
         end
-        custom_gas_equipment = GasEquipmentAbridged.new(@hash[:properties][:energy][:gas_equipment])
-        os_custom_gas_equipment = custom_gas_equipment.to_openstudio(openstudio_model)
-        os_custom_gas_equipment.setSpaceType(unique_program)  # assign the new load definition
-      end
 
-      # assign service hot water if it exists
-      if @hash[:properties][:energy][:service_hot_water]
-        shw_space = ServiceHotWaterAbridged.new(@hash[:properties][:energy][:service_hot_water])
-        os_shw_space = shw_space.to_openstudio(
-          openstudio_model, os_space, @hash[:properties][:energy][:shw])
-        $shw_for_plant = shw_space
-      end
-
-      # assign infiltration if it exists
-      if @hash[:properties][:energy][:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program_inf = unique_program.spaceInfiltrationDesignFlowRates
-        unless unique_program_inf.empty?  # remove the previous load definition
-          unique_program_inf[0].remove()
+        # assign service hot water if it exists
+        if @hash[:properties][:energy][:service_hot_water]
+          shw_space = ServiceHotWaterAbridged.new(@hash[:properties][:energy][:service_hot_water])
+          os_shw_space = shw_space.to_openstudio(
+            openstudio_model, os_space, @hash[:properties][:energy][:shw])
+          $shw_for_plant = shw_space
         end
-        custom_infiltration = InfiltrationAbridged.new(@hash[:properties][:energy][:infiltration])
-        os_custom_infiltration = custom_infiltration.to_openstudio(openstudio_model)
-        os_custom_infiltration.setSpaceType(unique_program)  # assign the new load definition
-      end
 
-      # assign ventilation if it exists
-      if @hash[:properties][:energy][:ventilation]
-        unique_program = get_unique_space_type(openstudio_model, os_space)
-        unique_program.resetDesignSpecificationOutdoorAir()
-        custom_ventilation = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
-        os_custom_ventilation = custom_ventilation.to_openstudio(openstudio_model)
-        unique_program.setDesignSpecificationOutdoorAir(os_custom_ventilation)
-      end
-
-      # assign setpoint if it exists
-      if @hash[:properties][:energy][:setpoint]
-        # thermostat object is created because heating and cooling schedule are required
-        setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
-        os_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
-        #set thermostat to thermal zone
-        os_thermal_zone.setThermostatSetpointDualSetpoint(os_setpoint_thermostat_space)
-        # humidistat object is created if humidifying or dehumidifying schedule is specified
-        if @hash[:properties][:energy][:setpoint][:humidifying_schedule] or @hash[:properties][:energy][:setpoint][:dehumidifying_schedule]
-          setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
-          os_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
-          os_thermal_zone.setZoneControlHumidistat(os_setpoint_humidistat_space)
+        # assign infiltration if it exists
+        if @hash[:properties][:energy][:infiltration] && $use_simple_vent  # only use infiltration with simple ventilation
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program_inf = unique_program.spaceInfiltrationDesignFlowRates
+          unless unique_program_inf.empty?  # remove the previous load definition
+            unique_program_inf[0].remove()
+          end
+          custom_infiltration = InfiltrationAbridged.new(@hash[:properties][:energy][:infiltration])
+          os_custom_infiltration = custom_infiltration.to_openstudio(openstudio_model)
+          os_custom_infiltration.setSpaceType(unique_program)  # assign the new load definition
         end
-      end
 
-      # assign daylight control if it exists
-      if @hash[:properties][:energy][:daylighting_control]
-        dl_control = DaylightingControl.new(@hash[:properties][:energy][:daylighting_control])
-        os_dl_control = dl_control.to_openstudio(openstudio_model, os_thermal_zone, os_space)
-      end
+        # assign ventilation if it exists
+        if @hash[:properties][:energy][:ventilation]
+          unique_program = get_unique_space_type(openstudio_model, os_space)
+          unique_program.resetDesignSpecificationOutdoorAir()
+          custom_ventilation = VentilationAbridged.new(@hash[:properties][:energy][:ventilation])
+          os_custom_ventilation = custom_ventilation.to_openstudio(openstudio_model)
+          unique_program.setDesignSpecificationOutdoorAir(os_custom_ventilation)
+        end
 
-      # assign window ventilation objects if they exist
-      if $use_simple_vent && !window_vent.empty?  # write simple WindAndStack ventilation
-        window_vent.each do |sub_f_id, open_prop|
-          opening = open_prop[0]
-          bc = open_prop[1]
-          if bc == 'Outdoors'
-            opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
-            unless opt_sub_f.empty?
-              sub_f = opt_sub_f.get
-              vent_open = VentilationOpening.new(opening)
-              os_vent_open = vent_open.to_openstudio(
-                openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
-              os_vent_open.addToThermalZone(os_thermal_zone)
-            end
+        # assign setpoint if it exists
+        if @hash[:properties][:energy][:setpoint]
+          # thermostat object is created because heating and cooling schedule are required
+          setpoint_thermostat_space = SetpointThermostat.new(@hash[:properties][:energy][:setpoint])
+          os_setpoint_thermostat_space = setpoint_thermostat_space.to_openstudio(openstudio_model)
+          #set thermostat to thermal zone
+          os_thermal_zone.setThermostatSetpointDualSetpoint(os_setpoint_thermostat_space)
+          # humidistat object is created if humidifying or dehumidifying schedule is specified
+          if @hash[:properties][:energy][:setpoint][:humidifying_schedule] or @hash[:properties][:energy][:setpoint][:dehumidifying_schedule]
+            setpoint_humidistat_space = SetpointHumidistat.new(@hash[:properties][:energy][:setpoint])
+            os_setpoint_humidistat_space = setpoint_humidistat_space.to_openstudio(openstudio_model)
+            os_thermal_zone.setZoneControlHumidistat(os_setpoint_humidistat_space)
           end
         end
-      elsif !$use_simple_vent  # we're using the AFN!
-        # write an AirflowNetworkZone object in for the Room
-        os_afn_room_node = os_thermal_zone.getAirflowNetworkZone
-        os_afn_room_node.setVentilationControlMode('NoVent')
-        # write the opening objects for each Aperture / Door
-        operable_subfs = []  # collect the sub-face objects for the EMS
-        opening_factors = []  # collect the maximum opening factors for the EMS
-        window_vent.each do |sub_f_id, open_prop|
-          opening = open_prop[0]
-          opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
-          unless opt_sub_f.empty?
-            sub_f = opt_sub_f.get
-            if sub_f.adjacentSubSurface.empty?  # not an interior window that's already in the AFN
-              vent_open = VentilationOpening.new(opening)
-              open_fac = vent_open.to_openstudio_afn(openstudio_model, sub_f)
-              unless open_fac.nil?  # nil is used for horizontal exterior skylights
-                operable_subfs << sub_f
-                opening_factors << open_fac
+
+        # assign daylight control if it exists
+        if @hash[:properties][:energy][:daylighting_control]
+          dl_control = DaylightingControl.new(@hash[:properties][:energy][:daylighting_control])
+          os_dl_control = dl_control.to_openstudio(openstudio_model, os_thermal_zone, os_space)
+        end
+
+        # assign window ventilation objects if they exist
+        if $use_simple_vent && !window_vent.empty?  # write simple WindAndStack ventilation
+          window_vent.each do |sub_f_id, open_prop|
+            opening = open_prop[0]
+            bc = open_prop[1]
+            if bc == 'Outdoors'
+              opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
+              unless opt_sub_f.empty?
+                sub_f = opt_sub_f.get
+                vent_open = VentilationOpening.new(opening)
+                os_vent_open = vent_open.to_openstudio(
+                  openstudio_model, sub_f, @hash[:properties][:energy][:window_vent_control])
+                os_vent_open.addToThermalZone(os_thermal_zone)
               end
             end
           end
+        elsif !$use_simple_vent  # we're using the AFN!
+          # write an AirflowNetworkZone object in for the Room
+          os_afn_room_node = os_thermal_zone.getAirflowNetworkZone
+          os_afn_room_node.setVentilationControlMode('NoVent')
+          # write the opening objects for each Aperture / Door
+          operable_subfs = []  # collect the sub-face objects for the EMS
+          opening_factors = []  # collect the maximum opening factors for the EMS
+          window_vent.each do |sub_f_id, open_prop|
+            opening = open_prop[0]
+            opt_sub_f = openstudio_model.getSubSurfaceByName(sub_f_id)
+            unless opt_sub_f.empty?
+              sub_f = opt_sub_f.get
+              if sub_f.adjacentSubSurface.empty?  # not an interior window that's already in the AFN
+                vent_open = VentilationOpening.new(opening)
+                open_fac = vent_open.to_openstudio_afn(openstudio_model, sub_f)
+                unless open_fac.nil?  # nil is used for horizontal exterior skylights
+                  operable_subfs << sub_f
+                  opening_factors << open_fac
+                end
+              end
+            end
+          end
+          # add the control startegy of the ventilation openings using the EMS
+          if @hash[:properties][:energy][:window_vent_control]
+            vent_control = VentilationControlAbridged.new(@hash[:properties][:energy][:window_vent_control])
+            vent_control.to_openstudio(
+              openstudio_model, os_thermal_zone, operable_subfs, opening_factors)
+          end
         end
-        # add the control startegy of the ventilation openings using the EMS
-        if @hash[:properties][:energy][:window_vent_control]
-          vent_control = VentilationControlAbridged.new(@hash[:properties][:energy][:window_vent_control])
-          vent_control.to_openstudio(
-            openstudio_model, os_thermal_zone, operable_subfs, opening_factors)
-        end
-      end
 
-      # assign any internal masses if specified
-      if @hash[:properties][:energy][:internal_masses]
-        @hash[:properties][:energy][:internal_masses].each do |int_mass|
-          hb_int_mass = InternalMassAbridged.new(int_mass)
-          os_int_mass = hb_int_mass.to_openstudio(openstudio_model, os_space)
-          os_int_mass.setSpace(os_space)
+        # assign any internal masses if specified
+        if @hash[:properties][:energy][:internal_masses]
+          @hash[:properties][:energy][:internal_masses].each do |int_mass|
+            hb_int_mass = InternalMassAbridged.new(int_mass)
+            os_int_mass = hb_int_mass.to_openstudio(openstudio_model, os_space)
+            os_int_mass.setSpace(os_space)
+          end
         end
-      end
 
-      # assign any process loads if specified
-      if @hash[:properties][:energy][:process_loads]
-        @hash[:properties][:energy][:process_loads].each do |p_load|
-          hb_p_load = ProcessAbridged.new(p_load)
-          os_p_load = hb_p_load.to_openstudio(openstudio_model)
-          os_p_load.setSpace(os_space)
+        # assign any process loads if specified
+        if @hash[:properties][:energy][:process_loads]
+          @hash[:properties][:energy][:process_loads].each do |p_load|
+            hb_p_load = ProcessAbridged.new(p_load)
+            os_p_load = hb_p_load.to_openstudio(openstudio_model)
+            os_p_load.setSpace(os_space)
+          end
         end
       end
 
