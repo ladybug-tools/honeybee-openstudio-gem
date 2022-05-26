@@ -205,7 +205,10 @@ module Honeybee
         unless thermal_zone.equipment.nil?
           thermal_zone.equipment.each do |equipment|
             if equipment.to_ZoneHVACIdealLoadsAirSystem.is_initialized
-              $hvacs << Honeybee::IdeadAirSystemAbridged.from_hvac(equipment)
+              ideal_air_hash = Honeybee::IdealAirSystemAbridged.from_hvac(
+                equipment.to_ZoneHVACIdealLoadsAirSystem.get)
+              $hvacs << ideal_air_hash
+              hash[:hvac] = ideal_air_hash[:identifier]
             end
           end
         end

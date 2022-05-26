@@ -51,7 +51,7 @@ module Honeybee
       $opaque_constructions = {}
       $window_constructions = {}
       $shade_constructions = {}
-      $hvacs = {}
+      $hvacs = []
 
       hash[:properties] = properties_from_model(openstudio_model)
 
@@ -127,11 +127,7 @@ module Honeybee
       hash[:schedule_type_limits] = schedtypelimits_from_model(openstudio_model)
       hash[:schedules] = schedules_from_model(openstudio_model)
       hash[:program_types] = programtype_from_model(openstudio_model)
-      unless $hvacs.empty?
-        $hvacs.each do |hvac|
-          hash[:hvacs] << hvac
-        end
-      end
+      hash[:hvacs] = $hvacs
 
       hash
     end
