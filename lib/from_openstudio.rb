@@ -44,6 +44,9 @@ require 'from_openstudio/geometry/face'
 require 'from_openstudio/geometry/room'
 require 'from_openstudio/geometry/shade'
 
+# extend the hvac objects
+require 'from_openstudio/hvac/ideal_air'
+
 # extend the construction objects
 require 'from_openstudio/construction/opaque'
 require 'from_openstudio/construction/window'

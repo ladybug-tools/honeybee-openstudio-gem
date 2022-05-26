@@ -40,11 +40,15 @@ module Honeybee
             hash = {}
             hash[:type] = 'IdealAirSystemAbridged'
             hash[:identifier] = clean_name(hvac.nameString)
-            unless load.displayName.empty?
+            unless hvac.displayName.empty?
                 hash[:display_name] = (hvac.displayName.get).force_encoding("UTF-8")
             end
             hash[:economizer_type] = hvac.outdoorAirEconomizerType
-            hash[:demand_controlled_ventilation] = hvac.demandControlledVentilationType
+            if hvac.demandControlledVentilationType.downcase == 'none'
+                hash[:demand_controlled_ventilation] = false
+            else
+                hash[:demand_controlled_ventilation] = true
+            end
             hash[:sensible_heat_recovery] = hvac.sensibleHeatRecoveryEffectiveness
             hash[:latent_heat_recovery] = hvac.latentHeatRecoveryEffectiveness
             hash[:heating_air_temperature] = hvac.maximumHeatingSupplyAirTemperature

@@ -81,6 +81,15 @@ module Honeybee
         hash[:day_schedules] << ScheduleRulesetAbridged.from_day_schedule(schedule_day)
       end
 
+      # remove the bogus default day schedule that OpenStudio adds upon import from IDF
+      if hash[:default_day_schedule].start_with?('Schedule Day ')
+        if hash[:day_schedules][0][:values] == [0] && hash[:schedule_rules].length() > 0
+          hash[:default_day_schedule] = hash[:schedule_rules][0][:schedule_day]
+          hash[:schedule_rules].pop(0)
+          hash[:day_schedules].pop(0)
+        end
+      end
+
       # assing any schedule type limits if they exist
       unless schedule_ruleset.scheduleTypeLimits.empty?
         typ_lim = schedule_ruleset.scheduleTypeLimits.get
