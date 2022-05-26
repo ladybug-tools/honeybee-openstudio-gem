@@ -64,39 +64,41 @@ module Honeybee
       end
       os_surface.setSurfaceType(@hash[:face_type])
 
-      # assign the construction if it is present
-      if @hash[:properties][:energy][:construction]
-        construction_identifier = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_identifier)
-        unless construction.empty?
-          os_construction = construction.get
-          os_surface.setConstruction(os_construction)
+      if @hash[:properties].key?(:energy)
+        # assign the construction if it is present
+        if @hash[:properties][:energy][:construction]
+          construction_identifier = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_identifier)
+          unless construction.empty?
+            os_construction = construction.get
+            os_surface.setConstruction(os_construction)
+          end
         end
-      end
 
-      # assign the AFN crack if it's specified and we are not using simple infiltration
-      if !$use_simple_vent && @hash[:properties][:energy][:vent_crack]
-        unless $interior_afn_srf_hash[@hash[:identifier]]  # interior crack that's been accounted for
-          vent_crack = @hash[:properties][:energy][:vent_crack]
-          # create the crack object for using default values
-          flow_exponent = crack_defaults[:flow_exponent][:default].to_f
-          os_crack = OpenStudio::Model::AirflowNetworkCrack.new(
-            openstudio_model, vent_crack[:flow_coefficient], flow_exponent,
-            $afn_reference_crack)
+        # assign the AFN crack if it's specified and we are not using simple infiltration
+        if !$use_simple_vent && @hash[:properties][:energy][:vent_crack]
+          unless $interior_afn_srf_hash[@hash[:identifier]]  # interior crack that's been accounted for
+            vent_crack = @hash[:properties][:energy][:vent_crack]
+            # create the crack object for using default values
+            flow_exponent = crack_defaults[:flow_exponent][:default].to_f
+            os_crack = OpenStudio::Model::AirflowNetworkCrack.new(
+              openstudio_model, vent_crack[:flow_coefficient], flow_exponent,
+              $afn_reference_crack)
 
-          # assign the flow exponent if it's specified
-          if vent_crack[:flow_exponent]
-            os_crack.setAirMassFlowExponent(vent_crack[:flow_exponent])
+            # assign the flow exponent if it's specified
+            if vent_crack[:flow_exponent]
+              os_crack.setAirMassFlowExponent(vent_crack[:flow_exponent])
+            end
+
+            # if it's a Surface boundary condition ensure the neighbor is not written as a duplicate
+            if @hash[:boundary_condition][:type] == 'Surface'
+              $interior_afn_srf_hash[@hash[:boundary_condition][:boundary_condition_objects][0]] = true
+            end
+
+            # create the AirflowNetworkSurface
+            os_afn_srf = os_surface.getAirflowNetworkSurface(os_crack)
+
           end
-
-          # if it's a Surface boundary condition ensure the neighbor is not written as a duplicate
-          if @hash[:boundary_condition][:type] == 'Surface'
-            $interior_afn_srf_hash[@hash[:boundary_condition][:boundary_condition_objects][0]] = true
-          end
-
-          # create the AirflowNetworkSurface
-          os_afn_srf = os_surface.getAirflowNetworkSurface(os_crack)
-
         end
       end
 
@@ -206,7 +208,7 @@ module Honeybee
 
       # get the approriate construction id
       construction_id = nil
-      if @hash[:properties][:energy][:construction]
+      if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
         construction_id = @hash[:properties][:energy][:construction]
       elsif @hash[:face_type] == 'Wall'
         construction_id = 'Generic Exterior Wall'

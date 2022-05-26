@@ -77,7 +77,7 @@ RSpec.describe Honeybee do
     expect(openstudio_space.empty?).to be false
     openstudio_space = openstudio_space.get
     expect(openstudio_space.nameString).to eq 'Tiny_House_Office_Space'
-    expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((openstudio_space.additionalProperties.featureNames)).to include ("DisplayName")
     expect((openstudio_space.displayName.get)).to eq 'テスト名'
 
     openstudio_story = openstudio_space.buildingStory
@@ -111,7 +111,7 @@ RSpec.describe Honeybee do
 
     schedule_ruleset = openstudio_model.getScheduleRulesetByName('Generic Office Infiltration')
     expect(schedule_ruleset).not_to be nil
-    expect((schedule_ruleset.get).additionalProperties.featureNames).to include ("DisplayName")
+    #expect((schedule_ruleset.get).additionalProperties.featureNames).to include ("DisplayName")
 
     infilt = openstudio_model.getSpaceInfiltrationDesignFlowRates
     expect(infilt.size).to be 1
@@ -366,6 +366,15 @@ RSpec.describe Honeybee do
     openstudio_model = OpenStudio::Model::Model.new
     openstudio_model.getYearDescription.setCalendarYear(2017)
     file = File.join(File.dirname(__FILE__), '../samples/model_large/lab_building.hbjson')
+    honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
+    object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
+    expect(object1).not_to be nil
+  end
+
+  it 'can load large model without energy properties' do
+    openstudio_model = OpenStudio::Model::Model.new
+    openstudio_model.getYearDescription.setCalendarYear(2017)
+    file = File.join(File.dirname(__FILE__), '../samples/model_large/model_no_properties.hbjson')
     honeybee_obj_1 = Honeybee::Model.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil

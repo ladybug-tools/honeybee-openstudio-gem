@@ -109,7 +109,7 @@ module Honeybee
 
       # initialize a global variable for whether the AFN is used instead of simple ventilation
       $use_simple_vent = true
-      if @hash[:properties][:energy][:ventilation_simulation_control]
+      if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:ventilation_simulation_control]
         vent_sim_control = @hash[:properties][:energy][:ventilation_simulation_control]
         if vent_sim_control[:vent_control_type] && vent_sim_control[:vent_control_type] != 'SingleZone'
           $use_simple_vent = false
@@ -129,42 +129,44 @@ module Honeybee
       $shw_for_plant = nil  # track whether a hot water plant is needed
 
       # create all of the non-geometric model elements
-      if log_report  # schedules are used by all other objects and come first
-        puts 'Translating Schedules'
-      end
-      if @hash[:properties][:energy][:schedule_type_limits]
-        create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
-      end
-      if @hash[:properties][:energy][:schedules]
-        create_schedules(@hash[:properties][:energy][:schedules], false, true)
-      end
+      if @hash[:properties].key?(:energy)
+        if log_report  # schedules are used by all other objects and come first
+          puts 'Translating Schedules'
+        end
+        if @hash[:properties][:energy][:schedule_type_limits]
+          create_schedule_type_limits(@hash[:properties][:energy][:schedule_type_limits])
+        end
+        if @hash[:properties][:energy][:schedules]
+          create_schedules(@hash[:properties][:energy][:schedules], false, true)
+        end
 
-      if log_report
-        puts 'Translating Materials'
-      end
-      if @hash[:properties][:energy][:materials]
-        create_materials(@hash[:properties][:energy][:materials])
-      end
+        if log_report
+          puts 'Translating Materials'
+        end
+        if @hash[:properties][:energy][:materials]
+          create_materials(@hash[:properties][:energy][:materials])
+        end
 
-      if log_report
-        puts 'Translating Constructions'
-      end
-      if @hash[:properties][:energy][:constructions]
-        create_constructions(@hash[:properties][:energy][:constructions])
-      end
+        if log_report
+          puts 'Translating Constructions'
+        end
+        if @hash[:properties][:energy][:constructions]
+          create_constructions(@hash[:properties][:energy][:constructions])
+        end
 
-      if log_report
-        puts 'Translating ConstructionSets'
-      end
-      if @hash[:properties][:energy][:construction_sets]
-        create_construction_sets(@hash[:properties][:energy][:construction_sets])
-      end
+        if log_report
+          puts 'Translating ConstructionSets'
+        end
+        if @hash[:properties][:energy][:construction_sets]
+          create_construction_sets(@hash[:properties][:energy][:construction_sets])
+        end
 
-      if log_report
-        puts 'Translating ProgramTypes'
-      end
-      if @hash[:properties][:energy][:program_types]
-        create_program_types(@hash[:properties][:energy][:program_types])
+        if log_report
+          puts 'Translating ProgramTypes'
+        end
+        if @hash[:properties][:energy][:program_types]
+          create_program_types(@hash[:properties][:energy][:program_types])
+        end
       end
 
       # create the default construction set to catch any cases of unassigned constructions
@@ -196,8 +198,10 @@ module Honeybee
       if log_report
         puts 'Translating HVAC Systems'
       end
-      create_hvacs
-      create_hot_water_plant
+      if @hash[:properties].key?(:energy)
+        create_hvacs
+        create_hot_water_plant
+      end
 
       if log_report
         puts 'Translating Context Shade Geometry'
@@ -445,32 +449,34 @@ module Honeybee
           openstudio_room = room_object.to_openstudio(@openstudio_model)
 
           # for rooms with hot water objects definied in the ProgramType, make a new WaterUse:Equipment
-          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:service_hot_water]
-            program_type_id = room[:properties][:energy][:program_type]
-            shw_hash = $programtype_shw_hash[program_type_id]
-            unless shw_hash.nil?
-              shw_object = ServiceHotWaterAbridged.new(shw_hash)
-              openstudio_shw = shw_object.to_openstudio(
-                @openstudio_model, openstudio_room, room[:properties][:energy][:shw])
-              $shw_for_plant = shw_object
-            end
-          end
-
-          # for rooms with setpoint objects defined in the ProgramType, make a new thermostat
-          if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
-            thermal_zone = openstudio_room.thermalZone()
-            unless thermal_zone.empty?
-              thermal_zone_object = thermal_zone.get
+          if room[:properties].key?(:energy)
+            if room[:properties][:energy][:program_type] && !room[:properties][:energy][:service_hot_water]
               program_type_id = room[:properties][:energy][:program_type]
-              setpoint_hash = $programtype_setpoint_hash[program_type_id]
-              unless setpoint_hash.nil?  # program type has no setpoint
-                thermostat_object = SetpointThermostat.new(setpoint_hash)
-                openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
-                thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
-                if setpoint_hash[:humidifying_schedule] or setpoint_hash[:dehumidifying_schedule]
-                  humidistat_object = SetpointHumidistat.new(setpoint_hash)
-                  openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
-                  thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+              shw_hash = $programtype_shw_hash[program_type_id]
+              unless shw_hash.nil?
+                shw_object = ServiceHotWaterAbridged.new(shw_hash)
+                openstudio_shw = shw_object.to_openstudio(
+                  @openstudio_model, openstudio_room, room[:properties][:energy][:shw])
+                $shw_for_plant = shw_object
+              end
+            end
+
+            # for rooms with setpoint objects defined in the ProgramType, make a new thermostat
+            if room[:properties][:energy][:program_type] && !room[:properties][:energy][:setpoint]
+              thermal_zone = openstudio_room.thermalZone()
+              unless thermal_zone.empty?
+                thermal_zone_object = thermal_zone.get
+                program_type_id = room[:properties][:energy][:program_type]
+                setpoint_hash = $programtype_setpoint_hash[program_type_id]
+                unless setpoint_hash.nil?  # program type has no setpoint
+                  thermostat_object = SetpointThermostat.new(setpoint_hash)
+                  openstudio_thermostat = thermostat_object.to_openstudio(@openstudio_model)
+                  thermal_zone_object.setThermostatSetpointDualSetpoint(openstudio_thermostat)
+                  if setpoint_hash[:humidifying_schedule] or setpoint_hash[:dehumidifying_schedule]
+                    humidistat_object = SetpointHumidistat.new(setpoint_hash)
+                    openstudio_humidistat = humidistat_object.to_openstudio(@openstudio_model)
+                    thermal_zone_object.setZoneControlHumidistat(openstudio_humidistat)
+                  end
                 end
               end
             end

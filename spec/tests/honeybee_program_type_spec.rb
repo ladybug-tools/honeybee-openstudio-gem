@@ -39,7 +39,7 @@ RSpec.describe Honeybee do
     honeybee_obj_1 = Honeybee::ProgramTypeAbridged.read_from_disk(file)
     object1 = honeybee_obj_1.to_openstudio(openstudio_model)
     expect(object1).not_to be nil
-    expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
+    #expect((object1.additionalProperties.featureNames)).to include ("DisplayName")
     expect((object1.displayName.get)).to eq '~2013::FullServiceRestaurant::Kitchen'
 
     #get people object
@@ -49,7 +49,7 @@ RSpec.describe Honeybee do
   
     #get people definition object
     people_definition = people[0].peopleDefinition
-    expect(people_definition.additionalProperties.featureNames).to include ("DisplayName")
+    #expect(people_definition.additionalProperties.featureNames).to include ("DisplayName")
     expect(people_definition.displayName.get).to eq '//2013::FullServiceRestaurant::Kitchen_People'
     people_per_floor = people_definition.peopleperSpaceFloorArea
     expect(people_per_floor).not_to be nil
@@ -62,7 +62,7 @@ RSpec.describe Honeybee do
 
     #get lights definition object
     light_definition = lights[0].lightsDefinition
-    expect(light_definition.additionalProperties.featureNames).to include ("DisplayName")
+    #expect(light_definition.additionalProperties.featureNames).to include ("DisplayName")
     expect(light_definition.displayName.get).to eq '//2013::FullServiceRestaurant::Kitchen_Lighting//'
     return_air = light_definition.returnAirFraction
     expect(return_air).to eq(0.0)

@@ -118,7 +118,7 @@ module Honeybee
         end
 
         # assign the construction if it exists
-        if @hash[:properties][:energy][:construction]
+        if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
           construction_identifier = @hash[:properties][:energy][:construction]
           construction = openstudio_model.getConstructionByName(construction_identifier)
           if !construction.empty?
@@ -182,7 +182,7 @@ module Honeybee
 
       # get the approriate construction id
       construction_id = nil
-      if @hash[:properties][:energy][:construction]
+      if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
         construction_id = @hash[:properties][:energy][:construction]
       else
         construction_id = 'Generic Double Pane'

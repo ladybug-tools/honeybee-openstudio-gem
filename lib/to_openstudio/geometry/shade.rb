@@ -61,23 +61,26 @@ module Honeybee
       unless @hash[:display_name].nil?
         os_shading_surface.setDisplayName(@hash[:display_name])
       end
-      # assign the construction if it exists
-      if @hash[:properties][:energy][:construction]
-        construction_identifier = @hash[:properties][:energy][:construction]
-        construction = openstudio_model.getConstructionByName(construction_identifier)
-        unless construction.empty?
-          os_construction = construction.get
-          os_shading_surface.setConstruction(os_construction)
-        end
-      end
 
-      # assign the transmittance schedule if it exists
-      if @hash[:properties][:energy][:transmittance_schedule]
-        schedule_identifier = @hash[:properties][:energy][:transmittance_schedule]
-        schedule = openstudio_model.getScheduleByName(schedule_identifier)
-        unless schedule.empty?
-          os_schedule = schedule.get
-          os_shading_surface.setTransmittanceSchedule(os_schedule)
+      if @hash[:properties].key?(:energy)
+        # assign the construction if it exists
+        if @hash[:properties][:energy][:construction]
+          construction_identifier = @hash[:properties][:energy][:construction]
+          construction = openstudio_model.getConstructionByName(construction_identifier)
+          unless construction.empty?
+            os_construction = construction.get
+            os_shading_surface.setConstruction(os_construction)
+          end
+        end
+
+        # assign the transmittance schedule if it exists
+        if @hash[:properties][:energy][:transmittance_schedule]
+          schedule_identifier = @hash[:properties][:energy][:transmittance_schedule]
+          schedule = openstudio_model.getScheduleByName(schedule_identifier)
+          unless schedule.empty?
+            os_schedule = schedule.get
+            os_shading_surface.setTransmittanceSchedule(os_schedule)
+          end
         end
       end
 
