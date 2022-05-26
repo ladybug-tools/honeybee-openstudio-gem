@@ -201,6 +201,14 @@ module Honeybee
       thermal_zone = space.thermalZone
       unless thermal_zone.empty?
         thermal_zone = space.thermalZone.get
+        # Create ideal_air_system if present
+        unless thermal_zone.equipment.nil?
+          thermal_zone.equipment.each do |equipment|
+            if equipment.to_ZoneHVACIdealLoadsAirSystem.is_initialized
+              $hvacs << Honeybee::IdeadAirSystemAbridged.from_hvac(equipment)
+            end
+          end
+        end
         unless thermal_zone.thermostatSetpointDualSetpoint.empty?
           hash[:setpoint] = {}
           hash[:setpoint][:type] = 'SetpointAbridged'

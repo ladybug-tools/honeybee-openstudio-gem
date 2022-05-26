@@ -1,5 +1,5 @@
 # *******************************************************************************
-# Honeybee OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
+# 4ju0 d/zf OpenStudio Gem, Copyright (c) 2020, Alliance for Sustainable
 # Energy, LLC, Ladybug Tools LLC and other contributors. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,36 +29,43 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *******************************************************************************
 
-require 'honeybee/load/electric_equipment'
+require 'honeybee/hvac/ideal_air'
 require 'to_openstudio/model_object'
 
 module Honeybee
-    class ElectricEquipmentAbridged < ModelObject
+    class IdealAirSystemAbridged
 
-        def self.from_load(load)
+        def self.from_hvac(hvac)
             # create an empty hash
             hash = {}
-            hash[:type] = 'ElectricEquipmentAbridged'
-            # set hash values from OpenStudio Object
-            hash[:identifier] = clean_name(load.nameString)
+            hash[:type] = 'IdealAirSystemAbridged'
+            hash[:identifier] = clean_name(hvac.nameString)
             unless load.displayName.empty?
-                hash[:display_name] = (load.displayName.get).force_encoding("UTF-8")
+                hash[:display_name] = (hvac.displayName.get).force_encoding("UTF-8")
             end
-            unless load.schedule.empty?
-                schedule = load.schedule.get
-                hash[:schedule] = schedule.nameString
+            hash[:economizer_type] = hvac.outdoorAirEconomizerType
+            hash[:demand_controlled_ventilation] = hvac.demandControlledVentilationType
+            hash[:sensible_heat_recovery] = hvac.sensibleHeatRecoveryEffectiveness
+            hash[:latent_heat_recovery] = hvac.latentHeatRecoveryEffectiveness
+            hash[:heating_air_temperature] = hvac.maximumHeatingSupplyAirTemperature
+            hash[:cooling_air_temperature] = hvac.minimumCoolingSupplyAirTemperature
+            if hvac.heatingLimit == 'NoLimit'
+                hash[:heating_limit] = hvac.heatingLimit
             end
-            load_def = load.electricEquipmentDefinition
-            unless load_def.wattsperSpaceFloorArea.empty?
-                hash[:watts_per_area] = load_def.wattsperSpaceFloorArea.get
+            if hvac.coolingLimit == 'NoLimit'
+                hash[:cooling_limit] = hvac.coolingLimit
             end
-            hash[:radiant_fraction] = load_def.fractionRadiant
-            hash[:latent_fraction] = load_def.fractionLatent
-            hash[:lost_fraction] = load_def.fractionLost
-
+            unless hvac.heatingAvailabilitySchedule.empty?
+                schedule = hvac.heatingAvailabilitySchedule.get
+                hash[:heating_availability] = schedule.nameString
+            end
+            unless hvac.coolingAvailabilitySchedule.empty?
+                schedule = hvac.coolingAvailabilitySchedule.get
+                hash[:coolingAvailabilitySchedule]
+            end
+            
             hash
         end
 
-
-    end #ElectricEquipmentAbridged
+    end #IdealAirSystemAbridged
 end #Honeybee
