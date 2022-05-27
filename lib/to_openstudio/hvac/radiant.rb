@@ -150,7 +150,7 @@ class OpenStudio::Model::Model
       if radiant_type == 'floorwithcarpet'
         radiant_type = 'floor'
         include_carpet = true
-      elsif radiant_type == 'ceilingmetalpanel'
+      elsif radiant_type == 'ceilingmetalpanel' || radiant_type == 'floorwithhardwood'
         control_strategy = 'default'
       end
     else
@@ -251,6 +251,7 @@ class OpenStudio::Model::Model
         end
       end
     end
+
     # if no values were set, just set the system to be on all of the time
     if start_hour == 12 or start_hour == 0
       start_hour = 1
@@ -282,15 +283,30 @@ class OpenStudio::Model::Model
     OpenStudio.logFree(OpenStudio::Warn, 'openstudio.Model.Model', "Replacing constructions with new radiant slab constructions.")
 
     # create materials
+    # concrete slab materials
     mat_concrete_3_5in = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumRough', 0.0889, 2.31, 2322, 832)
     mat_concrete_3_5in.setName('Radiant Slab Concrete - 3.5 in.')
     mat_concrete_1_5in = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumRough', 0.0381, 2.31, 2322, 832)
     mat_concrete_1_5in.setName('Radiant Slab Concrete - 1.5 in')
 
-    metal_mat = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumSmooth', 0.003175, 30, 7680, 418)
-    metal_mat.setName('Radiant Metal Layer - 0.125 in')
-    air_gap_map = OpenStudio::Model::MasslessOpaqueMaterial.new(self, 'Smooth', 0.004572)
-    air_gap_map.setName('Generic Ceiling Air Gap - R 0.025')
+    metal_mat = nil
+    air_gap_mat = nil
+    wood_mat = nil
+    wood_floor_insulation = nil
+    gypsum_ceiling_mat = nil
+    if radiant_type == 'ceilingmetalpanel'
+      metal_mat = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumSmooth', 0.003175, 30, 7680, 418)
+      metal_mat.setName('Radiant Metal Layer - 0.125 in')
+      air_gap_mat = OpenStudio::Model::MasslessOpaqueMaterial.new(self, 'Smooth', 0.004572)
+      air_gap_mat.setName('Generic Ceiling Air Gap - R 0.025')
+    elsif radiant_type == 'floorwithhardwood'
+      wood_mat = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'MediumSmooth', 0.01905, 0.15, 608, 1629)
+      wood_mat.setName('Radiant Hardwood Flooring - 0.75 in')
+      wood_floor_insulation = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'Rough', 0.0508, 0.02, 56.06, 1210)
+      wood_floor_insulation.setName('Radiant Subfloor Insulation - 4.0 in')
+      gypsum_ceiling_mat = OpenStudio::Model::StandardOpaqueMaterial.new(self, 'Smooth', 0.0127, 0.16, 800, 1089)
+      gypsum_ceiling_mat.setName('Gypsum Ceiling for Radiant Hardwood Flooring - 0.5 in')
+    end
 
     mat_refl_roof_membrane = self.getStandardOpaqueMaterialByName('Roof Membrane - Highly Reflective')
     if mat_refl_roof_membrane.is_initialized
@@ -331,83 +347,125 @@ class OpenStudio::Model::Model
     # create radiant internal source constructions
     OpenStudio.logFree(OpenStudio::Warn, 'openstudio.Model.Model', 'New constructions exclude the metal deck, as high thermal diffusivity materials cause errors in EnergyPlus internal source construction calculations.')
 
-    layers = []
-    layers << mat_slab_insulation
-    layers << mat_concrete_3_5in
-    layers << mat_concrete_1_5in
-    layers << mat_thin_carpet_tile if include_carpet
-    radiant_ground_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_ground_slab_construction.setName('Radiant Ground Slab Construction')
-    radiant_ground_slab_construction.setSourcePresentAfterLayerNumber(2)
-    radiant_ground_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
-    radiant_ground_slab_construction.setTubeSpacing(0.2286) # 9 inches
+    radiant_ground_slab_construction = nil
+    radiant_exterior_slab_construction = nil
+    radiant_interior_floor_slab_construction = nil
+    radiant_interior_ceiling_slab_construction = nil
+    radiant_ceiling_slab_construction = nil
+    radiant_interior_ceiling_metal_construction = nil
+    radiant_ceiling_metal_construction = nil
 
-    layers = []
-    layers << mat_ext_insulation
-    layers << mat_concrete_3_5in
-    layers << mat_concrete_1_5in
-    layers << mat_thin_carpet_tile if include_carpet
-    radiant_exterior_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_exterior_slab_construction.setName('Radiant Exterior Slab Construction')
-    radiant_exterior_slab_construction.setSourcePresentAfterLayerNumber(2)
-    radiant_exterior_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
-    radiant_exterior_slab_construction.setTubeSpacing(0.2286) # 9 inches
+    if radiant_type == 'floor'
+      layers = []
+      layers << mat_slab_insulation
+      layers << mat_concrete_3_5in
+      layers << mat_concrete_1_5in
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_ground_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_ground_slab_construction.setName('Radiant Ground Slab Construction')
+      radiant_ground_slab_construction.setSourcePresentAfterLayerNumber(2)
+      radiant_ground_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+      radiant_ground_slab_construction.setTubeSpacing(0.2286) # 9 inches
 
-    layers = []
-    layers << mat_concrete_3_5in
-    layers << mat_concrete_1_5in
-    layers << mat_thin_carpet_tile if include_carpet
-    radiant_interior_floor_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_interior_floor_slab_construction.setName('Radiant Interior Floor Slab Construction')
-    radiant_interior_floor_slab_construction.setSourcePresentAfterLayerNumber(1)
-    radiant_interior_floor_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(2)
-    radiant_interior_floor_slab_construction.setTubeSpacing(0.2286) # 9 inches
+      layers = []
+      layers << mat_ext_insulation
+      layers << mat_concrete_3_5in
+      layers << mat_concrete_1_5in
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_exterior_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_exterior_slab_construction.setName('Radiant Exterior Slab Construction')
+      radiant_exterior_slab_construction.setSourcePresentAfterLayerNumber(2)
+      radiant_exterior_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+      radiant_exterior_slab_construction.setTubeSpacing(0.2286) # 9 inches
 
-    layers = []
-    layers << mat_thin_carpet_tile if include_carpet
-    layers << mat_concrete_3_5in
-    layers << mat_concrete_1_5in
-    radiant_interior_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_interior_ceiling_slab_construction.setName('Radiant Interior Ceiling Slab Construction')
-    slab_src_loc = include_carpet ? 2 : 1
-    radiant_interior_ceiling_slab_construction.setSourcePresentAfterLayerNumber(slab_src_loc)
-    radiant_interior_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(slab_src_loc + 1)
-    radiant_interior_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
+      layers = []
+      layers << mat_concrete_3_5in
+      layers << mat_concrete_1_5in
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_interior_floor_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_interior_floor_slab_construction.setName('Radiant Interior Floor Slab Construction')
+      radiant_interior_floor_slab_construction.setSourcePresentAfterLayerNumber(1)
+      radiant_interior_floor_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(2)
+      radiant_interior_floor_slab_construction.setTubeSpacing(0.2286) # 9 inches
+    elsif radiant_type == 'ceiling'
+      layers = []
+      layers << mat_thin_carpet_tile if include_carpet
+      layers << mat_concrete_3_5in
+      layers << mat_concrete_1_5in
+      radiant_interior_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_interior_ceiling_slab_construction.setName('Radiant Interior Ceiling Slab Construction')
+      slab_src_loc = include_carpet ? 2 : 1
+      radiant_interior_ceiling_slab_construction.setSourcePresentAfterLayerNumber(slab_src_loc)
+      radiant_interior_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(slab_src_loc + 1)
+      radiant_interior_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
 
-    layers = []
-    layers << mat_refl_roof_membrane
-    layers << mat_roof_insulation
-    layers << mat_concrete_3_5in
-    layers << mat_concrete_1_5in
-    radiant_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_ceiling_slab_construction.setName('Radiant Exterior Ceiling Slab Construction')
-    radiant_ceiling_slab_construction.setSourcePresentAfterLayerNumber(3)
-    radiant_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
-    radiant_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
+      layers = []
+      layers << mat_refl_roof_membrane
+      layers << mat_roof_insulation
+      layers << mat_concrete_3_5in
+      layers << mat_concrete_1_5in
+      radiant_ceiling_slab_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_ceiling_slab_construction.setName('Radiant Exterior Ceiling Slab Construction')
+      radiant_ceiling_slab_construction.setSourcePresentAfterLayerNumber(3)
+      radiant_ceiling_slab_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
+      radiant_ceiling_slab_construction.setTubeSpacing(0.2286) # 9 inches
+    elsif radiant_type == 'ceilingmetalpanel'
+      layers = []
+      layers << mat_concrete_3_5in
+      layers << air_gap_mat
+      layers << metal_mat
+      layers << metal_mat
+      radiant_interior_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_interior_ceiling_metal_construction.setName('Radiant Interior Ceiling Metal Construction')
+      radiant_interior_ceiling_metal_construction.setSourcePresentAfterLayerNumber(3)
+      radiant_interior_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
+      radiant_interior_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
+      
+      layers = []
+      layers << mat_refl_roof_membrane
+      layers << mat_roof_insulation
+      layers << mat_concrete_3_5in
+      layers << air_gap_mat
+      layers << metal_mat
+      layers << metal_mat
+      radiant_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_ceiling_metal_construction.setName('Radiant Ceiling Metal Construction')
+      radiant_ceiling_metal_construction.setSourcePresentAfterLayerNumber(5)
+      radiant_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(6)
+      radiant_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
+    elsif radiant_type == 'floorwithhardwood'
+      layers = []
+      layers << mat_slab_insulation
+      layers << mat_concrete_3_5in
+      layers << wood_mat
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_ground_wood_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_ground_wood_construction.setName('Radiant Ground Slab Wood Floor Construction')
+      radiant_ground_wood_construction.setSourcePresentAfterLayerNumber(2)
+      radiant_ground_wood_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+      radiant_ground_wood_construction.setTubeSpacing(0.2286) # 9 inches
 
-    layers = []
-    layers << mat_concrete_3_5in
-    layers << air_gap_map
-    layers << metal_mat
-    layers << metal_mat
-    radiant_interior_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_interior_ceiling_metal_construction.setName('Radiant Interior Ceiling Metal Construction')
-    radiant_interior_ceiling_metal_construction.setSourcePresentAfterLayerNumber(3)
-    radiant_interior_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(4)
-    radiant_interior_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
-    
-    layers = []
-    layers << mat_refl_roof_membrane
-    layers << mat_roof_insulation
-    layers << mat_concrete_3_5in
-    layers << air_gap_map
-    layers << metal_mat
-    layers << metal_mat
-    radiant_ceiling_metal_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
-    radiant_ceiling_metal_construction.setName('Radiant Ceiling Metal Construction')
-    radiant_ceiling_metal_construction.setSourcePresentAfterLayerNumber(5)
-    radiant_ceiling_metal_construction.setTemperatureCalculationRequestedAfterLayerNumber(6)
-    radiant_ceiling_metal_construction.setTubeSpacing(0.1524) # 6 inches
+      layers = []
+      layers << mat_ext_insulation
+      layers << wood_mat
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_exterior_wood_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_exterior_wood_construction.setName('Radiant Exterior Wood Floor Construction')
+      radiant_exterior_wood_construction.setSourcePresentAfterLayerNumber(1)
+      radiant_exterior_wood_construction.setTemperatureCalculationRequestedAfterLayerNumber(2)
+      radiant_exterior_wood_construction.setTubeSpacing(0.2286) # 9 inches
+
+      layers = []
+      layers << gypsum_ceiling_mat
+      layers << wood_floor_insulation
+      layers << wood_mat
+      layers << mat_thin_carpet_tile if include_carpet
+      radiant_interior_wood_floor_construction = OpenStudio::Model::ConstructionWithInternalSource.new(layers)
+      radiant_interior_wood_floor_construction.setName('Radiant Interior Wooden Floor Construction')
+      radiant_interior_wood_floor_construction.setSourcePresentAfterLayerNumber(2)
+      radiant_interior_wood_floor_construction.setTemperatureCalculationRequestedAfterLayerNumber(3)
+      radiant_interior_wood_floor_construction.setTubeSpacing(0.2286) # 9 inches
+    end
 
     # default temperature controls for radiant system
     zn_radiant_htg_dsgn_temp_f = 68.0
@@ -488,6 +546,16 @@ class OpenStudio::Model::Model
                 surface.setConstruction(radiant_interior_ceiling_metal_construction)
               end
             end
+          elsif radiant_type == 'floorwithhardwood'
+            if surface.surfaceType == 'Floor'
+              if surface.outsideBoundaryCondition == 'Ground'
+                surface.setConstruction(radiant_ground_wood_construction)
+              elsif surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_exterior_wood_construction)
+              else # interior floor
+                surface.setConstruction(radiant_interior_wood_floor_construction)
+              end
+            end
           end
         end
       end
@@ -500,6 +568,8 @@ class OpenStudio::Model::Model
         radiant_loop.setRadiantSurfaceType('Ceilings')
       elsif radiant_type == 'ceilingmetalpanel'
         radiant_loop.setRadiantSurfaceType('Ceilings')
+      elsif radiant_type == 'floorwithhardwood'
+        radiant_loop.setRadiantSurfaceType('Floors')
       end
 
       # radiant loop layout details

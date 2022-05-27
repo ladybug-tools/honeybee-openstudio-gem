@@ -260,6 +260,10 @@ module Honeybee
           h_stat = zone.zoneControlHumidistat
           unless h_stat.empty?
             humidistat_exists = true
+            if equipment_type.to_s.include? 'DOAS'
+              z_sizing = zone.sizingZone
+              z_sizing.setDedicatedOutdoorAirSystemControlStrategy('NeutralDehumidifiedSupplyAir')
+            end
           end
         end
         if humidistat_exists
@@ -267,12 +271,6 @@ module Honeybee
             humidifier = create_humidifier(openstudio_model, os_air_loop)
           end
         end
-      end
-
-      # set all plants to non-coincident sizing to avoid simualtion control issues on design days
-      openstudio_model.getPlantLoops.each do |loop|
-        sizing = loop.sizingPlant
-        sizing.setSizingOption('NonCoincident')
       end
 
     end
