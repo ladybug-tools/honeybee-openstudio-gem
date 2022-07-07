@@ -53,8 +53,8 @@ module Honeybee
       outdoor_shades = outdoor_shades_from_space(space)
       hash[:outdoor_shades] = outdoor_shades if !outdoor_shades.empty?
 
-      multipler = multiplier_from_space(space)
-      hash[:multipler] = multipler if multipler
+      multiplier = multiplier_from_space(space)
+      hash[:multiplier] = multiplier if multiplier
 
       exclude_floor_area = exclude_floor_area_from_space(space)
       hash[:exclude_floor_area] = exclude_floor_area
