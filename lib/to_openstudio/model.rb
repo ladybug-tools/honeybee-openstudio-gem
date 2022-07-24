@@ -596,45 +596,64 @@ module Honeybee
 
     def create_orphaned_shades
       if @hash[:orphaned_shades]
-        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
-        shading_surface_group.setShadingSurfaceType('Building')
+        if $orphan_groups
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
+        end
         @hash[:orphaned_shades].each do |shade|
           shade_object = Shade.new(shade)
           openstudio_shade = shade_object.to_openstudio(@openstudio_model)
-          openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          if $orphan_groups
+            openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          end
         end
       end
     end
 
     def create_orphaned_faces
       if @hash[:orphaned_faces]
-        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
-        shading_surface_group.setShadingSurfaceType('Building')
+        if $orphan_groups
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
+        end
         @hash[:orphaned_faces].each do |face|
           face_object = Face.new(face)
           openstudio_shade = face_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          if $orphan_groups
+            openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          end
         end
       end
     end
 
     def create_orphaned_apertures
       if @hash[:orphaned_apertures]
-        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
-        shading_surface_group.setShadingSurfaceType('Building')
-        @hash[:orphaned_apertures].each do |ap|
+        if $orphan_groups
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
+        end
+          @hash[:orphaned_apertures].each do |ap|
           ap_object = Aperture.new(ap)
           openstudio_shade = ap_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          if $orphan_groups
+            openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          end
         end
       end
     end
 
     def create_orphaned_doors
       if @hash[:orphaned_doors]
-        shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
-        shading_surface_group.setShadingSurfaceType('Building')
-        @hash[:orphaned_doors].each do |dr|
+        if $orphan_groups
+          shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+          shading_surface_group.setShadingSurfaceType('Building')
+        end
+          @hash[:orphaned_doors].each do |dr|
           dr_object = Door.new(dr)
           openstudio_shade = dr_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          if $orphan_groups
+            openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          end
         end
       end
     end

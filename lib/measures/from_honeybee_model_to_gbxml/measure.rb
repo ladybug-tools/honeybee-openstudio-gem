@@ -87,6 +87,7 @@ class FromHoneybeeModelToGbxml < OpenStudio::Measure::ModelMeasure
     end
     honeybee_model = Honeybee::Model.read_from_disk(model_json)
     $simple_window_cons = true
+    $orphan_groups = false
     STDOUT.flush
     os_model = honeybee_model.to_openstudio_model(model)
     STDOUT.flush

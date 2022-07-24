@@ -54,6 +54,7 @@ module Honeybee
       @@standards ||= @@extension.standards
       $triangulate_sub_faces = false
       $simple_window_cons = false
+      $orphan_groups = true
 
       @hash = hash
       @type = @hash[:type]
