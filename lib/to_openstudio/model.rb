@@ -454,10 +454,12 @@ module Honeybee
               program_type_id = room[:properties][:energy][:program_type]
               shw_hash = $programtype_shw_hash[program_type_id]
               unless shw_hash.nil?
-                shw_object = ServiceHotWaterAbridged.new(shw_hash)
-                openstudio_shw = shw_object.to_openstudio(
-                  @openstudio_model, openstudio_room, room[:properties][:energy][:shw])
-                $shw_for_plant = shw_object
+                if shw_hash[:flow_per_area].to_f != 0
+                  shw_object = ServiceHotWaterAbridged.new(shw_hash)
+                  openstudio_shw = shw_object.to_openstudio(
+                    @openstudio_model, openstudio_room, room[:properties][:energy][:shw])
+                  $shw_for_plant = shw_object
+                end
               end
             end
 
