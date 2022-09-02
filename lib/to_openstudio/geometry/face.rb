@@ -103,7 +103,7 @@ module Honeybee
       end
 
       # assign the boundary condition
-      boundary_condition = (@hash[:boundary_condition][:type])
+      boundary_condition = @hash[:boundary_condition][:type]
       case boundary_condition
       when 'Outdoors'
         if @hash[:boundary_condition][:sun_exposure] == false
@@ -129,9 +129,28 @@ module Honeybee
           surface = surface_object.get
           os_surface.setAdjacentSurface(surface)
         end
+      when 'OtherSideTemperature'
+        srf_prop = OpenStudio::Model::SurfacePropertyOtherSideCoefficients.new(openstudio_model)
+        srf_prop.setName(@hash[:identifier] + '_OtherTemp')
+        if @hash[:boundary_condition][:heat_transfer_coefficient].is_a? Numeric
+          srf_prop.setCombinedConvectiveRadiativeFilmCoefficient(
+            @hash[:boundary_condition][:heat_transfer_coefficient])
+        else
+          srf_prop.setCombinedConvectiveRadiativeFilmCoefficient(0)
+        end
+        if @hash[:boundary_condition][:temperature].is_a? Numeric
+          srf_prop.setConstantTemperature(@hash[:boundary_condition][:temperature])
+          srf_prop.setConstantTemperatureCoefficient(1)
+          srf_prop.setExternalDryBulbTemperatureCoefficient(0)
+        else
+          srf_prop.setConstantTemperatureCoefficient(0)
+          srf_prop.setExternalDryBulbTemperatureCoefficient(1)
+        end
+        os_surface.setSurfacePropertyOtherSideCoefficients(srf_prop)
       end
-      unless @hash[:boundary_condition][:type] == 'Surface'
-        os_surface.setOutsideBoundaryCondition(@hash[:boundary_condition][:type])
+
+      unless boundary_condition == 'Surface' || boundary_condition == 'OtherSideTemperature'
+        os_surface.setOutsideBoundaryCondition(boundary_condition)
       end
 
       # assign apertures if they exist

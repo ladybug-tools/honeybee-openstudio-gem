@@ -211,6 +211,11 @@ module Honeybee
                 os_surface.setConstruction(interior_construction)
               end
             end
+          elsif face[:boundary_condition][:type] == 'OtherSideTemperature'
+            interior_construction = closest_interior_construction(openstudio_model, os_space, face[:face_type])
+            unless interior_construction.nil?
+              os_surface.setConstruction(interior_construction)
+            end
           end
         end
 
