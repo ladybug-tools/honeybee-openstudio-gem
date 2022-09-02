@@ -125,6 +125,17 @@ module Honeybee
         result = {type: 'Ground'}
       elsif surface_bc == 'Adiabatic'
         result = {type: 'Adiabatic'}
+      elsif surface_bc == 'OtherSideCoefficients'
+        result = {type: 'OtherSideTemperature'}
+        unless surface.surfacePropertyOtherSideCoefficients.empty?
+          srf_prop = surface.surfacePropertyOtherSideCoefficients.get
+          if !srf_prop.isConstantTemperatureDefaulted
+            result[:temperature] = srf_prop.constantTemperature
+          end
+          unless srf_prop.combinedConvectiveRadiativeFilmCoefficient.empty?
+            result[:heat_transfer_coefficient] = srf_prop.combinedConvectiveRadiativeFilmCoefficient.get
+          end
+        end
       else
         sun_exposure = (surface.sunExposure == 'SunExposed')
         wind_exposure = (surface.windExposure == 'WindExposed')
