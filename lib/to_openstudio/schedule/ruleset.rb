@@ -61,12 +61,16 @@ module Honeybee
       end
 
       # loop through day schedules and create openstudio schedule day object
+      day_schs = Hash.new
       def_day_id = @hash[:default_day_schedule]
       def_day_hash = nil
       @hash[:day_schedules].each do |day_schedule|
         if day_schedule[:identifier] != def_day_id
           day_schedule_new = OpenStudio::Model::ScheduleDay.new(openstudio_model)
-          day_schedule_new.setName(day_schedule[:identifier])
+          exist_sch = openstudio_model.getScheduleDayByName(day_schedule[:identifier])
+          if exist_sch.empty?  # make sure we don't overwrite an existing schedule day
+            day_schedule_new.setName(day_schedule[:identifier])
+          end
           unless @hash[:display_name].nil?
             day_schedule_new.setDisplayName(@hash[:display_name])
           end
@@ -81,41 +85,18 @@ module Honeybee
             time_until = OpenStudio::Time.new(0, times_day_new[i][0], times_day_new[i][1], 0)
             day_schedule_new.addValue(time_until, values_day_new[i])
           end
+          day_schs[day_schedule[:identifier]] = day_schedule_new
         else
           def_day_hash = day_schedule
         end
       end
 
-      # assign holiday schedule
-      if @hash[:holiday_schedule]
-        holiday_schedule = openstudio_model.getScheduleDayByName(@hash[:holiday_schedule])
-        unless holiday_schedule.empty?
-          holiday_schedule_object = holiday_schedule.get
-          os_sch_ruleset.setHolidaySchedule(holiday_schedule_object)
-        end
-      end
-
-      # assign summer design day schedule
-      if @hash[:summer_designday_schedule]
-        summer_design_day = openstudio_model.getScheduleDayByName(@hash[:summer_designday_schedule])
-        unless summer_design_day.empty?
-          summer_design_day_object = summer_design_day.get
-          os_sch_ruleset.setSummerDesignDaySchedule(summer_design_day_object)
-        end
-      end
-
-      # assign winter design day schedule
-      if @hash[:winter_designday_schedule]
-        winter_design_day = openstudio_model.getScheduleDayByName(@hash[:winter_designday_schedule])
-        unless winter_design_day.empty?
-          winter_design_day_object = winter_design_day.get
-          os_sch_ruleset.setWinterDesignDaySchedule(winter_design_day_object)
-        end
-      end
-
       # assign default day schedule
       def_day_sch = os_sch_ruleset.defaultDaySchedule
-      def_day_sch.setName(def_day_id)
+      exist_sch = openstudio_model.getScheduleDayByName(def_day_id)
+      if exist_sch.empty?  # make sure we don't overwrite an existing schedule day
+        def_day_sch.setName(def_day_id)
+      end
       unless sch_type_limit_obj.nil?
         def_day_sch.setScheduleTypeLimits(sch_type_limit_obj)
       end
@@ -126,6 +107,31 @@ module Honeybee
       values_day_new.each_index do |i|
         time_until = OpenStudio::Time.new(0, times_day_new[i][0], times_day_new[i][1], 0)
         def_day_sch.addValue(time_until, values_day_new[i])
+      end
+      day_schs[def_day_id] = def_day_sch
+
+      # assign holiday schedule
+      if @hash[:holiday_schedule]
+        holiday_schedule = day_schs[@hash[:holiday_schedule]]
+        unless holiday_schedule.nil?
+          os_sch_ruleset.setHolidaySchedule(holiday_schedule)
+        end
+      end
+
+      # assign summer design day schedule
+      if @hash[:summer_designday_schedule]
+        summer_design_day = day_schs[@hash[:summer_designday_schedule]]
+        unless summer_design_day.nil?
+          os_sch_ruleset.setSummerDesignDaySchedule(summer_design_day)
+        end
+      end
+
+      # assign winter design day schedule
+      if @hash[:winter_designday_schedule]
+        winter_design_day = day_schs[@hash[:winter_designday_schedule]]
+        unless winter_design_day.nil?
+          os_sch_ruleset.setWinterDesignDaySchedule(winter_design_day)
+        end
       end
 
       # assign schedule rules
@@ -145,12 +151,10 @@ module Honeybee
           openstudio_schedule_rule.setStartDate(start_date)
           openstudio_schedule_rule.setEndDate(end_date)
 
-          schedule_rule_day = openstudio_model.getScheduleDayByName(rule[:schedule_day])
-          unless schedule_rule_day.empty?
-            schedule_rule_day_object = schedule_rule_day.get
-
-            values_day = schedule_rule_day_object.values
-            times_day = schedule_rule_day_object.times
+          schedule_rule_day = day_schs[rule[:schedule_day]]
+          unless schedule_rule_day.nil?
+            values_day = schedule_rule_day.values
+            times_day = schedule_rule_day.times
 
             values_day.each_index do |i|
               openstudio_schedule_rule.daySchedule.addValue(times_day[i], values_day[i])
