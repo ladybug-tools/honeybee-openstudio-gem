@@ -233,6 +233,12 @@ module Honeybee
             material_object = EnergyMaterialNoMass.new(material)
           when 'EnergyMaterialVegetation'
             material_object = EnergyMaterialVegetation.new(material)
+          when 'EnergyWindowMaterialSimpleGlazSys'
+            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
+          when 'EnergyWindowMaterialGlazing'
+            material_object = EnergyWindowMaterialGlazing.new(material)
+          when 'EnergyWindowFrame'
+            material_object = EnergyWindowFrame.new(material)
           when 'EnergyWindowMaterialGas'
             material_object = EnergyWindowMaterialGas.new(material)
             $gas_gap_hash[material[:identifier]] = material_object
@@ -242,12 +248,8 @@ module Honeybee
           when 'EnergyWindowMaterialGasCustom'
             material_object = EnergyWindowMaterialGasCustom.new(material)
             $gas_gap_hash[material[:identifier]] = material_object
-          when 'EnergyWindowMaterialSimpleGlazSys'
-            material_object = EnergyWindowMaterialSimpleGlazSys.new(material)
           when 'EnergyWindowMaterialBlind'
             material_object = EnergyWindowMaterialBlind.new(material)
-          when 'EnergyWindowMaterialGlazing'
-            material_object = EnergyWindowMaterialGlazing.new(material)
           when 'EnergyWindowMaterialShade'
             material_object = EnergyWindowMaterialShade.new(material)
           else
