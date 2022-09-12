@@ -118,15 +118,25 @@ module Honeybee
         end
 
         # assign the construction if it exists
-        if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
-          construction_identifier = @hash[:properties][:energy][:construction]
-          construction = openstudio_model.getConstructionByName(construction_identifier)
-          if !construction.empty?
-            os_construction = construction.get
-            os_subsurface.setConstruction(os_construction)
-          elsif $window_dynamic_hash[construction_identifier] != nil
-            os_construction = $window_dynamic_hash[construction_identifier].constructions[0]
-            os_subsurface.setConstruction(os_construction)
+        if @hash[:properties].key?(:energy)
+          if @hash[:properties][:energy][:construction]
+            construction_identifier = @hash[:properties][:energy][:construction]
+            construction = openstudio_model.getConstructionByName(construction_identifier)
+            if !construction.empty?
+              os_construction = construction.get
+              os_subsurface.setConstruction(os_construction)
+            elsif $window_dynamic_hash[construction_identifier] != nil
+              os_construction = $window_dynamic_hash[construction_identifier].constructions[0]
+              os_subsurface.setConstruction(os_construction)
+            end
+          end
+          if @hash[:properties][:energy][:frame]
+            frame_identifier = @hash[:properties][:energy][:frame]
+            frame = openstudio_model.getWindowPropertyFrameAndDividerByName(frame_identifier)
+            unless frame.empty?
+              os_frame = frame.get
+              os_subsurface.setWindowPropertyFrameAndDivider(os_frame)
+            end
           end
         end
 
