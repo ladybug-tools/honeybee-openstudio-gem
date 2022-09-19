@@ -354,7 +354,7 @@
             "type": "EnergyMaterial",
             "identifier": "Generic 25mm Insulation",
             "roughness": "MediumRough",
-            "thickness": 0.05,
+            "thickness": 0.025,
             "conductivity": 0.03,
             "density": 43.0,
             "specific_heat": 1210.0,
