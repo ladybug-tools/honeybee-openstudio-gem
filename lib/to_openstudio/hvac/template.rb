@@ -115,18 +115,23 @@ module Honeybee
         end
       end
 
-      # set the efficiencies of supply components in the air loop
+      # set the efficiencies of fans to be reasonable for DOAS vs. All-Air loops
       if !os_air_loops.empty?
+        if equipment_type.to_s.include? 'DOAS'
+          fan_size = 0.2
+        else
+          fan_size = 2
+        end
         os_air_loops.each do |os_air_loop|
           # set the supply fan efficiency
           unless os_air_loop.supplyFan.empty?
             s_fan = os_air_loop.supplyFan.get
             s_fan = fan_from_component(s_fan)
             unless s_fan.nil?
-              s_fan.setMaximumFlowRate(1)
+              s_fan.setMaximumFlowRate(fan_size)  # set to a typical value
               standard.fan_apply_standard_minimum_motor_efficiency(
                 s_fan, standard.fan_brake_horsepower(s_fan))
-              s_fan.autosizeMaximumFlowRate()
+              s_fan.autosizeMaximumFlowRate()  # set it back to autosize
             end
           end
           # set the return fan efficiency
@@ -134,31 +139,35 @@ module Honeybee
             ex_fan = os_air_loop.returnFan.get
             ex_fan = fan_from_component(ex_fan)
             unless ex_fan.nil?
-              ex_fan.setMaximumFlowRate(1)
+              ex_fan.setMaximumFlowRate(fan_size)  # set to a typical value
               standard.fan_apply_standard_minimum_motor_efficiency(
                 ex_fan, standard.fan_brake_horsepower(ex_fan))
-              ex_fan.autosizeMaximumFlowRate()
+              ex_fan.autosizeMaximumFlowRate()  # set it back to autosize
             end
           end
         end
       end
 
-      # get the boilers and assign the correct efficiency
+      # get the boilers and assign a reasonable efficiency (assuming 40kW boilers)
       if equipment_type.to_s.include? 'Boiler'
         openstudio_model.getBoilerHotWaters.sort.each do |obj|
-          obj.setNominalCapacity(40000)  # set to a dummy value for the method
+          obj.setNominalCapacity(40000)  # set to a typical value
           standard.boiler_hot_water_apply_efficiency_and_curves(obj)
           obj.autosizeNominalCapacity()  # set it back to autosize
           obj.setName(standard_id + ' Boiler')
         end
       end
 
-      # get the chillers and assign a reasonable COP from the standard
+      # get the chillers and assign a reasonable COP (assuming 2000kW water-cooled; 600kW air-cooled)
       if equipment_type.to_s.include? 'Chiller'
-        # set the chiller efficiency
+        if equipment_type.to_s.include? 'ACChiller'
+          chiller_size = 600000
+        else
+          chiller_size = 2000000
+        end
         clg_tower_objs = openstudio_model.getCoolingTowerSingleSpeeds
         openstudio_model.getChillerElectricEIRs.sort.each do |obj|
-          obj.setReferenceCapacity(2000000)  # set to a dummy value for method
+          obj.setReferenceCapacity(chiller_size)  # set to a typical value
           if obj.name.empty?
             obj_name = standard_id + ' Chiller'
           else
@@ -170,7 +179,7 @@ module Honeybee
         end
       end
 
-      # set the efficiency of any gas heaters
+      # set the efficiency of any gas heaters (assuming 10kW heaters)
       if equipment_type.to_s.include? 'GasHeaters'
         zones.each do |zon|
           zon.equipment.each do |equp|
@@ -179,7 +188,7 @@ module Honeybee
               coil = unit_heater.heatingCoil
               unless coil.to_CoilHeatingGas.empty?
                 coil = coil.to_CoilHeatingGas.get
-                coil.setNominalCapacity(10000)  # set to a dummy value for method
+                coil.setNominalCapacity(10000)  # set to a typical value
                 standard.coil_heating_gas_apply_efficiency_and_curves(coil)
                 coil.autosizeNominalCapacity()  # set it back to autosize
               end
