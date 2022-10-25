@@ -52,7 +52,7 @@ RSpec.describe Honeybee do
   output_dir = File.join(File.dirname(__FILE__), '../output/osm_material/')
   FileUtils.mkdir_p(output_dir)
 
-  it 'can load OSM and translate StandardOpaqueMaterial  to Honeybee' do
+  it 'can load OSM and translate StandardOpaqueMaterial to Honeybee' do
 
     openstudio_model = load_file('energyMaterial.osm')
     material = openstudio_model.getOpaqueMaterialByName('1/2IN Gypsum')

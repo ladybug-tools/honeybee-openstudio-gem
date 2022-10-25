@@ -65,7 +65,7 @@ module Honeybee
             end
             unless hvac.coolingAvailabilitySchedule.empty?
                 schedule = hvac.coolingAvailabilitySchedule.get
-                hash[:coolingAvailabilitySchedule]
+                hash[:cooling_availability] = schedule.nameString
             end
             
             hash
