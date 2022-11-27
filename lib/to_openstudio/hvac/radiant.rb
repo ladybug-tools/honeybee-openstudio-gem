@@ -345,8 +345,6 @@ class OpenStudio::Model::Model
     mat_roof_insulation.setName("Radiant Exterior Ceiling Insulation - #{(cz_mult + 1) * 2} in.")
 
     # create radiant internal source constructions
-    OpenStudio.logFree(OpenStudio::Warn, 'openstudio.Model.Model', 'New constructions exclude the metal deck, as high thermal diffusivity materials cause errors in EnergyPlus internal source construction calculations.')
-
     radiant_ground_slab_construction = nil
     radiant_exterior_slab_construction = nil
     radiant_interior_floor_slab_construction = nil

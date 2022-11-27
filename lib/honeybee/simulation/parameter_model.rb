@@ -62,23 +62,6 @@ module Honeybee
       raise "Incorrect model type for SimulationParameter '#{@type}'" unless @type == 'SimulationParameter'
     end
 
-    # check if the model is valid
-    def valid?
-      if Gem.loaded_specs.has_key?("json-schema")
-        return validation_errors.empty?
-      else
-        return true
-      end
-    end
-
-    # return detailed model validation errors
-    def validation_errors
-      if Gem.loaded_specs.has_key?("json-schema")
-        require 'json-schema'
-        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/components/schemas/#{@type}")
-      end
-    end
-
     def defaults
       @@schema[:components][:schemas]
     end

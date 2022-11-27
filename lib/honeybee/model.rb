@@ -66,23 +66,6 @@ module Honeybee
       end
     end
 
-    # check if the model is valid
-    def valid?
-      if Gem.loaded_specs.has_key?("json-schema")
-        return validation_errors.empty?
-      else
-        return true
-      end
-    end
-
-    # return detailed model validation errors
-    def validation_errors
-      if Gem.loaded_specs.has_key?("json-schema")
-        require 'json-schema'
-        JSON::Validator.fully_validate(@@schema, @hash, :fragment => "#/components/schemas/Model")
-      end
-    end
-
     def defaults
       @@schema[:components][:schemas][:ModelEnergyProperties][:properties]
     end

@@ -41,9 +41,6 @@ RSpec.describe Honeybee do
     workflow.setWeatherFile(File.absolute_path(weather_file))
     honeybee = Honeybee::Model.translate_from_osm_file(file)
 
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
@@ -66,9 +63,6 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel_withShade.osm')
     honeybee = Honeybee::Model.translate_from_osm_file(file)
 
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
@@ -110,9 +104,6 @@ RSpec.describe Honeybee do
     # Note: openstudio_space.waterUseEquipment prints out the water use equipment object
 
     honeybee = Honeybee::Model.translate_from_osm_file(file)
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
@@ -146,9 +137,6 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
     simulation_parameter = Honeybee::SimulationParameter.translate_from_osm_file(file)
 
-    simulation_parameter.validation_errors.each {|error| puts error}
-
-    expect(simulation_parameter.valid?).to be true
     hash = simulation_parameter.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'SimulationParameter'
@@ -164,9 +152,6 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/osm/exampleModel.osm')
     honeybee = Honeybee::Model.translate_from_osm_file(file)
 
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'

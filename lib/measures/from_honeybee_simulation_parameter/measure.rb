@@ -80,10 +80,6 @@ class FromHoneybeeSimulationParameter < OpenStudio::Measure::ModelMeasure
 
     sim_par_object = Honeybee::SimulationParameter.read_from_disk(simulation_parameter_json)
 
-    if !sim_par_object.valid?
-      # runner.registerError("File '#{simulation_parameter_json}' is not valid")
-      # return false
-    end
     STDOUT.flush
     sim_par_object.to_openstudio_model(model)
     STDOUT.flush
