@@ -37,9 +37,6 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
     honeybee = Honeybee::Model.translate_from_idf_file(file)
 
-    honeybee.validation_errors.each {|error| puts error}
-
-    expect(honeybee.valid?).to be true
     hash = honeybee.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'Model'
@@ -57,9 +54,6 @@ RSpec.describe Honeybee do
     file = File.join(File.dirname(__FILE__), '../samples/idf/5ZoneAirCooled.idf')
     simulation_parameter = Honeybee::SimulationParameter.translate_from_idf_file(file)
 
-    simulation_parameter.validation_errors.each {|error| puts error}
-
-    expect(simulation_parameter.valid?).to be true
     hash = simulation_parameter.hash
     expect(hash[:type]).not_to be_nil
     expect(hash[:type]).to eq 'SimulationParameter'
