@@ -29,16 +29,16 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'ladybug-tools'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set up node  # we need node for for semantic release
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 14.17.0
       - name: install semantic-release
         run:
           npm install @semantic-release/exec
       - name: run semantic release
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         id: semantic   # Need an `id` for output variables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
