@@ -62,6 +62,7 @@ RSpec.describe Honeybee do
 
 
     # check values
+    no_limit_hash = {type: 'NoLimit'}
     expect(honeybee).not_to be nil
     expect(honeybee[:type]).to eq 'IdealAirSystemAbridged'
     expect(honeybee[:identifier]).to eq 'hvac'
@@ -71,8 +72,8 @@ RSpec.describe Honeybee do
     expect(honeybee[:latent_heat_recovery]).to eq 1.0
     expect(honeybee[:heating_air_temperature]).to eq 99.0
     expect(honeybee[:cooling_air_temperature]).to eq -99.0
-    expect(honeybee[:heating_limit]).to eq 'NoLimit'
-    expect(honeybee[:cooling_limit]).to eq 'NoLimit'
+    expect(honeybee[:heating_limit]).to eq no_limit_hash
+    expect(honeybee[:cooling_limit]).to eq no_limit_hash
     expect(honeybee[:heating_availability]).to eq 'schedule'
     expect(honeybee[:cooling_availability]).to eq 'schedule'
 

@@ -53,11 +53,29 @@ module Honeybee
             hash[:latent_heat_recovery] = hvac.latentHeatRecoveryEffectiveness
             hash[:heating_air_temperature] = hvac.maximumHeatingSupplyAirTemperature
             hash[:cooling_air_temperature] = hvac.minimumCoolingSupplyAirTemperature
-            if hvac.heatingLimit == 'NoLimit'
-                hash[:heating_limit] = hvac.heatingLimit
+            unless hvac.isHeatingLimitDefaulted
+                if hvac.heatingLimit == 'NoLimit'
+                    hash[:heating_limit] = {type: 'NoLimit'}
+                elsif hvac.heatingLimit == 'LimitCapacity'
+                    if hvac.isMaximumSensibleHeatingCapacityAutosized
+                        hash[:heating_limit] = {type: 'Autosize'}
+                    end
+                    unless hvac.maximumSensibleHeatingCapacity.empty?
+                        hash[:heating_limit] = hvac.maximumSensibleHeatingCapacity
+                    end
+                end
             end
-            if hvac.coolingLimit == 'NoLimit'
-                hash[:cooling_limit] = hvac.coolingLimit
+            unless hvac.isCoolingLimitDefaulted
+                if hvac.coolingLimit == 'NoLimit'
+                    hash[:cooling_limit] = {type: 'NoLimit'}
+                elsif hvac.coolingLimit == 'LimitCapacity'
+                    if hvac.isMaximumTotalCoolingCapacityAutosized
+                        hash[:cooling_limit] = {type: 'Autosize'}
+                    end
+                    unless hvac.maximumTotalCoolingCapacity.empty?
+                        hash[:cooling_limit] = hvac.maximumTotalCoolingCapacity
+                    end
+                end
             end
             unless hvac.heatingAvailabilitySchedule.empty?
                 schedule = hvac.heatingAvailabilitySchedule.get
