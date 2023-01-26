@@ -92,10 +92,6 @@ module Honeybee
       # create all openstudio objects in the model
       create_openstudio_objects(log_report)
 
-      if log_report
-        puts 'Done with Model translation!'
-      end
-
       @openstudio_model
     end
 
@@ -127,6 +123,8 @@ module Honeybee
       $programtype_setpoint_hash = Hash.new  # hash to track Setpoint objects
       $interior_afn_srf_hash = Hash.new  # track whether an adjacent surface is already in the AFN
       $shw_for_plant = nil  # track whether a hot water plant is needed
+      $detailed_hvac_hash = Hash.new  # track the detailed HVAC systems that have been assigned
+      $ironbug_exe = nil  # ironbug executable; will be overwritten by any detailed HVACs
 
       # create all of the non-geometric model elements
       if @hash[:properties].key?(:energy)
@@ -571,6 +569,11 @@ module Honeybee
                   os_ideal_air.setHumidificationControlType('Humidistat')
                 end
               end
+            end
+          elsif system_type == 'DetailedHVAC'
+            $detailed_hvac_hash[hvac[:identifier]] = hvac[:specification]
+            unless hvac[:ironbug_exe].nil?
+              $ironbug_exe = hvac[:ironbug_exe]
             end
           elsif TemplateHVAC.types.include?(system_type)
             template_system = TemplateHVAC.new(hvac)
