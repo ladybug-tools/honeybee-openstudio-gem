@@ -36,6 +36,7 @@ require 'to_openstudio'
 
 require 'fileutils'
 require 'pathname'
+require 'json'
 
 # start the measure
 class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
@@ -87,17 +88,19 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
       return false
     end
 
+    # get the input arguments
     model_json = runner.getStringArgumentValue('model_json', user_arguments)
     schedule_csv_dir = runner.getStringArgumentValue('schedule_csv_dir', user_arguments)
     include_datetimes = runner.getBoolArgumentValue('include_datetimes', user_arguments)
 
+    # load the HBJSON file
     if !File.exist?(model_json)
       runner.registerError("Cannot find file '#{model_json}'")
       return false
     end
-
     honeybee_model = Honeybee::Model.read_from_disk(model_json)
 
+    # setup the schedule directory
     if schedule_csv_dir && !schedule_csv_dir.empty?
       schedule_csv_dir = Pathname.new(schedule_csv_dir).cleanpath
       if !Dir.exist?(schedule_csv_dir)
@@ -107,11 +110,52 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
       honeybee_model.set_schedule_csv_dir(schedule_csv_dir, include_datetimes)
     end
 
+    # translate the Honeybee Model to OSM
     STDOUT.flush
     honeybee_model.to_openstudio_model(model)
     STDOUT.flush
 
+    # if there are any detailed HVACs, incorproate them into the OSM
     generated_files_dir = "#{runner.workflow.absoluteRootDir}/generated_files"
+    unless $detailed_hvac_hash.nil? || $detailed_hvac_hash.empty?
+      runner.registerInfo("Translating Detailed HVAC systems in '#{generated_files_dir}'")
+      if $ironbug_exe.nil?
+        runner.registerError("No Ironbug installation was found on the system.")
+      end
+      FileUtils.mkdir_p(generated_files_dir)
+      $detailed_hvac_hash.each do |hvac_id, hvac_spec|
+        # write the JSON and OSM files
+        hvac_json_path = generated_files_dir + '/' + hvac_id + '.json'
+        osm_path = generated_files_dir + '/' + hvac_id + '.osm'
+        File.open(hvac_json_path, 'w') do |f|
+          f.write(hvac_spec.to_json)
+        end
+        model.save(osm_path, true)
+        # call the Ironbug console to add the HVAC to the OSM
+        ironbug_exe = '"' + $ironbug_exe + '"'
+        system(ironbug_exe + ' "' + osm_path + '" "' + hvac_json_path + '"')
+        # load the new model
+        translator = OpenStudio::OSVersion::VersionTranslator.new
+        o_model = translator.loadModel(osm_path)
+        if o_model.empty?
+          runner.registerError("Could not load Ironbug model from '" + osm_path.to_s + "'.")
+          return false
+        end
+        new_model = o_model.get
+        # replace the current model with the contents of the loaded model
+        handles = OpenStudio::UUIDVector.new
+        model.objects.each do |obj|
+          handles << obj.handle
+        end
+        model.removeObjects(handles)
+        # add new file to empty model
+        model.addObjects(new_model.toIdfFile.objects)
+      end
+    end
+
+    puts 'Done with Model translation!'
+
+    # copy the CSV schedules into the directory where EnergyPlus can find them
     if schedule_csv_dir && !schedule_csv_dir.empty?
       if Dir.exist?(schedule_csv_dir)
         runner.registerInfo("Copying exported schedules from '#{schedule_csv_dir}' to '#{generated_files_dir}'")
