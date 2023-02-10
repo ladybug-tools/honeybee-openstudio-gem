@@ -308,6 +308,10 @@ class OpenStudio::Model::Model
     when 'Furnace'
       # includes ventilation, whereas residential forced air furnace does not.
       standard.model_add_hvac_system(self, 'Forced Air Furnace', ht = 'NaturalGas', znht = nil, cl = nil, heated_zones)
+    
+    when 'Furnace_Electric'
+      # includes ventilation, whereas residential forced air furnace does not.
+      standard.model_add_hvac_system(self, 'Forced Air Furnace', ht = 'Electricity', znht = nil, cl = nil, heated_zones)
 
     when 'GasHeaters'
       standard.model_add_hvac_system(self, 'Unit Heaters', ht = 'NaturalGas', znht = nil, cl = nil, heated_zones)

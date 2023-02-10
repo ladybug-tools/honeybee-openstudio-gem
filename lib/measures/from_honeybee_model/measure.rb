@@ -153,6 +153,42 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
       end
     end
 
+    # if an efficiency standard has been set on the model, then run sizing and set everything
+    building = model.getBuilding
+    unless building.standardsTemplate.empty?
+      puts 'Autosizing HVAC systems and assigning efficiencies'
+      standard_id = building.standardsTemplate.get
+      require 'openstudio-standards'
+      standard = Standard.build(standard_id)
+      # Set the heating and cooling sizing parameters
+      standard.model_apply_prm_sizing_parameters(model)
+      # Perform a sizing run
+      if standard.model_run_sizing_run(model, "#{Dir.pwd}/SR1") == false
+        log_messages_to_runner(runner, debug = true)
+        return false
+      end
+      # If there are any multizone systems, reset damper positions
+      # to achieve a 60% ventilation effectiveness minimum for the system
+      # following the ventilation rate procedure from 62.1
+      standard.model_apply_multizone_vav_outdoor_air_sizing(model)
+      # get the climate zone  
+      climate_zone_obj = model.getClimateZones.getClimateZone('ASHRAE', 2006)
+      if climate_zone_obj.empty
+        climate_zone_obj = model.getClimateZones.getClimateZone('ASHRAE', 2013)
+      end
+      climate_zone = climate_zone_obj.value
+      # get the building type
+      bldg_type = nil
+      unless building.standardsBuildingType.empty?
+        bldg_type = building.standardsBuildingType.get
+      end
+      # Apply the prototype HVAC assumptions
+      standard.model_apply_prototype_hvac_assumptions(model, bldg_type, climate_zone)
+      # Apply the HVAC efficiency standard
+      standard.model_apply_hvac_efficiency_standard(model, climate_zone)
+      puts 'Done with autosizing HVAC systems!'
+    end
+
     puts 'Done with Model translation!'
 
     # copy the CSV schedules into the directory where EnergyPlus can find them
