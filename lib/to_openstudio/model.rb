@@ -101,7 +101,9 @@ module Honeybee
     def create_openstudio_objects(log_report=true)
       # assign a standards building type so that David's measures can run
       building = @openstudio_model.getBuilding
-      building.setStandardsBuildingType('MediumOffice')
+      if building.standardsBuildingType.empty?
+        building.setStandardsBuildingType('MediumOffice')
+      end
 
       # initialize a global variable for whether the AFN is used instead of simple ventilation
       $use_simple_vent = true

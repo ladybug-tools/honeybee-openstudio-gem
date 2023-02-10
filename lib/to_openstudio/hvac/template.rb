@@ -90,26 +90,28 @@ module Honeybee
 
       # Get the air loops and assign the display name to the air loop name if it exists
       os_air_loops = []
-      air_loops = openstudio_model.getAirLoopHVACs
-      unless air_loops.length == $air_loop_count  # check if any new loops were added
-        $air_loop_count = air_loops.length
-        zones.each do |zon|
-          os_air_terminal = zon.airLoopHVACTerminal
-          unless os_air_terminal.empty?
-            os_air_terminal = os_air_terminal.get
-            os_air_loop_opt = os_air_terminal.airLoopHVAC
-            unless os_air_loop_opt.empty?
-              os_air_loop = os_air_loop_opt.get
-              os_air_loops << os_air_loop
-              loop_name = os_air_loop.name
-              unless loop_name.empty?
-                # set the name of the air loop to align with the HVAC name
-                if @hash[:display_name]
-                  clean_name = @hash[:display_name].to_s.gsub(/[^.A-Za-z0-9_-] /, " ")
-                  os_air_loop.setName(clean_name + ' - ' + loop_name.get)
+      unless equipment_type.to_s.include? 'Furnace'
+        air_loops = openstudio_model.getAirLoopHVACs
+        unless air_loops.length == $air_loop_count
+          $air_loop_count = air_loops.length
+          zones.each do |zon|
+            os_air_terminal = zon.airLoopHVACTerminal
+            unless os_air_terminal.empty?
+              os_air_terminal = os_air_terminal.get
+              os_air_loop_opt = os_air_terminal.airLoopHVAC
+              unless os_air_loop_opt.empty?
+                os_air_loop = os_air_loop_opt.get
+                os_air_loops << os_air_loop
+                loop_name = os_air_loop.name
+                unless loop_name.empty?
+                  # set the name of the air loop to align with the HVAC name
+                  if @hash[:display_name]
+                    clean_name = @hash[:display_name].to_s.gsub(/[^.A-Za-z0-9_-] /, " ")
+                    os_air_loop.setName(clean_name + ' - ' + loop_name.get)
+                  end
                 end
+                break if !equipment_type.include? 'PSZ'  # multiple air loops have been added
               end
-              break if !equipment_type.include? 'PSZ'  # multiple air loops have been added
             end
           end
         end
@@ -193,6 +195,21 @@ module Honeybee
                 coil.autosizeNominalCapacity()  # set it back to autosize
               end
             end
+          end
+        end
+      end
+
+      # change furnace to electric if specified
+      if equipment_type.to_s.include? 'Furnace_Electric'
+        openstudio_model.getAirLoopHVACUnitarySystems.sort.each do |obj|
+          unless obj.heatingCoil.empty?
+            old_coil = obj.heatingCoil.get
+            heat_coil = OpenStudio::Model::CoilHeatingElectric.new(openstudio_model)
+            unless old_coil.name.empty?
+              heat_coil.setName(old_coil.name.get)
+            end
+            obj.setHeatingCoil(heat_coil)
+            old_coil.remove()
           end
         end
       end

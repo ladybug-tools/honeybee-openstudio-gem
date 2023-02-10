@@ -35,6 +35,16 @@ require 'openstudio'
 
 module Honeybee
   class SimulationParameter
+    @@standard_mapper = {
+      DOE_Ref_Pre_1980: 'DOE Ref Pre-1980',
+      DOE_Ref_1980_2004: 'DOE Ref 1980-2004',
+      ASHRAE_2004: '90.1-2004',
+      ASHRAE_2007: '90.1-2007',
+      ASHRAE_2010: '90.1-2010',
+      ASHRAE_2013: '90.1-2013',
+      ASHRAE_2016: '90.1-2016',
+      ASHRAE_2019: '90.1-2019'
+    }
 
     # convert to openstudio model, clears errors and warnings
     def to_openstudio_model(openstudio_model=nil, log_report=false)
@@ -224,6 +234,22 @@ module Honeybee
 
         # set the climate zone
         climate_zone_objs.setClimateZone('ASHRAE', cz)
+      end
+
+      # note any efficency standards that have been assigned to the 
+      if @hash[:sizing_parameter]
+        if @hash[:sizing_parameter][:efficiency_standard]
+          std_gem_standard = @@standard_mapper[@hash[:sizing_parameter][:efficiency_standard].to_sym]
+          building = @openstudio_model.getBuilding
+          building.setStandardsTemplate(std_gem_standard)
+        end
+        if @hash[:sizing_parameter][:climate_zone]
+          climate_zone_objs.setClimateZone('ASHRAE', @hash[:sizing_parameter][:climate_zone])
+        end
+        if @hash[:sizing_parameter][:building_type]
+          building = @openstudio_model.getBuilding
+          building.setStandardsBuildingType(@hash[:sizing_parameter][:building_type])
+        end
       end
 
       # set Outputs for the simulation
