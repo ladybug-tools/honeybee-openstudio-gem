@@ -60,6 +60,13 @@ module Honeybee
       os_constr_set.setDefaultInteriorSubSurfaceConstructions(int_subsurf_const)
       os_constr_set.setDefaultExteriorSubSurfaceConstructions(ext_subsurf_const)
 
+      # determine the frame type for measure tags
+      frame_type = 'Metal Framing with Thermal Break'
+      id_str = @hash[:identifier].to_s
+      if id_str.scan(/(?=WoodFramed)/).count > 0
+        frame_type = 'Non-Metal Framing'
+      end
+
       # assign any constructions in the wall set
       if @hash[:wall_set]
         if @hash[:wall_set][:interior_construction]
@@ -138,18 +145,34 @@ module Honeybee
           window_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:window_construction])
           unless window_aperture.nil?
             ext_subsurf_const.setFixedWindowConstruction(window_aperture)
+            std_info = window_aperture.standardsInformation
+            std_info.setFenestrationType('Fixed Window')
+            std_info.setFenestrationFrameType(frame_type)
+            std_info.setIntendedSurfaceType('ExteriorWindow')
           end
         end
         if @hash[:aperture_set][:skylight_construction]
           skylight_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:skylight_construction])
           unless skylight_aperture.nil?
             ext_subsurf_const.setSkylightConstruction(skylight_aperture)
+            std_info = skylight_aperture.standardsInformation
+            std_info.setFenestrationType('Fixed Window')
+            std_info.setFenestrationFrameType(frame_type)
+            if std_info.intendedSurfaceType.empty?
+              std_info.setIntendedSurfaceType('Skylight')
+            end
           end
         end
         if @hash[:aperture_set][:operable_construction]
           operable_aperture = get_window_construction(openstudio_model, @hash[:aperture_set][:operable_construction])
           unless operable_aperture.nil?
             ext_subsurf_const.setOperableWindowConstruction(operable_aperture)
+            std_info = operable_aperture.standardsInformation
+            if std_info.fenestrationType.empty?
+              std_info.setFenestrationType('Operable Window')
+            end
+            std_info.setFenestrationFrameType(frame_type)
+            std_info.setIntendedSurfaceType('ExteriorWindow')
           end
         end
       end
@@ -170,6 +193,10 @@ module Honeybee
           unless ext_door_ref.empty?
             exterior_door = ext_door_ref.get
             ext_subsurf_const.setDoorConstruction(exterior_door)
+            std_info = exterior_door.standardsInformation
+            if std_info.intendedSurfaceType.empty?
+              std_info.setIntendedSurfaceType('ExteriorDoor')
+            end
           end
         end
         if @hash[:door_set][:overhead_construction]
@@ -178,12 +205,24 @@ module Honeybee
           unless overhead_door_ref.empty?
             overhead_door = overhead_door_ref.get
             ext_subsurf_const.setOverheadDoorConstruction(overhead_door)
+            std_info = overhead_door.standardsInformation
+            if std_info.intendedSurfaceType.empty?
+              std_info.setIntendedSurfaceType('OverheadDoor')
+            end
           end
         end
         if @hash[:door_set][:exterior_glass_construction]
           exterior_glass_door = get_window_construction(openstudio_model, @hash[:door_set][:exterior_glass_construction])
           unless exterior_glass_door.nil?
             ext_subsurf_const.setGlassDoorConstruction(exterior_glass_door)
+            std_info = exterior_glass_door.standardsInformation
+            if std_info.fenestrationType.empty?
+              std_info.setFenestrationType('Glazed Door')
+            end
+            std_info.setFenestrationFrameType(frame_type)
+            if std_info.intendedSurfaceType.empty?
+              std_info.setIntendedSurfaceType('GlassDoor')
+            end
           end
         end
         if @hash[:door_set][:interior_glass_construction]

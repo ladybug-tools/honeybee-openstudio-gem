@@ -49,6 +49,15 @@ module Honeybee
       unless @hash[:display_name].nil?
         os_space_type.setDisplayName(@hash[:display_name])
       end
+
+      # if the program is from honeybee-energy-standards, also set the measure tag
+      id_str = @hash[:identifier].to_s
+      if id_str.scan(/(?=::)/).count == 2
+        std_spc_type = id_str.split('::')[2]
+        std_spc_type = std_spc_type.split('_')[0]
+        os_space_type.setStandardsSpaceType(std_spc_type)
+      end
+
       # assign people
       if @hash[:people]
         people = PeopleAbridged.new(@hash[:people])
