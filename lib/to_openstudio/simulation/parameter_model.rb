@@ -238,15 +238,15 @@ module Honeybee
 
       # note any efficency standards that have been assigned to the 
       if @hash[:sizing_parameter]
-        if @hash[:sizing_parameter][:efficiency_standard]
+        if @hash[:sizing_parameter][:efficiency_standard] && @hash[:sizing_parameter][:efficiency_standard] != 0
           std_gem_standard = @@standard_mapper[@hash[:sizing_parameter][:efficiency_standard].to_sym]
           building = @openstudio_model.getBuilding
           building.setStandardsTemplate(std_gem_standard)
         end
-        if @hash[:sizing_parameter][:climate_zone]
+        if @hash[:sizing_parameter][:climate_zone] && @hash[:sizing_parameter][:climate_zone] != 0
           climate_zone_objs.setClimateZone('ASHRAE', @hash[:sizing_parameter][:climate_zone])
         end
-        if @hash[:sizing_parameter][:building_type]
+        if @hash[:sizing_parameter][:building_type] && @hash[:sizing_parameter][:building_type] != 0
           building = @openstudio_model.getBuilding
           building.setStandardsBuildingType(@hash[:sizing_parameter][:building_type])
         end
