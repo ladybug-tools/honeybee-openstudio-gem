@@ -490,6 +490,61 @@ class OpenStudio::Model::Model
         OpenStudio.logFree(OpenStudio::Error, 'openstudio.Model.Model', "Thermal zone '#{zone.name}' has a restricted character ':' in the name and will not work with some EMS and output reporting objects. Please rename the zone.")
       end
 
+      # assign internal source construction to floors in zone
+      srf_count = 0
+      zone.spaces.each do |space|
+        space.surfaces.each do |surface|
+          if surface.isAirWall
+            OpenStudio.logFree(OpenStudio::Info, 'openstudio.Model.Model', "Surface #{surface.name} cannot be set to a Radiant Construction as it is an AirBoundary.")
+          elsif radiant_type == 'floor'
+            if surface.surfaceType == 'Floor'
+              srf_count += 1
+              if surface.outsideBoundaryCondition == 'Ground'
+                surface.setConstruction(radiant_ground_slab_construction)
+              elsif surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_exterior_slab_construction)
+              else # interior floor
+                surface.setConstruction(radiant_interior_floor_slab_construction)
+              end
+            end
+          elsif radiant_type == 'ceiling'
+            if surface.surfaceType == 'RoofCeiling'
+              srf_count += 1
+              if surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_ceiling_slab_construction)
+              else # interior ceiling
+                surface.setConstruction(radiant_interior_ceiling_slab_construction)
+              end
+            end
+          elsif radiant_type == 'ceilingmetalpanel'
+            if surface.surfaceType == 'RoofCeiling'
+              srf_count += 1
+              if surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_ceiling_metal_construction)
+              else # interior ceiling
+                surface.setConstruction(radiant_interior_ceiling_metal_construction)
+              end
+            end
+          elsif radiant_type == 'floorwithhardwood'
+            if surface.surfaceType == 'Floor'
+              srf_count += 1
+              if surface.outsideBoundaryCondition == 'Ground'
+                surface.setConstruction(radiant_ground_wood_construction)
+              elsif surface.outsideBoundaryCondition == 'Outdoors'
+                surface.setConstruction(radiant_exterior_wood_construction)
+              else # interior floor
+                surface.setConstruction(radiant_interior_wood_floor_construction)
+              end
+            end
+          end
+        end
+      end
+
+      # ignore the Zone if it has not thermally active Faces
+      if srf_count == 0
+        next
+      end
+
       # create radiant coils
       if hot_water_loop
         radiant_loop_htg_coil = OpenStudio::Model::CoilHeatingLowTempRadiantVarFlow.new(self, htg_control_temp_sch)
@@ -514,49 +569,6 @@ class OpenStudio::Model::Model
                                                                           radiant_avail_sch,
                                                                           radiant_loop_htg_coil,
                                                                           radiant_loop_clg_coil)
-
-      # assign internal source construction to floors in zone
-      zone.spaces.each do |space|
-        space.surfaces.each do |surface|
-          if radiant_type == 'floor'
-            if surface.surfaceType == 'Floor'
-              if surface.outsideBoundaryCondition == 'Ground'
-                surface.setConstruction(radiant_ground_slab_construction)
-              elsif surface.outsideBoundaryCondition == 'Outdoors'
-                surface.setConstruction(radiant_exterior_slab_construction)
-              else # interior floor
-                surface.setConstruction(radiant_interior_floor_slab_construction)
-              end
-            end
-          elsif radiant_type == 'ceiling'
-            if surface.surfaceType == 'RoofCeiling'
-              if surface.outsideBoundaryCondition == 'Outdoors'
-                surface.setConstruction(radiant_ceiling_slab_construction)
-              else # interior ceiling
-                surface.setConstruction(radiant_interior_ceiling_slab_construction)
-              end
-            end
-          elsif radiant_type == 'ceilingmetalpanel'
-            if surface.surfaceType == 'RoofCeiling'
-              if surface.outsideBoundaryCondition == 'Outdoors'
-                surface.setConstruction(radiant_ceiling_metal_construction)
-              else # interior ceiling
-                surface.setConstruction(radiant_interior_ceiling_metal_construction)
-              end
-            end
-          elsif radiant_type == 'floorwithhardwood'
-            if surface.surfaceType == 'Floor'
-              if surface.outsideBoundaryCondition == 'Ground'
-                surface.setConstruction(radiant_ground_wood_construction)
-              elsif surface.outsideBoundaryCondition == 'Outdoors'
-                surface.setConstruction(radiant_exterior_wood_construction)
-              else # interior floor
-                surface.setConstruction(radiant_interior_wood_floor_construction)
-              end
-            end
-          end
-        end
-      end
 
       # radiant loop surfaces
       radiant_loop.setName("#{zone.name} Radiant Loop")
