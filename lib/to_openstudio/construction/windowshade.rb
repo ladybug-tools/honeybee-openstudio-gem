@@ -190,10 +190,21 @@ module Honeybee
           shd_thick = shade_material.thickness
         end
         gap_thick = (original_gap.thickness - shd_thick) / 2
-        gap_obj = $gas_gap_hash[original_gap.name.get]
-        new_gap = gap_obj.to_openstudio(openstudio_model)
-        new_gap.setName(original_gap.name.get + gap_thick.to_s)
-        new_gap.setThickness(gap_thick)
+        gap_thick = gap_thick.round(4)
+        if gap_thick.to_s.end_with?('5')
+          gap_thick = gap_thick + 0.0005
+        end
+        gap_thick = gap_thick.round(3)
+        gap_id_start = original_gap.name.get + '_Split' + gap_thick.to_s
+        new_gap_init = openstudio_model.getMaterialByName(gap_id_start)
+        if new_gap_init.is_initialized
+          new_gap = new_gap_init.get
+        else
+          gap_obj = $gas_gap_hash[original_gap.name.get]
+          new_gap = gap_obj.to_openstudio(openstudio_model)
+          new_gap.setName(original_gap.name.get + gap_thick.to_s)
+          new_gap.setThickness(gap_thick)
+        end
         new_gap
     end
 
