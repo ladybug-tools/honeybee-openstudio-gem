@@ -99,8 +99,14 @@ module Honeybee
 
     # create OpenStudio objects in the OpenStudio model
     def create_openstudio_objects(log_report=true)
-      # assign a standards building type so that David's measures can run
+      # assign the building name and a default standards building type so measures can run
       building = @openstudio_model.getBuilding
+      if @hash[:display_name]
+        clean_name = @hash[:display_name].to_s.gsub(/[^.A-Za-z0-9_-] /, " ")
+        building.setName(clean_name)
+      else
+        building.setName(@hash[:identifier])
+      end
       if building.standardsBuildingType.empty?
         building.setStandardsBuildingType('MediumOffice')
       end
