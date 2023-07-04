@@ -33,6 +33,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency 'json_pure'
-  spec.add_dependency 'openstudio-extension', '0.6.0'
+  spec.add_dependency 'openstudio-extension', '0.6.1'
   spec.add_dependency 'openstudio-standards', '~> 0.3.0'
 end
