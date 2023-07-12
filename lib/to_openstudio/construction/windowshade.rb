@@ -45,19 +45,20 @@ module Honeybee
     end
 
     def to_openstudio(openstudio_model)
-      # write the shaded and unsaded versions of the construction into the model
-      # reverse the shaded and unshaded identifiers so unshaded one is assigned to apertures
+      # set the unshaded ID to be the whole construction ID so unshaded one is assigned to apertures
       unshd_id = @hash[:identifier]
-      shd_id = @hash[:window_construction][:identifier]
       @hash[:window_construction][:identifier] = unshd_id
+      # derive a new ID for the shaded construction that will not conflict with any bare versions of the construction
+      shd_id = @hash[:identifier]  + '_Shaded'
       @hash[:identifier] = shd_id
+
       # create the unshaded construction
       unshd_constr_obj = WindowConstructionAbridged.new(@hash[:window_construction])
       @construction = unshd_constr_obj.to_openstudio(openstudio_model)
 
       # create the shaded construction
       @shade_construction = OpenStudio::Model::Construction.new(openstudio_model)
-      @shade_construction.setName(shd_id)
+      @shade_construction.setName(@hash[:identifier])
       unless @hash[:display_name].nil?
         @shade_construction.setDisplayName(@hash[:display_name])
       end
