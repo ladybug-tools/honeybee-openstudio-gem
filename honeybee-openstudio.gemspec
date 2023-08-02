@@ -25,14 +25,14 @@ Gem::Specification.new do |spec|
     spec.required_ruby_version = "~> 2.7.0"
 
     spec.add_development_dependency "bundler",        "~> 2.1"
-    spec.add_development_dependency "public_suffix",  "~> 3.1.1"
-    spec.add_development_dependency "json-schema",    "~> 2.8.1"
-    spec.add_development_dependency "rake",           "~> 13.0"
+    spec.add_development_dependency "public_suffix",  "~> 5.0.3"
+    spec.add_development_dependency "json-schema",    "~> 2.7.0"
+    spec.add_development_dependency "rake",           "~> 13.0.6"
     spec.add_development_dependency "rspec",          "~> 3.9"
     spec.add_development_dependency "rubocop",        "~> 1.15.0"
   end
 
   spec.add_dependency 'json_pure'
   spec.add_dependency 'openstudio-extension', '0.6.1'
-  spec.add_dependency 'openstudio-standards', '~> 0.3.0'
+  spec.add_dependency 'openstudio-standards', '~> 0.4.0'
 end
