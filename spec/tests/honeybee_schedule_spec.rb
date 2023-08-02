@@ -46,7 +46,7 @@ RSpec.describe Honeybee do
     expect((object1.displayName.get)).to eq 'Solstice Increasing%'
 
     start_day = object1.startDay
-    expect(start_day).to eq(21)
+    expect(start_day).to eq(1)
 
     interpolate = object1.interpolatetoTimestep
     expect(interpolate).to eq(false)

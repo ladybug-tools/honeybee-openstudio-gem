@@ -85,48 +85,7 @@ module Honeybee
       defaults[:placeholder_value][:default]
     end
 
-    def to_schedule_fixed_interval(openstudio_model)
-      # create the new schedule
-      os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
-      os_fi_schedule.setName(@hash[:identifier])
-      unless @hash[:display_name].nil?
-        os_fi_schedule.setDisplayName(@hash[:display_name])
-      end
-      # assign start date
-      os_fi_schedule.setStartMonth(start_month)
-      os_fi_schedule.setStartDay(start_day)
-
-      # assign the interpolate value
-      os_fi_schedule.setInterpolatetoTimestep(interpolate)
-
-      # assign the schedule type limit
-      if @hash[:schedule_type_limit]
-        schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
-        unless schedule_type_limit.empty?
-          schedule_type_limit_object = schedule_type_limit.get
-          os_fi_schedule.setScheduleTypeLimits(schedule_type_limit_object)
-        end
-      end
-
-      # assign the timestep
-      interval_length = 60 / timestep
-      os_fi_schedule.setIntervalLength(interval_length)
-      openstudio_interval_length = OpenStudio::Time.new(0, 0, interval_length)
-
-      # assign the values as a timeseries
-      year_description = openstudio_model.getYearDescription
-      start_date = year_description.makeDate(start_month, start_day)
-      timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(@hash[:values]), '')
-      os_fi_schedule.setTimeSeries(timeseries)
-
-      os_fi_schedule
-    end
-
-    def to_schedule_file(openstudio_model, schedule_csv_dir, include_datetimes, schedule_csvs)
-
-      # in order to combine schedules in the same csv file they must have the same key
-      schedule_key = "#{@hash[:identifier]}_#{start_month}_#{start_day}_#{timestep}"
-
+    def full_annual_values(openstudio_model)
       # get start and end date times
       yd = openstudio_model.getYearDescription
       date_time = OpenStudio::DateTime.new(yd.makeDate(1, 1), OpenStudio::Time.new(0,0,0))
@@ -162,6 +121,67 @@ module Honeybee
         date_time += dt
       end
 
+      # if there are still more values to add, this indicates a reversed period
+      if i_values + 1 < num_values
+        overwrite_index = 0
+        while i_values != num_values
+          padded_values[overwrite_index] = values[i_values]
+          i_values += 1
+          overwrite_index += 1
+        end
+      end
+
+      return padded_values, date_times
+    end
+
+    def to_schedule_fixed_interval(openstudio_model)
+      # create the new schedule
+      os_fi_schedule = OpenStudio::Model::ScheduleFixedInterval.new(openstudio_model)
+      os_fi_schedule.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_fi_schedule.setDisplayName(@hash[:display_name])
+      end
+
+      # assign start date and the out of range value
+      os_fi_schedule.setStartMonth(1)
+      os_fi_schedule.setStartDay(1)
+      os_fi_schedule.setOutOfRangeValue(placeholder_value)
+
+      # assign the interpolate value
+      os_fi_schedule.setInterpolatetoTimestep(interpolate)
+
+      # assign the schedule type limit
+      if @hash[:schedule_type_limit]
+        schedule_type_limit = openstudio_model.getScheduleTypeLimitsByName(@hash[:schedule_type_limit])
+        unless schedule_type_limit.empty?
+          schedule_type_limit_object = schedule_type_limit.get
+          os_fi_schedule.setScheduleTypeLimits(schedule_type_limit_object)
+        end
+      end
+
+      # assign the timestep
+      interval_length = 60 / timestep
+      os_fi_schedule.setIntervalLength(interval_length)
+      openstudio_interval_length = OpenStudio::Time.new(0, 0, interval_length)
+
+      # assign the values as a timeseries
+      year_description = openstudio_model.getYearDescription
+      start_date = year_description.makeDate(1, 1)
+      all_values, date_times = full_annual_values(openstudio_model)
+      timeseries = OpenStudio::TimeSeries.new(start_date, openstudio_interval_length, OpenStudio.createVector(all_values), '')
+      os_fi_schedule.setTimeSeries(timeseries)
+
+      os_fi_schedule
+    end
+
+    def to_schedule_file(openstudio_model, schedule_csv_dir, include_datetimes, schedule_csvs)
+
+      # in order to combine schedules in the same csv file they must have the same key
+      schedule_key = "#{@hash[:identifier]}_#{start_month}_#{start_day}_#{timestep}"
+
+      # get the list of values for the whole year
+      interval_length = 60 / timestep
+      padded_values, date_times = full_annual_values(openstudio_model)
 
       # find or create the schedule csv object which will hold the filename and columns
       filename = nil
