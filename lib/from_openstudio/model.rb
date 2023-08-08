@@ -36,7 +36,7 @@ require 'openstudio'
 module Honeybee
   class Model
 
-    # Create Ladybug Energy Model JSON from OpenStudio Model
+    # Create Honeybee Model JSON from OpenStudio Model
     def self.translate_from_openstudio(openstudio_model)
       hash = {}
       hash[:type] = 'Model'
@@ -79,7 +79,7 @@ module Honeybee
       Model.new(hash)
     end
 
-    # Create Ladybug Energy Model JSON from OSM file
+    # Create Honeybee Model JSON from OSM file
     def self.translate_from_osm_file(file)
       vt = OpenStudio::OSVersion::VersionTranslator.new
       openstudio_model = vt.loadModel(file)
@@ -87,7 +87,7 @@ module Honeybee
       self.translate_from_openstudio(openstudio_model.get)
     end
 
-    # Create Ladybug Energy Model JSON from gbXML file
+    # Create Honeybee Model JSON from gbXML file
     def self.translate_from_gbxml_file(file)
       translator = OpenStudio::GbXML::GbXMLReverseTranslator.new
       openstudio_model = translator.loadModel(file)
@@ -103,11 +103,19 @@ module Honeybee
       self.translate_from_openstudio(os_model)
     end
 
-    # Create Ladybug Energy Model JSON from IDF file
+    # Create Honeybee Model JSON from IDF file
     def self.translate_from_idf_file(file)
       translator = OpenStudio::EnergyPlus::ReverseTranslator.new
       openstudio_model = translator.loadModel(file)
       raise "Cannot load IDF file at '#{}'" if openstudio_model.empty?
+      self.translate_from_openstudio(openstudio_model.get)
+    end
+
+    # Create Honeybee Model JSON from SDD file
+    def translate_from_sdd_file(file)
+      translator = OpenStudio::SDD::ReverseTranslator.new
+      openstudio_model = translator.loadModel(file)
+      raise "Cannot load SDD file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)
     end
 
