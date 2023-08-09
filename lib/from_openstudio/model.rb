@@ -112,8 +112,8 @@ module Honeybee
     end
 
     # Create Honeybee Model JSON from SDD file
-    def translate_from_sdd_file(file)
-      translator = OpenStudio::SDD::ReverseTranslator.new
+    def self.translate_from_sdd_file(file)
+      translator = OpenStudio::SDD::SddReverseTranslator.new
       openstudio_model = translator.loadModel(file)
       raise "Cannot load SDD file at '#{}'" if openstudio_model.empty?
       self.translate_from_openstudio(openstudio_model.get)
