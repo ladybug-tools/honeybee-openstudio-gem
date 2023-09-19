@@ -37,6 +37,7 @@ require 'to_openstudio'
 require 'fileutils'
 require 'pathname'
 require 'json'
+require 'open3'
 
 # start the measure
 class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
@@ -133,7 +134,12 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
         model.save(osm_path, true)
         # call the Ironbug console to add the HVAC to the OSM
         ironbug_exe = '"' + $ironbug_exe + '"'
-        system(ironbug_exe + ' "' + osm_path + '" "' + hvac_json_path + '"')
+        ib_cmd = ironbug_exe + ' "' + osm_path + '" "' + hvac_json_path + '"'
+        stdout, stderr, status = Open3.capture3(ib_cmd)
+        if status.exitstatus != 0
+          runner.registerError('Failed to apply IronBug HVAC:' + stderr)
+          return false
+        end
         # load the new model
         translator = OpenStudio::OSVersion::VersionTranslator.new
         o_model = translator.loadModel(osm_path)
