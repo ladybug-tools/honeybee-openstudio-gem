@@ -162,61 +162,61 @@ module Honeybee
 
       return result
     end
+
+    def to_openstudio_shade(openstudio_model, shading_surface_group)
+      # get the vertices from the door
+      if @hash[:geometry][:vertices].nil?
+        hb_verts = @hash[:geometry][:boundary]
+      else
+        hb_verts = @hash[:geometry][:vertices]
+      end
+
+      # create the openstudio shading surface
+      os_vertices = OpenStudio::Point3dVector.new
+      hb_verts.each do |vertex|
+        os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
+      end
+
+      os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
+      os_shading_surface.setName(@hash[:identifier])
+      unless @hash[:display_name].nil?
+        os_shading_surface.setDisplayName(@hash[:display_name])
+      end
+
+      # get the approriate construction id
+      construction_id = nil
+      if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
+        construction_id = @hash[:properties][:energy][:construction]
+      elsif @hash[:is_glass] == true
+        construction_id = 'Generic Double Pane'
+      else
+        construction_id = 'Generic Exterior Door'
+      end
+
+      # assign the construction
+      unless construction_id.nil?
+        construction = openstudio_model.getConstructionByName(construction_id)
+        unless construction.empty?
+          os_construction = construction.get
+          os_shading_surface.setConstruction(os_construction)
+        end
+      end
+
+      # add a transmittance schedule if a value is found
+      if @hash[:transmit]
+        schedule_identifier = 'Constant ' + @hash[:transmit] + ' Transmittance'
+        schedule = openstudio_model.getScheduleByName(schedule_identifier)
+        unless schedule.empty?
+          os_schedule = schedule.get
+          os_shading_surface.setTransmittanceSchedule(os_schedule)
+        end
+      end
+
+      # add the shade to the group
+      os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
+
+      os_shading_surface
+    end
+
   end # Door
-
-  def to_openstudio_shade(openstudio_model, shading_surface_group)
-    # get the vertices from the door
-    if @hash[:geometry][:vertices].nil?
-      hb_verts = @hash[:geometry][:boundary]
-    else
-      hb_verts = @hash[:geometry][:vertices]
-    end
-
-    # create the openstudio shading surface
-    os_vertices = OpenStudio::Point3dVector.new
-    hb_verts.each do |vertex|
-      os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
-    end
-
-    os_shading_surface = OpenStudio::Model::ShadingSurface.new(os_vertices, openstudio_model)
-    os_shading_surface.setName(@hash[:identifier])
-    unless @hash[:display_name].nil?
-      os_shading_surface.setDisplayName(@hash[:display_name])
-    end
-
-    # get the approriate construction id
-    construction_id = nil
-    if @hash[:properties].key?(:energy) && @hash[:properties][:energy][:construction]
-      construction_id = @hash[:properties][:energy][:construction]
-    elsif @hash[:is_glass] == true
-      construction_id = 'Generic Double Pane'
-    else
-      construction_id = 'Generic Exterior Door'
-    end
-
-    # assign the construction
-    unless construction_id.nil?
-      construction = openstudio_model.getConstructionByName(construction_id)
-      unless construction.empty?
-        os_construction = construction.get
-        os_shading_surface.setConstruction(os_construction)
-      end
-    end
-
-    # add a transmittance schedule if a value is found
-    if @hash[:transmit]
-      schedule_identifier = 'Constant ' + @hash[:transmit] + ' Transmittance'
-      schedule = openstudio_model.getScheduleByName(schedule_identifier)
-      unless schedule.empty?
-        os_schedule = schedule.get
-        os_shading_surface.setTransmittanceSchedule(os_schedule)
-      end
-    end
-
-    # add the shade to the group
-    os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
-
-    os_shading_surface
-  end
-
 end # Honeybee
