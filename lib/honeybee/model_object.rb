@@ -106,15 +106,21 @@ module Honeybee
       raise 'defaults not implemented for ModelObject, override in your class'
     end
 
+    def self.truncate(string, max)
+      string.length > max ? "#{string[0...max]}..." : string
+    end
+
     # remove illegal characters in identifier
     def self.clean_name(str)
       ascii = str.encode(Encoding.find('ASCII'), **@@encoding_options)
+      ascii = truncate(ascii, 97)
     end
 
     # remove illegal characters in identifier
     def self.clean_identifier(str)
       encode_str = str.encode(Encoding.find('ASCII'), **@@encoding_options)
       encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
+      encode_str = truncate(encode_str, 97)
     end
 
     # Create methods to get and set display name
