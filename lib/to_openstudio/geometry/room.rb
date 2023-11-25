@@ -219,6 +219,28 @@ module Honeybee
           end
         end
 
+        # overwrite the face type if E+ is going to flip the surface on us and make the geometry incorrect
+        face_tilt = os_surface.tilt
+        if face[:face_type] == 'RoofCeiling' && face_tilt > 1.57079632679
+          if !face[:properties][:energy][:construction]
+            orig_construction = os_surface.construction
+            unless orig_construction.empty?
+              orig_construction = orig_construction.get
+              os_surface.setConstruction(orig_construction)
+            end
+          end
+          os_surface.setSurfaceType('Wall')
+        elsif face[:face_type] == 'Floor' && face_tilt < 1.57079632679
+          if !face[:properties][:energy][:construction]
+            orig_construction = os_surface.construction
+            unless orig_construction.empty?
+              orig_construction = orig_construction.get
+              os_surface.setConstruction(orig_construction)
+            end
+          end
+          os_surface.setSurfaceType('Wall')
+        end
+
         # assign air boundaries
         if face[:face_type] == 'AirBoundary'
           # assign default air boundary construction for AirBoundary face types
