@@ -216,6 +216,7 @@ module Honeybee
       create_orphaned_faces
       create_orphaned_apertures
       create_orphaned_doors
+      create_shade_meshes
     end
 
     def create_materials(material_dicts, check_existing=false)
@@ -668,6 +669,27 @@ module Honeybee
           openstudio_shade = dr_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
           if $orphan_groups
             openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+          end
+        end
+      end
+    end
+
+    def create_shade_meshes
+      if @hash[:shade_meshes]
+        @hash[:shade_meshes].each do |shade_mesh|
+          shade_mesh_object = ShadeMesh.new(shade_mesh)
+          openstudio_shades = shade_mesh_object.to_openstudio(@openstudio_model)
+
+          if $orphan_groups
+            shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
+            shading_surface_group.setShadingSurfaceType('Building')
+            shading_surface_group.setName(shade_mesh[:identifier])
+            unless shade_mesh[:display_name].nil?
+              shading_surface_group.setDisplayName(shade_mesh[:display_name])
+            end
+            openstudio_shades.each do |openstudio_shade|
+              openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
+            end
           end
         end
       end

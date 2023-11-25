@@ -44,6 +44,7 @@ require 'to_openstudio/geometry/door'
 require 'to_openstudio/geometry/aperture'
 require 'to_openstudio/geometry/face'
 require 'to_openstudio/geometry/room'
+require 'to_openstudio/geometry/shademesh'
 
 # extend the HVAC objects
 require 'to_openstudio/hvac/ideal_air'
