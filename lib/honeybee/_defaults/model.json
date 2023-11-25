@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "Honeybee model schema.",
-    "version": "1.50.5",
+    "version": "1.53.4",
     "title": "Honeybee Model Schema",
     "contact": {
       "name": "Ladybug Tools",
@@ -143,6 +143,11 @@
       "name": "daylightingcontrol_model",
       "x-displayName": "DaylightingControl",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DaylightingControl\" />\n"
+    },
+    {
+      "name": "detailedhvac_model",
+      "x-displayName": "DetailedHVAC",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DetailedHVAC\" />\n"
     },
     {
       "name": "door_model",
@@ -770,6 +775,26 @@
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeLocation\" />\n"
     },
     {
+      "name": "shademesh_model",
+      "x-displayName": "ShadeMesh",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeMesh\" />\n"
+    },
+    {
+      "name": "shademeshenergypropertiesabridged_model",
+      "x-displayName": "ShadeMeshEnergyPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeMeshEnergyPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "shademeshpropertiesabridged_model",
+      "x-displayName": "ShadeMeshPropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeMeshPropertiesAbridged\" />\n"
+    },
+    {
+      "name": "shademeshradiancepropertiesabridged_model",
+      "x-displayName": "ShadeMeshRadiancePropertiesAbridged",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeMeshRadiancePropertiesAbridged\" />\n"
+    },
+    {
       "name": "shademodifierset_model",
       "x-displayName": "ShadeModifierSet",
       "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ShadeModifierSet\" />\n"
@@ -1003,6 +1028,7 @@
         "constructionsetabridged_model",
         "controltype_model",
         "daylightingcontrol_model",
+        "detailedhvac_model",
         "door_model",
         "doorconstructionset_model",
         "doorconstructionsetabridged_model",
@@ -1126,6 +1152,10 @@
         "shadeconstruction_model",
         "shadeenergypropertiesabridged_model",
         "shadelocation_model",
+        "shademesh_model",
+        "shademeshenergypropertiesabridged_model",
+        "shademeshpropertiesabridged_model",
+        "shademeshradiancepropertiesabridged_model",
         "shademodifierset_model",
         "shademodifiersetabridged_model",
         "shadepropertiesabridged_model",
@@ -1365,8 +1395,7 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1,
-                "format": "double"
+                "maximum": 1
               }
             ]
           }
@@ -1447,8 +1476,7 @@
                 "$ref": "#/components/schemas/Autocalculate"
               },
               {
-                "type": "number",
-                "format": "double"
+                "type": "number"
               }
             ]
           }
@@ -2461,8 +2489,7 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1,
-                "format": "double"
+                "maximum": 1
               }
             ]
           }
@@ -3596,6 +3623,252 @@
         ],
         "additionalProperties": false
       },
+      "Color": {
+        "title": "Color",
+        "description": "A RGB color.",
+        "type": "object",
+        "properties": {
+          "r": {
+            "title": "R",
+            "description": "Value for red channel.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "g": {
+            "title": "G",
+            "description": "Value for green channel.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "b": {
+            "title": "B",
+            "description": "Value for blue channel.",
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "title": "Type",
+            "default": "Color",
+            "pattern": "^Color$",
+            "type": "string",
+            "readOnly": true
+          },
+          "a": {
+            "title": "A",
+            "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
+            "default": 255,
+            "minimum": 0,
+            "maximum": 255,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "required": [
+          "r",
+          "g",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "Mesh3D": {
+        "title": "Mesh3D",
+        "description": "A mesh in 3D space.",
+        "type": "object",
+        "properties": {
+          "vertices": {
+            "title": "Vertices",
+            "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+            "minItems": 3,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "faces": {
+            "title": "Faces",
+            "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "format": "int32"
+              },
+              "minItems": 3,
+              "maxItems": 4
+            }
+          },
+          "type": {
+            "title": "Type",
+            "default": "Mesh3D",
+            "pattern": "^Mesh3D$",
+            "type": "string",
+            "readOnly": true
+          },
+          "colors": {
+            "title": "Colors",
+            "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Color"
+            }
+          }
+        },
+        "required": [
+          "vertices",
+          "faces"
+        ],
+        "additionalProperties": false
+      },
+      "ShadeMeshEnergyPropertiesAbridged": {
+        "title": "ShadeMeshEnergyPropertiesAbridged",
+        "description": "Base class for all objects that are not extensible with additional keys.\n\nThis effectively includes all objects except for the Properties classes\nthat are assigned to geometry objects.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ShadeMeshEnergyPropertiesAbridged",
+            "pattern": "^ShadeMeshEnergyPropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "construction": {
+            "title": "Construction",
+            "description": "Identifier of a ShadeConstruction to set the reflectance and specularity of the Shade. If None, it will be a generic context construction that is completely diffuse with 0.2 visible and solar reflectance. Unless it is building attached, in which case it will be set by the default generic ConstructionSet.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "transmittance_schedule": {
+            "title": "Transmittance Schedule",
+            "description": "Identifier of a schedule to set the transmittance of the shade, which can vary throughout the simulation. If None, the shade will be completely opaque.",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShadeMeshRadiancePropertiesAbridged": {
+        "title": "ShadeMeshRadiancePropertiesAbridged",
+        "description": "Radiance Properties for Honeybee ShadeMesh Abridged.",
+        "type": "object",
+        "properties": {
+          "modifier": {
+            "title": "Modifier",
+            "description": "A string for a Honeybee Radiance Modifier (default: None).",
+            "type": "string"
+          },
+          "modifier_blk": {
+            "title": "Modifier Blk",
+            "description": "A string for a Honeybee Radiance Modifier to be used in direct solar simulations and in isolation studies (assessingthe contribution of individual objects) (default: None).",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeMeshRadiancePropertiesAbridged",
+            "pattern": "^ShadeMeshRadiancePropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShadeMeshPropertiesAbridged": {
+        "title": "ShadeMeshPropertiesAbridged",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "default": "ShadeMeshPropertiesAbridged",
+            "pattern": "^ShadeMeshPropertiesAbridged$",
+            "type": "string",
+            "readOnly": true
+          },
+          "energy": {
+            "$ref": "#/components/schemas/ShadeMeshEnergyPropertiesAbridged"
+          },
+          "radiance": {
+            "$ref": "#/components/schemas/ShadeMeshRadiancePropertiesAbridged"
+          }
+        }
+      },
+      "ShadeMesh": {
+        "title": "ShadeMesh",
+        "description": "Base class for all objects requiring a identifiers acceptable for all engines.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, rad). This identifier is also used to reference the object across a Model. It must be < 100 characters and not contain any spaces or special characters.",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[.A-Za-z0-9_-]+$",
+            "type": "string"
+          },
+          "geometry": {
+            "title": "Geometry",
+            "description": "A Mesh3D for the geometry.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Mesh3D"
+              }
+            ]
+          },
+          "properties": {
+            "title": "Properties",
+            "description": "Extension properties for particular simulation engines (Radiance, EnergyPlus).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShadeMeshPropertiesAbridged"
+              }
+            ]
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "default": "ShadeMesh",
+            "pattern": "^ShadeMesh$",
+            "type": "string",
+            "readOnly": true
+          },
+          "is_detached": {
+            "title": "Is Detached",
+            "description": "Boolean to note whether this shade is detached from any of the other geometry in the model. Cases where this should be True include shade representing surrounding buildings or context.",
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "identifier",
+          "geometry",
+          "properties"
+        ],
+        "additionalProperties": false
+      },
       "Units": {
         "title": "Units",
         "description": "An enumeration.",
@@ -3872,7 +4145,8 @@
               },
               {
                 "type": "number",
-                "format": "double"
+                "minimum": 0,
+                "maximum": 1
               }
             ]
           },
@@ -3907,8 +4181,7 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1,
-                "format": "double"
+                "maximum": 1
               }
             ]
           },
@@ -4649,7 +4922,7 @@
                 "user_data": null,
                 "type": "EnergyMaterial",
                 "roughness": "MediumRough",
-                "thickness": 0.05,
+                "thickness": 0.025,
                 "conductivity": 0.03,
                 "density": 43.0,
                 "specific_heat": 1210.0,
@@ -4726,6 +4999,15 @@
                 "type": "ShadeConstruction",
                 "solar_reflectance": 0.35,
                 "visible_reflectance": 0.35,
+                "is_specular": false
+              },
+              {
+                "identifier": "Generic Context",
+                "display_name": null,
+                "user_data": null,
+                "type": "ShadeConstruction",
+                "solar_reflectance": 0.2,
+                "visible_reflectance": 0.2,
                 "is_specular": false
               },
               {
@@ -4969,8 +5251,15 @@
           },
           "shade_construction": {
             "title": "Shade Construction",
-            "description": "Global Honeybee Construction for Shades.",
+            "description": "Global Honeybee Construction for building-attached Shades.",
             "default": "Generic Shade",
+            "readOnly": true,
+            "type": "string"
+          },
+          "context_construction": {
+            "title": "Context Construction",
+            "description": "Global Honeybee Construction for context Shades.",
+            "default": "Generic Context",
             "readOnly": true,
             "type": "string"
           },
@@ -6597,8 +6886,7 @@
                 "$ref": "#/components/schemas/NoLimit"
               },
               {
-                "type": "number",
-                "format": "double"
+                "type": "number"
               }
             ]
           },
@@ -6613,8 +6901,7 @@
                 "$ref": "#/components/schemas/NoLimit"
               },
               {
-                "type": "number",
-                "format": "double"
+                "type": "number"
               }
             ]
           },
@@ -6944,7 +7231,7 @@
           },
           "schedule": {
             "title": "Schedule",
-            "description": "A control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be intergers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
+            "description": "A control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be integers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ScheduleRuleset"
@@ -7392,7 +7679,7 @@
           },
           "schedule": {
             "title": "Schedule",
-            "description": "An identifier for a control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be intergers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
+            "description": "An identifier for a control schedule that dictates which constructions are active at given times throughout the simulation. The values of the schedule should be integers and range from 0 to one less then the number of constructions. Zero indicates that the first construction is active, one indicates that the second on is active, etc. The schedule type limits of this schedule should be \"Control Level.\" If building custom schedule type limits that describe a particular range of states, the type limits should be \"Discrete\" and the unit type should be \"Mode,\" \"Control,\" or some other fractional unit.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -7543,8 +7830,7 @@
               },
               {
                 "type": "number",
-                "minimum": 0,
-                "format": "double"
+                "minimum": 0
               }
             ]
           },
@@ -7563,8 +7849,7 @@
               },
               {
                 "type": "number",
-                "minimum": 0,
-                "format": "double"
+                "minimum": 0
               }
             ]
           },
@@ -7641,7 +7926,7 @@
       },
       "VAV": {
         "title": "VAV",
-        "description": "Variable Air Volume (VAV) HVAC system.",
+        "description": "Variable Air Volume (VAV) HVAC system (aka. System 7 or 8).\n\nAll rooms/zones are connected to a central air loop that is kept at a constant\ncentral temperature of 12.8C (55F). The central temperature is maintained by a\ncooling coil, which runs whenever the combination of return air and fresh outdoor\nair is greater than 12.8C, as well as a heating coil, which runs whenever\nthe combination of return air and fresh outdoor air is less than 12.8C.\n\nEach air terminal for the connected rooms/zones contains its own reheat coil,\nwhich runs whenever the room is not in need of the cooling supplied by the 12.8C\ncentral air.\n\nThe central cooling coil is always a chilled water coil, which is connected to a\nchilled water loop operating at 6.7C (44F). All heating coils are hot water coils\nexcept when Gas Coil equipment_type is used (in which case coils are gas)\nor when Parallel Fan-Powered (PFP) boxes equipment_type is used (in which case\ncoils are electric resistance). Hot water temperature is 82C (180F) for\nboiler/district heating and 49C (120F) when ASHP is used.\n\nVAV systems are the traditional baseline system for commercial buildings\ntaller than 5 stories or larger than 14,000 m2 (150,000 ft2) of floor area.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -7740,7 +8025,7 @@
       },
       "PVAV": {
         "title": "PVAV",
-        "description": "Packaged Variable Air Volume (PVAV) HVAC system.",
+        "description": "Packaged Variable Air Volume (PVAV) HVAC system (aka. System 5 or 6).\n\nAll rooms/zones are connected to a central air loop that is kept at a constant\ncentral temperature of 12.8C (55F). The central temperature is maintained by a\ncooling coil, which runs whenever the combination of return air and fresh outdoor\nair is greater than 12.8C, as well as a heating coil, which runs whenever\nthe combination of return air and fresh outdoor air is less than 12.8C.\n\nEach air terminal for the connected rooms/zones contains its own reheat coil,\nwhich runs whenever the room is not in need of the cooling supplied by the 12.8C\ncentral air.\n\nThe central cooling coil is always a two-speed direct expansion (DX) coil.\nAll heating coils are hot water coils except when Gas Coil equipment_type is\nused (in which case the central coil is gas and all reheat is electric)\nor when Parallel Fan-Powered (PFP) boxes equipment_type is used (in which case\ncoils are electric resistance). Hot water temperature is 82C (180F) for\nboiler/district heating and 49C (120F) when ASHP is used.\n\nPVAV systems are the traditional baseline system for commercial buildings\nwith than 4-5 stories or between 2,300 m2 and 14,000 m2 (25,000 ft2 and\n150,000 ft2) of floor area.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -7854,7 +8139,7 @@
       },
       "PSZ": {
         "title": "PSZ",
-        "description": "Packaged Single-Zone (PSZ) HVAC system.",
+        "description": "Packaged Single-Zone (PSZ) HVAC system (aka. System 3 or 4).\n\nEach room/zone receives its own air loop with its own single-speed direct expansion\n(DX) cooling coil, which will condition the supply air to a value in between\n12.8C (55F) and 50C (122F) depending on the heating/cooling needs of the room/zone.\nAs long as a Baseboard equipment_type is NOT selected, heating will be supplied\nby a heating coil in the air loop. Otherwise, heating is accomplished with\nbaseboards and the air loop only supplies cooling and ventilation air.\nFans are constant volume.\n\nPSZ systems are the traditional baseline system for commercial buildings\nwith less than 4 stories or less than 2,300 m2 (25,000 ft2) of floor area.\nThey are also the default for all retail with less than 3 stories and all public\nassembly spaces.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -7959,7 +8244,7 @@
       },
       "PTAC": {
         "title": "PTAC",
-        "description": "Packaged Terminal Air Conditioning (PTAC) or Heat Pump (PTHP) HVAC system.",
+        "description": "Packaged Terminal Air Conditioning (PTAC/HP) HVAC system. (aka. System 1 or 2).\n\nEach room/zone receives its own packaged unit that supplies heating, cooling\nand ventilation. Cooling is always done via a single-speed direct expansion (DX)\ncooling coil. Heating can be done via a heating coil in the unit or via an\nexternal baseboard. Fans are constant volume.\n\nPTAC/HP systems are the traditional baseline system for residential buildings.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8015,13 +8300,14 @@
         "title": "FurnaceEquipmentType",
         "description": "An enumeration.",
         "enum": [
-          "Furnace"
+          "Furnace",
+          "Furnace_Electric"
         ],
         "type": "string"
       },
       "ForcedAirFurnace": {
         "title": "ForcedAirFurnace",
-        "description": "Forced Air Furnace HVAC system. Intended for spaces only requiring heating.",
+        "description": "Forced Air Furnace HVAC system (aka. System 9 or 10).\n\nForced air furnaces are intended only for spaces only requiring heating and\nventilation. Each room/zone receives its own air loop with its own gas heating\ncoil, which will supply air at a temperature up to 50C (122F) to meet the\nheating needs of the room/zone. Fans are constant volume.\n\nForcedAirFurnace systems are the traditional baseline system for storage\nspaces that only require heating.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8050,39 +8336,6 @@
                 "$ref": "#/components/schemas/Vintages"
               }
             ]
-          },
-          "economizer_type": {
-            "description": "Text to indicate the type of air-side economizer used on the system (from the AllAirEconomizerType enumeration).",
-            "default": "NoEconomizer",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AllAirEconomizerType"
-              }
-            ]
-          },
-          "sensible_heat_recovery": {
-            "title": "Sensible Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of sensible heat recovery within the system.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "latent_heat_recovery": {
-            "title": "Latent Heat Recovery",
-            "description": "A number between 0 and 1 for the effectiveness of latent heat recovery within the system.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "type": "number",
-            "format": "double"
-          },
-          "demand_controlled_ventilation": {
-            "title": "Demand Controlled Ventilation",
-            "description": "Boolean to note whether demand controlled ventilation should be used on the system, which will vary the amount of ventilation air according to the occupancy schedule of the Rooms.",
-            "default": false,
-            "type": "boolean"
           },
           "type": {
             "title": "Type",
@@ -8133,7 +8386,7 @@
       },
       "FCUwithDOASAbridged": {
         "title": "FCUwithDOASAbridged",
-        "description": "Fan Coil Unit (FCU) with DOAS HVAC system.",
+        "description": "Fan Coil Unit (FCU) with DOAS HVAC system.\n\nAll rooms/zones in the system are connected to a Dedicated Outdoor Air System\n(DOAS) that supplies a constant volume of ventilation air at the same temperature\nto all rooms/zones. The ventilation air temperature will vary from 21.1C (70F)\nto 15.5C (60F) depending on the outdoor air temperature (the DOAS supplies cooler air\nwhen outdoor conditions are warmer). The ventilation air temperature is maintained\nby a chilled water cooling coil and a heating coil. The heating coil is a hot\nwater coil except when electric baseboards or gas heaters are specified, in\nwhich case the heating coil is a single-speed direct expansion (DX) heat pump\nwith a backup electrical resistance coil.\n\nEach room/zone also receives its own Fan Coil Unit (FCU), which meets the heating\nand cooling loads of the space. The cooling coil in the FCU is always chilled\nwater cooling coil, which is connected to a chilled water loop operating\nat 6.7C (44F). The heating coil is a hot water coil except when when electric\nbaseboards or gas heaters are specified. Hot water temperature is 82C (180F) for\nboiler/district heating and 49C (120F) when ASHP is used.\n\nThe FCU with DOAS template is relatively close in performance to active chilled\nbeams (ACBs). When using this template to represent ACBs, care must be taken\nto ensure that the DOAS ventilation air requirement is sufficient to extract\nthe heating cooling from the ACB. If so, then this FCUwithDOAS template can be\nused but with the energy use of the FCU fans ignored.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8229,7 +8482,7 @@
       },
       "WSHPwithDOASAbridged": {
         "title": "WSHPwithDOASAbridged",
-        "description": "Water Source Heat Pump (WSHP) with DOAS HVAC system.",
+        "description": "Water Source Heat Pump (WSHP) with DOAS HVAC system.\n\nAll rooms/zones in the system are connected to a Dedicated Outdoor Air System\n(DOAS) that supplies a constant volume of ventilation air at the same temperature\nto all rooms/zones. The ventilation air temperature will vary from 21.1C (70F)\nto 15.5C (60F) depending on the outdoor air temperature (the DOAS supplies cooler air\nwhen outdoor conditions are warmer). The ventilation air temperature is maintained\nby a chilled water cooling coil and a hot water heating coil except when the\nground source heat pump (GSHP) option is selected. In this case, the ventilation\nair temperature is maintained by a two-speed direct expansion (DX) cooling coil\nand a single-speed DX heating coil with backup electrical resistance heat.\n\nEach room/zone also receives its own Water Source Heat Pump (WSHP), which meets\nthe heating and cooling loads of the space. All WSHPs are connected to the\nsame water condenser loop, which has its temperature maintained by the\nequipment_type (eg. Boiler with Cooling Tower).",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8322,7 +8575,7 @@
       },
       "VRFwithDOASAbridged": {
         "title": "VRFwithDOASAbridged",
-        "description": "Variable Refrigerant Flow (VRF) with DOAS HVAC system.",
+        "description": "Variable Refrigerant Flow (VRF) with DOAS HVAC system.\n\nAll rooms/zones in the system are connected to a Dedicated Outdoor Air System\n(DOAS) that supplies a constant volume of ventilation air at the same temperature\nto all rooms/zones. The ventilation air temperature will vary from 21.1C (70F)\nto 15.5C (60F) depending on the outdoor air temperature (the DOAS supplies cooler air\nwhen outdoor conditions are warmer). The ventilation air temperature is maintained\nby a single speed direct expansion (DX) cooling coil along with a single-speed\ndirect expansion (DX) heat pump with a backup electrical resistance coil.\n\nEach room/zone also receives its own Variable Refrigerant Flow (VRF) terminal,\nwhich meets the heating and cooling loads of the space. All room/zone terminals\nare connected to the same outdoor unit, meaning that either all rooms must be\nin cooling or heating mode together.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8435,7 +8688,7 @@
       },
       "RadiantwithDOASAbridged": {
         "title": "RadiantwithDOASAbridged",
-        "description": "Low Temperature Radiant with DOAS HVAC system.",
+        "description": "Low Temperature Radiant with DOAS HVAC system.\n\nThis HVAC template will change the floor and/or ceiling constructions\nof the Rooms that it is applied to, replacing them with a construction that\naligns with the radiant_type property (eg. CeilingMetalPanel).\n\nAll rooms/zones in the system are connected to a Dedicated Outdoor Air System\n(DOAS) that supplies a constant volume of ventilation air at the same temperature\nto all rooms/zones. The ventilation air temperature will vary from 21.1C (70F)\nto 15.5C (60F) depending on the outdoor air temperature (the DOAS supplies cooler air\nwhen outdoor conditions are warmer). The ventilation air temperature is maintained\nby a two-speed direct expansion (DX) cooling coil and a single-speed DX\nheating coil with backup electrical resistance heat.\n\nThe heating and cooling needs of the space are met with the radiant constructions,\nwhich use chilled water at 12.8C (55F) and a hot water temperature somewhere\nbetween 32.2C (90F) and 49C (120F) (warmer temperatures are used in colder\nclimate zones).\n\nNote that radiant systems are particularly limited in cooling capacity and\nusing them may result in many unmet hours. To reduce unmet hours, one can\nremove carpets, reduce internal loads, reduce solar and envelope gains during\npeak times, add thermal mass, and use an expanded comfort range.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8570,7 +8823,7 @@
       },
       "FCU": {
         "title": "FCU",
-        "description": "Fan Coil Unit (FCU) heating/cooling system (with no ventilation).",
+        "description": "Fan Coil Unit (FCU) heating/cooling system (with no ventilation).\n\nEach room/zone receives its own Fan Coil Unit (FCU), which meets the heating\nand cooling loads of the space. The cooling coil in the FCU is always chilled\nwater cooling coil, which is connected to a chilled water loop operating\nat 6.7C (44F). The heating coil is a hot water coil except when when electric\nbaseboards or gas heaters are specified. Hot water temperature is 82C (180F) for\nboiler/district heating and 49C (120F) when ASHP is used.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8635,7 +8888,7 @@
       },
       "WSHP": {
         "title": "WSHP",
-        "description": "Direct evaporative cooling systems (with optional heating).",
+        "description": "Water Source Heat Pump (WSHP) heating/cooling system (with no ventilation).\n\nEach room/zone receives its own Water Source Heat Pump (WSHP), which meets\nthe heating and cooling loads of the space. All WSHPs are connected to the\nsame water condenser loop, which has its temperature maintained by the\nequipment_type (eg. Boiler with Cooling Tower).",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8697,7 +8950,7 @@
       },
       "VRF": {
         "title": "VRF",
-        "description": "Variable Refrigerant Flow (VRF) heating/cooling system (with no ventilation).",
+        "description": "Variable Refrigerant Flow (VRF) heating/cooling system (with no ventilation).\n\nEach room/zone receives its own Variable Refrigerant Flow (VRF) terminal,\nwhich meets the heating and cooling loads of the space. All room/zone terminals\nare connected to the same outdoor unit, meaning that either all rooms must be\nin cooling or heating mode together.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8762,7 +9015,7 @@
       },
       "Baseboard": {
         "title": "Baseboard",
-        "description": "Baseboard heating system. Intended for spaces only requiring heating.",
+        "description": "Baseboard heating system.\n\nBaseboard systems are intended for spaces only requiring heating and\nno ventilation or cooling. Each room/zone will get its own baseboard\nheating unit that satisfies the heating load.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8830,7 +9083,7 @@
       },
       "EvaporativeCooler": {
         "title": "EvaporativeCooler",
-        "description": "Direct evaporative cooling systems (with optional heating).",
+        "description": "Direct evaporative cooling systems (with optional heating).\n\nEach room/zone will receive its own air loop sized to meet the sensible load,\nwhich contains an evaporative cooler that directly adds humidity to the room\nair to cool it. The loop contains an outdoor air mixer, which is used whenever\nthe outdoor air has a lower wet bulb temperature than the return air from\nthe room. In the event that the combination of outdoor and room return air\nair is too humid, a backup single-speed direct expansion (DX) cooling coil\nwill be used. Heating loads can be met with various options, including\nseveral types of baseboards, a furnace, or gas unit heaters.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8900,7 +9153,7 @@
       },
       "Residential": {
         "title": "Residential",
-        "description": "Residential Air Conditioning, Heat Pump or Furnace system.",
+        "description": "Residential Air Conditioning, Heat Pump or Furnace system.\n\nResidential HVAC systems are intended primarily for single-family homes and\ninclude a wide variety of options. In all cases, each room/zone will receive\nits own air loop WITHOUT an outdoor air inlet (air is simply being recirculated\nthrough the loop). Residential air conditioning (AC) systems are modeled\nusing a unitary system with a single-speed direct expansion (DX) cooling\ncoil in the loop. Residential heat pump (HP) systems use a single-speed DX\nheating coil in the unitary system and the residential furnace option uses\na gas coil in the unitary system. In all cases, the properties of these coils\nare set to reflect a typical residential system.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -8968,7 +9221,7 @@
       },
       "WindowAC": {
         "title": "WindowAC",
-        "description": "Window Air Conditioning cooling system (with optional heating).",
+        "description": "Window Air Conditioning cooling system (with optional heating).\n\nEach room/zone will receive its own Packaged Terminal Air Conditioner (PTAC)\nwith properties set to reflect a typical window air conditioning (AC) unit.\nNo ventilation air is supplied by the unit and the cooling coil within the\nunit is a single-speed direct expansion (DX) cooling coil. Heating loads\ncan be met with various options, including several types of baseboards,\na furnace, or gas unit heaters.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -9030,7 +9283,7 @@
       },
       "GasUnitHeater": {
         "title": "GasUnitHeater",
-        "description": "Gas unit heating system. Intended for spaces only requiring heating.",
+        "description": "Gas unit heating system.\n\nGas unit systems are intended for spaces only requiring heating and no\nventilation or cooling. Each room/zone will get its own gaa heating unit\nthat satisfies the heating load.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -9100,7 +9353,7 @@
       },
       "Radiant": {
         "title": "Radiant",
-        "description": "Low Temperature Radiant system.",
+        "description": "Low temperature radiant HVAC system.\n\nThis HVAC template will change the floor and/or ceiling constructions\nof the Rooms that it is applied to, replacing them with a construction that\naligns with the radiant_type property (eg. CeilingMetalPanel).\n\nThe heating and cooling needs of the space are met with the radiant constructions,\nwhich use chilled water at 12.8C (55F) and a hot water temperature somewhere\nbetween 32.2C (90F) and 49C (120F) (warmer temperatures are used in colder\nclimate zones).\n\nNote that radiant systems are particularly limited in cooling capacity and\nusing them may result in many unmet hours. To reduce unmet hours, one can\nremove carpets, reduce internal loads, reduce solar and envelope gains during\npeak times, add thermal mass, and use an expanded comfort range.",
         "type": "object",
         "properties": {
           "identifier": {
@@ -9177,6 +9430,48 @@
         ],
         "additionalProperties": false
       },
+      "DetailedHVAC": {
+        "title": "DetailedHVAC",
+        "description": "Detailed HVAC system object defined using IronBug or OpenStudio .NET bindings.",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "description": "Text string for a unique object ID. This identifier remains constant as the object is mutated, copied, and serialized to different formats (eg. dict, idf, osm). This identifier is also used to reference the object across a Model. It must be < 100 characters, use only ASCII characters and exclude (, ; ! \\n \\t).",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^,;!\\n\\t]+$",
+            "type": "string"
+          },
+          "specification": {
+            "title": "Specification",
+            "description": "A JSON-serializable dictionary representing the full specification of the detailed system. This can be obtained by calling the ToJson() method on any IronBug HVAC system and then serializing the resulting JSON string into a Python dictionary using the native Python json package. Note that the Rooms that the HVAC is assigned to must be specified as ThermalZones under this specification in order for the resulting Model this HVAC is a part of to be valid.",
+            "type": "object"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "description": "Display name of the object with no character restrictions.",
+            "type": "string"
+          },
+          "user_data": {
+            "title": "User Data",
+            "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+            "type": "object"
+          },
+          "type": {
+            "title": "Type",
+            "default": "DetailedHVAC",
+            "pattern": "^DetailedHVAC$",
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "identifier",
+          "specification"
+        ],
+        "additionalProperties": false
+      },
       "SHWEquipmentType": {
         "title": "SHWEquipmentType",
         "description": "An enumeration.",
@@ -9237,8 +9532,7 @@
             "anyOf": [
               {
                 "type": "number",
-                "exclusiveMinimum": 0,
-                "format": "double"
+                "exclusiveMinimum": 0
               },
               {
                 "$ref": "#/components/schemas/Autocalculate"
@@ -9251,8 +9545,7 @@
             "default": 22,
             "anyOf": [
               {
-                "type": "number",
-                "format": "double"
+                "type": "number"
               },
               {
                 "type": "string"
@@ -9463,8 +9756,7 @@
               {
                 "type": "number",
                 "minimum": 0,
-                "maximum": 1,
-                "format": "double"
+                "maximum": 1
               }
             ]
           }
@@ -10650,7 +10942,7 @@
                   "user_data": null,
                   "type": "EnergyMaterial",
                   "roughness": "MediumRough",
-                  "thickness": 0.05,
+                  "thickness": 0.025,
                   "conductivity": 0.03,
                   "density": 43.0,
                   "specific_heat": 1210.0,
@@ -10705,6 +10997,15 @@
                   "type": "ShadeConstruction",
                   "solar_reflectance": 0.35,
                   "visible_reflectance": 0.35,
+                  "is_specular": false
+                },
+                {
+                  "identifier": "Generic Context",
+                  "display_name": null,
+                  "user_data": null,
+                  "type": "ShadeConstruction",
+                  "solar_reflectance": 0.2,
+                  "visible_reflectance": 0.2,
                   "is_specular": false
                 },
                 {
@@ -10878,6 +11179,7 @@
                 "interior_glass_construction": "Generic Single Pane"
               },
               "shade_construction": "Generic Shade",
+              "context_construction": "Generic Context",
               "air_boundary_construction": "Generic Air Boundary"
             },
             "readOnly": true,
@@ -11048,6 +11350,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/Radiant"
+                },
+                {
+                  "$ref": "#/components/schemas/DetailedHVAC"
                 }
               ]
             }
@@ -12596,6 +12901,18 @@
                 "roughness": 0.0
               },
               {
+                "identifier": "generic_context_0.20",
+                "display_name": null,
+                "type": "Plastic",
+                "modifier": null,
+                "dependencies": [],
+                "r_reflectance": 0.2,
+                "g_reflectance": 0.2,
+                "b_reflectance": 0.2,
+                "specularity": 0.0,
+                "roughness": 0.0
+              },
+              {
                 "identifier": "generic_interior_window_vis_0.88",
                 "display_name": null,
                 "type": "Glass",
@@ -12747,6 +13064,13 @@
             "title": "Air Boundary Modifier",
             "description": "Global Honeybee Modifier for AirBoundary Faces.",
             "default": "air_boundary",
+            "readOnly": true,
+            "type": "string"
+          },
+          "context_modifier": {
+            "title": "Context Modifier",
+            "description": "Global Honeybee Modifier for context Shades.",
+            "default": "generic_context_0.20",
             "readOnly": true,
             "type": "string"
           }
@@ -13651,117 +13975,6 @@
         ],
         "additionalProperties": false
       },
-      "Color": {
-        "title": "Color",
-        "description": "A RGB color.",
-        "type": "object",
-        "properties": {
-          "r": {
-            "title": "R",
-            "description": "Value for red channel.",
-            "minimum": 0,
-            "maximum": 255,
-            "type": "integer",
-            "format": "int32"
-          },
-          "g": {
-            "title": "G",
-            "description": "Value for green channel.",
-            "minimum": 0,
-            "maximum": 255,
-            "type": "integer",
-            "format": "int32"
-          },
-          "b": {
-            "title": "B",
-            "description": "Value for blue channel.",
-            "minimum": 0,
-            "maximum": 255,
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "title": "Type",
-            "default": "Color",
-            "pattern": "^Color$",
-            "type": "string",
-            "readOnly": true
-          },
-          "a": {
-            "title": "A",
-            "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
-            "default": 255,
-            "minimum": 0,
-            "maximum": 255,
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "required": [
-          "r",
-          "g",
-          "b"
-        ],
-        "additionalProperties": false
-      },
-      "Mesh3D": {
-        "title": "Mesh3D",
-        "description": "A mesh in 3D space.",
-        "type": "object",
-        "properties": {
-          "vertices": {
-            "title": "Vertices",
-            "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-            "minItems": 3,
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "format": "double"
-              },
-              "minItems": 3,
-              "maxItems": 3
-            }
-          },
-          "faces": {
-            "title": "Faces",
-            "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 0,
-                "format": "int32"
-              },
-              "minItems": 3,
-              "maxItems": 4
-            }
-          },
-          "type": {
-            "title": "Type",
-            "default": "Mesh3D",
-            "pattern": "^Mesh3D$",
-            "type": "string",
-            "readOnly": true
-          },
-          "colors": {
-            "title": "Colors",
-            "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Color"
-            }
-          }
-        },
-        "required": [
-          "vertices",
-          "faces"
-        ],
-        "additionalProperties": false
-      },
       "SensorGrid": {
         "title": "SensorGrid",
         "description": "A grid of sensors.",
@@ -14082,6 +14295,18 @@
                   "roughness": 0.0
                 },
                 {
+                  "identifier": "generic_context_0.20",
+                  "display_name": null,
+                  "type": "Plastic",
+                  "modifier": null,
+                  "dependencies": [],
+                  "r_reflectance": 0.2,
+                  "g_reflectance": 0.2,
+                  "b_reflectance": 0.2,
+                  "specularity": 0.0,
+                  "roughness": 0.0
+                },
+                {
                   "identifier": "generic_interior_window_vis_0.88",
                   "display_name": null,
                   "type": "Glass",
@@ -14153,7 +14378,8 @@
                 "interior_modifier": "generic_interior_shade_0.50",
                 "type": "ShadeModifierSetAbridged"
               },
-              "air_boundary_modifier": "air_boundary"
+              "air_boundary_modifier": "air_boundary",
+              "context_modifier": "generic_context_0.20"
             },
             "readOnly": true,
             "allOf": [
@@ -14293,7 +14519,7 @@
           "version": {
             "title": "Version",
             "description": "Text string for the current version of the schema.",
-            "default": "1.50.5",
+            "default": "1.53.4",
             "pattern": "([0-9]+)\\.([0-9]+)\\.([0-9]+)",
             "type": "string",
             "readOnly": true
@@ -14336,6 +14562,14 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Door"
+            }
+          },
+          "shade_meshes": {
+            "title": "Shade Meshes",
+            "description": "A list of ShadeMesh in the model.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShadeMesh"
             }
           },
           "units": {

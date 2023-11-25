@@ -44,6 +44,7 @@ require 'honeybee/geometry/door'
 require 'honeybee/geometry/aperture'
 require 'honeybee/geometry/face'
 require 'honeybee/geometry/room'
+require 'honeybee/geometry/shademesh'
 
 # import the HVAC objects
 require 'honeybee/hvac/ideal_air'
