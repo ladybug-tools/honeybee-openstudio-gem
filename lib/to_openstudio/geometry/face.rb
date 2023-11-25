@@ -56,12 +56,14 @@ module Honeybee
         os_vertices << OpenStudio::Point3d.new(vertex[0], vertex[1], vertex[2])
       end
 
-      # create the openstudio surface and assign the type
+      # create the openstudio surface
       os_surface = OpenStudio::Model::Surface.new(os_vertices, openstudio_model)
       os_surface.setName(@hash[:identifier])
       unless @hash[:display_name].nil?
         os_surface.setDisplayName(@hash[:display_name])
       end
+
+      # assign the type
       os_surface.setSurfaceType(@hash[:face_type])
 
       if @hash[:properties].key?(:energy)
