@@ -157,10 +157,12 @@ module Honeybee
         end
         # set any design days
         if @hash[:sizing_parameter][:design_days]
-          @hash[:sizing_parameter][:design_days].each do |des_day|
-            des_day_object = DesignDay.new(des_day)
-            os_des_day = des_day_object.to_openstudio(@openstudio_model)
-            db_temps << des_day[:dry_bulb_condition][:dry_bulb_max]
+          if @hash[:simulation_control][:do_zone_sizing].nil? || @hash[:simulation_control][:do_zone_sizing] == true
+            @hash[:sizing_parameter][:design_days].each do |des_day|
+              des_day_object = DesignDay.new(des_day)
+              os_des_day = des_day_object.to_openstudio(@openstudio_model)
+              db_temps << des_day[:dry_bulb_condition][:dry_bulb_max]
+            end
           end
         end
       end
