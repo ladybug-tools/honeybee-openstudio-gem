@@ -119,8 +119,8 @@ module Honeybee
     # remove illegal characters in identifier
     def self.clean_identifier(str)
       encode_str = str.encode(Encoding.find('ASCII'), **@@encoding_options)
-      encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
       encode_str = truncate(encode_str, 97)
+      encode_str.gsub(/[^.A-Za-z0-9_-]/, '_').gsub(' ', '_')
     end
 
     # Create methods to get and set display name
