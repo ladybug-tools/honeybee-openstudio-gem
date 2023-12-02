@@ -254,6 +254,12 @@ module Honeybee
         end
       end
 
+      # set defaults for the simulation output
+      os_unmet_tol = @openstudio_model.getOutputControlReportingTolerances
+      default_unmet_tol = out_defaults[:unmet_setpoint_tolerance][:default]
+      os_unmet_tol.setToleranceforTimeHeatingSetpointNotMet(default_unmet_tol)
+      os_unmet_tol.setToleranceforTimeCoolingSetpointNotMet(default_unmet_tol)
+
       # set Outputs for the simulation
       if @hash[:output]
         if @hash[:output][:outputs]
@@ -271,6 +277,11 @@ module Honeybee
           @hash[:output][:summary_reports].each do |report|
             os_report.addSummaryReport(report)
           end
+        end
+        if @hash[:output][:unmet_setpoint_tolerance]
+          unmet_tol = @hash[:output][:unmet_setpoint_tolerance]
+          os_unmet_tol.setToleranceforTimeHeatingSetpointNotMet(unmet_tol)
+          os_unmet_tol.setToleranceforTimeCoolingSetpointNotMet(unmet_tol)
         end
       end
 
