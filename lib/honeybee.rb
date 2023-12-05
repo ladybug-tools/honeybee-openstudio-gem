@@ -91,6 +91,7 @@ require 'honeybee/schedule/ruleset'
 
 # import the ventilation and internal mass objects
 require 'honeybee/ventcool/control'
+require 'honeybee/ventcool/fan'
 require 'honeybee/ventcool/opening'
 require 'honeybee/ventcool/simulation'
 require 'honeybee/internalmass'
