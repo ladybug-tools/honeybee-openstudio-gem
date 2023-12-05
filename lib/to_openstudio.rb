@@ -91,6 +91,7 @@ require 'to_openstudio/schedule/ruleset'
 
 # import the ventilation and internal mass objects
 require 'to_openstudio/ventcool/control'
+require 'to_openstudio/ventcool/fan'
 require 'to_openstudio/ventcool/opening'
 require 'to_openstudio/ventcool/simulation'
 require 'to_openstudio/internalmass'

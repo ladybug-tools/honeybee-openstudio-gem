@@ -435,6 +435,15 @@ module Honeybee
           end
         end
 
+        # assign any ventilation fan loads if specified
+        if @hash[:properties][:energy][:fans]
+          @hash[:properties][:energy][:fans].each do |fan|
+            hb_fan = VentilationFanAbridged.new(fan)
+            os_fan = hb_fan.to_openstudio(openstudio_model, os_thermal_zone)
+            os_fan.addToThermalZone(os_thermal_zone)
+          end
+        end
+
         # assign any internal masses if specified
         if @hash[:properties][:energy][:internal_masses]
           @hash[:properties][:energy][:internal_masses].each do |int_mass|
