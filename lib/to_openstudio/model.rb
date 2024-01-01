@@ -133,6 +133,7 @@ module Honeybee
       $shw_for_plant = nil  # track whether a hot water plant is needed
       $detailed_hvac_hash = Hash.new  # track the detailed HVAC systems that have been assigned
       $ironbug_exe = nil  # ironbug executable; will be overwritten by any detailed HVACs
+      $generators = []  # track the generator objects in the model
 
       # create all of the non-geometric model elements
       if @hash[:properties].key?(:energy)
@@ -217,6 +218,20 @@ module Honeybee
       create_orphaned_apertures
       create_orphaned_doors
       create_shade_meshes
+
+      unless $generators.empty?
+        if log_report
+          puts 'Translating Electricity Generators'
+        end
+        if @hash[:properties][:energy][:electric_load_center]
+          load_center_object = ElectricLoadCenter.new(
+            @hash[:properties][:energy][:electric_load_center])
+        else
+          empty_hash = Hash.new
+          load_center_object = ElectricLoadCenter.new(empty_hash)
+        end
+        load_center_object.to_openstudio(@openstudio_model, $generators)
+      end
     end
 
     def create_materials(material_dicts, check_existing=false)
