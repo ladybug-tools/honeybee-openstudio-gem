@@ -96,6 +96,10 @@ require 'honeybee/ventcool/opening'
 require 'honeybee/ventcool/simulation'
 require 'honeybee/internalmass'
 
+# import the generator objects
+require 'honeybee/generator/loadcenter'
+require 'honeybee/generator/pv'
+
 # import the simulation objects
 require 'honeybee/simulation/design_day'
 require 'honeybee/simulation/parameter_model'

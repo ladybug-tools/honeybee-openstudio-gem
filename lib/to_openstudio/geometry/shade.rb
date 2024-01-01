@@ -82,6 +82,13 @@ module Honeybee
             os_shading_surface.setTransmittanceSchedule(os_schedule)
           end
         end
+
+        # create PV objects if there are properties
+        if @hash[:properties][:energy][:pv_properties]
+          gen_obj = PVProperties.new(@hash[:properties][:energy][:pv_properties])
+          os_gen_obj = gen_obj.to_openstudio(openstudio_model, os_shading_surface)
+          $generators << os_gen_obj
+        end
       end
 
       os_shading_surface

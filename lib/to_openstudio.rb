@@ -96,6 +96,10 @@ require 'to_openstudio/ventcool/opening'
 require 'to_openstudio/ventcool/simulation'
 require 'to_openstudio/internalmass'
 
+# import the generator objects
+require 'to_openstudio/generator/loadcenter'
+require 'to_openstudio/generator/pv'
+
 # extend the simulation objects
 require 'to_openstudio/simulation/design_day'
 require 'to_openstudio/simulation/parameter_model'
