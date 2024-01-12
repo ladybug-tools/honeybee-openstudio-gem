@@ -55,178 +55,180 @@ module Honeybee
     def add_hot_water_plants(openstudio_model, shw_hashes)
       # add district hot water loops to supply all of the shw_connections
       shw_hashes.each do |shw_hash|
-        # create the plant loop
-        hot_water_plant = OpenStudio::Model::PlantLoop.new(openstudio_model)
-        hot_water_plant.setName('SHW Loop ' + shw_hash[:identifier])
-        hot_water_plant.setMaximumLoopTemperature(@@max_target_temp)
-        hot_water_plant.setMinimumLoopTemperature(10)  # default value in C from OpenStudio Application
+        unless @@shw_rates[shw_hash[:identifier]].nil?
+          # create the plant loop
+          hot_water_plant = OpenStudio::Model::PlantLoop.new(openstudio_model)
+          hot_water_plant.setName('SHW Loop ' + shw_hash[:identifier])
+          hot_water_plant.setMaximumLoopTemperature(@@max_target_temp)
+          hot_water_plant.setMinimumLoopTemperature(10)  # default value in C from OpenStudio Application
 
-        # edit the sizing information to be for a hot water loop
-        loop_sizing = hot_water_plant.sizingPlant()
-        loop_sizing.setLoopType('Heating')
-        loop_sizing.setDesignLoopExitTemperature(@@max_target_temp)  
-        loop_sizing.setLoopDesignTemperatureDifference(5)  # default value in C from OpenStudio Application
+          # edit the sizing information to be for a hot water loop
+          loop_sizing = hot_water_plant.sizingPlant()
+          loop_sizing.setLoopType('Heating')
+          loop_sizing.setDesignLoopExitTemperature(@@max_target_temp)  
+          loop_sizing.setLoopDesignTemperatureDifference(5)  # default value in C from OpenStudio Application
 
-        # add a setpoint manager for the loop
-        hot_sch = @@max_temp_schedule
-        if @@max_temp_schedule.nil?
-          hot_sch_name = @@max_target_temp.to_s + 'C Hot Water'
-          hot_sch = create_constant_schedule(openstudio_model, hot_sch_name, @@max_target_temp)
-        end
-        sp_manager = OpenStudio::Model::SetpointManagerScheduled.new(openstudio_model, hot_sch)
-        sp_manager.addToNode(hot_water_plant.supplyOutletNode())
-
-        # add a constant speed pump for the loop
-        hot_water_pump = OpenStudio::Model::PumpConstantSpeed.new(openstudio_model)
-        hot_water_pump.setName('SHW Pump' + @@sys_count.to_s)
-        hot_water_pump.setRatedPumpHead(29891)  # default value in Pa from OpenStudio Application
-        hot_water_pump.setMotorEfficiency(0.9)  # default value from OpenStudio Application
-        hot_water_pump.addToNode(hot_water_plant.supplyInletNode())
-
-        eq_type = shw_hash[:equipment_type]
-        if eq_type == 'Default_District_SHW'
-          # add a district heating system to supply the heat for the loop
-          district_hw = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
-          district_hw.setName('Ideal Service Hot Water Heater')
-          district_hw.setHeaterFuelType('DistrictHeating')
-          district_hw.setOffCycleParasiticFuelType('DistrictHeating')
-          district_hw.setOnCycleParasiticFuelType('DistrictHeating')
-          district_hw.setHeaterThermalEfficiency(1.0)
-          district_hw.setHeaterMaximumCapacity(1000000)
-          district_hw.setTankVolume(0)
-          district_hw.setHeaterControlType('Modulate')
-          target_sch_name = '22C Ambient Condition'
-          target_sch = create_constant_schedule(openstudio_model, target_sch_name, 22)
-          district_hw.setAmbientTemperatureSchedule(target_sch)
-          district_hw.setOffCycleLossCoefficienttoAmbientTemperature(0)
-          district_hw.setOnCycleLossCoefficienttoAmbientTemperature(0)
-          hot_water_plant.addSupplyBranchForComponent(district_hw)
-          # try to minimize the impact of the pump as much as possible
-          hot_water_pump.setEndUseSubcategory('Water Systems')
-          hot_water_pump.setMotorEfficiency(0.9)
-        else
-          # add a water heater to supply the heat for the loop
-          heater = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
-          if eq_type == 'Electric_WaterHeater' || eq_type == 'HeatPump_WaterHeater' || eq_type == 'Electric_TanklessHeater'
-            heater.setHeaterFuelType('Electricity')
-            heater.setOffCycleParasiticFuelType('Electricity')
-            heater.setOnCycleParasiticFuelType('Electricity')
+          # add a setpoint manager for the loop
+          hot_sch = @@max_temp_schedule
+          if @@max_temp_schedule.nil?
+            hot_sch_name = @@max_target_temp.to_s + 'C Hot Water'
+            hot_sch = create_constant_schedule(openstudio_model, hot_sch_name, @@max_target_temp)
           end
+          sp_manager = OpenStudio::Model::SetpointManagerScheduled.new(openstudio_model, hot_sch)
+          sp_manager.addToNode(hot_water_plant.supplyOutletNode())
 
-          # set the water heater efficiency
-          if eq_type == 'HeatPump_WaterHeater'
-            heater.setHeaterThermalEfficiency(1.0)
-          elsif shw_hash[:heater_efficiency].nil?
-            if eq_type == 'Electric_WaterHeater' || eq_type == 'Electric_TanklessHeater'
-              heater.setHeaterThermalEfficiency(1.0)
-            else
-              heater.setHeaterThermalEfficiency(0.8)
-            end
+          # add a constant speed pump for the loop
+          hot_water_pump = OpenStudio::Model::PumpConstantSpeed.new(openstudio_model)
+          hot_water_pump.setName('SHW Pump' + @@sys_count.to_s)
+          hot_water_pump.setRatedPumpHead(29891)  # default value in Pa from OpenStudio Application
+          hot_water_pump.setMotorEfficiency(0.9)  # default value from OpenStudio Application
+          hot_water_pump.addToNode(hot_water_plant.supplyInletNode())
+
+          eq_type = shw_hash[:equipment_type]
+          if eq_type == 'Default_District_SHW'
+            # add a district heating system to supply the heat for the loop
+            district_hw = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
+            district_hw.setName('Ideal Service Hot Water Heater')
+            district_hw.setHeaterFuelType('DistrictHeating')
+            district_hw.setOffCycleParasiticFuelType('DistrictHeating')
+            district_hw.setOnCycleParasiticFuelType('DistrictHeating')
+            district_hw.setHeaterThermalEfficiency(1.0)
+            district_hw.setHeaterMaximumCapacity(1000000)
+            district_hw.setTankVolume(0)
+            district_hw.setHeaterControlType('Modulate')
+            target_sch_name = '22C Ambient Condition'
+            target_sch = create_constant_schedule(openstudio_model, target_sch_name, 22)
+            district_hw.setAmbientTemperatureSchedule(target_sch)
+            district_hw.setOffCycleLossCoefficienttoAmbientTemperature(0)
+            district_hw.setOnCycleLossCoefficienttoAmbientTemperature(0)
+            hot_water_plant.addSupplyBranchForComponent(district_hw)
+            # try to minimize the impact of the pump as much as possible
+            hot_water_pump.setEndUseSubcategory('Water Systems')
+            hot_water_pump.setMotorEfficiency(0.9)
           else
-            heater.setHeaterThermalEfficiency(shw_hash[:heater_efficiency])
-          end
+            # add a water heater to supply the heat for the loop
+            heater = OpenStudio::Model::WaterHeaterMixed.new(openstudio_model)
+            if eq_type == 'Electric_WaterHeater' || eq_type == 'HeatPump_WaterHeater' || eq_type == 'Electric_TanklessHeater'
+              heater.setHeaterFuelType('Electricity')
+              heater.setOffCycleParasiticFuelType('Electricity')
+              heater.setOnCycleParasiticFuelType('Electricity')
+            end
 
-          # set the ambient condition of the water tank
-          to_thermal_zone = false
-          unless shw_hash[:ambient_condition].nil?
-            if shw_hash[:ambient_condition].is_a? Numeric
-              target_sch_name = shw_hash[:ambient_condition].to_s + 'C Ambient Condition'
-              target_sch = create_constant_schedule(
-                openstudio_model, target_sch_name, shw_hash[:ambient_condition])
-              heater.setAmbientTemperatureSchedule(target_sch)
+            # set the water heater efficiency
+            if eq_type == 'HeatPump_WaterHeater'
+              heater.setHeaterThermalEfficiency(1.0)
+            elsif shw_hash[:heater_efficiency].nil?
+              if eq_type == 'Electric_WaterHeater' || eq_type == 'Electric_TanklessHeater'
+                heater.setHeaterThermalEfficiency(1.0)
+              else
+                heater.setHeaterThermalEfficiency(0.8)
+              end
             else
+              heater.setHeaterThermalEfficiency(shw_hash[:heater_efficiency])
+            end
+
+            # set the ambient condition of the water tank
+            to_thermal_zone = false
+            unless shw_hash[:ambient_condition].nil?
+              if shw_hash[:ambient_condition].is_a? Numeric
+                target_sch_name = shw_hash[:ambient_condition].to_s + 'C Ambient Condition'
+                target_sch = create_constant_schedule(
+                  openstudio_model, target_sch_name, shw_hash[:ambient_condition])
+                heater.setAmbientTemperatureSchedule(target_sch)
+              else
+                source_zone_ref = openstudio_model.getThermalZoneByName(shw_hash[:ambient_condition])
+                unless source_zone_ref.empty?
+                  source_zone = source_zone_ref.get
+                  heater.setAmbientTemperatureThermalZone(source_zone)
+                end
+                heater.setAmbientTemperatureIndicator('ThermalZone')
+                to_thermal_zone = true
+              end
+            else
+              target_sch_name = '22C Ambient Condition'
+              target_sch = create_constant_schedule(openstudio_model, target_sch_name, 22)
+              heater.setAmbientTemperatureSchedule(target_sch)
+            end
+
+            # set the ambient loss coefficient
+            if to_thermal_zone
+              unless shw_hash[:ambient_loss_coefficient].nil?
+                heater.setOffCycleLossFractiontoThermalZone(
+                  shw_hash[:ambient_loss_coefficient])
+                heater.setOnCycleLossFractiontoThermalZone(
+                  shw_hash[:ambient_loss_coefficient])
+              else
+                heater.setOffCycleLossFractiontoThermalZone(6)
+                heater.setOnCycleLossFractiontoThermalZone(6)
+              end
+            else
+              unless shw_hash[:ambient_loss_coefficient].nil?
+                heater.setOffCycleLossCoefficienttoAmbientTemperature(
+                  shw_hash[:ambient_loss_coefficient])
+                heater.setOnCycleLossCoefficienttoAmbientTemperature(
+                  shw_hash[:ambient_loss_coefficient])
+              else
+                heater.setOffCycleLossCoefficienttoAmbientTemperature(6)
+                heater.setOnCycleLossCoefficienttoAmbientTemperature(6)
+              end
+            end
+
+            # set the capactiy and and controls of the water heater
+            heater.setHeaterMaximumCapacity(1000000)
+            if eq_type == 'Gas_TanklessHeater' || eq_type == 'Electric_TanklessHeater'
+              heater.setName('SHW Tankless WaterHeater' + @@sys_count.to_s)
+              heater.setTankVolume(0)
+              heater.setHeaterControlType('Modulate')
+              heater.setOffCycleLossCoefficienttoAmbientTemperature(0)
+              heater.setOnCycleLossCoefficienttoAmbientTemperature(0)
+            else
+              heater.setName('SHW WaterHeater' + @@sys_count.to_s)
+              heater.setTankVolume(@@shw_rates[shw_hash[:identifier]])
+            end
+
+            # add it to the loop
+            hot_water_plant.addSupplyBranchForComponent(heater)
+            
+            # if it's a heat pump system, then add the pump
+            if eq_type == 'HeatPump_WaterHeater'
+              # create a coil for the heat pump
+              heat_pump = OpenStudio::Model::CoilWaterHeatingAirToWaterHeatPump.new(openstudio_model)
+              heat_pump.setName('SHW HPWH DX Coil' + @@sys_count.to_s)
+              if shw_hash[:heater_efficiency].nil?
+                heat_pump.setRatedCOP(3.5)
+              else
+                heat_pump.setRatedCOP(shw_hash[:heater_efficiency])
+              end
+
+              # add a fan for the heat pump system
+              fan = OpenStudio::Model::FanOnOff.new(openstudio_model)
+              fan.setName('HPWH Fan' + @@sys_count.to_s)
+              fan.setEndUseSubcategory('Water Systems')
+              setpt_sch = create_constant_schedule(
+                openstudio_model, 'HPWH Setpoint' + @@sys_count.to_s, @@max_target_temp + (@@hp_deadband * 2))
+              inlet_sch = create_constant_schedule(
+                openstudio_model, 'Inlet Air Mixer Fraction' + @@sys_count.to_s, 0.2)
+
+              # add a water heater to supply the heat for the loop
+              heat_sys = OpenStudio::Model::WaterHeaterHeatPump.new(
+                openstudio_model, heat_pump, heater, fan, setpt_sch, inlet_sch)
+              heat_sys.setDeadBandTemperatureDifference(@@hp_deadband)
+              
               source_zone_ref = openstudio_model.getThermalZoneByName(shw_hash[:ambient_condition])
               unless source_zone_ref.empty?
                 source_zone = source_zone_ref.get
-                heater.setAmbientTemperatureThermalZone(source_zone)
+                heat_sys.addToThermalZone(source_zone)
               end
-              heater.setAmbientTemperatureIndicator('ThermalZone')
-              to_thermal_zone = true
-            end
-          else
-            target_sch_name = '22C Ambient Condition'
-            target_sch = create_constant_schedule(openstudio_model, target_sch_name, 22)
-            heater.setAmbientTemperatureSchedule(target_sch)
-          end
-
-          # set the ambient loss coefficient
-          if to_thermal_zone
-            unless shw_hash[:ambient_loss_coefficient].nil?
-              heater.setOffCycleLossFractiontoThermalZone(
-                shw_hash[:ambient_loss_coefficient])
-              heater.setOnCycleLossFractiontoThermalZone(
-                shw_hash[:ambient_loss_coefficient])
-            else
-              heater.setOffCycleLossFractiontoThermalZone(6)
-              heater.setOnCycleLossFractiontoThermalZone(6)
-            end
-          else
-            unless shw_hash[:ambient_loss_coefficient].nil?
-              heater.setOffCycleLossCoefficienttoAmbientTemperature(
-                shw_hash[:ambient_loss_coefficient])
-              heater.setOnCycleLossCoefficienttoAmbientTemperature(
-                shw_hash[:ambient_loss_coefficient])
-            else
-              heater.setOffCycleLossCoefficienttoAmbientTemperature(6)
-              heater.setOnCycleLossCoefficienttoAmbientTemperature(6)
+              heat_sys.setName('SHW WaterHeater HeatPump' + @@sys_count.to_s)
             end
           end
 
-          # set the capactiy and and controls of the water heater
-          heater.setHeaterMaximumCapacity(1000000)
-          if eq_type == 'Gas_TanklessHeater' || eq_type == 'Electric_TanklessHeater'
-            heater.setName('SHW Tankless WaterHeater' + @@sys_count.to_s)
-            heater.setTankVolume(0)
-            heater.setHeaterControlType('Modulate')
-            heater.setOffCycleLossCoefficienttoAmbientTemperature(0)
-            heater.setOnCycleLossCoefficienttoAmbientTemperature(0)
-          else
-            heater.setName('SHW WaterHeater' + @@sys_count.to_s)
-            heater.setTankVolume(@@shw_rates[shw_hash[:identifier]])
+          # add all of the water use connections to the loop and total the capacity
+          @@shw_connections[shw_hash[:identifier]].each do |shw_conn|
+            hot_water_plant.addDemandBranchForComponent(shw_conn)
           end
-
-          # add it to the loop
-          hot_water_plant.addSupplyBranchForComponent(heater)
-          
-          # if it's a heat pump system, then add the pump
-          if eq_type == 'HeatPump_WaterHeater'
-            # create a coil for the heat pump
-            heat_pump = OpenStudio::Model::CoilWaterHeatingAirToWaterHeatPump.new(openstudio_model)
-            heat_pump.setName('SHW HPWH DX Coil' + @@sys_count.to_s)
-            if shw_hash[:heater_efficiency].nil?
-              heat_pump.setRatedCOP(3.5)
-            else
-              heat_pump.setRatedCOP(shw_hash[:heater_efficiency])
-            end
-
-            # add a fan for the heat pump system
-            fan = OpenStudio::Model::FanOnOff.new(openstudio_model)
-            fan.setName('HPWH Fan' + @@sys_count.to_s)
-            fan.setEndUseSubcategory('Water Systems')
-            setpt_sch = create_constant_schedule(
-              openstudio_model, 'HPWH Setpoint' + @@sys_count.to_s, @@max_target_temp + (@@hp_deadband * 2))
-            inlet_sch = create_constant_schedule(
-              openstudio_model, 'Inlet Air Mixer Fraction' + @@sys_count.to_s, 0.2)
-
-            # add a water heater to supply the heat for the loop
-            heat_sys = OpenStudio::Model::WaterHeaterHeatPump.new(
-              openstudio_model, heat_pump, heater, fan, setpt_sch, inlet_sch)
-            heat_sys.setDeadBandTemperatureDifference(@@hp_deadband)
-            
-            source_zone_ref = openstudio_model.getThermalZoneByName(shw_hash[:ambient_condition])
-            unless source_zone_ref.empty?
-              source_zone = source_zone_ref.get
-              heat_sys.addToThermalZone(source_zone)
-            end
-            heat_sys.setName('SHW WaterHeater HeatPump' + @@sys_count.to_s)
-          end
+          @@sys_count = @@sys_count + 1
         end
-
-        # add all of the water use connections to the loop and total the capacity
-        @@shw_connections[shw_hash[:identifier]].each do |shw_conn|
-          hot_water_plant.addDemandBranchForComponent(shw_conn)
-        end
-        @@sys_count = @@sys_count + 1
       end
     end
 
