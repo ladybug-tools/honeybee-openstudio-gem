@@ -50,6 +50,7 @@ module Honeybee
     def to_openstudio_model(openstudio_model=nil, log_report=false)
       @errors = []
       @warnings = []
+      $bypass_eff_sizing = false  # default value to bypass efficiency standard
 
       if log_report
         puts 'Starting SimulationParameter translation from Honeybee to OpenStudio'
@@ -251,6 +252,9 @@ module Honeybee
         if @hash[:sizing_parameter][:building_type] && @hash[:sizing_parameter][:building_type] != 0
           building = @openstudio_model.getBuilding
           building.setStandardsBuildingType(@hash[:sizing_parameter][:building_type])
+        end
+        unless @hash[:sizing_parameter][:bypass_efficiency_sizing].nil?
+          $bypass_eff_sizing = @hash[:sizing_parameter][:bypass_efficiency_sizing]
         end
       end
 

@@ -161,7 +161,7 @@ class FromHoneybeeModel < OpenStudio::Measure::ModelMeasure
 
     # if an efficiency standard has been set on the model, then run sizing and set everything
     building = model.getBuilding
-    unless building.standardsTemplate.empty?
+    unless $bypass_eff_sizing == true || building.standardsTemplate.empty?
       puts 'Autosizing HVAC systems and assigning efficiencies'
       standard_id = building.standardsTemplate.get
       require 'openstudio-standards'
