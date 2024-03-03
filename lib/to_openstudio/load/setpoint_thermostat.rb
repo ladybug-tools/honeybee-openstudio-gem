@@ -59,6 +59,11 @@ module Honeybee
         os_thermostat.setCoolingSetpointTemperatureSchedule(cool_sch_object)
       end
 
+      # assign the setpoint_cutout_difference
+      unless @hash[:setpoint_cutout_difference].nil?
+        os_thermostat.setTemperatureDifferenceBetweenCutoutAndSetpoint(@hash[:setpoint_cutout_difference])
+      end
+
       os_thermostat
     end
 
