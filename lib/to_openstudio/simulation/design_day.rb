@@ -86,8 +86,11 @@ module Honeybee
 
       # ASHRAETau SkyCondition
       if @hash[:sky_condition][:type] == "ASHRAETau"
-        os_des_day.setAshraeTaub(@hash[:sky_condition][:tau_b])
-        os_des_day.setAshraeTaud(@hash[:sky_condition][:tau_d])
+        os_des_day.setAshraeClearSkyOpticalDepthForBeamIrradiance(@hash[:sky_condition][:tau_b])
+        os_des_day.setAshraeClearSkyOpticalDepthForDiffuseIrradiance(@hash[:sky_condition][:tau_d])
+        if @hash[:sky_condition][:use_2017] == true
+          os_des_day.setSolarModelIndicator("ASHRAETau2017")
+        end
       end
 
       os_des_day
