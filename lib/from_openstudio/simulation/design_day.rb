@@ -60,7 +60,7 @@ module Honeybee
     end
 
     def self.humidity_type_from_design_day(design_day)
-      humidity_type = design_day.humidityIndicatingType
+      humidity_type = design_day.humidityConditionType
       allowed_types = ['WetBulb', 'Dewpoint', 'HumidityRatio', 'Enthalpy']
       if !allowed_types.any?{ |s| s.casecmp(humidity_type)==0 }
         raise "'#{humidity_type}' is not an allowed humidity type"
@@ -72,7 +72,13 @@ module Honeybee
       hash = {}
       hash[:type] = 'HumidityCondition'
       hash[:humidity_type] = humidity_type_from_design_day(design_day)
-      hash[:humidity_value] = design_day.humidityIndicatingConditionsAtMaximumDryBulb
+      if hash[:humidity_type] == 'HumidityRatio'
+        hash[:humidity_value] = design_day.humidityRatioAtMaximumDryBulb
+      elsif hash[:humidity_type] == 'Enthalpy'
+        hash[:humidity_value] = design_day.enthalpyAtMaximumDryBulb
+      else
+        hash[:humidity_value] = design_day.wetBulbOrDewPointAtMaximumDryBulb
+      end
       hash[:barometric_pressure] = design_day.barometricPressure
       hash[:rain] = design_day.rainIndicator
       hash[:snow_on_ground] = design_day.snowIndicator
