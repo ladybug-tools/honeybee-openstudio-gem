@@ -53,8 +53,15 @@ module Honeybee
       os_des_day.setDailyDryBulbTemperatureRange(@hash[:dry_bulb_condition][:dry_bulb_range])
 
       # set the HumidityCondition properties
-      os_des_day.setHumidityIndicatingType(@hash[:humidity_condition][:humidity_type])
-      os_des_day.setHumidityIndicatingConditionsAtMaximumDryBulb(@hash[:humidity_condition][:humidity_value])
+      humid_type = @hash[:humidity_condition][:humidity_type]
+      os_des_day.setHumidityConditionType(@hash[:humidity_condition][:humidity_type])
+      if humid_type == 'HumidityRatio'
+        os_des_day.setHumidityRatioAtMaximumDryBulb(@hash[:humidity_condition][:humidity_value])
+      elsif humid_type == 'Enthalpy'
+        os_des_day.setEnthalpyAtMaximumDryBulb(@hash[:humidity_condition][:humidity_value])
+      else
+        os_des_day.setWetBulbOrDewPointAtMaximumDryBulb(@hash[:humidity_condition][:humidity_value])
+      end
       if @hash[:humidity_condition][:barometric_pressure]
         os_des_day.setBarometricPressure(@hash[:humidity_condition][:barometric_pressure])
       end
