@@ -112,8 +112,9 @@ module Honeybee
 
     # remove illegal characters in identifier
     def self.clean_name(str)
-      ascii = str.encode(Encoding.find('ASCII'), **@@encoding_options)
-      ascii = truncate(ascii, 97)
+      encode_str = str.encode(Encoding.find('ASCII'), **@@encoding_options)
+      encode_str = truncate(encode_str, 97)
+      encode_str.gsub(/[,;!]/, '_')
     end
 
     # remove illegal characters in identifier
