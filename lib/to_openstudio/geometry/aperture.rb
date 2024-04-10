@@ -170,7 +170,7 @@ module Honeybee
       return result
     end
 
-    def to_openstudio_shade(openstudio_model, shading_surface_group)
+    def to_openstudio_shade(openstudio_model)
       # get the vertices from the aperture
       if @hash[:geometry][:vertices].nil?
         hb_verts = @hash[:geometry][:boundary]
@@ -216,9 +216,6 @@ module Honeybee
           os_shading_surface.setTransmittanceSchedule(os_schedule)
         end
       end
-
-      # add the shade to the group
-      os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
 
       os_shading_surface
     end
