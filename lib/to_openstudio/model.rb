@@ -649,7 +649,7 @@ module Honeybee
         end
         @hash[:orphaned_faces].each do |face|
           face_object = Face.new(face)
-          openstudio_shade = face_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          openstudio_shade = face_object.to_openstudio_shade(@openstudio_model)
           if $orphan_groups
             openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
           end
@@ -663,9 +663,9 @@ module Honeybee
           shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
           shading_surface_group.setShadingSurfaceType('Building')
         end
-          @hash[:orphaned_apertures].each do |ap|
+        @hash[:orphaned_apertures].each do |ap|
           ap_object = Aperture.new(ap)
-          openstudio_shade = ap_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          openstudio_shade = ap_object.to_openstudio_shade(@openstudio_model)
           if $orphan_groups
             openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
           end
@@ -679,9 +679,9 @@ module Honeybee
           shading_surface_group = OpenStudio::Model::ShadingSurfaceGroup.new(@openstudio_model)
           shading_surface_group.setShadingSurfaceType('Building')
         end
-          @hash[:orphaned_doors].each do |dr|
+        @hash[:orphaned_doors].each do |dr|
           dr_object = Door.new(dr)
-          openstudio_shade = dr_object.to_openstudio_shade(@openstudio_model, shading_surface_group)
+          openstudio_shade = dr_object.to_openstudio_shade(@openstudio_model)
           if $orphan_groups
             openstudio_shade.setShadingSurfaceGroup(shading_surface_group)
           end

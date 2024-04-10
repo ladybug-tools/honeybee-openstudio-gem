@@ -248,25 +248,6 @@ module Honeybee
         end
       end
 
-      # add the shade to the group
-      os_shading_surface.setShadingSurfaceGroup(shading_surface_group)
-
-      # convert the apertures to shade objects
-      if @hash[:apertures]
-        @hash[:apertures].each do |aperture|
-          hb_aperture = Aperture.new(aperture)
-          os_subsurface_aperture = hb_aperture.to_openstudio_shade(openstudio_model, shading_surface_group)
-        end
-      end
-
-      # convert the apertures to shade objects
-      if @hash[:doors]
-        @hash[:doors].each do |door|
-          hb_door = Door.new(door)
-          os_subsurface_door = hb_door.to_openstudio_shade(openstudio_model, shading_surface_group)
-        end
-      end
-
       os_shading_surface
     end
 
