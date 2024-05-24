@@ -128,19 +128,11 @@ class OpenStudio::Model::Model
     end
 
     # get the various controls for the radiant system
-    if rad_props[:minimum_operation_time]
-      minimum_operation = rad_props[:minimum_operation_time]
-    else
-      minimum_operation = 1
-    end
     if rad_props[:switch_over_time]
       switch_over_time = rad_props[:switch_over_time]
     else
       switch_over_time = 24
     end
-
-    # get the start and end hour from the input zones
-    start_hour, end_hour = start_end_hour_from_zones_occupancy(zones)
 
     # add radiant system to the conditioned zones
     include_carpet = false
@@ -162,9 +154,6 @@ class OpenStudio::Model::Model
       radiant_type: radiant_type,
       control_strategy: control_strategy,
       include_carpet: include_carpet,
-      model_occ_hr_start: start_hour,
-      model_occ_hr_end: end_hour,
-      minimum_operation: minimum_operation,
       switch_over_time: switch_over_time,
       cz_mult: cz_mult)
 
@@ -173,93 +162,6 @@ class OpenStudio::Model::Model
       std.model_add_doas(self, conditioned_zones)
     end
 
-  end
-
-  # get the start and end hour from the occupancy schedules of thermal zones
-  def start_end_hour_from_zones_occupancy(thermal_zones, threshold: 0.1)
-    # set the default start and end hour in the event there's no occupancy
-    start_hour = 12
-    end_hour = 12
-    # loop through the occupancy schedules and get the lowest start hour; highest end hour
-    thermal_zones.each do |zone|
-      zone.spaces.each do |space|
-        # gather all of the people objects assigned to the sapce
-        peoples = []
-        unless space.spaceType.empty?
-          space_type = space.spaceType.get
-          unless space_type.people.empty?
-            space_type.people.each do |ppl|
-              peoples << ppl
-            end
-          end
-        end
-        space.people.each do |ppl|
-          peoples << ppl
-        end
-        # loop through the pople and gather all occupancy schedules
-        peoples.each do |people|
-          occupancy_sch_opt = people.numberofPeopleSchedule
-          unless occupancy_sch_opt.empty?
-            occupancy_sch = occupancy_sch_opt.get
-            if occupancy_sch.to_ScheduleRuleset.is_initialized
-              occupancy_sch = occupancy_sch.to_ScheduleRuleset.get
-              # gather all of the day schedules across the schedule ruleset
-              schedule_days, day_ids = [], []
-              required_days = [
-                occupancy_sch.defaultDaySchedule,
-                occupancy_sch.summerDesignDaySchedule,
-                occupancy_sch.winterDesignDaySchedule,
-                occupancy_sch.holidaySchedule
-              ]
-              required_days.each do |day_sch|
-                unless day_ids.include? day_sch.nameString
-                  schedule_days << day_sch
-                  day_ids << day_sch.nameString
-                end
-              end
-              occupancy_sch.scheduleRules.each do |schedule_rule|
-                day_sch = schedule_rule.daySchedule
-                unless day_ids.include? day_sch.nameString
-                  schedule_days << day_sch
-                  day_ids << day_sch.nameString
-                end
-              end
-              # loop through the day schedules and see if the start and end hours should be changed
-              schedule_days.each do |day_sch|
-                time_until = [1]
-                day_sch.times.each do |time|
-                  time_until << time.hours
-                end
-                final_time = time_until[-2]
-                day_sch.values.zip(time_until).each do |value, time|
-                  if value > threshold
-                    if time < start_hour
-                      start_hour = time
-                    end
-                    if time > end_hour
-                      end_hour = time
-                    end
-                    if time == final_time
-                      start_hour = 1
-                      end_hour = 24
-                    end
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-
-    # if no values were set, just set the system to be on all of the time
-    if start_hour == 12 or start_hour == 0
-      start_hour = 1
-    end
-    if end_hour == 12
-      end_hour = 24
-    end
-    return start_hour, end_hour
   end
 
   def model_add_low_temp_radiant(std,
@@ -273,9 +175,6 @@ class OpenStudio::Model::Model
                                  model_occ_hr_end: 24.0,
                                  control_strategy: 'proportional_control',
                                  proportional_gain: 0.3,
-                                 minimum_operation: 1,
-                                 weekend_temperature_reset: 2,
-                                 early_reset_out_arg: 20,
                                  switch_over_time: 24.0,
                                  cz_mult: 4)
 
@@ -598,18 +497,18 @@ class OpenStudio::Model::Model
       # rename nodes before adding EMS code
       std.rename_plant_loop_nodes(self)
 
+      # TODO: Un-comment this once these controls are fixed (Matt made a lot of changes for OpenStudio 3.8)
       # set radiant loop controls
-      if control_strategy == 'proportional_control'
-        std.model_add_radiant_proportional_controls(self, zone, radiant_loop,
-                                                    radiant_type: radiant_type,
-                                                    model_occ_hr_start: model_occ_hr_start,
-                                                    model_occ_hr_end: model_occ_hr_end,
-                                                    proportional_gain: proportional_gain,
-                                                    minimum_operation: minimum_operation,
-                                                    weekend_temperature_reset: weekend_temperature_reset,
-                                                    early_reset_out_arg: early_reset_out_arg,
-                                                    switch_over_time: switch_over_time)
-      end
+      #if control_strategy == 'proportional_control'
+      #  std.model_add_radiant_proportional_controls(self, zone, radiant_loop,
+      #                                              radiant_temperature_control_type: 'SurfaceFaceTemperature',
+      #                                              use_zone_occupancy_for_control: true,
+      #                                              occupied_percentage_threshold: 0.10,
+      #                                              model_occ_hr_start: model_occ_hr_start,
+      #                                              model_occ_hr_end: model_occ_hr_end,
+      #                                              proportional_gain: proportional_gain,
+      #                                              switch_over_time: switch_over_time)
+      #end
     end
 
     return radiant_loops
