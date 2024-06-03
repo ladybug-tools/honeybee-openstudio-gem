@@ -105,7 +105,7 @@ module Honeybee
           vent_sch = openstudio_model.getScheduleByName(vent_control_hash[:schedule])
           unless vent_sch.empty?
             vent_sch_object = vent_sch.get
-            os_zone_vent.setOpeningAreaFractionSchedule(vent_sch_object)
+            os_zone_vent.setSchedule(vent_sch_object)
           end
         end
       end
