@@ -233,6 +233,11 @@ module Honeybee
     end
 
     def to_openstudio(openstudio_model, os_space, shw_name)
+      # if there's no name, assume that we're using the default district water heater
+      if shw_name.nil?
+        shw_name = 'default_district_shw'
+      end
+
       # create water use equipment + connection and set identifier
       os_shw_def = OpenStudio::Model::WaterUseEquipmentDefinition.new(openstudio_model)
       os_shw = OpenStudio::Model::WaterUseEquipment.new(os_shw_def)
@@ -272,9 +277,6 @@ module Honeybee
       if target_temp > @@max_target_temp
         @@max_target_temp = target_temp
         @@max_temp_schedule = target_water_sch
-      end
-      if shw_name.nil?
-        shw_name = 'default_district_shw'
       end
       if @@shw_connections[shw_name].nil?
         @@shw_connections[shw_name] = []
