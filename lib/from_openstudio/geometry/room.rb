@@ -40,6 +40,8 @@ module Honeybee
       hash[:identifier] = clean_identifier(space.nameString)
       unless space.displayName.empty?
         hash[:display_name] = (space.displayName.get).force_encoding("UTF-8")
+      else
+        hash[:display_name] = space.nameString
       end
       hash[:user_data] = {space: space.handle.to_s}
       hash[:properties] = properties_from_space(space)

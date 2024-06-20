@@ -40,7 +40,11 @@ module Honeybee
       hash = {}
       hash[:type] = 'Aperture'
       hash[:identifier] = clean_identifier(sub_surface.nameString)
-      hash[:display_name] = clean_name(sub_surface.nameString)
+      unless sub_surface.displayName.empty?
+        hash[:display_name] = (sub_surface.displayName.get).force_encoding("UTF-8")
+      else
+        hash[:display_name] = sub_surface.nameString
+      end
       hash[:user_data] = {handle: sub_surface.handle.to_s}
       hash[:properties] = properties_from_sub_surface(sub_surface)
       hash[:geometry] = geometry_from_sub_surface(sub_surface, site_transformation)
