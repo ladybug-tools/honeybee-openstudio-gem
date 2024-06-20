@@ -40,6 +40,8 @@ module Honeybee
       hash[:identifier] = clean_identifier(surface.nameString)
       unless surface.displayName.empty?
         hash[:display_name] = (surface.displayName.get).force_encoding("UTF-8")
+      else
+        hash[:display_name] = surface.nameString
       end
       hash[:user_data] = {handle: surface.handle.to_s}
       hash[:properties] = properties_from_surface(surface)
