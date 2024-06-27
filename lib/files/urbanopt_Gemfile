@@ -63,4 +63,4 @@ gem 'yamler', '0.1.0'
 gem 'zliby', '0.0.5'
 
 # include the honeybee-openstudio-gem
-gem 'honeybee-openstudio', '2.38.3'
+gem 'honeybee-openstudio', '2.38.12'
