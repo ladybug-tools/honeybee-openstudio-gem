@@ -45,7 +45,12 @@ module Honeybee
             hash[:display_name] = (material.displayName.get).force_encoding("UTF-8")
         end
         hash[:thickness] = material.thickness
-        hash[:solar_transmittance] = material.solarTransmittance
+        # check for the transmittance in begin/rescue in case spectral data is not set
+        begin
+            hash[:solar_transmittance] = material.solarTransmittance
+        rescue
+            return nil
+        end
         # check if boost optional object is empty
         unless material.frontSideSolarReflectanceatNormalIncidence.empty?
             hash[:solar_reflectance] = material.frontSideSolarReflectanceatNormalIncidence.get
