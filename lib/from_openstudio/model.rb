@@ -194,7 +194,10 @@ module Honeybee
       end
       # Create HB EnergyWindowMaterialGlazing from OpenStudio Material
       openstudio_model.getStandardGlazings.each do |material|
-        result << EnergyWindowMaterialGlazing.from_material(material)
+        mat_hash = EnergyWindowMaterialGlazing.from_material(material)
+        unless mat_hash.nil?
+          result << mat_hash
+        end
       end
       # Create HB EnergyWindowMaterialBlind from OpenStudio Material
       openstudio_model.getBlinds.each do |material|
