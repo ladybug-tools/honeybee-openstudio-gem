@@ -207,7 +207,7 @@ module Honeybee
       os_surface
     end
 
-    def to_openstudio_shade(openstudio_model, shading_surface_group)
+    def to_openstudio_shade(openstudio_model)
       # get the vertices from the face
       if @hash[:geometry][:vertices].nil?
         hb_verts = @hash[:geometry][:boundary]
