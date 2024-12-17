@@ -82,10 +82,14 @@ module Honeybee
       end
 
       # create the HVAC system
+      doas_type = 'DOAS'
+      if @hash[:demand_controlled_ventilation]
+        doas_type = 'DOAS with DCV'
+      end
       if equipment_type.to_s.include? 'Radiant'
         os_hvac = openstudio_model.add_radiant_hvac_system(standard, equipment_type.to_s, zones, @hash)
       else
-        os_hvac = openstudio_model.add_cbecs_hvac_system(standard, equipment_type, zones)
+        os_hvac = openstudio_model.add_cbecs_hvac_system(standard, equipment_type, zones, doas_type)
       end
 
       # Get the air loops and assign the display name to the air loop name if it exists
@@ -258,14 +262,16 @@ module Honeybee
 
       # assign demand controlled ventilation if there's an air loop
       if @hash[:demand_controlled_ventilation] && !os_air_loops.empty?
-        os_air_loops.each do |os_air_loop|
-          oasys = os_air_loop.airLoopHVACOutdoorAirSystem
-          unless oasys.empty?
-            os_oasys = oasys.get
-            oactrl = os_oasys.getControllerOutdoorAir
-            vent_ctrl = oactrl.controllerMechanicalVentilation
-            vent_ctrl.setDemandControlledVentilationNoFail(true)
-            oactrl.resetMinimumFractionofOutdoorAirSchedule
+        if !equipment_type.to_s.include? 'DOAS'
+          os_air_loops.each do |os_air_loop|
+            oasys = os_air_loop.airLoopHVACOutdoorAirSystem
+            unless oasys.empty?
+              os_oasys = oasys.get
+              oactrl = os_oasys.getControllerOutdoorAir
+              vent_ctrl = oactrl.controllerMechanicalVentilation
+              vent_ctrl.setDemandControlledVentilationNoFail(true)
+              oactrl.resetMinimumFractionofOutdoorAirSchedule
+            end
           end
         end
       end
