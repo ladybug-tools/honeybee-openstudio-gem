@@ -275,20 +275,37 @@ module Honeybee
           end
         end
       end
+      
+      unless os_air_loops.empty?
+        # have an always available schedule ready to use if there are no user controls
+        always_avail_name = 'Building HVAC Always Available'
+        schedule = openstudio_model.getScheduleByName(always_avail_name)
+        unless schedule.empty?
+          always_avail = schedule.get
+        else
+          always_avail = OpenStudio::Model::ScheduleRuleset.new(openstudio_model)
+          always_avail.setName(always_avail_name)
+          def_day_sch = always_avail.defaultDaySchedule
+          time_until = OpenStudio::Time.new(0, 24, 0, 0)
+          def_day_sch.addValue(time_until, 1)
+        end
 
-      # assign the DOAS availability schedule if there's an air loop and it is specified
-      if @hash[:doas_availability_schedule] && !os_air_loops.empty?
-        os_air_loops.each do |os_air_loop|
+        # assign the DOAS availability schedule if there's an air loop and it is specified
+        avail_sch = nil
+        if @hash[:doas_availability_schedule]
           schedule = openstudio_model.getScheduleByName(@hash[:doas_availability_schedule])
           unless schedule.empty?
             avail_sch = schedule.get
-            os_air_loop.setAvailabilitySchedule(avail_sch)
           end
         end
-      end
+        unless avail_sch
+          avail_sch = always_avail
+        end
+        os_air_loops.each do |os_air_loop|
+          os_air_loop.setAvailabilitySchedule(avail_sch)
+        end
 
-      # set the outdoor air controller to respect room-level ventilation schedules if they exist
-      if !os_air_loops.empty?
+        # set the outdoor air controller to respect room-level ventilation schedules if they exist
         oa_sch, oa_sch_name = nil, nil
         zones.each do |zone|
           oa_spec = zone.spaces[0].designSpecificationOutdoorAir
@@ -309,16 +326,17 @@ module Honeybee
             end
           end
         end
-
-        if oa_sch
-          os_air_loops.each do |os_air_loop|
-            oasys = os_air_loop.airLoopHVACOutdoorAirSystem
-            unless oasys.empty?
-              os_oasys = oasys.get
-              oactrl = os_oasys.getControllerOutdoorAir
-              oactrl.resetMinimumFractionofOutdoorAirSchedule
-              oactrl.setMinimumOutdoorAirSchedule(oa_sch)
-            end
+        unless oa_sch
+          oa_sch = always_avail
+        end
+        
+        os_air_loops.each do |os_air_loop|
+          oasys = os_air_loop.airLoopHVACOutdoorAirSystem
+          unless oasys.empty?
+            os_oasys = oasys.get
+            oactrl = os_oasys.getControllerOutdoorAir
+            oactrl.resetMinimumFractionofOutdoorAirSchedule
+            oactrl.setMinimumOutdoorAirSchedule(oa_sch)
           end
         end
       end
