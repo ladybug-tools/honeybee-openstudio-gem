@@ -158,7 +158,7 @@ RSpec.describe Honeybee do
     schedule_file_dir = File.join(schedule_dir, 'schedule_fixedinterval_increasing_fine_timestep')
 
     # translate to schedule file
-    if File.exists?(schedule_file_dir)
+    if File.directory?(schedule_file_dir)
       FileUtils.rm_rf(schedule_file_dir)
     end
     FileUtils.mkdir_p(schedule_file_dir)
@@ -203,7 +203,7 @@ RSpec.describe Honeybee do
     schedule_file_dir = File.join(schedule_dir, 'schedule_fixedinterval_leap_year')
 
     # translate to schedule file
-    if File.exists?(schedule_file_dir)
+    if File.directory?(schedule_file_dir)
       FileUtils.rm_rf(schedule_file_dir)
     end
     FileUtils.mkdir_p(schedule_file_dir)
