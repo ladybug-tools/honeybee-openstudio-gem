@@ -89,7 +89,7 @@ RSpec.describe Honeybee do
     schedule_file_dir = File.join(schedule_dir, 'schedule_file')
 
     # translate to schedule file
-    if File.exists?(schedule_file_dir)
+    if File.directory?(schedule_file_dir)
       FileUtils.rm_rf(schedule_file_dir)
     end
     FileUtils.mkdir_p(schedule_file_dir)
@@ -109,8 +109,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
-    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
+    expect(File.file?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
+    expect(File.file?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -129,7 +129,7 @@ RSpec.describe Honeybee do
     schedule_file_dir = File.join(schedule_dir, 'schedule_file_with_datetimes')
 
     # translate to schedule file
-    if File.exists?(schedule_file_dir)
+    if File.directory?(schedule_file_dir)
       FileUtils.rm_rf(schedule_file_dir)
     end
     FileUtils.mkdir_p(schedule_file_dir)
@@ -149,8 +149,8 @@ RSpec.describe Honeybee do
     honeybee_obj_1.set_schedule_csv_dir(schedule_file_dir, true)
     object1 = honeybee_obj_1.to_openstudio_model(openstudio_model, log_report=false)
     expect(object1).not_to be nil
-    expect(File.exists?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
-    expect(File.exists?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
+    expect(File.file?(File.join(schedule_file_dir, 'Random_Occupancy.csv'))).to be true
+    expect(File.file?(File.join(schedule_file_dir, 'Seasonal_Tree_Transmittance.csv'))).to be true
 
     set_simulation_parameters(openstudio_model, epw_name)
 
@@ -169,7 +169,7 @@ RSpec.describe Honeybee do
     fixed_interval_dir = File.join(schedule_dir, 'fixed_interval')
 
     # translate to schedule fixed interval
-    if File.exists?(fixed_interval_dir)
+    if File.directory?(fixed_interval_dir)
       FileUtils.rm_rf(fixed_interval_dir)
     end
     FileUtils.mkdir_p(fixed_interval_dir)

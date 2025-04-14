@@ -427,7 +427,7 @@ module Honeybee
               end
             end
           end
-          # add the control startegy of the ventilation openings using the EMS
+          # add the control strategy of the ventilation openings using the EMS
           if @hash[:properties][:energy][:window_vent_control]
             vent_control = VentilationControlAbridged.new(@hash[:properties][:energy][:window_vent_control])
             vent_control.to_openstudio(

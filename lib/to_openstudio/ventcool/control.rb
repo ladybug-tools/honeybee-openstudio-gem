@@ -103,7 +103,7 @@ module Honeybee
         end
       end
 
-      # create the actuators for each of the operaable windows
+      # create the actuators for each of the operable windows
       actuator_names = []
       vent_opening_surfaces.each do |vent_srf|
         window_act = OpenStudio::Model::EnergyManagementSystemActuator.new(
