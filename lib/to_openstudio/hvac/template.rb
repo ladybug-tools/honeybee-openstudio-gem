@@ -431,12 +431,8 @@ module Honeybee
       heat_ex.setName(@hash[:identifier] + '_Heat Recovery Unit')
       heat_ex.setSensibleEffectivenessat100CoolingAirFlow(0)
       heat_ex.setSensibleEffectivenessat100HeatingAirFlow(0)
-      heat_ex.setSensibleEffectivenessat75CoolingAirFlow(0)
-      heat_ex.setSensibleEffectivenessat75HeatingAirFlow(0)
       heat_ex.setLatentEffectivenessat100CoolingAirFlow(0)
       heat_ex.setLatentEffectivenessat100HeatingAirFlow(0)
-      heat_ex.setLatentEffectivenessat75CoolingAirFlow(0)
-      heat_ex.setLatentEffectivenessat75HeatingAirFlow(0)
 
       # add the heat exchanger to the air loop
       outdoor_node = os_air_loop.reliefAirNode
