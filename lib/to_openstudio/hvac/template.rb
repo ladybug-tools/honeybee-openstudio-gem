@@ -237,11 +237,13 @@ module Honeybee
           unless erv
             erv = create_erv(openstudio_model, os_air_loop)
           end
-          eff_at_max = @hash[:sensible_heat_recovery] * (0.76 / 0.81)  # taken from OpenStudio defaults
-          erv.setSensibleEffectivenessat100CoolingAirFlow(eff_at_max)
-          erv.setSensibleEffectivenessat100HeatingAirFlow(eff_at_max)
-          erv.setSensibleEffectivenessat75CoolingAirFlow(@hash[:sensible_heat_recovery])
-          erv.setSensibleEffectivenessat75HeatingAirFlow(@hash[:sensible_heat_recovery])
+          eff_sens = @hash[:sensible_heat_recovery]
+          erv.setSensibleEffectivenessat100CoolingAirFlow(eff_sens)
+          erv.setSensibleEffectivenessat100HeatingAirFlow(eff_sens)
+          if openstudio_model.version < OpenStudio::VersionString.new('3.8.0')
+            erv.setSensibleEffectivenessat75CoolingAirFlow(eff_sens)
+            erv.setSensibleEffectivenessat75HeatingAirFlow(eff_sens)
+          end
         end
       end
 
@@ -252,11 +254,13 @@ module Honeybee
           unless erv
             erv = create_erv(openstudio_model, os_air_loop)
           end
-          eff_at_max = @hash[:latent_heat_recovery] * (0.68 / 0.73)  # taken from OpenStudio defaults
-          erv.setLatentEffectivenessat100CoolingAirFlow(eff_at_max)
-          erv.setLatentEffectivenessat100HeatingAirFlow(eff_at_max)
-          erv.setLatentEffectivenessat75CoolingAirFlow(@hash[:latent_heat_recovery])
-          erv.setLatentEffectivenessat75HeatingAirFlow(@hash[:latent_heat_recovery])
+          eff_lat = @hash[:latent_heat_recovery]
+          erv.setLatentEffectivenessat100CoolingAirFlow(eff_lat)
+          erv.setLatentEffectivenessat100HeatingAirFlow(eff_lat)
+          if openstudio_model.version < OpenStudio::VersionString.new('3.8.0')
+            erv.setLatentEffectivenessat75CoolingAirFlow(eff_lat)
+            erv.setLatentEffectivenessat75HeatingAirFlow(eff_lat)
+          end
         end
       end
 
@@ -429,10 +433,17 @@ module Honeybee
       heat_ex = OpenStudio::Model::HeatExchangerAirToAirSensibleAndLatent.new(model)
       heat_ex.setEconomizerLockout(false)
       heat_ex.setName(@hash[:identifier] + '_Heat Recovery Unit')
+
       heat_ex.setSensibleEffectivenessat100CoolingAirFlow(0)
       heat_ex.setSensibleEffectivenessat100HeatingAirFlow(0)
       heat_ex.setLatentEffectivenessat100CoolingAirFlow(0)
       heat_ex.setLatentEffectivenessat100HeatingAirFlow(0)
+      if model.version < OpenStudio::VersionString.new('3.8.0')
+        heat_ex.setSensibleEffectivenessat75CoolingAirFlow(0)
+        heat_ex.setSensibleEffectivenessat75HeatingAirFlow(0)
+        heat_ex.setLatentEffectivenessat75CoolingAirFlow(0)
+        heat_ex.setLatentEffectivenessat75HeatingAirFlow(0)
+      end
 
       # add the heat exchanger to the air loop
       outdoor_node = os_air_loop.reliefAirNode
