@@ -47,6 +47,7 @@ class OpenStudio::Model::Model
       heated_zones = zones.select { |zone| OpenstudioStandards::ThermalZone.thermal_zone_heated?(zone) }
       cooled_zones = zones.select { |zone| OpenstudioStandards::ThermalZone.thermal_zone_cooled?(zone) }
       cooled_only_zones = zones.select { |zone| !OpenstudioStandards::ThermalZone.thermal_zone_heated?(zone) && OpenstudioStandards::ThermalZone.thermal_zone_cooled?(zone) }
+      heated_only_zones = zones.select { |zone| OpenstudioStandards::ThermalZone.thermal_zone_heated?(zone) && !OpenstudioStandards::ThermalZone.thermal_zone_cooled?(zone) }
     else
       heated_and_cooled_zones = zones.select { |zone| standard.thermal_zone_heated?(zone) && standard.thermal_zone_cooled?(zone) }
       heated_zones = zones.select { |zone| standard.thermal_zone_heated?(zone) }
