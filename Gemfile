@@ -7,7 +7,7 @@ gemspec
 if File.exist?('../OpenStudio-extension-gem')  # local development copy
   gem 'openstudio-extension', path: '../OpenStudio-extension-gem'
 else  # get it from rubygems.org
-  gem 'openstudio-extension', '0.8.3'
+  gem 'openstudio-extension', '0.9.7'
 end
 
 # coveralls gem is used to generate coverage reports through CI
